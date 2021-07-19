@@ -29,6 +29,7 @@ public class Tweaks extends JavaPlugin {
         commandManager.registerCommand("rights", "tnl.rights", new RightsCommand(), new RightsCommandTabCompleter());
         commandManager.registerCommand("op", "tnl.rights", new OPCommand(), new OPCommandTabCompleter());
         commandManager.registerCommand("deop", "tnl.rights", new DeOPCommand(), new DeOPCommandTabCompleter());
+        commandManager.registerCommand("speed", "tnl.speed", new SpeedCommand(), new SpeedCommandTabCompleter());
         eventManager.registerListener(new CommandListener());
         if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
     }

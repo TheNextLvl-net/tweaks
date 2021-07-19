@@ -1,15 +1,16 @@
 name: "TNLTweaks"
 version: "1.2"
-main: net.nonswag.tnl.tweaks.Tweaks
-api-version: "1.15"
-website: https://www.thenextlvl.net
+main: "net.nonswag.tnl.tweaks.Tweaks"
+api-version: "1.13"
+website: "https://www.thenextlvl.net"
 author: "NonSwag"
 depend:
-  - TNLListener
+  - "TNLListener"
 commands:
   fly:
   feed:
   heal:
+  speed:
   thunder:
   rain:
   sun:
