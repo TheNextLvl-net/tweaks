@@ -14,7 +14,6 @@ public class Tweaks extends JavaPlugin {
     @Override
     public void onEnable() {
         CommandManager commandManager = new CommandManager(this);
-        EventManager eventManager = new EventManager(this);
         commandManager.registerCommand("ping", new PingCommand(), new PingCommandTabCompleter());
         commandManager.registerCommand("tps", "tnl.tps", new TPSCommand(), new TPSCommandTabCompleter());
         commandManager.registerCommand("day", "tnl.day", new DayCommand(), new DayCommandTabCompleter());
@@ -30,6 +29,7 @@ public class Tweaks extends JavaPlugin {
         commandManager.registerCommand("op", "tnl.rights", new OPCommand(), new OPCommandTabCompleter());
         commandManager.registerCommand("deop", "tnl.rights", new DeOPCommand(), new DeOPCommandTabCompleter());
         commandManager.registerCommand("speed", "tnl.speed", new SpeedCommand(), new SpeedCommandTabCompleter());
+        EventManager eventManager = EventManager.cast(this);
         eventManager.registerListener(new CommandListener());
         if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
     }

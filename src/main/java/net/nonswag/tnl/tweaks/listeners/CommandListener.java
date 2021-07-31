@@ -45,7 +45,7 @@ public class CommandListener implements Listener {
     }
 
     @EventHandler
-    public void onConsoleCommand(ServerCommandEvent event) {
+    public void onConsoleCommand(@Nonnull ServerCommandEvent event) {
         String[] args = event.getCommand().split(" ");
         if (args[0].equalsIgnoreCase("tps")) {
             event.setCancelled(true);
