@@ -13,7 +13,7 @@ public class Tweaks extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        CommandManager commandManager = new CommandManager(this);
+        CommandManager commandManager = CommandManager.cast(this);
         commandManager.registerCommand("ping", new PingCommand(), new PingCommandTabCompleter());
         commandManager.registerCommand("tps", "tnl.tps", new TPSCommand(), new TPSCommandTabCompleter());
         commandManager.registerCommand("day", "tnl.day", new DayCommand(), new DayCommandTabCompleter());

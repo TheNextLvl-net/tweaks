@@ -8,10 +8,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+
 public class PingCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
         if (sender instanceof Player) {
             if (args.length >= 1 && sender.hasPermission("tnl.admin")) {
                 TNLPlayer arg = TNLPlayer.cast(args[0]);
@@ -28,9 +30,7 @@ public class PingCommand implements CommandExecutor {
             } else {
                 sender.sendMessage(ChatComponent.getText("%prefix%§a Your ping is §6" + TNLPlayer.cast(((Player) sender)).getPing() + "ms"));
             }
-        } else {
-            sender.sendMessage(Message.CONSOLE_COMMAND_EN.getText());
-        }
+        } else sender.sendMessage(Message.CONSOLE_COMMAND_EN.getText());
         return false;
     }
 }

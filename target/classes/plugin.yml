@@ -4,8 +4,7 @@ main: "net.nonswag.tnl.tweaks.Tweaks"
 api-version: "1.13"
 website: "https://www.thenextlvl.net"
 author: "NonSwag"
-depend:
-  - "TNLListener"
+depend: ["TNLListener"]
 commands:
   fly:
   feed:
@@ -22,5 +21,4 @@ commands:
   op:
   deop:
   gamemode:
-    aliases:
-      - gm
+    aliases: ["gm"]
