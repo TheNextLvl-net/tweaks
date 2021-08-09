@@ -1,6 +1,5 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.TNLListener;
 import net.nonswag.tnl.listener.api.message.ChatComponent;
 import net.nonswag.tnl.listener.api.permission.Permissions;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -26,13 +25,13 @@ public class RightsCommand implements CommandExecutor {
                                 sender.sendMessage(ChatComponent.getText("%prefix%§c Nothing could be changed"));
                             }
                         } else {
-                            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add " + arg.getName() + " §8[§4Permission§8]"));
+                            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add " + arg.getName() + " §8[§6Permission§8]"));
                         }
                     } else {
-                        sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§4Player§8] §8[§4Permission§8]"));
+                        sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§6Player§8] §8[§6Permission§8]"));
                     }
                 } else {
-                    sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§4Player§8] §8[§4Permission§8]"));
+                    sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§6Player§8] §8[§6Permission§8]"));
                 }
             } else if (args[0].equalsIgnoreCase("remove")) {
                 if (args.length >= 2) {
@@ -47,13 +46,13 @@ public class RightsCommand implements CommandExecutor {
                                 sender.sendMessage(ChatComponent.getText("%prefix%§c Nothing could be changed"));
                             }
                         } else {
-                            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove " + arg.getName() + " §8[§4Permission§8]"));
+                            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove " + arg.getName() + " §8[§6Permission§8]"));
                         }
                     } else {
-                        sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§4Player§8] §8[§4Permission§8]"));
+                        sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§6Player§8] §8[§6Permission§8]"));
                     }
                 } else {
-                    sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§4Player§8] §8[§4Permission§8]"));
+                    sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§6Player§8] §8[§6Permission§8]"));
                 }
             } else if (args[0].equalsIgnoreCase("list")) {
                 if (args.length >= 2) {
@@ -62,20 +61,20 @@ public class RightsCommand implements CommandExecutor {
                         Permissions permissionManager = arg.getPermissionManager();
                         sender.sendMessage(ChatComponent.getText("%prefix%§7 Permissions§8(§a" + permissionManager.getPermissions().size() + "§8): §6" + String.join("§8, §6", permissionManager.getPermissions())));
                     } else {
-                        sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§4Player§8]"));
+                        sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§6Player§8]"));
                     }
                 } else {
-                    sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§4Player§8]"));
+                    sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§6Player§8]"));
                 }
             } else {
-                sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§4Player§8] §8[§4Permission§8]"));
-                sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§4Player§8] §8[§4Permission§8]"));
-                sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§4Player§8]"));
+                sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§6Player§8] §8[§6Permission§8]"));
+                sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§6Player§8] §8[§6Permission§8]"));
+                sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§6Player§8]"));
             }
         } else {
-            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§4Player§8] §8[§4Permission§8]"));
-            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§4Player§8] §8[§4Permission§8]"));
-            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§4Player§8]"));
+            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights add §8[§6Player§8] §8[§6Permission§8]"));
+            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights remove §8[§6Player§8] §8[§6Permission§8]"));
+            sender.sendMessage(ChatComponent.getText("%prefix%§c /rights list §8[§6Player§8]"));
         }
         return false;
     }

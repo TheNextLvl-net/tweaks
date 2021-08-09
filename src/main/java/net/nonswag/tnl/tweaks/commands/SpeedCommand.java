@@ -25,10 +25,10 @@ public class SpeedCommand implements CommandExecutor {
                         player.sendMessage("%prefix% §aSet your §8(§7" + mode + "§8)§a speed to §6" + value);
                     } else player.sendMessage("%prefix% §cUse a number between §40§c and §410");
                 } catch (Exception e) {
-                    player.sendMessage("%prefix% §c/speed §8[§4Speed§8]");
+                    player.sendMessage("%prefix% §c/speed §8[§6Speed§8]");
                 }
             } else {
-                player.sendMessage("%prefix% §c/speed §8[§4Speed§8]");
+                player.sendMessage("%prefix% §c/speed §8[§6Speed§8]");
             }
         } else {
             sender.sendMessage(Message.CONSOLE_COMMAND_EN.getText());

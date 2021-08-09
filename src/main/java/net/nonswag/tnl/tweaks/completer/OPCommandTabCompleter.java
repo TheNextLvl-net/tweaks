@@ -17,6 +17,7 @@ public class OPCommandTabCompleter implements TabCompleter {
         if (sender.hasPermission("tnl.rights") && args.length <= 1) {
             for (OfflinePlayer all : Bukkit.getOfflinePlayers()) if (!all.isOp()) suggestions.add(all.getName());
         }
+        suggestions.removeIf(tabCompleter -> !tabCompleter.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
         return suggestions;
     }
 }
