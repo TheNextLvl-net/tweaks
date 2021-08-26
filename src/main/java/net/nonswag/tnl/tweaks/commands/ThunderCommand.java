@@ -1,25 +1,24 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.message.ChatComponent;
+import net.nonswag.tnl.listener.api.command.CommandSource;
+import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.listener.api.command.TNLCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-public class ThunderCommand implements CommandExecutor {
+import javax.annotation.Nonnull;
+
+public class ThunderCommand extends TNLCommand {
+
+    public ThunderCommand() {
+        super("thunder", "tnl.weather");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            ((Player) sender).getWorld().setThundering(true);
-        } else {
-            for (World world : Bukkit.getWorlds()) {
-                world.setThundering(true);
-            }
-        }
-        sender.sendMessage(ChatComponent.getText("%prefix%§a Set the weather to §6Thunder"));
-        return true;
+    protected void execute(@Nonnull Invocation invocation) {
+        CommandSource source = invocation.source();
+        if (source.isPlayer()) source.player().getWorld().setThundering(true);
+        else for (World world : Bukkit.getWorlds()) world.setThundering(true);
+        source.sendMessage("%prefix% §7Weather§8: §6Thunder");
     }
 }

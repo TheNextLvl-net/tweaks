@@ -1,46 +1,46 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.TNLListener;
-import net.nonswag.tnl.listener.api.message.ChatComponent;
+import net.nonswag.tnl.listener.api.command.CommandSource;
+import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
-import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class FeedCommand implements CommandExecutor {
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FeedCommand extends TNLCommand {
+
+    public FeedCommand() {
+        super("feed", "tnl.feed");
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            TNLPlayer  player = TNLPlayer.cast((Player) sender);
-            if (args.length == 0) {
-                player.setFoodLevel(20);
-                player.setSaturation(20);
-                player.getBukkitPlayer().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 5);
-                player.sendMessage("%prefix%§a Your hunger has been satisfied");
-                return true;
-            } else {
-                for (TNLPlayer  all : TNLListener.getInstance().getOnlinePlayers()) {
-                    if (all.getName().equalsIgnoreCase(args[0])) {
-                        all.setFoodLevel(20);
-                        all.setSaturation(20);
-                        all.getBukkitPlayer().playSound(all.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 15);
-                        if (!all.getName().equalsIgnoreCase(sender.getName())) {
-                            all.sendMessage("%prefix%§6 " + sender.getName() + "§a satisfied your hunger");
-                            player.sendMessage("%prefix%§a" + all.getName() + "§a hunger has been satisfied");
-                        } else {
-                            player.sendMessage("%prefix%§a Your hunger has been satisfied");
-                        }
-                        return true;
-                    }
-                }
-                player.sendMessage("%prefix%§4 " + args[0] + " §cis Offline");
-                return false;
-            }
-        } else {
-            sender.sendMessage(ChatComponent.getText("%prefix%§c This is a Player Command"));
-            return false;
-        }
+    protected void execute(@Nonnull Invocation invocation) {
+        CommandSource source = invocation.source();
+        String[] args = invocation.arguments();
+        if (args.length >= 1) {
+            TNLPlayer arg = TNLPlayer.cast(args[0]);
+            if (arg != null) {
+                arg.setFoodLevel(20);
+                arg.setSaturation(20);
+                source.sendMessage("%prefix% §6" + arg.getName() + "'s§a hunger has been satisfied");
+            } else source.sendMessage("%prefix% §4" + args[0] + "§c is not Online");
+        } else if (source.isPlayer()) {
+            source.player().setFoodLevel(20);
+            source.player().setSaturation(20);
+            source.player().sendMessage("%prefix% §aYour hunger has been satisfied");
+        } else source.sendMessage("%prefix% §c/feed §8[§6Player§8]");
+    }
+
+    @Nonnull
+    @Override
+    protected List<String> suggest(@Nonnull Invocation invocation) {
+        String[] args = invocation.arguments();
+        List<String> tabCompletions = new ArrayList<>();
+        if (args.length <= 1) for (Player all : Bukkit.getOnlinePlayers()) tabCompletions.add(all.getName());
+        return tabCompletions;
     }
 }

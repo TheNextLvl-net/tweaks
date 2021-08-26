@@ -1,38 +1,45 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.message.ChatComponent;
+import net.nonswag.tnl.listener.api.command.CommandSource;
+import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.listener.api.command.TNLCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DeOPCommand implements CommandExecutor {
+public class DeOPCommand extends TNLCommand {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        onCommand(sender, args);
-        return false;
+    public DeOPCommand() {
+        super("deop", "tnl.rights");
     }
 
     @SuppressWarnings("deprecation")
-    public static void onCommand(@Nonnull CommandSender sender, @Nonnull String[] args) {
+    @Override
+    protected void execute(@Nonnull Invocation invocation) {
+        CommandSource source = invocation.source();
+        String[] args = invocation.arguments();
         if (args.length >= 1) {
             OfflinePlayer arg = Bukkit.getOfflinePlayer(args[0]);
-            if (arg.hasPlayedBefore() || arg.isOnline()) {
+            if (arg.getName() != null && (arg.hasPlayedBefore() || arg.isOnline())) {
                 if (arg.isOp()) {
                     arg.setOp(false);
-                    sender.sendMessage(ChatComponent.getText("%prefix% §6" + arg.getName() + "§a is no longer an operator"));
-                } else {
-                    sender.sendMessage(ChatComponent.getText("%prefix% §cNothing could be changed"));
-                }
-            } else {
-                sender.sendMessage(ChatComponent.getText("%prefix% §c/deop §8[§6Operator§8]"));
-            }
-        } else {
-            sender.sendMessage(ChatComponent.getText("%prefix% §c/deop §8[§6Operator§8]"));
+                    source.sendMessage("%prefix% §6" + arg.getName() + "§a is no longer an operator");
+                } else source.sendMessage("%prefix% §cNothing could be changed");
+            } else source.sendMessage("%prefix% §c/deop §8[§6Operator§8]");
+        } else source.sendMessage("%prefix% §c/deop §8[§6Operator§8]");
+    }
+
+    @Nonnull
+    @Override
+    protected List<String> suggest(@Nonnull Invocation invocation) {
+        String[] args = invocation.arguments();
+        List<String> suggestions = new ArrayList<>();
+        if (args.length <= 1) {
+            for (OfflinePlayer all : Bukkit.getOfflinePlayers()) if (all.isOp()) suggestions.add(all.getName());
         }
+        return suggestions;
     }
 }

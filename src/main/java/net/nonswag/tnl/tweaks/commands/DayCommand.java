@@ -1,25 +1,24 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.message.ChatComponent;
+import net.nonswag.tnl.listener.api.command.CommandSource;
+import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.listener.api.command.TNLCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-public class DayCommand implements CommandExecutor {
+import javax.annotation.Nonnull;
+
+public class DayCommand extends TNLCommand {
+
+    public DayCommand() {
+        super("day", "tnl.time");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            ((Player) sender).getWorld().setTime(0);
-        } else {
-            for (World world : Bukkit.getWorlds()) {
-                world.setTime(0);
-            }
-        }
-        sender.sendMessage(ChatComponent.getText("%prefix%§a Set the Time to §6Day"));
-        return true;
+    protected void execute(@Nonnull Invocation invocation) {
+        CommandSource source = invocation.source();
+        if (source.isPlayer()) source.player().getWorld().setTime(0);
+        else for (World world : Bukkit.getWorlds()) world.setTime(0);
+        source.sendMessage("%prefix% §7Time§8: §6Day");
     }
 }
