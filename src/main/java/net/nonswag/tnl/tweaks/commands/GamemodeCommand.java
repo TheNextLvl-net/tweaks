@@ -40,7 +40,7 @@ public class GamemodeCommand extends TNLCommand {
                         if (source.equals(player)) {
                             source.sendMessage("%prefix% §7Gamemode§8: §6" + gamemode.getName());
                         } else {
-                            source.sendMessage("%prefix% §7Gamemode §8(" + player.getName() + "§8): §6" + gamemode.getName());
+                            source.sendMessage("%prefix% §7Gamemode §8(§a" + player.getName() + "§8): §6" + gamemode.getName());
                         }
                     }
                 }

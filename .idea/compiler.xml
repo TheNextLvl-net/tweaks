@@ -9,8 +9,8 @@
         <module name="TNLTweaks" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="TNLTweaks" target="8" />
+    <bytecodeTargetLevel target="16">
+      <module name="TNLTweaks" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

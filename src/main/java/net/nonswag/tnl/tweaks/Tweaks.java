@@ -12,8 +12,8 @@ public class Tweaks extends JavaPlugin {
     public void onEnable() {
         CommandManager.registerCommands(new PingCommand(), new TPSCommand(), new DayCommand(),
                 new NightCommand(), new SunCommand(), new RainCommand(), new ThunderCommand(),
-                new RightsCommand(), new OPCommand(), new DeOPCommand(), new FeedCommand(),
-                new HealCommand(), new FlyCommand(), new SpeedCommand(), new GamemodeCommand());
+                new OPCommand(), new DeOPCommand(), new FeedCommand(), new HealCommand(),
+                new FlyCommand(), new SpeedCommand(), new GamemodeCommand());
         if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
     }
 }
