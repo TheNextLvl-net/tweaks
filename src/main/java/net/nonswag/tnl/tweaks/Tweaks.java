@@ -2,11 +2,11 @@ package net.nonswag.tnl.tweaks;
 
 import net.nonswag.tnl.listener.api.command.CommandManager;
 import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
+import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
 import net.nonswag.tnl.listener.api.settings.Settings;
 import net.nonswag.tnl.tweaks.commands.*;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class Tweaks extends JavaPlugin {
+public class Tweaks extends TNLPlugin {
 
     @Override
     public void onEnable() {
