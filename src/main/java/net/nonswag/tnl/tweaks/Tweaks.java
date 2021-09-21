@@ -13,7 +13,8 @@ public class Tweaks extends TNLPlugin {
         CommandManager.registerCommands(new PingCommand(), new TPSCommand(), new DayCommand(),
                 new NightCommand(), new SunCommand(), new RainCommand(), new ThunderCommand(),
                 new OPCommand(), new DeOPCommand(), new FeedCommand(), new HealCommand(),
-                new FlyCommand(), new SpeedCommand(), new GamemodeCommand());
+                new FlyCommand(), new SpeedCommand(), new GamemodeCommand(), new InventoryCommand(),
+                new HeadCommand());
         if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
     }
 }
