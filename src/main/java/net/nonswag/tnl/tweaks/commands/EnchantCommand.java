@@ -75,7 +75,7 @@ public class EnchantCommand extends TNLCommand {
         } else if (args.length == 2) {
             Enchantment enchantment = getEnchantment(args[0]);
             if (enchantment != null) {
-                for (int i = enchantment.getStartLevel(); i < enchantment.getMaxLevel(); i++) {
+                for (int i = enchantment.getStartLevel(); i <= enchantment.getMaxLevel(); i++) {
                     suggestions.add(String.valueOf(i));
                 }
             }
