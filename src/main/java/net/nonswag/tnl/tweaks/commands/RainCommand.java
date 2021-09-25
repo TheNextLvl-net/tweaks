@@ -17,8 +17,7 @@ public class RainCommand extends TNLCommand {
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
-        if (source.isPlayer()) source.player().getWorld().setStorm(true);
-        else for (World world : Bukkit.getWorlds()) world.setStorm(true);
+        for (World world : Bukkit.getWorlds()) world.setStorm(true);
         source.sendMessage("%prefix% §7Weather§8: §6Rain");
     }
 }

@@ -17,8 +17,7 @@ public class DayCommand extends TNLCommand {
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
-        if (source.isPlayer()) source.player().getWorld().setTime(0);
-        else for (World world : Bukkit.getWorlds()) world.setTime(0);
+        for (World world : Bukkit.getWorlds()) world.setTime(0);
         source.sendMessage("%prefix% §7Time§8: §6Day");
     }
 }

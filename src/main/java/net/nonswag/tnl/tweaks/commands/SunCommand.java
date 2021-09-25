@@ -17,10 +17,7 @@ public class SunCommand extends TNLCommand {
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
-        if (source.isPlayer()) {
-            source.player().getWorld().setThundering(false);
-            source.player().getWorld().setStorm(false);
-        } else for (World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             world.setThundering(false);
             world.setStorm(false);
         }

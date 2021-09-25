@@ -17,11 +17,7 @@ public class ThunderCommand extends TNLCommand {
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
-        if (source.isPlayer()) {
-            source.player().getWorld().setThundering(true);
-            source.player().getWorld().setStorm(true);
-        }
-        else for (World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             world.setThundering(true);
             world.setStorm(true);
         }
