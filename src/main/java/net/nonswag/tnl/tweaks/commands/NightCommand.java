@@ -17,7 +17,7 @@ public class NightCommand extends TNLCommand {
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
-        for (World world : Bukkit.getWorlds()) world.setTime(13000);
+        for (World world : Bukkit.getWorlds()) world.setFullTime(13000);
         source.sendMessage("%prefix% §7Time§8: §6Night");
     }
 }
