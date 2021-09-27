@@ -4,8 +4,8 @@ import net.nonswag.tnl.listener.TNLListener;
 import net.nonswag.tnl.listener.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
+import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.language.MessageKey;
-import net.nonswag.tnl.listener.api.message.Message;
 import net.nonswag.tnl.listener.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 
@@ -32,7 +32,7 @@ public class InventoryCommand extends TNLCommand {
                     else player.sendMessage("%prefix% §cSelect another player");
                 } else player.sendMessage(MessageKey.PLAYER_NOT_ONLINE, new Placeholder("player", args[0]));
             } else player.sendMessage("%prefix% §c/inventory §8[§6Player§8]");
-        } else source.sendMessage(Message.PLAYER_COMMAND_EN.getText());
+        } else throw new SourceMismatchException();
     }
 
     @Nonnull

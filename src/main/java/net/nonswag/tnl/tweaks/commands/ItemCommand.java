@@ -3,8 +3,8 @@ package net.nonswag.tnl.tweaks.commands;
 import net.nonswag.tnl.listener.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
+import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.item.TNLItemType;
-import net.nonswag.tnl.listener.api.message.Message;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -53,7 +53,7 @@ public class ItemCommand extends TNLCommand {
                     player.sendMessage("%prefix% §c/item §8[§6Item§8] §8(§6Amount§8)");
                 }
             } else player.sendMessage("%prefix% §c/item §8[§6Item§8] §8(§6Amount§8)");
-        } else source.sendMessage(Message.PLAYER_COMMAND_EN.getText());
+        } else throw new SourceMismatchException();
     }
 
     @Nonnull

@@ -3,7 +3,7 @@ package net.nonswag.tnl.tweaks.commands;
 import net.nonswag.tnl.listener.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
-import net.nonswag.tnl.listener.api.message.Message;
+import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class SpeedCommand extends TNLCommand {
                     source.sendMessage("%prefix% §c/speed §8[§6Speed§8]");
                 }
             } else source.sendMessage("%prefix% §c/speed §8[§6Speed§8]");
-        } else source.sendMessage(Message.CONSOLE_COMMAND_EN.getText());
+        } else throw new SourceMismatchException();
     }
 
     @Nonnull

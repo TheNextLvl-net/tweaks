@@ -6,9 +6,9 @@ import com.google.gson.JsonParser;
 import net.nonswag.tnl.listener.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
+import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.language.MessageKey;
-import net.nonswag.tnl.listener.api.message.Message;
 import net.nonswag.tnl.listener.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Bukkit;
@@ -67,7 +67,7 @@ public class HeadCommand extends TNLCommand {
                     } else player.sendMessage("%prefix% §c/head url §8[§6URL§8]");
                 } else help(player);
             } else help(player);
-        } else source.sendMessage(Message.PLAYER_COMMAND_EN.getText());
+        } else throw new SourceMismatchException();
     }
 
     public void help(@Nonnull TNLPlayer player) {

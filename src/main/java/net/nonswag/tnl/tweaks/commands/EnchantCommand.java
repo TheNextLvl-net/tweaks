@@ -3,9 +3,9 @@ package net.nonswag.tnl.tweaks.commands;
 import net.nonswag.tnl.listener.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
+import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.enchantment.Enchant;
 import net.nonswag.tnl.listener.api.item.TNLItemType;
-import net.nonswag.tnl.listener.api.message.Message;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +50,7 @@ public class EnchantCommand extends TNLCommand {
                     } else player.sendMessage("%prefix% §cHold an item in your hand");
                 } else player.sendMessage("%prefix% §c/enchant §8[§6Enchantment§8] §8(§6Level§8)");
             } else player.sendMessage("%prefix% §c/enchant §8[§6Enchantment§8] §8(§6Level§8)");
-        } else source.sendMessage(Message.PLAYER_COMMAND_EN.getText());
+        } else throw new SourceMismatchException();
     }
 
     @Nullable

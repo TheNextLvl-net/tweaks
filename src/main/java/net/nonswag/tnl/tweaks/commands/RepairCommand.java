@@ -3,8 +3,8 @@ package net.nonswag.tnl.tweaks.commands;
 import net.nonswag.tnl.listener.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
+import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.item.TNLItemType;
-import net.nonswag.tnl.listener.api.message.Message;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -51,7 +51,7 @@ public class RepairCommand extends TNLCommand {
                     } else player.sendMessage("%prefix% §cYour item has no damage");
                 } else player.sendMessage("%prefix% §cHold an item in your hand");
             }
-        } else source.sendMessage(Message.PLAYER_COMMAND_EN.getText());
+        } else throw new SourceMismatchException();
     }
 
     @Nonnull
