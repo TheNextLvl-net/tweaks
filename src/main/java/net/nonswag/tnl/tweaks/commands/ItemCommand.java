@@ -30,14 +30,15 @@ public class ItemCommand extends TNLCommand {
                     Material material = Material.valueOf(args[0].toUpperCase());
                     if (!isValid(material)) throw new IllegalArgumentException();
                     ItemStack itemStack = new ItemStack(material);
-                    String item = material.name().toLowerCase().replace("_", " ");
+                    String item = itemStack.getI18NDisplayName();
+                    if (item == null) item = material.name().toLowerCase().replace("_", " ");
                     if (args.length >= 2) {
                         try {
-                            int lo = 0;
+                            int left = 0;
                             int amount = Integer.parseInt(args[1]);
-                            for (int i = 0; i < amount; i++) lo += player.getInventory().addItem(itemStack).size();
-                            int i = amount - lo;
-                            if (i > 1) item = item + "s";
+                            for (int i = 0; i < amount; i++) left += player.getInventory().addItem(itemStack).size();
+                            int i = amount - left;
+                            if (i > 1 && !item.endsWith("s")) item += "s";
                             if (i > 0) player.sendMessage("%prefix% §aYou received §8(§7x" + i + "§8) §6" + item);
                             else player.sendMessage("%prefix% §cYour inventory is full");
                         } catch (NumberFormatException e) {

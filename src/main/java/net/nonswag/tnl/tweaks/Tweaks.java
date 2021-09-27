@@ -14,7 +14,7 @@ public class Tweaks extends TNLPlugin {
                 new OPCommand(), new DeOPCommand(), new FeedCommand(), new HealCommand(),
                 new FlyCommand(), new SpeedCommand(), new GamemodeCommand(), new InventoryCommand(),
                 new HeadCommand(), new EnderChestCommand(), new ItemCommand(), new EnchantCommand(),
-                new UnEnchantCommand());
+                new UnEnchantCommand(), new RepairCommand(), new ClearCommand());
         if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
     }
 }
