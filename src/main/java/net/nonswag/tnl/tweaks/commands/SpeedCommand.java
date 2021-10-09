@@ -1,9 +1,10 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.command.CommandSource;
-import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
+import net.nonswag.tnl.listener.api.player.TNLPlayer;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -24,9 +25,10 @@ public class SpeedCommand extends TNLCommand {
                 try {
                     int value = Integer.parseInt(args[0]);
                     if (value >= 0 && value <= 10) {
-                        if (source.player().isFlying()) source.player().setFlySpeed(value / 10f);
-                        else source.player().setWalkSpeed(value / 10f);
-                        String mode = source.player().isFlying() ? "fly" : "walk";
+                        TNLPlayer player = (TNLPlayer) source.player();
+                        if (player.isFlying()) player.setFlySpeed(value / 10f);
+                        else player.setWalkSpeed(value / 10f);
+                        String mode = player.isFlying() ? "fly" : "walk";
                         source.sendMessage("%prefix% §aSet your §8(§7" + mode + "§8)§a speed to §6" + value);
                     } else source.sendMessage("%prefix% §cUse a number between §40§c and §410");
                 } catch (Exception e) {

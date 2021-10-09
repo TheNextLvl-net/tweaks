@@ -1,7 +1,7 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.command.CommandSource;
-import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Bukkit;
@@ -31,11 +31,12 @@ public class HealCommand extends TNLCommand {
                 source.sendMessage("%prefix% §6" + arg.getName() + "§a got healed");
             } else source.sendMessage("%prefix% §4" + args[0] + "§c is not Online");
         } else if (source.isPlayer()) {
-            source.player().setHealth(20);
-            source.player().setFoodLevel(20);
-            source.player().setSaturation(20);
-            source.player().setFireTicks(0);
-            source.player().sendMessage("%prefix% §aYou got healed");
+            TNLPlayer player = (TNLPlayer) source.player();
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setSaturation(20);
+            player.setFireTicks(0);
+            player.sendMessage("%prefix% §aYou got healed");
         } else source.sendMessage("%prefix% §c/heal §8[§6Player§8]");
     }
 

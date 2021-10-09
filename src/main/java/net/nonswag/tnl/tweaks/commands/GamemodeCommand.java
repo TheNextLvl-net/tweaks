@@ -1,7 +1,7 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.command.CommandSource;
-import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.gamemode.Gamemode;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -30,7 +30,7 @@ public class GamemodeCommand extends TNLCommand {
                 if (args.length >= 2) {
                     player = TNLPlayer.cast(args[1]);
                     if (player == null) source.sendMessage("%prefix% §4" + args[1] + "§c is not Online");
-                } else if (source.isPlayer()) player = source.player();
+                } else if (source.isPlayer()) player = (TNLPlayer) source.player();
                 else source.sendMessage("%prefix% §c/gamemode " + gamemode.getName() + " §8[§6Player§8]");
                 if (player != null) {
                     if (player.getGamemode().equals(gamemode)) {

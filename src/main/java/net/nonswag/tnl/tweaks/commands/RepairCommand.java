@@ -1,7 +1,7 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.command.CommandSource;
-import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.item.TNLItemType;
@@ -26,7 +26,7 @@ public class RepairCommand extends TNLCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (source.isPlayer()) {
-            TNLPlayer player = source.player();
+            TNLPlayer player = (TNLPlayer) source.player();
             if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase("all")) {
                     int i = 0;

@@ -1,7 +1,7 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.command.CommandSource;
-import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Bukkit;
@@ -28,7 +28,7 @@ public class ClearCommand extends TNLCommand {
                 source.sendMessage("%prefix% §aCleared §6" + arg.getName() + "'s§a inventory");
             } else source.sendMessage("%prefix% §4" + args[0] + "§c is not Online");
         } else if (source.isPlayer()) {
-            TNLPlayer player = source.player();
+            TNLPlayer player = (TNLPlayer) source.player();
             player.getInventory().clear();
             player.sendMessage("%prefix% §aCleared your inventory");
         } else source.sendMessage("%prefix% §c/clear §8[§6Player§8]");

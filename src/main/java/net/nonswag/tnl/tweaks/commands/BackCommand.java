@@ -1,7 +1,7 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.listener.api.command.CommandSource;
-import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -20,7 +20,7 @@ public class BackCommand extends TNLCommand {
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
         if (source.isPlayer()) {
-            TNLPlayer player = source.player();
+            TNLPlayer player = (TNLPlayer) source.player();
             Location position = getLastPosition(player);
             if (position != null) {
                 player.teleport(position);

@@ -3,13 +3,13 @@ package net.nonswag.tnl.tweaks.commands;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.nonswag.tnl.listener.api.command.CommandSource;
-import net.nonswag.tnl.listener.api.command.Invocation;
+import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.tnl.core.api.command.Invocation;
+import net.nonswag.tnl.core.api.language.MessageKey;
+import net.nonswag.tnl.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.item.TNLItem;
-import net.nonswag.tnl.listener.api.language.MessageKey;
-import net.nonswag.tnl.listener.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ public class HeadCommand extends TNLCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (source.isPlayer()) {
-            TNLPlayer player = source.player();
+            TNLPlayer player = (TNLPlayer) source.player();
             if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase("player")) {
                     if (args.length >= 2) {
