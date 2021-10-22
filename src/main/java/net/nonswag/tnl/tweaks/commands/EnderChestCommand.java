@@ -2,8 +2,8 @@ package net.nonswag.tnl.tweaks.commands;
 
 import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
-import net.nonswag.tnl.core.api.language.MessageKey;
 import net.nonswag.tnl.core.api.message.Placeholder;
+import net.nonswag.tnl.core.api.message.key.MessageKey;
 import net.nonswag.tnl.listener.TNLListener;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
