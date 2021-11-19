@@ -6,6 +6,7 @@ import net.nonswag.tnl.listener.api.settings.Settings;
 import net.nonswag.tnl.tweaks.commands.*;
 import net.nonswag.tnl.tweaks.listeners.DeathListener;
 import net.nonswag.tnl.tweaks.listeners.TeleportListener;
+import net.nonswag.tnl.tweaks.utils.Messages;
 
 public class Tweaks extends TNLPlugin {
 
@@ -13,6 +14,7 @@ public class Tweaks extends TNLPlugin {
     public void enable() {
         registerCommands();
         registerListeners();
+        Messages.init();
         if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
     }
 

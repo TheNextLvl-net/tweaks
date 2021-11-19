@@ -4,7 +4,7 @@ import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
-import net.nonswag.tnl.listener.api.item.TNLItemType;
+import net.nonswag.tnl.listener.api.item.ItemType;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -81,6 +81,6 @@ public class ItemCommand extends TNLCommand {
     }
 
     private static boolean isValid(@Nonnull Material material) {
-        return material.isItem() && !TNLItemType.AIR.matches(material);
+        return material.isItem() && !ItemType.AIR.matches(material);
     }
 }

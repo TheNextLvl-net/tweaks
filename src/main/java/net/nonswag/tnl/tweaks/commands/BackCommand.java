@@ -5,6 +5,7 @@ import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
+import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
@@ -24,8 +25,8 @@ public class BackCommand extends TNLCommand {
             Location position = getLastPosition(player);
             if (position != null) {
                 player.teleport(position);
-                player.sendMessage("%prefix% §aYou got teleported");
-            } else player.sendMessage("%prefix% §cNo last position set");
+                player.sendMessage(Messages.TELEPORTED);
+            } else player.sendMessage(Messages.NO_POSITION);
         } else throw new SourceMismatchException();
     }
 

@@ -4,7 +4,7 @@ import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
-import net.nonswag.tnl.listener.api.item.TNLItemType;
+import net.nonswag.tnl.listener.api.item.ItemType;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -42,8 +42,8 @@ public class RepairCommand extends TNLCommand {
                 } else player.sendMessage("%prefix% §c/repair all");
             } else {
                 ItemStack item = player.getInventory().getItemInMainHand();
-                if (TNLItemType.AIR.matches(item)) item = player.getInventory().getItemInOffHand();
-                if (!TNLItemType.AIR.matches(item)) {
+                if (ItemType.AIR.matches(item)) item = player.getInventory().getItemInOffHand();
+                if (!ItemType.AIR.matches(item)) {
                     if (item.getItemMeta() instanceof Damageable d && d.hasDamage()) {
                         d.setDamage(0);
                         item.setItemMeta((ItemMeta) d);

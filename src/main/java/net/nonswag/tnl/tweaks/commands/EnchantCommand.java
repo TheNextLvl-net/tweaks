@@ -5,7 +5,7 @@ import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.enchantment.Enchant;
-import net.nonswag.tnl.listener.api.item.TNLItemType;
+import net.nonswag.tnl.listener.api.item.ItemType;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -31,10 +31,10 @@ public class EnchantCommand extends TNLCommand {
                 Enchantment enchantment = getEnchantment(args[0]);
                 if (enchantment != null) {
                     ItemStack item = player.getInventory().getItemInMainHand();
-                    if (TNLItemType.AIR.matches(item)) {
+                    if (ItemType.AIR.matches(item)) {
                         item = player.getInventory().getItemInOffHand();
                     }
-                    if (!TNLItemType.AIR.matches(item)) {
+                    if (!ItemType.AIR.matches(item)) {
                         if (args.length >= 2) {
                             try {
                                 int level = Integer.parseInt(args[1]);
