@@ -28,9 +28,9 @@ public class EnderChestCommand extends TNLCommand {
             if (args.length >= 1) {
                 TNLPlayer arg = TNLPlayer.cast(args[0]);
                 if (arg != null) {
-                    player.openInventory(arg.getEnderChest());
-                } else player.sendMessage(MessageKey.PLAYER_NOT_ONLINE, new Placeholder("player", args[0]));
-            } else player.sendMessage("%prefix% §c/enderchest §8[§6Player§8]");
+                    player.inventoryManager().openInventory(arg.inventoryManager().getEnderChest());
+                } else player.messenger().sendMessage(MessageKey.PLAYER_NOT_ONLINE, new Placeholder("player", args[0]));
+            } else player.messenger().sendMessage("%prefix% §c/enderchest §8[§6Player§8]");
         } else throw new SourceMismatchException();
     }
 

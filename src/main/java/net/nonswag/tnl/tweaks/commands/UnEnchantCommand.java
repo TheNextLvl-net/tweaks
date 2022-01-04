@@ -30,14 +30,14 @@ public class UnEnchantCommand extends TNLCommand {
             if (args.length >= 1) {
                 Enchantment enchantment = getEnchantment(args[0]);
                 if (enchantment != null) {
-                    ItemStack item = player.getInventory().getItemInMainHand();
-                    if (ItemType.AIR.matches(item)) item = player.getInventory().getItemInOffHand();
+                    ItemStack item = player.inventoryManager().getInventory().getItemInMainHand();
+                    if (ItemType.AIR.matches(item)) item = player.inventoryManager().getInventory().getItemInOffHand();
                     if (!ItemType.AIR.matches(item)) {
                         item.removeEnchantment(enchantment);
-                        player.sendMessage("%prefix% §aUnenchanted the item");
-                    } else player.sendMessage("%prefix% §cHold an item in your hand");
-                } else player.sendMessage("%prefix% §c/unenchant §8[§6Enchantment§8]");
-            } else player.sendMessage("%prefix% §c/unenchant §8[§6Enchantment§8]");
+                        player.messenger().sendMessage("%prefix% §aUnenchanted the item");
+                    } else player.messenger().sendMessage("%prefix% §cHold an item in your hand");
+                } else player.messenger().sendMessage("%prefix% §c/unenchant §8[§6Enchantment§8]");
+            } else player.messenger().sendMessage("%prefix% §c/unenchant §8[§6Enchantment§8]");
         } else throw new SourceMismatchException();
     }
 

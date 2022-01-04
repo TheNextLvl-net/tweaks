@@ -13,6 +13,6 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onDeath(@Nonnull PlayerDeathEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getEntity());
-        BackCommand.setLastPosition(player, player.getLocation());
+        BackCommand.setLastPosition(player, player.worldManager().getLocation());
     }
 }

@@ -26,9 +26,9 @@ public class SpeedCommand extends TNLCommand {
                     int value = Integer.parseInt(args[0]);
                     if (value >= 0 && value <= 10) {
                         TNLPlayer player = (TNLPlayer) source.player();
-                        if (player.isFlying()) player.setFlySpeed(value / 10f);
-                        else player.setWalkSpeed(value / 10f);
-                        String mode = player.isFlying() ? "fly" : "walk";
+                        if (player.abilityManager().isFlying()) player.abilityManager().setFlySpeed(value / 10f);
+                        else player.abilityManager().setWalkSpeed(value / 10f);
+                        String mode = player.abilityManager().isFlying() ? "fly" : "walk";
                         source.sendMessage("%prefix% §aSet your §8(§7" + mode + "§8)§a speed to §6" + value);
                     } else source.sendMessage("%prefix% §cUse a number between §40§c and §410");
                 } catch (Exception e) {

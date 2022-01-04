@@ -24,9 +24,9 @@ public class BackCommand extends TNLCommand {
             TNLPlayer player = (TNLPlayer) source.player();
             Location position = getLastPosition(player);
             if (position != null) {
-                player.teleport(position);
-                player.sendMessage(Messages.TELEPORTED);
-            } else player.sendMessage(Messages.NO_POSITION);
+                player.worldManager().teleport(position);
+                player.messenger().sendMessage(Messages.TELEPORTED);
+            } else player.messenger().sendMessage(Messages.NO_POSITION);
         } else throw new SourceMismatchException();
     }
 

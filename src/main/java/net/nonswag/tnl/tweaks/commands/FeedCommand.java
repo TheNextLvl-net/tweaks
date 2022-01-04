@@ -24,15 +24,15 @@ public class FeedCommand extends TNLCommand {
         if (args.length >= 1) {
             TNLPlayer arg = TNLPlayer.cast(args[0]);
             if (arg != null) {
-                arg.setFoodLevel(20);
-                arg.setSaturation(20);
+                arg.bukkit().setFoodLevel(20);
+                arg.bukkit().setSaturation(20);
                 source.sendMessage("%prefix% §6" + arg.getName() + "'s§a hunger has been satisfied");
             } else source.sendMessage("%prefix% §4" + args[0] + "§c is not Online");
         } else if (source.isPlayer()) {
             TNLPlayer player = (TNLPlayer) source.player();
-            player.setFoodLevel(20);
-            player.setSaturation(20);
-            player.sendMessage("%prefix% §aYour hunger has been satisfied");
+            player.bukkit().setFoodLevel(20);
+            player.bukkit().setSaturation(20);
+            player.messenger().sendMessage("%prefix% §aYour hunger has been satisfied");
         } else source.sendMessage("%prefix% §c/feed §8[§6Player§8]");
     }
 

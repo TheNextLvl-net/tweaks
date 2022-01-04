@@ -36,23 +36,27 @@ public class ItemCommand extends TNLCommand {
                         try {
                             int left = 0;
                             int amount = Integer.parseInt(args[1]);
-                            for (int i = 0; i < amount; i++) left += player.getInventory().addItem(itemStack).size();
+                            for (int i = 0; i < amount; i++) {
+                                left += player.inventoryManager().getInventory().addItem(itemStack).size();
+                            }
                             int i = amount - left;
                             if (i > 1 && !item.endsWith("s")) item += "s";
-                            if (i > 0) player.sendMessage("%prefix% §aYou received §8(§7x" + i + "§8) §6" + item);
-                            else player.sendMessage("%prefix% §cYour inventory is full");
+                            if (i > 0) {
+                                player.messenger().sendMessage("%prefix% §aYou received §8(§7x" + i + "§8) §6" + item);
+                            }
+                            else player.messenger().sendMessage("%prefix% §cYour inventory is full");
                         } catch (NumberFormatException e) {
-                            player.sendMessage("%prefix% §c/item " + material.name().toLowerCase() + " §8(§6Amount§8)");
+                            player.messenger().sendMessage("%prefix% §c/item " + material.name().toLowerCase() + " §8(§6Amount§8)");
                         }
                     } else {
-                        if (!player.getInventory().addItem(itemStack).isEmpty()) {
-                            player.sendMessage("%prefix% §cYour inventory is full");
-                        } else player.sendMessage("%prefix% §aYou received a §6" + item);
+                        if (!player.inventoryManager().getInventory().addItem(itemStack).isEmpty()) {
+                            player.messenger().sendMessage("%prefix% §cYour inventory is full");
+                        } else player.messenger().sendMessage("%prefix% §aYou received a §6" + item);
                     }
                 } catch (IllegalArgumentException e) {
-                    player.sendMessage("%prefix% §c/item §8[§6Item§8] §8(§6Amount§8)");
+                    player.messenger().sendMessage("%prefix% §c/item §8[§6Item§8] §8(§6Amount§8)");
                 }
-            } else player.sendMessage("%prefix% §c/item §8[§6Item§8] §8(§6Amount§8)");
+            } else player.messenger().sendMessage("%prefix% §c/item §8[§6Item§8] §8(§6Amount§8)");
         } else throw new SourceMismatchException();
     }
 

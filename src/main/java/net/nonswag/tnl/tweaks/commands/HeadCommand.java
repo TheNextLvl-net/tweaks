@@ -38,10 +38,13 @@ public class HeadCommand extends TNLCommand {
                     if (args.length >= 2) {
                         new Thread(() -> {
                             OfflinePlayer arg = Bukkit.getOfflinePlayer(args[1]);
-                            if (arg.getName() != null) player.getInventory().addItem(TNLItem.create(arg));
-                            else player.sendMessage(MessageKey.NOT_A_PLAYER, new Placeholder("player", args[1]));
+                            if (arg.getName() != null) {
+                                player.inventoryManager().getInventory().addItem(TNLItem.create(arg));
+                            } else {
+                                player.messenger().sendMessage(MessageKey.NOT_A_PLAYER, new Placeholder("player", args[1]));
+                            }
                         }).start();
-                    } else player.sendMessage("%prefix% §c/head player §8[§6Player§8]");
+                    } else player.messenger().sendMessage("%prefix% §c/head player §8[§6Player§8]");
                 } else if (args[0].equalsIgnoreCase("value")) {
                     if (args.length >= 2) {
                         try {
@@ -50,30 +53,30 @@ public class HeadCommand extends TNLCommand {
                             if (value.isJsonObject()) {
                                 JsonObject root = value.getAsJsonObject();
                                 if (root.has("textures")) {
-                                    player.getInventory().addItem(TNLItem.create(Material.PLAYER_HEAD).setSkullValue(args[1]));
+                                    player.inventoryManager().getInventory().addItem(TNLItem.create(Material.PLAYER_HEAD).setSkullValue(args[1]));
                                 } else throw new IllegalArgumentException();
                             } else throw new IllegalArgumentException();
                         } catch (Exception e) {
-                            player.sendMessage("%prefix% §cThe provided value is invalid");
+                            player.messenger().sendMessage("%prefix% §cThe provided value is invalid");
                         }
-                    } else player.sendMessage("%prefix% §c/head value §8[§6Value§8]");
+                    } else player.messenger().sendMessage("%prefix% §c/head value §8[§6Value§8]");
                 } else if (args[0].equalsIgnoreCase("url")) {
                     if (args.length >= 2) {
                         String url = args[1];
                         if (!url.toLowerCase().startsWith("http://") && !url.toLowerCase().startsWith("https://")) {
                             url = "http://textures.minecraft.net/texture/" + url;
                         }
-                        player.getInventory().addItem(TNLItem.create(Material.PLAYER_HEAD).setSkullImgURL(url));
-                    } else player.sendMessage("%prefix% §c/head url §8[§6URL§8]");
+                        player.inventoryManager().getInventory().addItem(TNLItem.create(Material.PLAYER_HEAD).setSkullImgURL(url));
+                    } else player.messenger().sendMessage("%prefix% §c/head url §8[§6URL§8]");
                 } else help(player);
             } else help(player);
         } else throw new SourceMismatchException();
     }
 
     public void help(@Nonnull TNLPlayer player) {
-        player.sendMessage("%prefix% §c/head player §8[§6Player§8]");
-        player.sendMessage("%prefix% §c/head value §8[§6Value§8]");
-        player.sendMessage("%prefix% §c/head url §8[§6URL§8]");
+        player.messenger().sendMessage("%prefix% §c/head player §8[§6Player§8]");
+        player.messenger().sendMessage("%prefix% §c/head value §8[§6Value§8]");
+        player.messenger().sendMessage("%prefix% §c/head url §8[§6URL§8]");
     }
 
     @Nonnull

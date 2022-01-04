@@ -30,26 +30,26 @@ public class EnchantCommand extends TNLCommand {
             if (args.length >= 1) {
                 Enchantment enchantment = getEnchantment(args[0]);
                 if (enchantment != null) {
-                    ItemStack item = player.getInventory().getItemInMainHand();
+                    ItemStack item = player.inventoryManager().getInventory().getItemInMainHand();
                     if (ItemType.AIR.matches(item)) {
-                        item = player.getInventory().getItemInOffHand();
+                        item = player.inventoryManager().getInventory().getItemInOffHand();
                     }
                     if (!ItemType.AIR.matches(item)) {
                         if (args.length >= 2) {
                             try {
                                 int level = Integer.parseInt(args[1]);
                                 item.addUnsafeEnchantment(enchantment, level);
-                                player.sendMessage("%prefix% §aEnchanted the item");
+                                player.messenger().sendMessage("%prefix% §aEnchanted the item");
                             } catch (NumberFormatException ignored) {
-                                player.sendMessage("%prefix% §c/enchant " + enchantment.getKey() + " §8(§6Level§8)");
+                                player.messenger().sendMessage("%prefix% §c/enchant " + enchantment.getKey() + " §8(§6Level§8)");
                             }
                         } else {
                             item.addUnsafeEnchantment(enchantment, enchantment.getStartLevel());
-                            player.sendMessage("%prefix% §aEnchanted the item");
+                            player.messenger().sendMessage("%prefix% §aEnchanted the item");
                         }
-                    } else player.sendMessage("%prefix% §cHold an item in your hand");
-                } else player.sendMessage("%prefix% §c/enchant §8[§6Enchantment§8] §8(§6Level§8)");
-            } else player.sendMessage("%prefix% §c/enchant §8[§6Enchantment§8] §8(§6Level§8)");
+                    } else player.messenger().sendMessage("%prefix% §cHold an item in your hand");
+                } else player.messenger().sendMessage("%prefix% §c/enchant §8[§6Enchantment§8] §8(§6Level§8)");
+            } else player.messenger().sendMessage("%prefix% §c/enchant §8[§6Enchantment§8] §8(§6Level§8)");
         } else throw new SourceMismatchException();
     }
 

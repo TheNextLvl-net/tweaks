@@ -24,19 +24,19 @@ public class HealCommand extends TNLCommand {
         if (args.length >= 1) {
             TNLPlayer arg = TNLPlayer.cast(args[0]);
             if (arg != null) {
-                arg.setHealth(20);
-                arg.setFoodLevel(20);
-                arg.setSaturation(20);
-                arg.setFireTicks(0);
+                arg.bukkit().setHealth(20);
+                arg.bukkit().setFoodLevel(20);
+                arg.bukkit().setSaturation(20);
+                arg.bukkit().setFireTicks(0);
                 source.sendMessage("%prefix% §6" + arg.getName() + "§a got healed");
             } else source.sendMessage("%prefix% §4" + args[0] + "§c is not Online");
         } else if (source.isPlayer()) {
             TNLPlayer player = (TNLPlayer) source.player();
-            player.setHealth(20);
-            player.setFoodLevel(20);
-            player.setSaturation(20);
-            player.setFireTicks(0);
-            player.sendMessage("%prefix% §aYou got healed");
+            player.bukkit().setHealth(20);
+            player.bukkit().setFoodLevel(20);
+            player.bukkit().setSaturation(20);
+            player.bukkit().setFireTicks(0);
+            player.messenger().sendMessage("%prefix% §aYou got healed");
         } else source.sendMessage("%prefix% §c/heal §8[§6Player§8]");
     }
 

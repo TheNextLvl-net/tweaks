@@ -28,9 +28,9 @@ public class FlyCommand extends TNLCommand {
         } else if (source.isPlayer()) arg = (TNLPlayer) source.player();
         else source.sendMessage("%prefix% §c/fly §8[§6Player§8]");
         if (arg != null) {
-            boolean b = !arg.getAllowFlight();
-            arg.setAllowFlight(b);
-            arg.setFlying(b);
+            boolean b = !arg.abilityManager().getAllowFlight();
+            arg.abilityManager().setAllowFlight(b);
+            arg.abilityManager().setFlying(b);
             if (source.isPlayer() && arg.equals(source)) source.sendMessage("%prefix% §7Flight§8: §6" + b);
             else source.sendMessage("%prefix% §7Flight §8(§a" + arg.getName() + "§8): §6" + b);
         }

@@ -26,13 +26,13 @@ public class ClearCommand extends TNLCommand {
         if (args.length >= 1) {
             TNLPlayer arg = TNLPlayer.cast(args[0]);
             if (arg != null) {
-                arg.getInventory().clear();
+                arg.inventoryManager().getInventory().clear();
                 source.sendMessage("%prefix% §aCleared §6" + arg.getName() + "'s§a inventory");
             } else source.sendMessage(MessageKey.PLAYER_NOT_ONLINE, new Placeholder("player", args[0]));
         } else if (source.isPlayer()) {
             TNLPlayer player = (TNLPlayer) source.player();
-            player.getInventory().clear();
-            player.sendMessage("%prefix% §aCleared your inventory");
+            player.inventoryManager().getInventory().clear();
+            player.messenger().sendMessage("%prefix% §aCleared your inventory");
         } else source.sendMessage("%prefix% §c/clear §8[§6Player§8]");
     }
 

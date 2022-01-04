@@ -28,10 +28,11 @@ public class InventoryCommand extends TNLCommand {
             if (args.length >= 1) {
                 TNLPlayer arg = TNLPlayer.cast(args[0]);
                 if (arg != null) {
-                    if (!arg.equals(player)) player.openInventory(arg.getInventory());
-                    else player.sendMessage("%prefix% §cSelect another player");
-                } else player.sendMessage(MessageKey.PLAYER_NOT_ONLINE, new Placeholder("player", args[0]));
-            } else player.sendMessage("%prefix% §c/inventory §8[§6Player§8]");
+                    if (!arg.equals(player)) {
+                        player.inventoryManager().openInventory(arg.inventoryManager().getInventory());
+                    } else player.messenger().sendMessage("%prefix% §cSelect another player");
+                } else player.messenger().sendMessage(MessageKey.PLAYER_NOT_ONLINE, new Placeholder("player", args[0]));
+            } else player.messenger().sendMessage("%prefix% §c/inventory §8[§6Player§8]");
         } else throw new SourceMismatchException();
     }
 
