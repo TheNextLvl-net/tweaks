@@ -27,7 +27,7 @@ public class PingCommand extends TNLCommand {
         } else {
             if (source.isPlayer()) {
                 TNLPlayer player = (TNLPlayer) source.player();
-                player.sendMessage("%prefix% §7Ping§8: §6" + player.getPing() + "ms");
+                player.messenger().sendMessage("%prefix% §7Ping§8: §6" + player.getPing() + "ms");
             } else source.sendMessage("%prefix% §c/ping §8[§6Player§8]");
         }
     }
@@ -38,7 +38,7 @@ public class PingCommand extends TNLCommand {
         String[] args = invocation.arguments();
         List<String> suggestions = new ArrayList<>();
         if (args.length <= 1) {
-            for (TNLPlayer all : TNLListener.getInstance().getOnlinePlayers()) {
+            for (TNLPlayer all : TNLListener.getOnlinePlayers()) {
                 suggestions.add(all.getName());
             }
         }

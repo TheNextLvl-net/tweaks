@@ -43,7 +43,7 @@ public class InventoryCommand extends TNLCommand {
         CommandSource source = invocation.source();
         if (source.isPlayer()) {
             TNLPlayer player = (TNLPlayer) source.player();
-            for (TNLPlayer all : TNLListener.getInstance().getOnlinePlayers()) {
+            for (TNLPlayer all : TNLListener.getOnlinePlayers()) {
                 if (!all.equals(player)) suggestions.add(all.getName());
             }
         }

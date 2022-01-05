@@ -40,7 +40,7 @@ public class EnderChestCommand extends TNLCommand {
         List<String> suggestions = new ArrayList<>();
         CommandSource source = invocation.source();
         if (source.isPlayer()) {
-            for (TNLPlayer all : TNLListener.getInstance().getOnlinePlayers()) suggestions.add(all.getName());
+            for (TNLPlayer all : TNLListener.getOnlinePlayers()) suggestions.add(all.getName());
         }
         return suggestions;
     }
