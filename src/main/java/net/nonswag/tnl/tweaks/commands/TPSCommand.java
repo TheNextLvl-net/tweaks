@@ -3,12 +3,12 @@ package net.nonswag.tnl.tweaks.commands;
 import com.sun.management.OperatingSystemMXBean;
 import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
-import net.nonswag.tnl.core.utils.StringUtil;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.tweaks.Tweaks;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
+import java.io.File;
 import java.lang.management.ManagementFactory;
 
 public class TPSCommand extends TNLCommand {
@@ -28,38 +28,47 @@ public class TPSCommand extends TNLCommand {
             s.append(format(tps[i]));
             if (i < tps.length - 1) s.append("§8, §a");
         }
-        double free = (Runtime.getRuntime().freeMemory() / 1024d) / 1024d;
-        double total = (Runtime.getRuntime().totalMemory() / 1024d) / 1024d;
-        double max = (Runtime.getRuntime().maxMemory() / 1024d) / 1024d;
-        double used = (total - free);
         source.sendMessage(s.toString());
-        source.sendMessage("%prefix%§7 Memory display§8: " + format((int) max, (int) used));
-        source.sendMessage("%prefix%§7 Available processors§8: §a" + Runtime.getRuntime().availableProcessors());
+        double mb = 1024d * 1024d;
+        double gb = 1024d * 1024d * 1024d;
+        double free = Runtime.getRuntime().freeMemory() / mb;
+        double total = Runtime.getRuntime().totalMemory() / mb;
+        double max = Runtime.getRuntime().maxMemory() / mb;
+        double used = (total - free);
+        source.sendMessage("%prefix%§7 Memory usage§8: " + format((int) max, (int) used, "MB", true));
+        File file = new File("/");
+        max = file.getTotalSpace() / gb;
+        used = (file.getTotalSpace() - file.getFreeSpace()) / gb;
+        source.sendMessage("%prefix%§7 Disk Usage§8: §6" + format((int) max, (int) used, "GB", true));
         long seconds = Tweaks.getUptime() / 1000;
         long minutes = seconds / 60;
         long hours = minutes / 60;
-        long days = minutes / 24;
-        source.sendMessage("%prefix%§7 Uptime§8: §6" + days + "d§8, §6" +
-                (hours % 24) + "h§8, §6" + (minutes % 60) + "m§8, §6" + (seconds % 60) + "s§8");
+        long days = hours / 24;
         OperatingSystemMXBean bean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-        double load = bean.getCpuLoad();
-        if (load == 0) load = bean.getCpuLoad();
-        source.sendMessage("%prefix%§7 CPU Usage§8: §6" + StringUtil.format("#,##0.00", load * 100) + "%");
-        /*
-        For memory            OperatingSystemMXBean.getTotalPhysicalMemorySize() and OperatingSystemMXBean.getFreePhysicalMemorySize()
-        For disk space        File.getTotalSpace() and File.getUsableSpace()
-         */
+        double load = bean.getCpuLoad() * 100;
+        if (load == 0) load = bean.getCpuLoad() * 100;
+        int processors = Runtime.getRuntime().availableProcessors();
+        source.sendMessage("%prefix%§7 CPU Usage§8: §6" + format(100, (int) load, "%", false));
+        source.sendMessage("%prefix%§7 Running Threads§8: §6" + Thread.activeCount());
+        source.sendMessage("%prefix%§7 Processors§8: §6" + processors);
+        s = new StringBuilder();
+        if (days > 0) s.append(days).append("d ");
+        if (hours > 0) s.append(hours % 24).append("h ");
+        if (minutes > 0) s.append(minutes % 60).append("m ");
+        if (seconds > 0) s.append(seconds % 60).append("s");
+        source.sendMessage("%prefix%§7 Uptime§8: §6" + s);
     }
 
     @Nonnull
-    private String format(int maxRam, int usedRam) {
-        float percent = (usedRam * (100f / maxRam));
+    private String format(int max, int used, @Nonnull String digit, boolean storage) {
+        float percent = (used * (100f / max));
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < 20; i++) {
             if ((percent / 100) * 20 <= i + 1) s.append("§7|");
             else s.append("§4|");
         }
-        return "§6" + usedRam + "§8/§6" + maxRam + "mb §8» §6" + (((int) (usedRam * (100f / maxRam)))) + "§8/§6100% §8[" + s + "§8]";
+        if (!storage) return ((int) (used * (100f / max))) + "§8/§6" + max + digit + " §8[" + s + "§8]";
+        return "§6" + used + "§8/§6" + max + digit + " §8» §6" + ((int) (used * (100f / max))) + "§8/§6100% §8[" + s + "§8]";
     }
 
     @Nonnull
