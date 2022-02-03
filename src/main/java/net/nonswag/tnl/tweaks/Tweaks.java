@@ -16,7 +16,9 @@ public class Tweaks extends TNLPlugin {
         registerCommands();
         registerListeners();
         Messages.init();
-        if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
+        async(() -> {
+            if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
+        });
     }
 
     public static long getUptime() {
