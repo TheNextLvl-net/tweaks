@@ -12,10 +12,22 @@ public class Tweaks extends TNLPlugin {
 
     @Override
     public void enable() {
+        validateUptime();
         registerCommands();
         registerListeners();
         Messages.init();
         if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
+    }
+
+    public static long getUptime() {
+        validateUptime();
+        return System.currentTimeMillis() - (Long) System.getProperties().get("uptime");
+    }
+
+    private static void validateUptime() {
+        if (!(System.getProperties().get("uptime") instanceof Long)) {
+            System.getProperties().put("uptime", System.currentTimeMillis());
+        }
     }
 
     private void registerListeners() {
