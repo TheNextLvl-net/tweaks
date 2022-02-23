@@ -3,6 +3,7 @@ package net.nonswag.tnl.tweaks.commands;
 import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
+import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.listener.api.gamemode.Gamemode;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Bukkit;
@@ -16,36 +17,29 @@ public class GamemodeCommand extends TNLCommand {
 
     public GamemodeCommand() {
         super("gamemode", "tnl.gamemode", "gm");
+        setUsage("%prefix% §c/gamemode §8[§6Mode§8] §8[§6Player§8]");
     }
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
-        if (args.length >= 1) {
-            Gamemode gamemode = Gamemode.cast(args[0]);
-            if (gamemode.isUnknown()) source.sendMessage("%prefix% §c/gamemode §8[§6Mode§8] §8[§6Player§8]");
-            else {
-                TNLPlayer player = null;
-                if (args.length >= 2) {
-                    player = TNLPlayer.cast(args[1]);
-                    if (player == null) source.sendMessage("%prefix% §4" + args[1] + "§c is not Online");
-                } else if (source.isPlayer()) player = (TNLPlayer) source.player();
-                else source.sendMessage("%prefix% §c/gamemode " + gamemode.getName() + " §8[§6Player§8]");
-                if (player != null) {
-                    if (player.getGamemode().equals(gamemode)) {
-                        source.sendMessage("%prefix% §cNothing could be changed");
-                    } else {
-                        player.setGamemode(gamemode);
-                        if (source.equals(player)) {
-                            source.sendMessage("%prefix% §7Gamemode§8: §6" + gamemode.getName());
-                        } else {
-                            source.sendMessage("%prefix% §7Gamemode §8(§a" + player.getName() + "§8): §6" + gamemode.getName());
-                        }
-                    }
-                }
-            }
-        } else source.sendMessage("%prefix% §c/gamemode §8[§6Mode§8] §8[§6Player§8]");
+        if (args.length < 1) throw new InvalidUseException(this);
+        Gamemode gamemode = Gamemode.cast(args[0]);
+        if (gamemode == null) throw new InvalidUseException(this);
+        TNLPlayer player = null;
+        if (args.length >= 2) {
+            player = TNLPlayer.cast(args[1]);
+            if (player == null) source.sendMessage("%prefix% §4" + args[1] + "§c is not Online");
+        } else if (source.isPlayer()) player = (TNLPlayer) source.player();
+        else source.sendMessage("%prefix% §c/gamemode " + gamemode.getName() + " §8[§6Player§8]");
+        if (player == null) return;
+        if (!player.getGamemode().equals(gamemode)) {
+            player.setGamemode(gamemode);
+            if (!source.equals(player)) {
+                source.sendMessage("%prefix% §7Gamemode §8(§a" + player.getName() + "§8): §6" + gamemode.getName());
+            } else source.sendMessage("%prefix% §7Gamemode§8: §6" + gamemode.getName());
+        } else source.sendMessage("%prefix% §cNothing could be changed");
     }
 
     @Nonnull
@@ -53,9 +47,7 @@ public class GamemodeCommand extends TNLCommand {
     protected List<String> suggest(@Nonnull Invocation invocation) {
         String[] args = invocation.arguments();
         List<String> tabCompletions = new ArrayList<>();
-        if (args.length <= 1) for (Gamemode mode : Gamemode.values()) {
-            if (!mode.isUnknown()) tabCompletions.add(mode.getName());
-        }
+        if (args.length <= 1) for (Gamemode mode : Gamemode.values()) tabCompletions.add(mode.getName());
         else if (args.length == 2) for (Player all : Bukkit.getOnlinePlayers()) tabCompletions.add(all.getName());
         return tabCompletions;
     }
