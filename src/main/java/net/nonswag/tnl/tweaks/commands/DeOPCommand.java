@@ -23,7 +23,7 @@ public class DeOPCommand extends TNLCommand {
         String[] args = invocation.arguments();
         if (args.length >= 1) {
             OfflinePlayer arg = Bukkit.getOfflinePlayer(args[0]);
-            if (arg.getName() != null && (arg.hasPlayedBefore() || arg.isOnline())) {
+            if (arg.getName() != null) {
                 if (arg.isOp()) {
                     arg.setOp(false);
                     source.sendMessage("%prefix% §6" + arg.getName() + "§a is no longer an operator");
@@ -37,9 +37,7 @@ public class DeOPCommand extends TNLCommand {
     protected List<String> suggest(@Nonnull Invocation invocation) {
         String[] args = invocation.arguments();
         List<String> suggestions = new ArrayList<>();
-        if (args.length <= 1) {
-            for (OfflinePlayer all : Bukkit.getOfflinePlayers()) if (all.isOp()) suggestions.add(all.getName());
-        }
+        if (args.length <= 1) for (OfflinePlayer all : Bukkit.getOperators()) suggestions.add(all.getName());
         return suggestions;
     }
 }
