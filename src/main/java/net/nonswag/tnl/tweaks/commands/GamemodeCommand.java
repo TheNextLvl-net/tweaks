@@ -36,9 +36,8 @@ public class GamemodeCommand extends TNLCommand {
         if (player == null) return;
         if (!player.getGamemode().equals(gamemode)) {
             player.setGamemode(gamemode);
-            if (!source.equals(player)) {
-                source.sendMessage("%prefix% §7Gamemode §8(§a" + player.getName() + "§8): §6" + gamemode.getName());
-            } else source.sendMessage("%prefix% §7Gamemode§8: §6" + gamemode.getName());
+            if (source.equals(player)) source.sendMessage("%prefix% §7Gamemode§8: §6" + gamemode.getName());
+            else source.sendMessage("%prefix% §7Gamemode §8(§a" + player.getName() + "§8): §6" + gamemode.getName());
         } else source.sendMessage("%prefix% §cNothing could be changed");
     }
 
