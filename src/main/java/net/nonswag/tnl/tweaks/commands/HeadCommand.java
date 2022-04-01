@@ -129,7 +129,6 @@ public class HeadCommand extends TNLCommand {
         if (profile == null || !profile.hasTextures()) return null;
         for (ProfileProperty property : profile.getProperties()) {
             if (!property.getName().equalsIgnoreCase("textures")) continue;
-            System.out.println(property.getSignature());
             return property.getValue();
         }
         return null;
