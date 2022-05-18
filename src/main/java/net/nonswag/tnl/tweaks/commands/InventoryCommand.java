@@ -4,7 +4,7 @@ import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.core.api.message.Placeholder;
 import net.nonswag.tnl.core.api.message.key.MessageKey;
-import net.nonswag.tnl.listener.TNLListener;
+import net.nonswag.tnl.listener.Listener;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -41,12 +41,9 @@ public class InventoryCommand extends TNLCommand {
     protected List<String> suggest(@Nonnull Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         CommandSource source = invocation.source();
-        if (source.isPlayer()) {
-            TNLPlayer player = (TNLPlayer) source.player();
-            for (TNLPlayer all : TNLListener.getOnlinePlayers()) {
-                if (!all.equals(player)) suggestions.add(all.getName());
-            }
-        }
+        if (!source.isPlayer()) return suggestions;
+        TNLPlayer player = (TNLPlayer) source.player();
+        for (TNLPlayer all : Listener.getOnlinePlayers()) if (!all.equals(player)) suggestions.add(all.getName());
         return suggestions;
     }
 }
