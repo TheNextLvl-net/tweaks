@@ -3,10 +3,11 @@ package net.nonswag.tnl.tweaks.commands;
 import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
-import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
+import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.listener.api.enchantment.Enchant;
 import net.nonswag.tnl.listener.api.item.ItemType;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
+import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,26 +20,28 @@ public class UnEnchantCommand extends TNLCommand {
 
     public UnEnchantCommand() {
         super("unenchant", "tnl.unenchant");
+        setUsage("%prefix% §c/unenchant §8[§6Enchantment§8]");
     }
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
-        if (source.isPlayer()) {
-            TNLPlayer player = (TNLPlayer) source.player();
-            if (args.length >= 1) {
-                Enchantment enchantment = getEnchantment(args[0]);
-                if (enchantment != null) {
-                    ItemStack item = player.inventoryManager().getInventory().getItemInMainHand();
-                    if (ItemType.AIR.matches(item)) item = player.inventoryManager().getInventory().getItemInOffHand();
-                    if (!ItemType.AIR.matches(item)) {
-                        item.removeEnchantment(enchantment);
-                        player.messenger().sendMessage("%prefix% §aUnenchanted the item");
-                    } else player.messenger().sendMessage("%prefix% §cHold an item in your hand");
-                } else player.messenger().sendMessage("%prefix% §c/unenchant §8[§6Enchantment§8]");
-            } else player.messenger().sendMessage("%prefix% §c/unenchant §8[§6Enchantment§8]");
-        } else throw new SourceMismatchException();
+        TNLPlayer player = (TNLPlayer) source.player();
+        if (args.length < 1) throw new InvalidUseException(this);
+        Enchantment enchantment = getEnchantment(args[0]);
+        if (enchantment == null) throw new InvalidUseException(this);
+        ItemStack item = player.inventoryManager().getInventory().getItemInMainHand();
+        if (ItemType.AIR.matches(item)) item = player.inventoryManager().getInventory().getItemInOffHand();
+        if (!ItemType.AIR.matches(item)) {
+            item.removeEnchantment(enchantment);
+            player.messenger().sendMessage(Messages.UNENCHANTED_ITEM);
+        } else player.messenger().sendMessage(Messages.HOLD_ITEM);
+    }
+
+    @Override
+    public boolean canUse(@Nonnull CommandSource source) {
+        return source.isPlayer();
     }
 
     @Nullable
@@ -56,11 +59,9 @@ public class UnEnchantCommand extends TNLCommand {
     @Override
     protected List<String> suggest(@Nonnull Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
-        String[] args = invocation.arguments();
-        if (args.length <= 1) {
-            for (Enchant enchant : Enchant.getEnchants()) suggestions.add(enchant.getKey().toString());
-            for (Enchantment enchantment : Enchantment.values()) suggestions.add(enchantment.getKey().toString());
-        }
+        if (invocation.arguments().length > 1) return suggestions;
+        Enchant.getEnchants().forEach(enchant -> suggestions.add(enchant.getKey().toString()));
+        for (Enchantment enchantment : Enchantment.values()) suggestions.add(enchantment.getKey().toString());
         return suggestions;
     }
 }

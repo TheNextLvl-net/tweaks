@@ -2,6 +2,7 @@ package net.nonswag.tnl.tweaks.commands;
 
 import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
+import net.nonswag.tnl.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.tweaks.utils.Messages;
@@ -24,22 +25,20 @@ public class OPCommand extends TNLCommand {
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
-        if (args.length >= 1) {
-            if (!args[0].equalsIgnoreCase("list")) {
-                OfflinePlayer arg = Bukkit.getOfflinePlayer(args[0]);
-                if (arg.getName() != null) {
-                    if (!arg.isOp()) {
-                        arg.setOp(true);
-                        source.sendMessage("%prefix% §6" + arg.getName() + "§a is now an operator");
-                    } else source.sendMessage(Messages.NOTHING_CHANGED);
-                } else throw new InvalidUseException(this);
-            } else {
-                List<String> s = new ArrayList<>();
-                for (OfflinePlayer player : Bukkit.getOperators()) s.add(player.getName());
-                if (s.isEmpty()) source.sendMessage("%prefix% §cThere are no operators");
-                else source.sendMessage("%prefix% §7Operators §8(§a" + s.size() + "§8): §6" + String.join("§8, §6", s));
-            }
-        } else throw new InvalidUseException(this);
+        if (args.length < 1) throw new InvalidUseException(this);
+        if (!args[0].equalsIgnoreCase("list")) {
+            OfflinePlayer arg = Bukkit.getOfflinePlayer(args[0]);
+            if (arg.getName() == null) throw new InvalidUseException(this);
+            if (!arg.isOp()) {
+                arg.setOp(true);
+                source.sendMessage(Messages.NOW_OPERATOR, new Placeholder("player", arg.getName()));
+            } else source.sendMessage(Messages.NOTHING_CHANGED);
+        } else {
+            List<String> s = new ArrayList<>();
+            Bukkit.getOperators().forEach(all -> s.add(all.getName()));
+            if (s.isEmpty()) source.sendMessage(Messages.NO_OPERATORS);
+            else source.sendMessage("%prefix% §7Operators §8(§a" + s.size() + "§8): §6" + String.join("§8, §6", s));
+        }
     }
 
     @Nonnull

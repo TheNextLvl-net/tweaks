@@ -2,6 +2,7 @@ package net.nonswag.tnl.tweaks.commands;
 
 import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
+import net.nonswag.tnl.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
 import net.nonswag.tnl.listener.api.item.ItemType;
@@ -38,7 +39,8 @@ public class RepairCommand extends TNLCommand {
                 i++;
             }
             if (i == 0) player.messenger().sendMessage(Messages.NOTHING_REPAIRED);
-            else player.messenger().sendMessage("%prefix% §aRepaired §6" + i + "§a item" + (i != 1 ? "s" : ""));
+            else if (i == 1) player.messenger().sendMessage(Messages.REPAIRED_ITEM);
+            else player.messenger().sendMessage(Messages.REPAIRED_MULTIPLE_ITEMS, new Placeholder("amount", i));
         } else {
             ItemStack item = player.inventoryManager().getInventory().getItemInMainHand();
             if (ItemType.AIR.matches(item)) item = player.inventoryManager().getInventory().getItemInOffHand();

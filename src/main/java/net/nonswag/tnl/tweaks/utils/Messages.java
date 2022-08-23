@@ -22,6 +22,8 @@ public final class Messages {
     @Nonnull
     public static MessageKey ENCHANTED_ITEM = new MessageKey("enchanted-item");
     @Nonnull
+    public static MessageKey UNENCHANTED_ITEM = new MessageKey("unenchanted-item");
+    @Nonnull
     public static MessageKey HOLD_ITEM = new MessageKey("hold-item");
     @Nonnull
     public static MessageKey SATISFIED_HUNGER = new MessageKey("satisfied-hunger");
@@ -45,6 +47,20 @@ public final class Messages {
     public static MessageKey NO_DAMAGE = new MessageKey("no-damage");
     @Nonnull
     public static MessageKey REPAIRED_ITEM = new MessageKey("repaired-item");
+    @Nonnull
+    public static MessageKey REPAIRED_MULTIPLE_ITEMS = new MessageKey("repaired-multiple-items");
+    @Nonnull
+    public static MessageKey NUMBER_BETWEEN = new MessageKey("number-between");
+    @Nonnull
+    public static MessageKey SET_SPEED = new MessageKey("set-speed");
+    @Nonnull
+    public static MessageKey NO_OPERATORS = new MessageKey("no-operators");
+    @Nonnull
+    public static MessageKey NOW_OPERATOR = new MessageKey("now-operator");
+    @Nonnull
+    public static MessageKey HEALED_SELF = new MessageKey("healed-self");
+    @Nonnull
+    public static MessageKey HEALED_OTHER = new MessageKey("healed-other");
 
     private Messages() {
     }
@@ -62,6 +78,7 @@ public final class Messages {
         Message.getEnglish().setDefault(NO_LONGER_OP, "%prefix% §6%player%§a is no longer an operator");
         Message.getEnglish().setDefault(NOTHING_CHANGED, "%prefix% §cNothing could be changed");
         Message.getEnglish().setDefault(ENCHANTED_ITEM, "%prefix% §aEnchanted the item");
+        Message.getEnglish().setDefault(UNENCHANTED_ITEM, "%prefix% §aUnenchanted the item");
         Message.getEnglish().setDefault(HOLD_ITEM, "%prefix% §cHold an item in your hand");
         Message.getEnglish().setDefault(SATISFIED_HUNGER, "%prefix% §6%player%'s§a hunger has been satisfied");
         Message.getEnglish().setDefault(SATISFIED_OWN_HUNGER, "%prefix% §aYour hunger has been satisfied");
@@ -74,6 +91,13 @@ public final class Messages {
         Message.getEnglish().setDefault(NOTHING_REPAIRED, "%prefix% §cNo items could be repaired");
         Message.getEnglish().setDefault(NO_DAMAGE, "%prefix% §cYour item has no damage");
         Message.getEnglish().setDefault(REPAIRED_ITEM, "%prefix% §aRepaired your item");
+        Message.getEnglish().setDefault(REPAIRED_MULTIPLE_ITEMS, "%prefix% §aRepaired §6%amount%§a item(s)");
+        Message.getEnglish().setDefault(NUMBER_BETWEEN, "%prefix% §cUse a number between §4%first%§c and §4%second%");
+        Message.getEnglish().setDefault(SET_SPEED, "%prefix% §aSet your §8(§7%mode%§8)§a speed to §6%speed%");
+        Message.getEnglish().setDefault(NO_OPERATORS, "%prefix% §cThere are no operators");
+        Message.getEnglish().setDefault(NOW_OPERATOR, "%prefix% §6%player%§a is now an operator");
+        Message.getEnglish().setDefault(HEALED_SELF, "%prefix% §aYou got healed");
+        Message.getEnglish().setDefault(HEALED_OTHER, "%prefix% §6%player%§a got healed");
         Message.getEnglish().save();
     }
 
@@ -85,6 +109,7 @@ public final class Messages {
         Message.getGerman().setDefault(NO_LONGER_OP, "%prefix% §6%player%§a ist jetzt kein operator mehr");
         Message.getGerman().setDefault(NOTHING_CHANGED, "%prefix% §cEs konnte nichts geändert werden");
         Message.getGerman().setDefault(ENCHANTED_ITEM, "%prefix% §aDas item wurde verzaubert");
+        Message.getGerman().setDefault(UNENCHANTED_ITEM, "%prefix% §aDas item wurde entzaubert");
         Message.getGerman().setDefault(HOLD_ITEM, "%prefix% §cHalte ein item in deiner hand");
         Message.getGerman().setDefault(SATISFIED_HUNGER, "%prefix% §6%player%'s§a hunger wurde gestillt");
         Message.getGerman().setDefault(SATISFIED_OWN_HUNGER, "%prefix% §aDein hunger wurde gestillt");
@@ -97,6 +122,13 @@ public final class Messages {
         Message.getGerman().setDefault(NOTHING_REPAIRED, "%prefix% §cEs wurden keine items repariert");
         Message.getGerman().setDefault(NO_DAMAGE, "%prefix% §cDein item hat keinen schaden");
         Message.getGerman().setDefault(REPAIRED_ITEM, "%prefix% §aDein item wurde repariert");
+        Message.getGerman().setDefault(REPAIRED_MULTIPLE_ITEMS, "%prefix% §aEs wurden §6%amount%§a item(s) repariert");
+        Message.getGerman().setDefault(NUMBER_BETWEEN, "%prefix% §cNutze eine zahl zwischen §4%first%§c und §4%second%");
+        Message.getGerman().setDefault(SET_SPEED, "%prefix% §aDeine §8(§7%mode%§8)§a geschwindigkeit wurde auf §6%speed%§a gesetzt");
+        Message.getGerman().setDefault(NO_OPERATORS, "%prefix% §cEs gibt keine operatoren");
+        Message.getGerman().setDefault(NOW_OPERATOR, "%prefix% §6%player%§a ist jetzt ein operator");
+        Message.getGerman().setDefault(HEALED_SELF, "%prefix% §aDu wurdest geheilt");
+        Message.getGerman().setDefault(HEALED_OTHER, "%prefix% §6%player%§a wurde geheilt");
         Message.getGerman().save();
     }
 }
