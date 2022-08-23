@@ -6,7 +6,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.core.api.message.Message;
 import net.nonswag.tnl.core.api.message.Placeholder;
-import net.nonswag.tnl.core.api.message.key.MessageKey;
 import net.nonswag.tnl.listener.api.command.simple.PlayerSubCommand;
 import net.nonswag.tnl.listener.api.item.TNLItem;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
@@ -36,7 +35,7 @@ class Player extends PlayerSubCommand {
             Tweaks.getInstance().async(() -> {
                 OfflinePlayer arg = Bukkit.getOfflinePlayer(args[1]);
                 if (arg.getName() != null) player.inventoryManager().getInventory().addItem(TNLItem.create(arg));
-                else player.messenger().sendMessage(MessageKey.NOT_A_PLAYER, new Placeholder("player", args[1]));
+                else player.messenger().sendMessage(Messages.NOT_A_PLAYER, new Placeholder("player", args[1]));
             });
         } else {
             String owner = owner(player);

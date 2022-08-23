@@ -8,59 +8,63 @@ import javax.annotation.Nonnull;
 public final class Messages {
 
     @Nonnull
-    public static MessageKey TELEPORTED = new MessageKey("teleported");
+    public static final MessageKey TELEPORTED = new MessageKey("teleported").register();
     @Nonnull
-    public static MessageKey NO_POSITION = new MessageKey("no-position");
+    public static final MessageKey NO_POSITION = new MessageKey("no-position").register();
     @Nonnull
-    public static MessageKey CLEARED_INVENTORY = new MessageKey("cleared-inventory");
+    public static final MessageKey CLEARED_INVENTORY = new MessageKey("cleared-inventory").register();
     @Nonnull
-    public static MessageKey CLEARED_OWN_INVENTORY = new MessageKey("cleared-own-inventory");
+    public static final MessageKey CLEARED_OWN_INVENTORY = new MessageKey("cleared-own-inventory").register();
     @Nonnull
-    public static MessageKey NO_LONGER_OP = new MessageKey("no-longer-op");
+    public static final MessageKey NO_LONGER_OP = new MessageKey("no-longer-op").register();
     @Nonnull
-    public static MessageKey NOTHING_CHANGED = new MessageKey("nothing-changed");
+    public static final MessageKey NOTHING_CHANGED = new MessageKey("nothing-changed").register();
     @Nonnull
-    public static MessageKey ENCHANTED_ITEM = new MessageKey("enchanted-item");
+    public static final MessageKey ENCHANTED_ITEM = new MessageKey("enchanted-item").register();
     @Nonnull
-    public static MessageKey UNENCHANTED_ITEM = new MessageKey("unenchanted-item");
+    public static final MessageKey UNENCHANTED_ITEM = new MessageKey("unenchanted-item").register();
     @Nonnull
-    public static MessageKey HOLD_ITEM = new MessageKey("hold-item");
+    public static final MessageKey HOLD_ITEM = new MessageKey("hold-item").register();
     @Nonnull
-    public static MessageKey SATISFIED_HUNGER = new MessageKey("satisfied-hunger");
+    public static final MessageKey SATISFIED_HUNGER = new MessageKey("satisfied-hunger").register();
     @Nonnull
-    public static MessageKey SATISFIED_OWN_HUNGER = new MessageKey("satisfied-own-hunger");
+    public static final MessageKey SATISFIED_OWN_HUNGER = new MessageKey("satisfied-own-hunger").register();
     @Nonnull
-    public static MessageKey SELECT_ANOTHER_PLAYER = new MessageKey("select-another-player");
+    public static final MessageKey SELECT_ANOTHER_PLAYER = new MessageKey("select-another-player").register();
     @Nonnull
-    public static MessageKey NOT_HOLDING_PLAYER_HEAD = new MessageKey("not-holding-player-head");
+    public static final MessageKey NOT_HOLDING_PLAYER_HEAD = new MessageKey("not-holding-player-head").register();
     @Nonnull
-    public static MessageKey INVALID_VALUE = new MessageKey("invalid-value");
+    public static final MessageKey INVALID_VALUE = new MessageKey("invalid-value").register();
     @Nonnull
-    public static MessageKey INVENTORY_FULL = new MessageKey("inventory-full");
+    public static final MessageKey INVENTORY_FULL = new MessageKey("inventory-full").register();
     @Nonnull
-    public static MessageKey RECEIVED_ITEM = new MessageKey("received-item");
+    public static final MessageKey RECEIVED_ITEM = new MessageKey("received-item").register();
     @Nonnull
-    public static MessageKey RECEIVED_ONE_ITEM = new MessageKey("received-one-item");
+    public static final MessageKey RECEIVED_ONE_ITEM = new MessageKey("received-one-item").register();
     @Nonnull
-    public static MessageKey NOTHING_REPAIRED = new MessageKey("not-repaired");
+    public static final MessageKey NOTHING_REPAIRED = new MessageKey("not-repaired").register();
     @Nonnull
-    public static MessageKey NO_DAMAGE = new MessageKey("no-damage");
+    public static final MessageKey NO_DAMAGE = new MessageKey("no-damage").register();
     @Nonnull
-    public static MessageKey REPAIRED_ITEM = new MessageKey("repaired-item");
+    public static final MessageKey REPAIRED_ITEM = new MessageKey("repaired-item").register();
     @Nonnull
-    public static MessageKey REPAIRED_MULTIPLE_ITEMS = new MessageKey("repaired-multiple-items");
+    public static final MessageKey REPAIRED_MULTIPLE_ITEMS = new MessageKey("repaired-multiple-items").register();
     @Nonnull
-    public static MessageKey NUMBER_BETWEEN = new MessageKey("number-between");
+    public static final MessageKey NUMBER_BETWEEN = new MessageKey("number-between").register();
     @Nonnull
-    public static MessageKey SET_SPEED = new MessageKey("set-speed");
+    public static final MessageKey SET_SPEED = new MessageKey("set-speed").register();
     @Nonnull
-    public static MessageKey NO_OPERATORS = new MessageKey("no-operators");
+    public static final MessageKey NO_OPERATORS = new MessageKey("no-operators").register();
     @Nonnull
-    public static MessageKey NOW_OPERATOR = new MessageKey("now-operator");
+    public static final MessageKey NOW_OPERATOR = new MessageKey("now-operator").register();
     @Nonnull
-    public static MessageKey HEALED_SELF = new MessageKey("healed-self");
+    public static final MessageKey HEALED_SELF = new MessageKey("healed-self").register();
     @Nonnull
-    public static MessageKey HEALED_OTHER = new MessageKey("healed-other");
+    public static final MessageKey HEALED_OTHER = new MessageKey("healed-other").register();
+    @Nonnull
+    public static final MessageKey CHANGED_GAMEMODE = new MessageKey("changed-gamemode").register();
+    @Nonnull
+    public static final MessageKey NOT_A_PLAYER = new MessageKey("not-a-player").register();
 
     private Messages() {
     }
@@ -98,6 +102,8 @@ public final class Messages {
         Message.getEnglish().setDefault(NOW_OPERATOR, "%prefix% §6%player%§a is now an operator");
         Message.getEnglish().setDefault(HEALED_SELF, "%prefix% §aYou got healed");
         Message.getEnglish().setDefault(HEALED_OTHER, "%prefix% §6%player%§a got healed");
+        Message.getEnglish().setDefault(CHANGED_GAMEMODE, "%prefix%§a Your gamemode is now §6%gamemode%");
+        Message.getEnglish().setDefault(NOT_A_PLAYER, "%prefix%§4 %player%§c is not a player");
         Message.getEnglish().save();
     }
 
@@ -129,6 +135,8 @@ public final class Messages {
         Message.getGerman().setDefault(NOW_OPERATOR, "%prefix% §6%player%§a ist jetzt ein operator");
         Message.getGerman().setDefault(HEALED_SELF, "%prefix% §aDu wurdest geheilt");
         Message.getGerman().setDefault(HEALED_OTHER, "%prefix% §6%player%§a wurde geheilt");
+        Message.getGerman().setDefault(CHANGED_GAMEMODE, "%prefix%§a Dein gamemode ist jetzt §6%gamemode%");
+        Message.getGerman().setDefault(NOT_A_PLAYER, "%prefix%§4 %player%§c ist kein spieler");
         Message.getGerman().save();
     }
 }
