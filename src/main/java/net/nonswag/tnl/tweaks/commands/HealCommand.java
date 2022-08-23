@@ -44,8 +44,8 @@ public class HealCommand extends TNLCommand {
     @Override
     protected List<String> suggest(@Nonnull Invocation invocation) {
         String[] args = invocation.arguments();
-        List<String> tabCompletions = new ArrayList<>();
-        if (args.length <= 1) for (Player all : Bukkit.getOnlinePlayers()) tabCompletions.add(all.getName());
-        return tabCompletions;
+        List<String> suggestions = new ArrayList<>();
+        if (args.length <= 1) for (Player all : Bukkit.getOnlinePlayers()) suggestions.add(all.getName());
+        return suggestions;
     }
 }

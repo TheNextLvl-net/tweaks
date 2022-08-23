@@ -5,11 +5,11 @@ import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.SourceMismatchException;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
+import net.nonswag.tnl.tweaks.api.manager.PositionManager;
 import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class BackCommand extends TNLCommand {
 
@@ -20,22 +20,12 @@ public class BackCommand extends TNLCommand {
     @Override
     protected void execute(@Nonnull Invocation invocation) {
         CommandSource source = invocation.source();
-        if (source.isPlayer()) {
-            TNLPlayer player = (TNLPlayer) source.player();
-            Location position = getLastPosition(player);
-            if (position != null) {
-                player.worldManager().teleport(position);
-                player.messenger().sendMessage(Messages.TELEPORTED);
-            } else player.messenger().sendMessage(Messages.NO_POSITION);
-        } else throw new SourceMismatchException();
-    }
-
-    @Nullable
-    public static Location getLastPosition(@Nonnull TNLPlayer player) {
-        return player.getVirtualStorage().get("last-position", Location.class).getValue();
-    }
-
-    public static void setLastPosition(@Nonnull TNLPlayer player, @Nonnull Location location) {
-        player.getVirtualStorage().put("last-position", location);
+        if (!source.isPlayer()) throw new SourceMismatchException();
+        TNLPlayer player = (TNLPlayer) source.player();
+        Location position = player.getManager(PositionManager.class).getLastPosition();
+        if (position != null) {
+            player.worldManager().teleport(position);
+            player.messenger().sendMessage(Messages.TELEPORTED);
+        } else player.messenger().sendMessage(Messages.NO_POSITION);
     }
 }

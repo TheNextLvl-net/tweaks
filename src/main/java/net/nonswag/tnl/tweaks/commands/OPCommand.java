@@ -4,6 +4,7 @@ import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
+import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -30,7 +31,7 @@ public class OPCommand extends TNLCommand {
                     if (!arg.isOp()) {
                         arg.setOp(true);
                         source.sendMessage("%prefix% §6" + arg.getName() + "§a is now an operator");
-                    } else source.sendMessage("%prefix% §cNothing could be changed");
+                    } else source.sendMessage(Messages.NOTHING_CHANGED);
                 } else throw new InvalidUseException(this);
             } else {
                 List<String> s = new ArrayList<>();

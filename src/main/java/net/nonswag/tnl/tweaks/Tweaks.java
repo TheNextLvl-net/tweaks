@@ -1,29 +1,38 @@
 package net.nonswag.tnl.tweaks;
 
+import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
 import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
 import net.nonswag.tnl.listener.api.settings.Settings;
+import net.nonswag.tnl.tweaks.api.manager.PositionManager;
 import net.nonswag.tnl.tweaks.commands.*;
+import net.nonswag.tnl.tweaks.commands.head.HeadCommand;
 import net.nonswag.tnl.tweaks.listeners.DeathListener;
 import net.nonswag.tnl.tweaks.listeners.TeleportListener;
 import net.nonswag.tnl.tweaks.utils.Messages;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Tweaks extends TNLPlugin {
+
+    @Nullable
+    private static Tweaks instance;
 
     @Override
     public void enable() {
+        instance = this;
         validateUptime();
+        registerManagers();
         registerCommands();
         registerListeners();
-        Messages.init();
-        async(() -> {
-            if (Settings.AUTO_UPDATER.getValue()) new PluginUpdate(this).downloadUpdate();
-        });
+        Messages.loadAll();
+        if (Settings.AUTO_UPDATER.getValue()) async(() -> new PluginUpdate(this).downloadUpdate());
     }
 
     public static long getUptime() {
         validateUptime();
-        return System.currentTimeMillis() - (Long) System.getProperties().get("uptime");
+        return System.currentTimeMillis() - (long) System.getProperties().get("uptime");
     }
 
     private static void validateUptime() {
@@ -32,34 +41,50 @@ public class Tweaks extends TNLPlugin {
         }
     }
 
+    private void registerManagers() {
+        getRegistrationManager().registerManager(PositionManager.class, player -> new PositionManager() {
+            @Nonnull
+            @Override
+            public TNLPlayer getPlayer() {
+                return player;
+            }
+        });
+    }
+
     private void registerListeners() {
-        getEventManager().registerListener(new TeleportListener());
         getEventManager().registerListener(new DeathListener());
+        getEventManager().registerListener(new TeleportListener());
     }
 
     private void registerCommands() {
-        getCommandManager().registerCommand(new PingCommand());
+        getCommandManager().registerCommand(new OPCommand());
         getCommandManager().registerCommand(new TPSCommand());
         getCommandManager().registerCommand(new DayCommand());
-        getCommandManager().registerCommand(new NightCommand());
+        getCommandManager().registerCommand(new FlyCommand());
         getCommandManager().registerCommand(new SunCommand());
+        getCommandManager().registerCommand(new BackCommand());
+        getCommandManager().registerCommand(new PingCommand());
+        getCommandManager().registerCommand(new HeadCommand());
+        getCommandManager().registerCommand(new ItemCommand());
         getCommandManager().registerCommand(new RainCommand());
-        getCommandManager().registerCommand(new ThunderCommand());
-        getCommandManager().registerCommand(new OPCommand());
         getCommandManager().registerCommand(new DeOPCommand());
         getCommandManager().registerCommand(new FeedCommand());
         getCommandManager().registerCommand(new HealCommand());
-        getCommandManager().registerCommand(new FlyCommand());
         getCommandManager().registerCommand(new SpeedCommand());
-        getCommandManager().registerCommand(new GamemodeCommand());
-        getCommandManager().registerCommand(new InventoryCommand());
-        getCommandManager().registerCommand(new HeadCommand());
-        getCommandManager().registerCommand(new EnderChestCommand());
-        getCommandManager().registerCommand(new ItemCommand());
+        getCommandManager().registerCommand(new NightCommand());
+        getCommandManager().registerCommand(new ClearCommand());
         getCommandManager().registerCommand(new RepairCommand());
         getCommandManager().registerCommand(new EnchantCommand());
+        getCommandManager().registerCommand(new ThunderCommand());
+        getCommandManager().registerCommand(new GamemodeCommand());
         getCommandManager().registerCommand(new UnEnchantCommand());
-        getCommandManager().registerCommand(new ClearCommand());
-        getCommandManager().registerCommand(new BackCommand());
+        getCommandManager().registerCommand(new InventoryCommand());
+        getCommandManager().registerCommand(new EnderChestCommand());
+    }
+
+    @Nonnull
+    public static Tweaks getInstance() {
+        assert instance != null;
+        return instance;
     }
 }

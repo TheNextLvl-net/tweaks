@@ -3,11 +3,12 @@ package net.nonswag.tnl.tweaks.commands;
 import net.nonswag.tnl.core.api.command.CommandSource;
 import net.nonswag.tnl.core.api.command.Invocation;
 import net.nonswag.tnl.core.api.message.Placeholder;
-import net.nonswag.tnl.core.api.message.key.MessageKey;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
+import net.nonswag.tnl.listener.api.command.exceptions.InvalidUseException;
+import net.nonswag.tnl.listener.api.command.exceptions.PlayerNotOnlineException;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
+import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ClearCommand extends TNLCommand {
 
     public ClearCommand() {
         super("clear", "tnl.clear");
+        setUsage("%prefix% §c/clear §8[§6Player§8]");
     }
 
     @Override
@@ -25,23 +27,22 @@ public class ClearCommand extends TNLCommand {
         String[] args = invocation.arguments();
         if (args.length >= 1) {
             TNLPlayer arg = TNLPlayer.cast(args[0]);
-            if (arg != null) {
-                arg.inventoryManager().getInventory().clear();
-                source.sendMessage("%prefix% §aCleared §6" + arg.getName() + "'s§a inventory");
-            } else source.sendMessage(MessageKey.PLAYER_NOT_ONLINE, new Placeholder("player", args[0]));
+            if (arg == null) throw new PlayerNotOnlineException(args[0]);
+            arg.inventoryManager().getInventory().clear();
+            source.sendMessage(Messages.CLEARED_INVENTORY, new Placeholder("player", arg.getName()));
         } else if (source.isPlayer()) {
             TNLPlayer player = (TNLPlayer) source.player();
             player.inventoryManager().getInventory().clear();
-            player.messenger().sendMessage("%prefix% §aCleared your inventory");
-        } else source.sendMessage("%prefix% §c/clear §8[§6Player§8]");
+            player.messenger().sendMessage(Messages.CLEARED_OWN_INVENTORY);
+        } else throw new InvalidUseException(this);
     }
 
     @Nonnull
     @Override
     protected List<String> suggest(@Nonnull Invocation invocation) {
-        String[] args = invocation.arguments();
-        List<String> tabCompletions = new ArrayList<>();
-        if (args.length <= 1) for (Player all : Bukkit.getOnlinePlayers()) tabCompletions.add(all.getName());
-        return tabCompletions;
+        List<String> suggestions = new ArrayList<>();
+        if (invocation.arguments().length > 1) return suggestions;
+        Bukkit.getOnlinePlayers().forEach(all -> suggestions.add(all.getName()));
+        return suggestions;
     }
 }
