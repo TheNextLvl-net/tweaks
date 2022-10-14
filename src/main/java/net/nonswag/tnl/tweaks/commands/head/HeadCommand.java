@@ -2,7 +2,7 @@ package net.nonswag.tnl.tweaks.commands.head;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
-import net.nonswag.tnl.core.api.command.CommandSource;
+import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.simple.SimpleCommand;
 import org.bukkit.inventory.meta.SkullMeta;
 

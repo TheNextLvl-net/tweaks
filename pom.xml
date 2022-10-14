@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.nonswag.tnl.tweaks</groupId>
-    <artifactId>TNLTweaks</artifactId>
+    <groupId>net.nonswag.tnl</groupId>
+    <artifactId>tweaks</artifactId>
     <version>1.2</version>
 
     <properties>
@@ -19,6 +19,18 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.nonswag.tnl</groupId>
+            <artifactId>listener</artifactId>
+            <version>5.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>papermc</artifactId>
+            <version>1.16.5</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     

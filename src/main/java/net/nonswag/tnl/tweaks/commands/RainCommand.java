@@ -1,6 +1,6 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.tnl.core.api.command.Invocation;
+import net.nonswag.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import org.bukkit.Bukkit;
 
