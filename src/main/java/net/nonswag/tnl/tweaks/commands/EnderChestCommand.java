@@ -19,9 +19,8 @@ public class EnderChestCommand extends TNLCommand {
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
-        CommandSource source = invocation.source();
+        TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
-        TNLPlayer player = (TNLPlayer) source.player();
         if (args.length >= 1) {
             TNLPlayer arg = TNLPlayer.cast(args[0]);
             if (arg == null) throw new PlayerNotOnlineException(args[0]);
@@ -31,7 +30,7 @@ public class EnderChestCommand extends TNLCommand {
 
     @Override
     public boolean canUse(@Nonnull CommandSource source) {
-        return source.isPlayer();
+        return source instanceof TNLPlayer;
     }
 
     @Nonnull

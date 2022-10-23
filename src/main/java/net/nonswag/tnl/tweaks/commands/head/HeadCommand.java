@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.tnl.listener.api.command.simple.SimpleCommand;
+import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import javax.annotation.Nonnull;
@@ -20,7 +21,7 @@ public class HeadCommand extends SimpleCommand {
 
     @Override
     public boolean canUse(@Nonnull CommandSource source) {
-        return source.isPlayer();
+        return source instanceof TNLPlayer;
     }
 
     @Nullable

@@ -26,9 +26,8 @@ public class RepairCommand extends TNLCommand {
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
-        CommandSource source = invocation.source();
+        TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
-        TNLPlayer player = (TNLPlayer) source.player();
         if (args.length >= 1) {
             if (!args[0].equalsIgnoreCase("all")) throw new InvalidUseException(this);
             int i = 0;
@@ -56,7 +55,7 @@ public class RepairCommand extends TNLCommand {
 
     @Override
     public boolean canUse(@Nonnull CommandSource source) {
-        return source.isPlayer();
+        return source instanceof TNLPlayer;
     }
 
     @Nonnull
@@ -65,7 +64,7 @@ public class RepairCommand extends TNLCommand {
         List<String> suggestions = new ArrayList<>();
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
-        if (source.isPlayer() && args.length <= 1) suggestions.add("all");
+        if (source instanceof TNLPlayer && args.length <= 1) suggestions.add("all");
         return suggestions;
     }
 }

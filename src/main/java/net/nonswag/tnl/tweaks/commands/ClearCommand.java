@@ -30,8 +30,7 @@ public class ClearCommand extends TNLCommand {
             if (arg == null) throw new PlayerNotOnlineException(args[0]);
             arg.inventoryManager().getInventory().clear();
             source.sendMessage(Messages.CLEARED_INVENTORY, new Placeholder("player", arg.getName()));
-        } else if (source.isPlayer()) {
-            TNLPlayer player = (TNLPlayer) source.player();
+        } else if (source instanceof TNLPlayer player) {
             player.inventoryManager().getInventory().clear();
             player.messenger().sendMessage(Messages.CLEARED_OWN_INVENTORY);
         } else throw new InvalidUseException(this);

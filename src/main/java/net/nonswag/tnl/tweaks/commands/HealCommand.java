@@ -35,8 +35,7 @@ public class HealCommand extends TNLCommand {
             arg.bukkit().setSaturation(20);
             arg.bukkit().setFireTicks(0);
             source.sendMessage(Messages.HEALED_OTHER, new Placeholder("player", arg.getName()));
-        } else if (source.isPlayer()) {
-            TNLPlayer player = (TNLPlayer) source.player();
+        } else if (source instanceof TNLPlayer player) {
             player.bukkit().setHealth(20);
             player.bukkit().setFoodLevel(20);
             player.bukkit().setSaturation(20);

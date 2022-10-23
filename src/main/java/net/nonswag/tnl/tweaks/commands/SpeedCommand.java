@@ -1,6 +1,5 @@
 package net.nonswag.tnl.tweaks.commands;
 
-import net.nonswag.core.api.command.CommandSource;
 import net.nonswag.core.api.command.Invocation;
 import net.nonswag.core.api.message.Placeholder;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
@@ -21,19 +20,18 @@ public class SpeedCommand extends TNLCommand {
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
-        CommandSource source = invocation.source();
+        TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
         if (args.length < 1) throw new InvalidUseException(this);
         try {
             int value = Integer.parseInt(args[0]);
             if (value >= 0 && value <= 10) {
-                TNLPlayer player = (TNLPlayer) source.player();
                 if (player.abilityManager().isFlying()) player.abilityManager().setFlySpeed(value / 10f);
                 else player.abilityManager().setWalkSpeed(value / 10f);
                 String mode = player.abilityManager().isFlying() ? "fly" : "walk";
-                source.sendMessage(Messages.SET_SPEED, new Placeholder("mode", mode), new Placeholder("speed", value));
+                player.messenger().sendMessage(Messages.SET_SPEED, new Placeholder("mode", mode), new Placeholder("speed", value));
             } else {
-                source.sendMessage(Messages.NUMBER_BETWEEN, new Placeholder("first", 0), new Placeholder("second", 10));
+                player.messenger().sendMessage(Messages.NUMBER_BETWEEN, new Placeholder("first", 0), new Placeholder("second", 10));
             }
         } catch (NumberFormatException e) {
             throw new InvalidUseException(this);

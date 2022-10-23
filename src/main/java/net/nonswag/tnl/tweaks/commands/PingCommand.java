@@ -30,8 +30,7 @@ public class PingCommand extends TNLCommand {
             if (arg == null) throw new PlayerNotOnlineException(args[0]);
             else source.sendMessage("%prefix% §7Ping §8(§a" + arg.getName() + "§8): §6" + arg.getPing() + "ms");
         } else {
-            if (!source.isPlayer()) throw new InvalidUseException(this);
-            TNLPlayer player = (TNLPlayer) source.player();
+            if (!(source instanceof TNLPlayer player)) throw new InvalidUseException(this);
             player.messenger().sendMessage("%prefix% §7Ping§8: §6" + player.getPing() + "ms");
         }
     }

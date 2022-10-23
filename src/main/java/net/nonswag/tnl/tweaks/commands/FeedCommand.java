@@ -31,8 +31,7 @@ public class FeedCommand extends TNLCommand {
             arg.bukkit().setFoodLevel(20);
             arg.bukkit().setSaturation(20);
             source.sendMessage(Messages.SATISFIED_HUNGER, new Placeholder("player", arg.getName()));
-        } else if (source.isPlayer()) {
-            TNLPlayer player = (TNLPlayer) source.player();
+        } else if (source instanceof TNLPlayer player) {
             player.bukkit().setFoodLevel(20);
             player.bukkit().setSaturation(20);
             player.messenger().sendMessage(Messages.SATISFIED_OWN_HUNGER);

@@ -22,9 +22,8 @@ public class InventoryCommand extends TNLCommand {
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
-        CommandSource source = invocation.source();
+        TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
-        TNLPlayer player = (TNLPlayer) source.player();
         if (args.length < 1) throw new InvalidUseException(this);
         TNLPlayer arg = TNLPlayer.cast(args[0]);
         if (arg == null) throw new PlayerNotOnlineException(args[0]);
@@ -34,16 +33,14 @@ public class InventoryCommand extends TNLCommand {
 
     @Override
     public boolean canUse(@Nonnull CommandSource source) {
-        return source.isPlayer();
+        return source instanceof TNLPlayer;
     }
 
     @Nonnull
     @Override
     protected List<String> suggest(@Nonnull Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
-        CommandSource source = invocation.source();
-        if (!source.isPlayer()) return suggestions;
-        TNLPlayer player = (TNLPlayer) source.player();
+        if (!(invocation.source() instanceof TNLPlayer player)) return suggestions;
         for (TNLPlayer all : Listener.getOnlinePlayers()) if (!all.equals(player)) suggestions.add(all.getName());
         return suggestions;
     }

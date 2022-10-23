@@ -28,16 +28,16 @@ public class GamemodeCommand extends TNLCommand {
         if (args.length < 1) throw new InvalidUseException(this);
         Gamemode gamemode = Gamemode.cast(args[0]);
         if (gamemode == null) throw new InvalidUseException(this);
-        TNLPlayer player = null;
+        TNLPlayer target = null;
         if (args.length >= 2) {
-            if ((player = TNLPlayer.cast(args[1])) == null) throw new PlayerNotOnlineException(args[1]);
-        } else if (source.isPlayer()) player = (TNLPlayer) source.player();
+            if ((target = TNLPlayer.cast(args[1])) == null) throw new PlayerNotOnlineException(args[1]);
+        } else if (source instanceof TNLPlayer player) target = player;
         else source.sendMessage("%prefix% §c/gamemode " + gamemode.getName() + " §8[§6Player§8]");
-        if (player == null) return;
-        if (!player.getGamemode().equals(gamemode)) {
-            player.setGamemode(gamemode);
-            if (source.equals(player)) source.sendMessage("%prefix% §7Gamemode§8: §6" + gamemode.getName());
-            else source.sendMessage("%prefix% §7Gamemode §8(§a" + player.getName() + "§8): §6" + gamemode.getName());
+        if (target == null) return;
+        if (!target.getGamemode().equals(gamemode)) {
+            target.setGamemode(gamemode);
+            if (source.equals(target)) source.sendMessage("%prefix% §7Gamemode§8: §6" + gamemode.getName());
+            else source.sendMessage("%prefix% §7Gamemode §8(§a" + target.getName() + "§8): §6" + gamemode.getName());
         } else source.sendMessage(Messages.NOTHING_CHANGED);
     }
 

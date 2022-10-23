@@ -25,9 +25,8 @@ public class EnchantCommand extends TNLCommand {
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
-        CommandSource source = invocation.source();
+        TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
-        TNLPlayer player = (TNLPlayer) source.player();
         if (args.length < 1) throw new InvalidUseException(this);
         Enchantment enchantment = getEnchantment(args[0]);
         if (enchantment == null) throw new InvalidUseException(this);
@@ -51,7 +50,7 @@ public class EnchantCommand extends TNLCommand {
 
     @Override
     public boolean canUse(@Nonnull CommandSource source) {
-        return source.isPlayer();
+        return source instanceof TNLPlayer;
     }
 
     @Nullable

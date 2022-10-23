@@ -28,12 +28,12 @@ public class FlyCommand extends TNLCommand {
         if (args.length >= 1) {
             if (!source.hasPermission("tnl.admin")) throw new InsufficientPermissionException("tnl.admin");
             if ((arg = TNLPlayer.cast(args[0])) == null) throw new PlayerNotOnlineException(args[0]);
-        } else if (source.isPlayer()) arg = (TNLPlayer) invocation.source();
+        } else if (source instanceof TNLPlayer player) arg = player;
         else throw new InvalidUseException(this);
         boolean b = !arg.abilityManager().getAllowFlight();
         arg.abilityManager().setAllowFlight(b);
         arg.abilityManager().setFlying(b);
-        if (source.isPlayer() && arg.equals(source)) source.sendMessage("%prefix% §7Flight§8: §6" + b);
+        if (source instanceof TNLPlayer && arg.equals(source)) source.sendMessage("%prefix% §7Flight§8: §6" + b);
         else source.sendMessage("%prefix% §7Flight §8(§a" + arg.getName() + "§8): §6" + b);
     }
 

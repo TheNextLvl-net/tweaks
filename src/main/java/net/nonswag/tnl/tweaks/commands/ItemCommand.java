@@ -24,9 +24,8 @@ public class ItemCommand extends TNLCommand {
 
     @Override
     protected void execute(@Nonnull Invocation invocation) {
-        CommandSource source = invocation.source();
+        TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
-        TNLPlayer player = (TNLPlayer) source.player();
         if (args.length < 1) throw new InvalidUseException(this);
         Material material = Material.getMaterial(args[0].toUpperCase());
         if (material == null) throw new InvalidUseException(this);
@@ -56,7 +55,7 @@ public class ItemCommand extends TNLCommand {
 
     @Override
     public boolean canUse(@Nonnull CommandSource source) {
-        return source.isPlayer();
+        return source instanceof TNLPlayer;
     }
 
     @Nonnull
