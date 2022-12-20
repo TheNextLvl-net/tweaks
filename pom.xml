@@ -9,10 +9,21 @@
     <version>1.2</version>
 
     <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>releases</id>
+            <url>https://repo.thenextlvl.net/repository/maven-public</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -22,17 +33,16 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>net.nonswag.tnl</groupId>
-            <artifactId>listener</artifactId>
-            <version>5.1</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>papermc</artifactId>
-            <version>1.16.5</version>
+            <groupId>net.nonswag.tnl</groupId>
+            <artifactId>listener</artifactId>
+            <version>6.2.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    
 </project>

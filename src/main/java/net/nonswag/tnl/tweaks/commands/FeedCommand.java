@@ -28,12 +28,12 @@ public class FeedCommand extends TNLCommand {
         if (args.length >= 1) {
             TNLPlayer arg = TNLPlayer.cast(args[0]);
             if (arg == null) throw new PlayerNotOnlineException(args[0]);
-            arg.bukkit().setFoodLevel(20);
-            arg.bukkit().setSaturation(20);
+            arg.healthManager().setFoodLevel(20);
+            arg.healthManager().setSaturation(20);
             source.sendMessage(Messages.SATISFIED_HUNGER, new Placeholder("player", arg.getName()));
         } else if (source instanceof TNLPlayer player) {
-            player.bukkit().setFoodLevel(20);
-            player.bukkit().setSaturation(20);
+            player.healthManager().setFoodLevel(20);
+            player.healthManager().setSaturation(20);
             player.messenger().sendMessage(Messages.SATISFIED_OWN_HUNGER);
         } else throw new InvalidUseException(this);
     }

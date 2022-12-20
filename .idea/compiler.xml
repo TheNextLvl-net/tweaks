@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="16">
-      <module name="TNLTweaks" target="16" />
+      <module name="TNLTweaks" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
