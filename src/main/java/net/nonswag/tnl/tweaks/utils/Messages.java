@@ -40,7 +40,7 @@ public final class Messages {
     public static final MessageKey CHANGED_GAMEMODE = new MessageKey("changed-gamemode").register();
     public static final MessageKey NOT_A_PLAYER = new MessageKey("not-a-player").register();
 
-    public static void loadAll() {
+    public static void init() {
         loadEnglish();
         loadGerman();
     }

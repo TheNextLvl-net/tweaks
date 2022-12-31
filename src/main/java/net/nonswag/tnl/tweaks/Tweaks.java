@@ -17,13 +17,17 @@ public class Tweaks extends TNLPlugin {
     private static Tweaks instance;
 
     @Override
+    public void load() {
+        Messages.init();
+    }
+
+    @Override
     public void enable() {
         instance = this;
         validateUptime();
         registerManagers();
         registerCommands();
         registerListeners();
-        Messages.loadAll();
     }
 
     public static long getUptime() {
