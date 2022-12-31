@@ -10,7 +10,6 @@ import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Bukkit;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class FeedCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (args.length >= 1) {
@@ -38,9 +37,8 @@ public class FeedCommand extends TNLCommand {
         } else throw new InvalidUseException(this);
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         if(invocation.arguments().length > 1) return suggestions;
         Bukkit.getOnlinePlayers().forEach(all -> suggestions.add(all.getName()));

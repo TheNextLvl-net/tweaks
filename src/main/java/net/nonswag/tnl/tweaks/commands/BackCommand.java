@@ -5,10 +5,9 @@ import net.nonswag.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.tweaks.api.manager.PositionManager;
+import net.nonswag.tnl.tweaks.commands.errors.NoPositionException;
 import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Location;
-
-import javax.annotation.Nonnull;
 
 public class BackCommand extends TNLCommand {
 
@@ -17,17 +16,16 @@ public class BackCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         TNLPlayer player = (TNLPlayer) invocation.source();
         Location position = player.getManager(PositionManager.class).getLastPosition();
-        if (position != null) {
-            player.worldManager().teleport(position);
-            player.messenger().sendMessage(Messages.TELEPORTED);
-        } else player.messenger().sendMessage(Messages.NO_POSITION);
+        if (position == null) throw new NoPositionException();
+        player.worldManager().teleport(position);
+        player.messenger().sendMessage(Messages.TELEPORTED);
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return source instanceof TNLPlayer;
     }
 }

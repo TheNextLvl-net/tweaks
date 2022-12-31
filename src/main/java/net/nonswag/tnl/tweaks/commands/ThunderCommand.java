@@ -4,8 +4,6 @@ import net.nonswag.core.api.command.Invocation;
 import net.nonswag.tnl.listener.api.command.TNLCommand;
 import org.bukkit.Bukkit;
 
-import javax.annotation.Nonnull;
-
 public class ThunderCommand extends TNLCommand {
 
     public ThunderCommand() {
@@ -13,7 +11,7 @@ public class ThunderCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         Bukkit.getWorlds().forEach(world -> {
             world.setThundering(true);
             world.setStorm(true);

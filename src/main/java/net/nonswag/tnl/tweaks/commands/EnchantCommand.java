@@ -11,7 +11,6 @@ import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class EnchantCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
         if (args.length < 1) throw new InvalidUseException(this);
@@ -49,12 +48,12 @@ public class EnchantCommand extends TNLCommand {
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return source instanceof TNLPlayer;
     }
 
     @Nullable
-    private Enchantment getEnchantment(@Nonnull String string) {
+    private Enchantment getEnchantment(String string) {
         for (Enchant enchant : Enchant.getEnchants()) {
             if (string.equalsIgnoreCase(enchant.getKey().toString())) return enchant;
         }
@@ -64,9 +63,8 @@ public class EnchantCommand extends TNLCommand {
         return null;
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         String[] args = invocation.arguments();
         if (args.length <= 1) {

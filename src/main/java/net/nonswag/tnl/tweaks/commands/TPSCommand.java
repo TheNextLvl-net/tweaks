@@ -7,7 +7,6 @@ import net.nonswag.tnl.listener.api.command.TNLCommand;
 import net.nonswag.tnl.tweaks.Tweaks;
 import org.bukkit.Bukkit;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 
@@ -18,7 +17,7 @@ public class TPSCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         double[] tps = Bukkit.getTPS();
         StringBuilder s = new StringBuilder("%prefix%§7 TPS from last ");
@@ -59,8 +58,7 @@ public class TPSCommand extends TNLCommand {
         source.sendMessage("%prefix%§7 Uptime§8: §6" + s);
     }
 
-    @Nonnull
-    private String format(int max, int used, @Nonnull String digit, boolean storage) {
+    private String format(int max, int used, String digit, boolean storage) {
         float percent = (used * (100f / max));
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < 20; i++) {
@@ -71,7 +69,6 @@ public class TPSCommand extends TNLCommand {
         return "§6" + used + "§8/§6" + max + digit + " §8» §6" + ((int) (used * (100f / max))) + "§8/§6100% §8[" + s + "§8]";
     }
 
-    @Nonnull
     private String format(double tps) {
         double rounded = (double) Math.round(tps * 100.0D) / 100.0D;
         return (rounded >= 18.0D ? "§a" : (rounded >= 16.0D ? "§e" : "§c")) + (rounded >= 20.0D ? "*" : "") + Math.min(rounded, 20.0D);

@@ -1,5 +1,5 @@
 name: "TNLTweaks"
-version: "1.3"
+version: "2.0.0"
 main: "net.nonswag.tnl.tweaks.Tweaks"
 api-version: "1.19"
 website: "https://www.thenextlvl.net"

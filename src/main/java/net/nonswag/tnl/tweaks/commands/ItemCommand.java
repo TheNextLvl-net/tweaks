@@ -11,7 +11,6 @@ import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,8 @@ public class ItemCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    @SuppressWarnings("deprecation")
+    protected void execute(Invocation invocation) {
         TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
         if (args.length < 1) throw new InvalidUseException(this);
@@ -54,13 +54,12 @@ public class ItemCommand extends TNLCommand {
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return source instanceof TNLPlayer;
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         String[] args = invocation.arguments();
         if (args.length <= 1) {
@@ -76,7 +75,7 @@ public class ItemCommand extends TNLCommand {
         return suggestions;
     }
 
-    private static boolean isValid(@Nonnull Material material) {
+    private static boolean isValid(Material material) {
         return material.isItem() && !ItemType.AIR.matches(material);
     }
 }

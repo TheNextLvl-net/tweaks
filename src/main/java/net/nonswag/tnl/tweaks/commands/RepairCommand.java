@@ -10,9 +10,7 @@ import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,7 @@ public class RepairCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
         if (args.length >= 1) {
@@ -34,7 +32,7 @@ public class RepairCommand extends TNLCommand {
             for (@Nullable ItemStack item : player.inventoryManager().getInventory().getContents()) {
                 if (item == null || !(item.getItemMeta() instanceof Damageable d) || !d.hasDamage()) continue;
                 d.setDamage(0);
-                item.setItemMeta((ItemMeta) d);
+                item.setItemMeta(d);
                 i++;
             }
             if (i == 0) player.messenger().sendMessage(Messages.NOTHING_REPAIRED);
@@ -46,7 +44,7 @@ public class RepairCommand extends TNLCommand {
             if (!ItemType.AIR.matches(item)) {
                 if (item.getItemMeta() instanceof Damageable d && d.hasDamage()) {
                     d.setDamage(0);
-                    item.setItemMeta((ItemMeta) d);
+                    item.setItemMeta(d);
                     player.messenger().sendMessage(Messages.REPAIRED_ITEM);
                 } else player.messenger().sendMessage(Messages.NO_DAMAGE);
             } else player.messenger().sendMessage(Messages.HOLD_ITEM);
@@ -54,13 +52,12 @@ public class RepairCommand extends TNLCommand {
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return source instanceof TNLPlayer;
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();

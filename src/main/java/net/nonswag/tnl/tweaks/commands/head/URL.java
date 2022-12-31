@@ -14,18 +14,17 @@ import net.nonswag.tnl.tweaks.utils.Messages;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Base64;
 
 class URL extends PlayerSubCommand {
 
     URL() {
-        super("url");
+        super("url", "tnl.head.url");
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
         if (args.length >= 2) {
@@ -47,7 +46,7 @@ class URL extends PlayerSubCommand {
     }
 
     @Nullable
-    private String owner(@Nonnull TNLPlayer player) {
+    private String owner(TNLPlayer player) {
         TNLItem item = TNLItem.create(player.inventoryManager().getItemInMainHand());
         if (!(item.getItemMeta() instanceof SkullMeta skull)) return null;
         String value = HeadCommand.value(skull);
@@ -60,7 +59,7 @@ class URL extends PlayerSubCommand {
     }
 
     @Override
-    public void usage(@Nonnull Invocation invocation) {
+    public void usage(Invocation invocation) {
         invocation.source().sendMessage("%prefix% §c/head url §8(§6URL§8)");
     }
 }

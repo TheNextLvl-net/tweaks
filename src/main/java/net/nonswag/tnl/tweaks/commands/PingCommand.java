@@ -9,7 +9,6 @@ import net.nonswag.tnl.listener.api.command.exceptions.PlayerNotOnlineException;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import org.bukkit.Bukkit;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class PingCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (args.length >= 1) {
@@ -35,9 +34,8 @@ public class PingCommand extends TNLCommand {
         }
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         if (invocation.arguments().length > 1) return suggestions;
         Bukkit.getOnlinePlayers().forEach(all -> suggestions.add(all.getName()));

@@ -6,12 +6,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import javax.annotation.Nonnull;
-
 public class DeathListener implements Listener {
 
     @EventHandler
-    public void onDeath(@Nonnull PlayerDeathEvent event) {
+    public void onDeath(PlayerDeathEvent event) {
         TNLPlayer player = TNLPlayer.cast(event.getEntity());
         player.getManager(PositionManager.class).setLastPosition(player.worldManager().getLocation());
     }

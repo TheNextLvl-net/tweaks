@@ -9,7 +9,6 @@ import net.nonswag.tnl.listener.api.command.exceptions.PlayerNotOnlineException;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
 import net.nonswag.tnl.tweaks.utils.Messages;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class InventoryCommand extends TNLCommand {
     }
 
     @Override
-    protected void execute(@Nonnull Invocation invocation) {
+    protected void execute(Invocation invocation) {
         TNLPlayer player = (TNLPlayer) invocation.source();
         String[] args = invocation.arguments();
         if (args.length < 1) throw new InvalidUseException(this);
@@ -32,13 +31,12 @@ public class InventoryCommand extends TNLCommand {
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSource source) {
+    public boolean canUse(CommandSource source) {
         return source instanceof TNLPlayer;
     }
 
-    @Nonnull
     @Override
-    protected List<String> suggest(@Nonnull Invocation invocation) {
+    protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
         if (!(invocation.source() instanceof TNLPlayer player)) return suggestions;
         for (TNLPlayer all : Listener.getOnlinePlayers()) if (!all.equals(player)) suggestions.add(all.getName());

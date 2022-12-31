@@ -1,9 +1,9 @@
 package net.nonswag.tnl.tweaks;
 
+import net.nonswag.core.api.annotation.FieldsAreNullableByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNonnullByDefault;
 import net.nonswag.tnl.listener.api.player.TNLPlayer;
-import net.nonswag.tnl.listener.api.plugin.PluginUpdate;
 import net.nonswag.tnl.listener.api.plugin.TNLPlugin;
-import net.nonswag.tnl.listener.api.settings.Settings;
 import net.nonswag.tnl.tweaks.api.manager.PositionManager;
 import net.nonswag.tnl.tweaks.commands.*;
 import net.nonswag.tnl.tweaks.commands.head.HeadCommand;
@@ -11,12 +11,9 @@ import net.nonswag.tnl.tweaks.listeners.DeathListener;
 import net.nonswag.tnl.tweaks.listeners.TeleportListener;
 import net.nonswag.tnl.tweaks.utils.Messages;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+@FieldsAreNullableByDefault
+@MethodsReturnNonnullByDefault
 public class Tweaks extends TNLPlugin {
-
-    @Nullable
     private static Tweaks instance;
 
     @Override
@@ -27,7 +24,6 @@ public class Tweaks extends TNLPlugin {
         registerCommands();
         registerListeners();
         Messages.loadAll();
-        if (Settings.AUTO_UPDATER.getValue()) async(() -> new PluginUpdate(this).downloadUpdate());
     }
 
     public static long getUptime() {
@@ -36,14 +32,12 @@ public class Tweaks extends TNLPlugin {
     }
 
     private static void validateUptime() {
-        if (!(System.getProperties().get("uptime") instanceof Long)) {
-            System.getProperties().put("uptime", System.currentTimeMillis());
-        }
+        if (System.getProperties().get("uptime") instanceof Long) return;
+        System.getProperties().put("uptime", System.currentTimeMillis());
     }
 
     private void registerManagers() {
         getRegistrationManager().registerManager(PositionManager.class, player -> new PositionManager() {
-            @Nonnull
             @Override
             public TNLPlayer getPlayer() {
                 return player;
@@ -82,7 +76,6 @@ public class Tweaks extends TNLPlugin {
         getCommandManager().registerCommand(new EnderChestCommand());
     }
 
-    @Nonnull
     public static Tweaks getInstance() {
         assert instance != null;
         return instance;
