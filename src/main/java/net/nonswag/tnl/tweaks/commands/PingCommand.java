@@ -15,7 +15,7 @@ import java.util.List;
 public class PingCommand extends TNLCommand {
 
     public PingCommand() {
-        super("ping");
+        super("ping", "tnl.ping");
         setUsage("%prefix% §c/ping §8[§6Player§8]");
     }
 
@@ -24,7 +24,7 @@ public class PingCommand extends TNLCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
         if (args.length >= 1) {
-            if (!source.hasPermission("tnl.admin")) throw new InsufficientPermissionException("tnl.admin");
+            if (!source.hasPermission("tnl.ping.others")) throw new InsufficientPermissionException("tnl.ping.others");
             TNLPlayer arg = TNLPlayer.cast(args[0]);
             if (arg == null) throw new PlayerNotOnlineException(args[0]);
             else source.sendMessage("%prefix% §7Ping §8(§a" + arg.getName() + "§8): §6" + arg.getPing() + "ms");
@@ -37,6 +37,7 @@ public class PingCommand extends TNLCommand {
     @Override
     protected List<String> suggest(Invocation invocation) {
         List<String> suggestions = new ArrayList<>();
+        if (!invocation.source().hasPermission("tnl.ping.others")) return suggestions;
         if (invocation.arguments().length > 1) return suggestions;
         Bukkit.getOnlinePlayers().forEach(all -> suggestions.add(all.getName()));
         return suggestions;
