@@ -1,10 +1,11 @@
 package net.thenextlvl.tweaks.command.server;
 
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.api.command.CommandInfo;
+import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.config.BroadcastConfig;
 import net.thenextlvl.tweaks.config.TweaksConfig;
 import org.bukkit.Bukkit;
@@ -13,14 +14,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-@CommandInfo(name = "broadcast", permission = "tweaks.command.broadcast", usage = "/broadcast <message...>", aliases = {"bc"})
+@CommandInfo(
+        name = "broadcast",
+        permission = "tweaks.command.broadcast",
+        description = "broadcast a message",
+        usage = "/<command> [message]",
+        aliases = {"bc"}
+)
+@RequiredArgsConstructor
 public class BroadcastCommand implements CommandExecutor {
-
     private final TweaksPlugin plugin;
-
-    public BroadcastCommand(TweaksPlugin plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

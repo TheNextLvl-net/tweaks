@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 abstract class WorldCommand implements CommandExecutor {
 
-    abstract void execute(World world);
+    protected abstract void execute(World world);
 
     @Override
     public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

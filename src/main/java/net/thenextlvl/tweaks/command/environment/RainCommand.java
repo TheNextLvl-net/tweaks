@@ -1,13 +1,19 @@
 package net.thenextlvl.tweaks.command.environment;
 
-import net.thenextlvl.tweaks.api.command.CommandInfo;
+import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.World;
 
-@CommandInfo(name = "rain", permission = "tweaks.command.rain", usage = "/rain [<world>]")
+@CommandInfo(
+        name = "rain",
+        permission = "tweaks.command.rain",
+        description = "let it rain",
+        usage = "/<command> (world)"
+)
 public class RainCommand extends WorldCommand {
 
     @Override
-    void execute(World world) {
+    protected void execute(World world) {
         world.setStorm(true);
+        world.setThundering(false);
     }
 }
