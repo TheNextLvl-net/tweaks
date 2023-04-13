@@ -1,11 +1,11 @@
 # Tweaks
 A must-have command collection for your minecraft server
 ## Environmental commands
-- /day - *set the time to day*
-- /night - *set the time to night*
-- /rain - *let it rain*
-- /sun - *let the sun shine*
-- /thunder - *let it thunder*
+- /day (world) - *set the time to day*
+- /night (world) - *set the time to night*
+- /rain (world) - *let it rain*
+- /sun (world) - *let the sun shine*
+- /thunder (world) - *let it thunder*
 ## Item commands
 - /enchant [enchantment] (level) - *enchant your tools*
 - /unenchant [enchantment] - *unenchant your tools*
