@@ -23,3 +23,5 @@ A must have command collection for your minecraft server
 - /ping (player) - *see your own or someone else's latency*
 - /seen [player] - *gives you information about a player*
 - /hat - *equip your items as hats*
+## Server commands
+- /broadcast [message] - *broadcast a message*
