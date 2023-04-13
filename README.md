@@ -1,5 +1,5 @@
 # Tweaks
-A must have command collection for your minecraft server
+A must-have command collection for your minecraft server
 ## Environmental commands
 - /day - *set the time to day*
 - /night - *set the time to night*
@@ -9,7 +9,7 @@ A must have command collection for your minecraft server
 ## Item commands
 - /enchant [enchantment] (level) - *enchant your tools*
 - /unenchant [enchantment] - *unenchant your tools*
-- /item [item] (amount) - *gives you an item of your choise*
+- /item [item] (amount) - *gives you an item of your choice*
 - /lore [lore] - *change the lore of your items*
 - /rename [name] - *change the name of your items*
 - /repair (all) - *repair your tools*
