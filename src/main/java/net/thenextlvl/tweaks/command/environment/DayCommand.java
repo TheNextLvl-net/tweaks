@@ -15,4 +15,9 @@ public class DayCommand extends WorldCommand {
     protected void execute(World world) {
         world.setTime(1000);
     }
+
+    @Override
+    protected boolean isWorldAffected(World world) {
+        return world.hasSkyLight();
+    }
 }
