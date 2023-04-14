@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.environment;
 
 import net.thenextlvl.tweaks.command.api.CommandException;
 import net.thenextlvl.tweaks.command.api.OneOptionalArgumentCommand;
+import net.thenextlvl.tweaks.command.api.WorldNotAffectedException;
 import net.thenextlvl.tweaks.command.api.WorldNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -17,20 +18,19 @@ abstract class WorldCommand extends OneOptionalArgumentCommand<World> {
     @Override
     protected World parse(Player player) {
         World world = player.getWorld();
-        if(!isWorldAffected(world))
-            throw new CommandException() {
-            }
+
+        if (!isWorldAffected(world)) throw new WorldNotAffectedException(world);
+
         return world;
     }
 
     @Override
     protected World parse(CommandSender sender, String argument) throws CommandException {
         World world = Bukkit.getWorld(argument);
-        if (world == null) {
-            throw new WorldNotFoundException(argument);
-        }
-        if (!isWorldAffected(world))
-            throw new CommandException();
+
+        if (world == null) throw new WorldNotFoundException(argument);
+        if (!isWorldAffected(world)) throw new WorldNotAffectedException(world);
+
         return world;
     }
 
