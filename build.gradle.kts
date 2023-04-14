@@ -22,6 +22,8 @@ dependencies {
     implementation("net.thenextlvl.core:api:3.1.10")
 
     annotationProcessor("org.projectlombok:lombok:1.18.26")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
 tasks {
