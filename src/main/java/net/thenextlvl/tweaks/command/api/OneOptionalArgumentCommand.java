@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,15 +14,14 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
 
     protected abstract T parse(Player player);
 
-    protected abstract T parse(CommandSender sender, String argument) throws CommandException;
+    protected abstract T parse(String argument) throws CommandException;
 
     protected abstract void execute(CommandSender sender, T value);
 
-    protected abstract Stream<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args);
-
+    protected abstract Stream<String> suggest();
 
     @Override
-    public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player) && args.length < 1)
             return false;
 
@@ -34,7 +32,7 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
         } else if (args.length > 1) {
             return false;
         } else {
-            value = parse(sender, args[0]);
+            value = parse(args[0]);
         }
 
         execute(sender, value);
@@ -42,9 +40,9 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
     }
 
     @Override
-    public final List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public final List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 1)
             return Collections.emptyList();
-        return tabComplete(sender, command, label, args).filter(s -> StringUtil.startsWithIgnoreCase(s, args[0])).toList();
+        return suggest().filter(s -> StringUtil.startsWithIgnoreCase(s, args[0])).toList();
     }
 }

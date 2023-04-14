@@ -6,10 +6,7 @@ import net.thenextlvl.tweaks.command.api.WorldNotAffectedException;
 import net.thenextlvl.tweaks.command.api.WorldNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.Stream;
 
@@ -25,7 +22,7 @@ abstract class WorldCommand extends OneOptionalArgumentCommand<World> {
     }
 
     @Override
-    protected World parse(CommandSender sender, String argument) throws CommandException {
+    protected World parse(String argument) throws CommandException {
         World world = Bukkit.getWorld(argument);
 
         if (world == null) throw new WorldNotFoundException(argument);
@@ -35,10 +32,9 @@ abstract class WorldCommand extends OneOptionalArgumentCommand<World> {
     }
 
     @Override
-    protected Stream<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    protected Stream<String> suggest() {
         return Bukkit.getWorlds().stream().filter(this::isWorldAffected).map(World::getName);
     }
 
     protected abstract boolean isWorldAffected(World world);
-
 }

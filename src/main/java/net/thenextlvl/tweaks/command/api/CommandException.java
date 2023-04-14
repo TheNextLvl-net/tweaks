@@ -1,11 +1,16 @@
 package net.thenextlvl.tweaks.command.api;
 
-import org.bukkit.command.Command;
+import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.entity.Player;
+
+import java.util.Locale;
 
 public abstract class CommandException extends RuntimeException {
+    public final void handleException(CommandSender sender) {
+        if (sender instanceof Player player) handle(player.locale(), player);
+        else handle(Messages.ENGLISH, sender);
+    }
 
-    public abstract void handle(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args);
-
+    protected abstract void handle(Locale locale, CommandSender sender);
 }
