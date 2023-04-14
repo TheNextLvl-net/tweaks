@@ -1,41 +1,19 @@
 package net.thenextlvl.tweaks.command.player;
 
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.PlayerNotFoundException;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 @CommandInfo(name = "ping", usage = "/<command> (player)", permission = "tweaks.command.ping")
-public class PingCommand implements CommandExecutor {
+public class PingCommand extends PlayerCommand {
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
-        if (!(sender instanceof Player) && args.length < 1)
-            return false;
-
-        Player player;
-
-        if (args.length == 0) {
-            player = ((Player) sender);
-        } else if (args.length > 1) {
-            return false;
-        } else {
-            player = Bukkit.getPlayer(args[0]);
-            if (player == null) {
-                throw new PlayerNotFoundException(args[0]);
-            }
-        }
-
+    protected void execute(CommandSender sender, Player player) {
         int ping = player.getPing();
         if (sender == player) {
             // TODO: Your ping is ...ms
         } else {
             // TODO: ...'s ping is ...ms
         }
-        return true;
     }
 }
