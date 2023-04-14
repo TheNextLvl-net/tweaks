@@ -17,4 +17,9 @@ public class RainCommand extends WorldCommand {
         world.setStorm(true);
         world.setThundering(false);
     }
+
+    @Override
+    protected boolean isWorldAffected(World world) {
+        return !world.hasCeiling();
+    }
 }

@@ -16,7 +16,11 @@ abstract class WorldCommand extends OneOptionalArgumentCommand<World> {
 
     @Override
     protected World parse(Player player) {
-        return player.getWorld();
+        World world = player.getWorld();
+        if(!isWorldAffected(world))
+            throw new CommandException() {
+            }
+        return world;
     }
 
     @Override
@@ -25,11 +29,16 @@ abstract class WorldCommand extends OneOptionalArgumentCommand<World> {
         if (world == null) {
             throw new WorldNotFoundException(argument);
         }
+        if (!isWorldAffected(world))
+            throw new CommandException();
         return world;
     }
 
     @Override
     protected Stream<String> tabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return null;
+        return Bukkit.getWorlds().stream().filter(this::isWorldAffected).map(World::getName);
     }
+
+    protected abstract boolean isWorldAffected(World world);
+
 }

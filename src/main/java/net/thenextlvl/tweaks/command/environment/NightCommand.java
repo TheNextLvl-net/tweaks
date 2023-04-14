@@ -16,4 +16,9 @@ public class NightCommand extends WorldCommand {
     protected void execute(CommandSender sender, World world) {
         world.setTime(18000);
     }
+
+    @Override
+    protected boolean isWorldAffected(World world) {
+        return world.hasSkyLight();
+    }
 }

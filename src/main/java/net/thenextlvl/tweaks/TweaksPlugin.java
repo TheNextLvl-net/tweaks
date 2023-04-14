@@ -1,6 +1,9 @@
 package net.thenextlvl.tweaks;
 
+import core.annotation.FieldsAreNonnullByDefault;
+import core.api.placeholder.Placeholder;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
@@ -8,17 +11,27 @@ import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
 import net.thenextlvl.tweaks.config.BroadcastConfig;
 import net.thenextlvl.tweaks.config.TweaksConfig;
+import net.thenextlvl.tweaks.util.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
+@FieldsAreNonnullByDefault
 public class TweaksPlugin extends JavaPlugin {
+    @Accessors(fluent = true)
+    private final Placeholder.Formatter<CommandSender> formatter = new Placeholder.Formatter<>();
 
     private final TweaksConfig tweaksConfig = new TweaksConfig(
             new BroadcastConfig("", "<red>Server <grey>| <message>", "")
     );
+
+    @Override
+    public void onLoad() {
+        Placeholders.init(this);
+    }
 
     @Override
     public void onEnable() {
