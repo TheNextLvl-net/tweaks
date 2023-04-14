@@ -51,6 +51,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new HatCommand());
         registerCommand(new HealCommand());
         registerCommand(new PingCommand());
+        registerCommand(new BackCommand(this));
         registerCommand(new InventoryCommand());
         registerCommand(new EnderChestCommand());
 
