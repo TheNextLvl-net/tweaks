@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.player;
 
 import net.thenextlvl.tweaks.command.api.CommandInfo;
+import net.thenextlvl.tweaks.command.api.PlayerNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -32,8 +33,7 @@ public class HealCommand implements TabExecutor {
         } else {
             player = Bukkit.getPlayer(args[0]);
             if (player == null) {
-                // TODO: The player was not found
-                return false;
+                throw new PlayerNotFoundException(args[0]);
             }
         }
 

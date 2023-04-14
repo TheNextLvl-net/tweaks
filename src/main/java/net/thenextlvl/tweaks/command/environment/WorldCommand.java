@@ -1,5 +1,6 @@
 package net.thenextlvl.tweaks.command.environment;
 
+import net.thenextlvl.tweaks.command.api.WorldNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -26,8 +27,7 @@ abstract class WorldCommand implements CommandExecutor {
         } else {
             world = Bukkit.getWorld(args[0]);
             if (world == null) {
-                // TODO: Send translated message
-                return false;
+                throw new WorldNotFoundException(args[0]);
             }
         }
 

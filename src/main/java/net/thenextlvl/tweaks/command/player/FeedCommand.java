@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.player;
 
 import net.thenextlvl.tweaks.command.api.CommandInfo;
+import net.thenextlvl.tweaks.command.api.PlayerNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,8 +31,7 @@ public class FeedCommand implements TabExecutor {
         } else {
             player = Bukkit.getPlayer(args[0]);
             if (player == null) {
-                // TODO: The player was not found
-                return false;
+                throw new PlayerNotFoundException(args[0]);
             }
         }
 

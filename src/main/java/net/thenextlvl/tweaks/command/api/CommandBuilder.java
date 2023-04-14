@@ -20,9 +20,17 @@ public record CommandBuilder(@NotNull Plugin plugin, @NotNull CommandInfo info,
         command.setAliases(Arrays.asList(info().aliases()));
         command.setDescription(info().description());
         command.setPermission(info().permission());
-        command.setTabCompleter(tabCompleter());
         command.setUsage(info().usage());
-        command.setExecutor(executor());
+        command.setTabCompleter(tabCompleter());
+
+        command.setExecutor((sender, command1, label, args) -> {
+            try {
+                return executor().onCommand(sender, command1, label, args);
+            } catch (CommandException e) {
+                e.handle(sender, command1, label, args);
+            }
+            return true;
+        });
         return command;
     }
 }
