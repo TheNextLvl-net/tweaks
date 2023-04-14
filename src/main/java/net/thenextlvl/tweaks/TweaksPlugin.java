@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class TweaksPlugin extends JavaPlugin {
 
     private final TweaksConfig tweaksConfig = new TweaksConfig(
-            new BroadcastConfig("<red>Server <grey>| <message>")
+            new BroadcastConfig("", "<red>Server <grey>| <message>", "")
     );
 
     @Override

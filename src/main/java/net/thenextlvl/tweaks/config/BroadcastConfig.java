@@ -1,6 +1,8 @@
 package net.thenextlvl.tweaks.config;
 
 public record BroadcastConfig(
-        String format
+        String header,
+        String format,
+        String footer
 ) {
 }
