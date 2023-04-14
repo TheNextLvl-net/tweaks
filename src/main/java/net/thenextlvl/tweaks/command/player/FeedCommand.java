@@ -30,7 +30,7 @@ public class FeedCommand implements TabExecutor {
         } else {
             player = Bukkit.getPlayer(args[0]);
             if (player == null) {
-                // TODO: Send translated message
+                // TODO: The player was not found
                 return false;
             }
         }
@@ -38,6 +38,7 @@ public class FeedCommand implements TabExecutor {
         player.setFoodLevel(20);
         player.setSaturation(10f);
         player.setExhaustion(0f);
+        // TODO: Your hunger was satisfied
         return true;
     }
 

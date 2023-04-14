@@ -4,8 +4,7 @@ import lombok.Getter;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
-import net.thenextlvl.tweaks.command.player.FeedCommand;
-import net.thenextlvl.tweaks.command.player.FlyCommand;
+import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
 import net.thenextlvl.tweaks.config.BroadcastConfig;
 import net.thenextlvl.tweaks.config.TweaksConfig;
@@ -36,6 +35,9 @@ public class TweaksPlugin extends JavaPlugin {
         // Player
         registerCommand(new FeedCommand());
         registerCommand(new FlyCommand());
+        registerCommand(new HatCommand());
+        registerCommand(new HealCommand());
+        registerCommand(new PingCommand());
 
         // Server
         registerCommand(new BroadcastCommand(this));

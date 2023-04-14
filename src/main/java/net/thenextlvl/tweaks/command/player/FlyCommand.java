@@ -35,6 +35,15 @@ public class FlyCommand implements TabExecutor {
             }
         }
         player.setAllowFlight(!player.getAllowFlight());
+
+        if (player.getAllowFlight()) {
+            // TODO: Your flight mode was enabled.
+            // TODO: You enabled the flight mode for
+        } else {
+            // TODO: Your flight mode was disabled.
+            // TODO: You disabled the flight mode for ...
+        }
+
         return true;
     }
 
