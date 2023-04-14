@@ -26,6 +26,8 @@ A must-have command collection for your minecraft server
 - [x] /ping (player) - *see your own or someone else's latency*
 - [ ] /seen [player] - *gives you information about a player*
 - [x] /hat - *equip your items as hats*
+- [x] /enderchest (player) - *open your own or someone else's enderchest*
+- [x] /inventory (player) - *open your own or someone else's inventory*
 ## Server commands
 
 - [x] /broadcast [message] - *broadcast a message*

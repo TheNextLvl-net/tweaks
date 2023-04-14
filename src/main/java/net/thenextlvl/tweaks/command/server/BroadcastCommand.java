@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 @CommandInfo(name = "broadcast", permission = "tweaks.command.broadcast", description = "broadcast a message", usage = "/<command> [message]", aliases = {"bc"})
 @RequiredArgsConstructor
@@ -18,7 +17,7 @@ public class BroadcastCommand implements CommandExecutor {
     private final TweaksPlugin plugin;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (args.length == 0) return false;
 

@@ -8,13 +8,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-@CommandInfo(name = "hat", permission = "tweaks.command.hat")
+@CommandInfo(
+        name = "hat",
+        description = "equip your items as hats",
+        permission = "tweaks.command.hat"
+)
 public class HatCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendPlainMessage(Messages.COMMAND_SENDER.message(Messages.ENGLISH));
             return true;
