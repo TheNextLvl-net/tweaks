@@ -4,14 +4,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-public record CommandBuilder(@NotNull Plugin plugin, @NotNull CommandInfo info,
-                             @NotNull CommandExecutor executor, @Nullable TabCompleter tabCompleter) {
+public record CommandBuilder(Plugin plugin, CommandInfo info,
+                             CommandExecutor executor, @Nullable TabCompleter tabCompleter) {
 
     public PluginCommand build() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         var constructor = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
@@ -22,14 +21,13 @@ public record CommandBuilder(@NotNull Plugin plugin, @NotNull CommandInfo info,
         command.setPermission(info().permission());
         command.setUsage(info().usage());
         command.setTabCompleter(tabCompleter());
-
         command.setExecutor((sender, command1, label, args) -> {
             try {
                 return executor().onCommand(sender, command1, label, args);
             } catch (CommandException e) {
-                e.handle(sender, command1, label, args);
+                e.handleException(sender);
+                return true;
             }
-            return true;
         });
         return command;
     }
