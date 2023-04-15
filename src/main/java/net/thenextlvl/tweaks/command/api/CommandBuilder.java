@@ -22,18 +22,22 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
         command.setUsage(info().usage());
         command.setTabCompleter(tabCompleter());
         command.setExecutor((sender, command1, label, args) -> {
-            try {
-                if (executor().onCommand(sender, command1, label, args)) return true;
-                var usage = Placeholder.<CommandSender>of("usage", command1.getUsage()
-                        .replace("[", "§8[§6").replace("]", "§8]§c")
-                        .replace("(", "§8(§6").replace(")", "§8)§c")
-                        .replace("<command>", label));
-                sender.sendPlainMessage(Messages.COMMAND_USAGE.message(sender, usage));
-            } catch (CommandException e) {
-                e.handleException(sender);
-            }
+            execute(sender, command1, label, args);
             return true;
         });
         return command;
+    }
+
+    private void execute(CommandSender sender, Command command1, String label, String[] args) {
+        try {
+            if (executor().onCommand(sender, command1, label, args)) return;
+            var usage = Placeholder.<CommandSender>of("usage", command1.getUsage()
+                    .replace("[", "§8[§6").replace("]", "§8]§c")
+                    .replace("(", "§8(§6").replace(")", "§8)§c")
+                    .replace("<command>", label));
+            sender.sendPlainMessage(Messages.COMMAND_USAGE.message(sender, usage));
+        } catch (CommandException e) {
+            e.handleException(sender);
+        }
     }
 }
