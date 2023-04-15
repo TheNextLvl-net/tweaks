@@ -38,37 +38,37 @@ A must-have command collection for your minecraft server
 ## Command permissions
 ### Environmental commands
 
-| Command | Permission |
-| --- | --- |
-| day | tweaks.command.day |
-| night | tweaks.command.night |
-| rain | tweaks.command.rain |
-| sun | tweaks.command.sun |
+| Command | Permission             |
+|---------|------------------------|
+| day     | tweaks.command.day     |
+| night   | tweaks.command.night   |
+| rain    | tweaks.command.rain    |
+| sun     | tweaks.command.sun     |
 | thunder | tweaks.command.thunder |
 
 ### Item commands
 
-| Command | Permission |
-| --- | --- |
-| enchant | tweaks.command.enchant |
+| Command   | Permission               |
+|-----------|--------------------------|
+| enchant   | tweaks.command.enchant   |
 | unenchant | tweaks.command.unenchant |
-| item | tweaks.command.item |
-| lore | tweaks.command.lore |
-| rename | tweaks.command.rename |
-| repair | tweaks.command.repair |
+| item      | tweaks.command.item      |
+| lore      | tweaks.command.lore      |
+| rename    | tweaks.command.rename    |
+| repair    | tweaks.command.repair    |
 
 ### Player commands
 
-| Command | Permission |
-| --- | --- |
-| back | tweaks.command.back |
-| heal | tweaks.command.heal |
-| feed | tweaks.command.fedd |
-| gamemode | tweaks.command.gamemode |
-| fly | tweaks.command.fly |
-| speed | tweaks.command.speed |
-| ping | tweaks.command.ping |
-| seen | tweaks.command.seen |
-| hat | tweaks.command.hat |
+| Command    | Permission                |
+|------------|---------------------------|
+| back       | tweaks.command.back       |
+| heal       | tweaks.command.heal       |
+| feed       | tweaks.command.fedd       |
+| gamemode   | tweaks.command.gamemode   |
+| fly        | tweaks.command.fly        |
+| speed      | tweaks.command.speed      |
+| ping       | tweaks.command.ping       |
+| seen       | tweaks.command.seen       |
+| hat        | tweaks.command.hat        |
 | enderchest | tweaks.command.enderchest |
-| inventory | tweaks.command.inventory |
+| inventory  | tweaks.command.inventory  |
