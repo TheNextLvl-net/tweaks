@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
+import net.thenextlvl.tweaks.command.item.UnenchantCommand;
 import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
 import net.thenextlvl.tweaks.config.BroadcastConfig;
@@ -58,6 +59,8 @@ public class TweaksPlugin extends JavaPlugin {
         // Server
         registerCommand(new BroadcastCommand(this));
 
+        // Item
+        registerCommand(new UnenchantCommand());
     }
 
     private void registerCommand(CommandExecutor executor) {
