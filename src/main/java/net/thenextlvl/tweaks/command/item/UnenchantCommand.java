@@ -11,14 +11,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.StringUtil;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@CommandInfo(name = "unenchant", permission = "tweaks.command.unenchant", usage = "/<command> [enchantment...]")
+@CommandInfo(
+        name = "unenchant",
+        description = "unenchant your tools",
+        permission = "tweaks.command.unenchant",
+        usage = "/<command> [enchantments]"
+)
 public class UnenchantCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -47,7 +51,7 @@ public class UnenchantCommand implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
             return Collections.emptyList();
         PlayerInventory inventory = player.getInventory();
