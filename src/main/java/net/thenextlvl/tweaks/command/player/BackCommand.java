@@ -28,13 +28,14 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.*;
 public class BackCommand implements CommandExecutor, Listener {
 
     private final String metadataKey = "tweaks-back";
-    private final int size = 5;
+    private final int defaultBufferSize;
     private final WeakHashMap<Player, RingBufferStack<Location>> map = new WeakHashMap<>();
     private final TweaksPlugin plugin;
 
-    public BackCommand(TweaksPlugin tweaksPlugin) {
-        this.plugin = tweaksPlugin;
-        Bukkit.getPluginManager().registerEvents(this, tweaksPlugin);
+    public BackCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+        this.defaultBufferSize = plugin.getTweaksConfig().backConfig().bufferStackSize();
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class BackCommand implements CommandExecutor, Listener {
         if (!player.hasPermission(annotation.permission()))
             return;
 
-        RingBufferStack<Location> stack = map.getOrDefault(player, new RingBufferStack<>(size));
+        RingBufferStack<Location> stack = map.getOrDefault(player, new RingBufferStack<>(defaultBufferSize));
         stack.push(event.getTo());
         map.put(player, stack);
     }
@@ -87,7 +88,7 @@ public class BackCommand implements CommandExecutor, Listener {
         if (!player.hasPermission(annotation.permission()))
             return;
 
-        RingBufferStack<Location> stack = map.getOrDefault(player, new RingBufferStack<>(size));
+        RingBufferStack<Location> stack = map.getOrDefault(player, new RingBufferStack<>(defaultBufferSize));
         stack.push(player.getLocation());
         map.put(player, stack);
     }
