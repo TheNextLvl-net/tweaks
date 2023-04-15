@@ -59,16 +59,16 @@ A must-have command collection for your minecraft server
 
 ### Player commands
 
-| Command    | Permission                |
-|------------|---------------------------|
-| back       | tweaks.command.back       |
-| heal       | tweaks.command.heal       |
-| feed       | tweaks.command.feed       |
-| gamemode   | tweaks.command.gamemode   |
-| fly        | tweaks.command.fly        |
-| speed      | tweaks.command.speed      |
-| ping       | tweaks.command.ping       |
-| seen       | tweaks.command.seen       |
-| hat        | tweaks.command.hat        |
-| enderchest | tweaks.command.enderchest |
-| inventory  | tweaks.command.inventory  |
+| Command    | Alias | Permission                | Argument | Permission |
+|------------|-------|---------------------------|----------|------------|
+| back       |       | tweaks.command.back       |          |            |
+| heal       |       | tweaks.command.heal       | player   | *.others   |
+| feed       |       | tweaks.command.feed       | player   | *.others   |
+| gamemode   | gm    | tweaks.command.gamemode   | player   | *.others   |
+| fly        |       | tweaks.command.fly        | player   | *.others   |
+| speed      |       | tweaks.command.speed      | player   | *.others   |
+| ping       |       | tweaks.command.ping       | player   | *.others   |
+| seen       | find  | tweaks.command.seen       |          |            |
+| hat        |       | tweaks.command.hat        |          |            |
+| enderchest | ec    | tweaks.command.enderchest | player   | *.others   |
+| inventory  | inv   | tweaks.command.inventory  |          |            |
