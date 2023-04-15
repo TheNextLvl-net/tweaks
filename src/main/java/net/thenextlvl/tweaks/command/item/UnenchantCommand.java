@@ -10,11 +10,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @CommandInfo(
@@ -53,14 +51,13 @@ public class UnenchantCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
-            return Collections.emptyList();
+            return null;
         PlayerInventory inventory = player.getInventory();
         ItemStack itemInMainHand = inventory.getItemInMainHand();
 
         return itemInMainHand.getEnchantments().keySet().stream()
                 .map(enchantment -> enchantment.getKey().asString())
                 .filter(s -> !Arrays.asList(args).contains(s))
-                .filter(s -> StringUtil.startsWithIgnoreCase(s, args[args.length - 1]))
                 .toList();
     }
 }

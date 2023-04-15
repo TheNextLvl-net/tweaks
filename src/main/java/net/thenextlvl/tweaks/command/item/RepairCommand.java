@@ -61,6 +61,6 @@ public class RepairCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        return args.length <= 1 ? Collections.singletonList("all") : Collections.emptyList();
+        return args.length <= 1 ? Collections.singletonList("all") : null;
     }
 }

@@ -4,9 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -41,8 +39,6 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
 
     @Override
     public final List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length > 1)
-            return Collections.emptyList();
-        return suggest().filter(s -> StringUtil.startsWithIgnoreCase(s, args[0])).toList();
+        return args.length > 1 ? null : suggest().toList();
     }
 }
