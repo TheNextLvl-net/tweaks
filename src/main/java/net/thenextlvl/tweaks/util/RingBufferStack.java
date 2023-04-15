@@ -44,10 +44,10 @@ public class RingBufferStack<E> {
             return null;
         }
 
-        Object obj = peek();
+        E obj = peek();
         array[modulo(--index, array.length)] = null;
 
-        return (E) obj;
+        return obj;
     }
 
     /**
