@@ -2,7 +2,7 @@ package net.thenextlvl.tweaks.command.player;
 
 import net.thenextlvl.tweaks.command.api.CommandException;
 import net.thenextlvl.tweaks.command.api.OneOptionalArgumentCommand;
-import net.thenextlvl.tweaks.command.api.PlayerNotFoundException;
+import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -19,7 +19,7 @@ abstract class PlayerCommand extends OneOptionalArgumentCommand<Player> {
     protected Player parse(String argument) throws CommandException {
         Player player = Bukkit.getPlayer(argument);
         if (player == null) {
-            throw new PlayerNotFoundException(argument);
+            throw new PlayerNotOnlineException(argument);
         }
         return player;
     }
