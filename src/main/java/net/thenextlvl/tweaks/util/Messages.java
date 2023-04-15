@@ -16,7 +16,8 @@ public class Messages {
     public static final SystemMessageKey<CommandSender> COMMAND_USAGE = new SystemMessageKey<>("command.usage", plugin.formatter());
     public static final MessageKey<CommandSender> COMMAND_PERMISSION = new MessageKey<>("command.permission", plugin.formatter());
     public static final MessageKey<CommandSender> COMMAND_SENDER = new MessageKey<>("command.sender", plugin.formatter());
-    public static final MessageKey<CommandSender> PLAYER_NOT_ONLINE = new MessageKey<>("player.online.not", plugin.formatter());
+    public static final MessageKey<CommandSender> PLAYER_NOT_ONLINE = new MessageKey<>("player.not.online", plugin.formatter());
+    public static final MessageKey<CommandSender> PLAYER_NOT_FOUND = new MessageKey<>("player.not.found", plugin.formatter());
     public static final MessageKey<CommandSender> WORLD_NOT_AFFECTED = new MessageKey<>("world.not.affected", plugin.formatter());
     public static final MessageKey<CommandSender> WORLD_NOT_FOUND = new MessageKey<>("world.not.found", plugin.formatter());
     public static final MessageKey<CommandSender> SATISFIED_HUNGER_SELF = new MessageKey<>("hunger.satisfied.self", plugin.formatter());
@@ -35,6 +36,7 @@ public class Messages {
         file.setDefault(COMMAND_PERMISSION, "%prefix% §cYou have no rights §8(§4%permission%§8)");
         file.setDefault(COMMAND_SENDER, "%prefix% §cYou cannot use this command");
         file.setDefault(PLAYER_NOT_ONLINE, "%prefix% §cThe player §4%player%§c is not online");
+        file.setDefault(PLAYER_NOT_FOUND, "%prefix% §cThe player §4%player%§c is unknown to us");
         file.setDefault(WORLD_NOT_AFFECTED, "%prefix% §cThe world §4%world%§c is not affected");
         file.setDefault(WORLD_NOT_FOUND, "%prefix% §cThe world §4%world%§c does not exist");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% §aYour hunger has been satisfied");
@@ -49,6 +51,7 @@ public class Messages {
         file.setDefault(COMMAND_PERMISSION, "%prefix% §cDarauf hast du keine rechte §8(§4%permission%§8)");
         file.setDefault(COMMAND_SENDER, "%prefix% §cDu kannst diesen command nicht nutzen");
         file.setDefault(PLAYER_NOT_ONLINE, "%prefix% §cDer Spieler §4%player%§c ist nicht online");
+        file.setDefault(PLAYER_NOT_FOUND, "%prefix% §cDer Spieler §4%player%§c ist uns nicht bekannt");
         file.setDefault(WORLD_NOT_AFFECTED, "%prefix% §cDie Welt §4%world%§c ist nicht betroffen");
         file.setDefault(WORLD_NOT_FOUND, "%prefix% §cDie Welt §4%world%§c existiert nicht");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% §aDein Hunger wurde gestillt");
