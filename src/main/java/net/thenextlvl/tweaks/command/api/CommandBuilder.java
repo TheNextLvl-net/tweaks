@@ -1,8 +1,8 @@
 package net.thenextlvl.tweaks.command.api;
 
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
+import core.api.placeholder.Placeholder;
+import net.thenextlvl.tweaks.util.Messages;
+import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,11 +23,16 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
         command.setTabCompleter(tabCompleter());
         command.setExecutor((sender, command1, label, args) -> {
             try {
-                return executor().onCommand(sender, command1, label, args);
+                if (executor().onCommand(sender, command1, label, args)) return true;
+                var usage = Placeholder.<CommandSender>of("usage", command1.getUsage()
+                        .replace("[", "§8[§6").replace("]", "§8]§c")
+                        .replace("(", "§8(§6").replace(")", "§8)§c")
+                        .replace("<command>", label));
+                sender.sendPlainMessage(Messages.COMMAND_USAGE.message(sender, usage));
             } catch (CommandException e) {
                 e.handleException(sender);
-                return true;
             }
+            return true;
         });
         return command;
     }
