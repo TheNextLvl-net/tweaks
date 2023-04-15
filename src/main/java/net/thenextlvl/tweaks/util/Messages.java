@@ -26,6 +26,9 @@ public class Messages {
     public static final MessageKey<CommandSender> HOL_ITEM = new MessageKey<>("hold.item", plugin.formatter());
     public static final MessageKey<CommandSender> LAST_SEEN_NOW = new MessageKey<>("last.seen.now", plugin.formatter());
     public static final MessageKey<CommandSender> LAST_SEEN_TIME = new MessageKey<>("last.seen.time", plugin.formatter());
+    public static final MessageKey<CommandSender> BACK_EMPTY = new MessageKey<>("back.empty", plugin.formatter());
+    public static final MessageKey<CommandSender> BACK_TELEPORT_SUCCESS = new MessageKey<>("back.teleport.success", plugin.formatter());
+    public static final MessageKey<CommandSender> BACK_TELEPORT_FAIL = new MessageKey<>("back.teleport.fail", plugin.formatter());
 
     static {
         initEnglish();
@@ -47,6 +50,9 @@ public class Messages {
         file.setDefault(HOL_ITEM, "%prefix% §cYou have to hold an item in your main hand");
         file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is online at the moment");
         file.setDefault(LAST_SEEN_TIME, "%prefix% §6%player%§a was last seen §6%time%");
+        file.setDefault(BACK_EMPTY, "%prefix% §cYou can't go back any further");
+        file.setDefault(BACK_TELEPORT_SUCCESS, "%prefix% §aTeleported you to your last position");
+        file.setDefault(BACK_TELEPORT_FAIL, "%prefix% §cFailed to teleport you to your last position");
         file.save();
     }
 
@@ -63,6 +69,9 @@ public class Messages {
         file.setDefault(HOL_ITEM, "%prefix% §cDu musst ein Item in der Haupthand halten");
         file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is aktuell online");
         file.setDefault(LAST_SEEN_TIME, "%prefix% §6%player%§a war zuletzt online §6%time%");
+        file.setDefault(BACK_EMPTY, "%prefix% §cDu kannst nicht weiter zurück gehen");
+        file.setDefault(BACK_TELEPORT_SUCCESS, "%prefix% §aDu wurdest zu deiner letzten Position teleportiert");
+        file.setDefault(BACK_TELEPORT_FAIL, "%prefix% §cDu konntest nicht zu deiner letzten Position teleportiert werden");
         file.save();
     }
 

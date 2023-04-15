@@ -3,6 +3,8 @@ package net.thenextlvl.tweaks.command.player;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
+import net.thenextlvl.tweaks.command.api.NoBackLocationException;
+import net.thenextlvl.tweaks.util.Messages;
 import net.thenextlvl.tweaks.util.RingBufferStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,15 +46,14 @@ public class BackCommand implements CommandExecutor, Listener {
             throw new CommandSenderException();
 
         RingBufferStack<Location> stack = map.get(player);
+        if (stack == null) throw new NoBackLocationException();
         Location pop = stack.pop();
-        if (pop == null) {
-            // TODO: No locations
-            return true;
-        }
+        if (pop == null) throw new NoBackLocationException();
 
         player.setMetadata(metadataKey, new FixedMetadataValue(plugin, true));
-        player.teleportAsync(pop, COMMAND).thenRun(() -> {
-            // TODO: Send message
+        player.teleportAsync(pop, COMMAND).thenAccept(success -> {
+            var message = success ? Messages.BACK_TELEPORT_SUCCESS : Messages.BACK_TELEPORT_FAIL;
+            player.sendPlainMessage(message.message(player.locale(), player));
         });
         return true;
     }
@@ -83,6 +84,9 @@ public class BackCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
+
+        if (player.getLocation().getY() < player.getWorld().getMinHeight())
+            return;
 
         CommandInfo annotation = getClass().getAnnotation(CommandInfo.class);
         if (!player.hasPermission(annotation.permission()))
