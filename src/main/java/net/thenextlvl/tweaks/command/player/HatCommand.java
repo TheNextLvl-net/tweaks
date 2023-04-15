@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.player;
 
 import net.thenextlvl.tweaks.command.api.CommandInfo;
+import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -18,10 +19,8 @@ public class HatCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendPlainMessage(Messages.COMMAND_SENDER.message(Messages.ENGLISH));
-            return true;
-        }
+        if (!(sender instanceof Player player))
+            throw new CommandSenderException();
 
         var inventory = player.getInventory();
         var item = inventory.getItemInMainHand();
@@ -29,12 +28,10 @@ public class HatCommand implements CommandExecutor {
 
         if (!item.getType().isEmpty() || helmet != null) {
             player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.PLAYERS, 1f, 1f);
+            sender.sendPlainMessage(Messages.HAT_EQUIPPED.message(player.locale()));
             inventory.setItemInMainHand(helmet);
             inventory.setHelmet(item);
-            // TODO: Your hat was set to ... .
-        } else {
-            // TODO: You must hold an item
-        }
+        } else player.sendPlainMessage(Messages.HAT_EQUIPPED.message(player.locale()));
         return true;
     }
 }
