@@ -1,4 +1,8 @@
+@FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 package net.thenextlvl.tweaks.command.player;
 
+import core.annotation.FieldsAreNonnullByDefault;
+import core.annotation.MethodsReturnNonnullByDefault;
 import core.annotation.ParametersAreNonnullByDefault;

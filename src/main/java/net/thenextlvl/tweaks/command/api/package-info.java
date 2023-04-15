@@ -1,4 +1,6 @@
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 package net.thenextlvl.tweaks.command.api;
 
+import core.annotation.MethodsReturnNonnullByDefault;
 import core.annotation.ParametersAreNonnullByDefault;
