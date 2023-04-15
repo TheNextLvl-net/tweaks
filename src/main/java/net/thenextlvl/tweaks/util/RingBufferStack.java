@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.EmptyStackException;
 
 public class RingBufferStack<E> {
 
@@ -23,10 +22,7 @@ public class RingBufferStack<E> {
     }
 
     /**
-     * Pushes an item onto the top of this stack. This has exactly
-     * the same effect as:
-     * <blockquote><pre>
-     * addElement(item)</pre></blockquote>
+     * Pushes an item onto the top of this stack.
      *
      * @param item the item to be pushed onto this stack.
      * @return the {@code item} argument.
@@ -41,9 +37,7 @@ public class RingBufferStack<E> {
      * Removes the object at the top of this stack and returns that
      * object as the value of this function.
      *
-     * @return The object at the top of this stack (the last item
-     * of the {@code Vector} object).
-     * @throws EmptyStackException if this stack is empty.
+     * @return The object at the top of this stack.
      */
     public synchronized @Nullable E pop() {
         if (empty()) {
@@ -60,9 +54,7 @@ public class RingBufferStack<E> {
      * Looks at the object at the top of this stack without removing it
      * from the stack.
      *
-     * @return the object at the top of this stack (the last item
-     * of the {@code Vector} object).
-     * @throws EmptyStackException if this stack is empty.
+     * @return the object at the top of this stack.
      */
     public synchronized @Nullable E peek() {
         if (empty())
