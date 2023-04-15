@@ -10,14 +10,14 @@ A must-have command collection for your minecraft server
 ## Item commands
 
 - [ ] /enchant [enchantment] (level) - *enchant your tools*
-- [x] /unenchant [enchantment...] - *unenchant your tools*
+- [x] /unenchant [enchantments] - *unenchant your tools*
 - [ ] /item [item] (amount) - *gives you an item of your choice*
 - [ ] /lore [lore] - *change the lore of your items*
 - [ ] /rename [name] - *change the name of your items*
-- [ ] /repair (all) - *repair your tools*
+- [x] /repair (all) - *repair your tools*
 ## Player commands
 
-- [ ] /back - *go back to your last position*
+- [x] /back - *go back to your last position*
 - [x] /heal (player) - *heal yourself or someone else*
 - [x] /feed (player) - *satisfy your own or someone else's hunger*
 - [ ] /gm [gamemode] (player) - *change your own or someone else's gamemode*
