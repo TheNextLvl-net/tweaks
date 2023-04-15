@@ -4,10 +4,13 @@ import core.api.placeholder.Placeholder;
 import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public record CommandBuilder(Plugin plugin, CommandInfo info,
                              CommandExecutor executor, @Nullable TabCompleter tabCompleter) {
@@ -20,12 +23,19 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
         command.setDescription(info().description());
         command.setPermission(info().permission());
         command.setUsage(info().usage());
-        command.setTabCompleter(tabCompleter());
+        if (tabCompleter() != null) command.setTabCompleter((sender, command1, label, args) ->
+                strip(tabCompleter().onTabComplete(sender, command1, label, args), args));
         command.setExecutor((sender, command1, label, args) -> {
             execute(sender, command1, label, args);
             return true;
         });
         return command;
+    }
+
+    private List<String> strip(@Nullable List<String> suggestions, String[] args) {
+        if (suggestions == null) return Collections.emptyList();
+        if (suggestions.isEmpty()) return suggestions;
+        return suggestions.stream().filter(s -> StringUtil.startsWithIgnoreCase(s, args[args.length - 1])).toList();
     }
 
     private void execute(CommandSender sender, Command command1, String label, String[] args) {
