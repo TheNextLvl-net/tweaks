@@ -7,10 +7,11 @@ import org.bukkit.entity.Player;
 import java.util.Locale;
 
 public abstract class CommandException extends RuntimeException {
-    public final void handleException(CommandSender sender) {
+
+    public final void handle(CommandSender sender) {
         if (sender instanceof Player player) handle(player.locale(), player);
         else handle(Messages.ENGLISH, sender);
     }
 
-    protected abstract void handle(Locale locale, CommandSender sender);
+    public abstract void handle(Locale locale, CommandSender sender);
 }

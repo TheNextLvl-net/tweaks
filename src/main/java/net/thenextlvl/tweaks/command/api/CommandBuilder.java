@@ -47,7 +47,7 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
                     .replace("<command>", label));
             sender.sendPlainMessage(Messages.COMMAND_USAGE.message(sender, usage));
         } catch (CommandException e) {
-            e.handleException(sender);
+            e.handle(sender);
         }
     }
 }
