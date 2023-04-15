@@ -24,6 +24,8 @@ public class Messages {
     public static final MessageKey<CommandSender> SATISFIED_HUNGER_OTHERS = new MessageKey<>("hunger.satisfied.self", plugin.formatter());
     public static final MessageKey<CommandSender> HAT_EQUIPPED = new MessageKey<>("hat.equipped", plugin.formatter());
     public static final MessageKey<CommandSender> HOL_ITEM = new MessageKey<>("hold.item", plugin.formatter());
+    public static final MessageKey<CommandSender> LAST_SEEN_NOW = new MessageKey<>("last.seen.now", plugin.formatter());
+    public static final MessageKey<CommandSender> LAST_SEEN_TIME = new MessageKey<>("last.seen.time", plugin.formatter());
 
     static {
         initEnglish();
@@ -43,6 +45,8 @@ public class Messages {
         file.setDefault(SATISFIED_HUNGER_OTHERS, "%prefix% §6%player%'s§a hunger has been satisfied");
         file.setDefault(HAT_EQUIPPED, "%prefix% §aYou have equipped your item as a hat");
         file.setDefault(HOL_ITEM, "%prefix% §cYou have to hold an item in your main hand");
+        file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is online at the moment");
+        file.setDefault(LAST_SEEN_TIME, "%prefix% §6%player%§a was last seen §6%time%");
         file.save();
     }
 
@@ -57,6 +61,8 @@ public class Messages {
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% §aDein Hunger wurde gestillt");
         file.setDefault(SATISFIED_HUNGER_OTHERS, "%prefix% §6%player%'s§a Hunger wurde gestillt");
         file.setDefault(HOL_ITEM, "%prefix% §cDu musst ein Item in der Haupthand halten");
+        file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is aktuell online");
+        file.setDefault(LAST_SEEN_TIME, "%prefix% §6%player%§a war zuletzt online §6%time%");
         file.save();
     }
 
