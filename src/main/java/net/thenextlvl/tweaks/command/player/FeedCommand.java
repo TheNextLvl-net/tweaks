@@ -10,7 +10,12 @@ import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
-@CommandInfo(name = "feed", usage = "/<command> (player)", permission = "tweaks.command.feed")
+@CommandInfo(
+        name = "feed",
+        usage = "/<command> (player)",
+        description = "satisfy your own or someone else's hunger",
+        permission = "tweaks.command.feed"
+)
 public class FeedCommand extends PlayerCommand {
 
     @Override

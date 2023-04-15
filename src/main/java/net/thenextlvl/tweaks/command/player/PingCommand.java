@@ -4,7 +4,12 @@ import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandInfo(name = "ping", usage = "/<command> (player)", permission = "tweaks.command.ping")
+@CommandInfo(
+        name = "ping",
+        usage = "/<command> (player)",
+        description = "see your own or someone else's latency",
+        permission = "tweaks.command.ping"
+)
 public class PingCommand extends PlayerCommand {
 
     @Override

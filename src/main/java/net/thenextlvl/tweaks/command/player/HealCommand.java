@@ -6,7 +6,12 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandInfo(name = "heal", usage = "/<command> (player)", permission = "tweaks.command.heal")
+@CommandInfo(
+        name = "heal",
+        usage = "/<command> (player)",
+        description = "heal yourself or someone else",
+        permission = "tweaks.command.heal"
+)
 public class HealCommand extends PlayerCommand {
     @Override
     protected void execute(CommandSender sender, Player player) {
