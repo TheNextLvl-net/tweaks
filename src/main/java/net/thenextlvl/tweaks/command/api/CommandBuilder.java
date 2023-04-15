@@ -25,7 +25,7 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
             try {
                 return executor().onCommand(sender, command1, label, args);
             } catch (CommandException e) {
-                e.handleException(sender);
+                e.handleException(sender, command1);
                 return true;
             }
         });
