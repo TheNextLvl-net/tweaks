@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.player;
 
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
+import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.util.RingBufferStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,15 +15,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.WeakHashMap;
 
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.*;
 
-@CommandInfo(name = "back", permission = "tweaks.command.back")
+@CommandInfo(
+        name = "back",
+        description = "go back to your last position",
+        permission = "tweaks.command.back"
+)
 public class BackCommand implements CommandExecutor, Listener {
-
 
     private final String metadataKey = "tweaks-back";
     private final int size = 5;
@@ -35,11 +38,9 @@ public class BackCommand implements CommandExecutor, Listener {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player player)) {
-            // TODO: Have to be online
-            return true;
-        }
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player player))
+            throw new CommandSenderException();
 
         RingBufferStack<Location> stack = map.get(player);
         Location pop = stack.pop();
