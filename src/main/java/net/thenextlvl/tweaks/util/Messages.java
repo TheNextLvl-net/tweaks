@@ -21,7 +21,8 @@ public class Messages {
     public static final MessageKey<CommandSender> WORLD_NOT_FOUND = new MessageKey<>("world.not.found", plugin.formatter());
     public static final MessageKey<CommandSender> SATISFIED_HUNGER_SELF = new MessageKey<>("hunger.satisfied.self", plugin.formatter());
     public static final MessageKey<CommandSender> SATISFIED_HUNGER_OTHERS = new MessageKey<>("hunger.satisfied.self", plugin.formatter());
-
+    public static final MessageKey<CommandSender> HAT_EQUIPPED = new MessageKey<>("hat.equipped", plugin.formatter());
+    public static final MessageKey<CommandSender> HOL_ITEM = new MessageKey<>("hold.item", plugin.formatter());
 
     static {
         initEnglish();
@@ -38,18 +39,21 @@ public class Messages {
         file.setDefault(WORLD_NOT_FOUND, "%prefix% §cThe world §4%world%§c does not exist");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% §aYour hunger has been satisfied");
         file.setDefault(SATISFIED_HUNGER_OTHERS, "%prefix% §6%player%'s§a hunger has been satisfied");
+        file.setDefault(HAT_EQUIPPED, "%prefix% §aYou have equipped your item as a hat");
+        file.setDefault(HOL_ITEM, "%prefix% §cYou have to hold an item in your main hand");
         file.save();
     }
 
     private static void initGerman() {
         var file = MessageFile.getOrCreate(Locale.forLanguageTag("de-DE"));
-        file.setDefault(COMMAND_PERMISSION, "%prefix%§c Darauf hast du keine rechte §8(§4%permission%§8)");
-        file.setDefault(COMMAND_SENDER, "%prefix%§c Du kannst diesen command nicht nutzen");
+        file.setDefault(COMMAND_PERMISSION, "%prefix% §cDarauf hast du keine rechte §8(§4%permission%§8)");
+        file.setDefault(COMMAND_SENDER, "%prefix% §cDu kannst diesen command nicht nutzen");
         file.setDefault(PLAYER_NOT_ONLINE, "%prefix% §cDer Spieler §4%player%§c ist nicht online");
         file.setDefault(WORLD_NOT_AFFECTED, "%prefix% §cDie Welt §4%world%§c ist nicht betroffen");
         file.setDefault(WORLD_NOT_FOUND, "%prefix% §cDie Welt §4%world%§c existiert nicht");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% §aDein Hunger wurde gestillt");
         file.setDefault(SATISFIED_HUNGER_OTHERS, "%prefix% §6%player%'s§a Hunger wurde gestillt");
+        file.setDefault(HOL_ITEM, "%prefix% §cDu musst ein Item in der Haupthand halten");
         file.save();
     }
 
