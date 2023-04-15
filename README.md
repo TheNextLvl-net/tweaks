@@ -63,7 +63,7 @@ A must-have command collection for your minecraft server
 |------------|---------------------------|
 | back       | tweaks.command.back       |
 | heal       | tweaks.command.heal       |
-| feed       | tweaks.command.fedd       |
+| feed       | tweaks.command.feed       |
 | gamemode   | tweaks.command.gamemode   |
 | fly        | tweaks.command.fly        |
 | speed      | tweaks.command.speed      |
