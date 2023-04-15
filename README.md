@@ -27,7 +27,7 @@ A must-have command collection for your minecraft server
 - [x] /fly (player) - *toggle your own or someone else's fly state*
 - [ ] /speed [speed] (player) - *change your own or someone else's walk or fly speed*
 - [x] /ping (player) - *see your own or someone else's latency*
-- [ ] /seen [player] - *gives you information about a player*
+- [x] /seen [player] - *gives you information about a player*
 - [x] /hat - *equip your items as hats*
 - [x] /enderchest (player) - *open your own or someone else's enderchest*
 - [x] /inventory (player) - *open your own or someone else's inventory*
