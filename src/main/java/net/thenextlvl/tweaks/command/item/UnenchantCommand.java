@@ -14,10 +14,11 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@CommandInfo(name = "unenchant", permission = "tweaks.command.unenchant", usage = "/<command> <enchantment...>")
+@CommandInfo(name = "unenchant", permission = "tweaks.command.unenchant", usage = "/<command> [enchantment...]")
 public class UnenchantCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -54,6 +55,7 @@ public class UnenchantCommand implements TabExecutor {
 
         return itemInMainHand.getEnchantments().keySet().stream()
                 .map(enchantment -> enchantment.getKey().asString())
+                .filter(s -> !Arrays.asList(args).contains(s))
                 .filter(s -> StringUtil.startsWithIgnoreCase(s, args[args.length - 1]))
                 .toList();
     }
