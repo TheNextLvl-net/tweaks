@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.config;
 
 public record TweaksConfig(
-        BroadcastConfig broadcastConfig
+        BroadcastConfig broadcastConfig,
+        BackConfig backConfig
 ) {
 }

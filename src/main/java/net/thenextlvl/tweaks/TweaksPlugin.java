@@ -11,6 +11,7 @@ import net.thenextlvl.tweaks.command.item.RepairCommand;
 import net.thenextlvl.tweaks.command.item.UnenchantCommand;
 import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
+import net.thenextlvl.tweaks.config.BackConfig;
 import net.thenextlvl.tweaks.config.BroadcastConfig;
 import net.thenextlvl.tweaks.config.TweaksConfig;
 import net.thenextlvl.tweaks.util.Placeholders;
@@ -27,7 +28,8 @@ public class TweaksPlugin extends JavaPlugin {
     private final Placeholder.Formatter<CommandSender> formatter = new Placeholder.Formatter<>();
 
     private final TweaksConfig tweaksConfig = new TweaksConfig(
-            new BroadcastConfig("", "<red>Server <grey>| <message>", "")
+            new BroadcastConfig("", "<red>Server <grey>| <message>", ""),
+            new BackConfig(5)
     );
 
     @Override
