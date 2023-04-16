@@ -21,7 +21,9 @@ public class Messages {
     public static final MessageKey<CommandSender> WORLD_NOT_AFFECTED = new MessageKey<>("world.not.affected", plugin.formatter());
     public static final MessageKey<CommandSender> WORLD_NOT_FOUND = new MessageKey<>("world.not.found", plugin.formatter());
     public static final MessageKey<CommandSender> SATISFIED_HUNGER_SELF = new MessageKey<>("hunger.satisfied.self", plugin.formatter());
-    public static final MessageKey<CommandSender> SATISFIED_HUNGER_OTHERS = new MessageKey<>("hunger.satisfied.self", plugin.formatter());
+    public static final MessageKey<CommandSender> SATISFIED_HUNGER_OTHERS = new MessageKey<>("hunger.satisfied.others", plugin.formatter());
+    public static final MessageKey<CommandSender> RESTORED_HEALTH_SELF = new MessageKey<>("health.restored.self", plugin.formatter());
+    public static final MessageKey<CommandSender> RESTORED_HEALTH_OTHERS = new MessageKey<>("health.restored.others", plugin.formatter());
     public static final MessageKey<CommandSender> HAT_EQUIPPED = new MessageKey<>("hat.equipped", plugin.formatter());
     public static final MessageKey<CommandSender> HOL_ITEM = new MessageKey<>("hold.item", plugin.formatter());
     public static final MessageKey<CommandSender> LAST_SEEN_NOW = new MessageKey<>("last.seen.now", plugin.formatter());
@@ -46,6 +48,8 @@ public class Messages {
         file.setDefault(WORLD_NOT_FOUND, "%prefix% §cThe world §4%world%§c does not exist");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% §aYour hunger has been satisfied");
         file.setDefault(SATISFIED_HUNGER_OTHERS, "%prefix% §6%player%'s§a hunger has been satisfied");
+        file.setDefault(RESTORED_HEALTH_SELF, "%prefix% §aYour health has been restored");
+        file.setDefault(RESTORED_HEALTH_OTHERS, "%prefix% §6%player%'s§a health has been restored");
         file.setDefault(HAT_EQUIPPED, "%prefix% §aYou have equipped your item as a hat");
         file.setDefault(HOL_ITEM, "%prefix% §cYou have to hold an item in your main hand");
         file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is online at the moment");

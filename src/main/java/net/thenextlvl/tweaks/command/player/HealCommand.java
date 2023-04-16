@@ -1,6 +1,8 @@
 package net.thenextlvl.tweaks.command.player;
 
+import core.api.placeholder.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
+import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
@@ -28,11 +30,10 @@ public class HealCommand extends PlayerCommand {
         player.setRemainingAir(player.getMaximumAir());
         player.setFreezeTicks(0);
 
-        if (player == sender) {
-            // TODO: You have been healed
-        } else {
-            // TODO: ... was healed.
-            // TODO: You have been healed
-        }
+        player.sendPlainMessage(Messages.RESTORED_HEALTH_SELF.message(player.locale()));
+        if (player == sender) return;
+        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
+        var placeholder = Placeholder.<CommandSender>of("player", player.getName());
+        sender.sendPlainMessage(Messages.RESTORED_HEALTH_OTHERS.message(locale, placeholder));
     }
 }
