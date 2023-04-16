@@ -10,7 +10,8 @@ import org.bukkit.entity.Player;
         name = "fly",
         usage = "/<command> (player)",
         description = "toggle your own or someone else's fly state",
-        permission = "tweaks.command.fly"
+        permission = "tweaks.command.fly",
+        aliases = {"flight"}
 )
 public class FlyCommand extends PlayerCommand {
 
