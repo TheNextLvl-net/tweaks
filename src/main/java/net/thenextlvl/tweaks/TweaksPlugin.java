@@ -58,6 +58,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new SeenCommand(this));
         registerCommand(new InventoryCommand());
         registerCommand(new EnderChestCommand());
+        registerCommand(new SpeedCommand());
 
         // Server
         registerCommand(new BroadcastCommand(this));

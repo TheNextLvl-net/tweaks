@@ -25,7 +25,7 @@ A must-have command collection for your minecraft server
 - [x] /feed (player) - *satisfy your own or someone else's hunger*
 - [ ] /gamemode [gamemode] (player) - *change your own or someone else's gamemode*
 - [x] /fly (player) - *toggle your own or someone else's fly state*
-- [ ] /speed [speed] (player) - *change your own or someone else's walk or fly speed*
+- [x] /speed [speed] (player) - *change your own or someone else's walk or fly speed*
 - [x] /ping (player) - *see your own or someone else's latency*
 - [x] /seen [player] - *gives you information about a player*
 - [x] /hat - *equip your items as hats*
