@@ -28,6 +28,8 @@ public class Messages {
     public static final MessageKey<CommandSender> ENABLED_FLIGHT_OTHERS = new MessageKey<>("flight.enabled.others", plugin.formatter());
     public static final MessageKey<CommandSender> DISABLED_FLIGHT_SELF = new MessageKey<>("flight.disabled.self", plugin.formatter());
     public static final MessageKey<CommandSender> DISABLED_FLIGHT_OTHERS = new MessageKey<>("flight.disabled.others", plugin.formatter());
+    public static final MessageKey<CommandSender> PING_SELF = new MessageKey<>("ping.self", plugin.formatter());
+    public static final MessageKey<CommandSender> PING_OTHERS = new MessageKey<>("ping.others", plugin.formatter());
     public static final MessageKey<CommandSender> HAT_EQUIPPED = new MessageKey<>("hat.equipped", plugin.formatter());
     public static final MessageKey<CommandSender> HOL_ITEM = new MessageKey<>("hold.item", plugin.formatter());
     public static final MessageKey<CommandSender> LAST_SEEN_NOW = new MessageKey<>("last.seen.now", plugin.formatter());
@@ -58,6 +60,8 @@ public class Messages {
         file.setDefault(ENABLED_FLIGHT_OTHERS, "%prefix% §6%player%'s§a is now able to fly");
         file.setDefault(DISABLED_FLIGHT_SELF, "%prefix% §aYou can no longer fly");
         file.setDefault(ENABLED_FLIGHT_SELF, "%prefix% §aYou are now able to fly");
+        file.setDefault(PING_SELF, "%prefix% §aYour connection latency is around §6%ping%ms");
+        file.setDefault(PING_OTHERS, "%prefix% §6%player%'s§a connection latency is around §6%ping%ms");
         file.setDefault(HAT_EQUIPPED, "%prefix% §aYou have equipped your item as a hat");
         file.setDefault(HOL_ITEM, "%prefix% §cYou have to hold an item in your main hand");
         file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is online at the moment");
@@ -84,6 +88,8 @@ public class Messages {
         file.setDefault(ENABLED_FLIGHT_OTHERS, "%prefix% §6%player%'s§a kann ab jetzt fliegen");
         file.setDefault(DISABLED_FLIGHT_SELF, "%prefix% §aDu kannst nicht länger fliegen");
         file.setDefault(ENABLED_FLIGHT_SELF, "%prefix% §aDu kannst ab jetzt fliegen");
+        file.setDefault(PING_SELF, "%prefix% §aDu hast einen verbindungslatenz von §6%ping%ms");
+        file.setDefault(PING_OTHERS, "%prefix% §6%player%§a hat eine verbindungslatenz von §6%ping%ms");
         file.setDefault(HOL_ITEM, "%prefix% §cDu musst ein Item in der Haupthand halten");
         file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is aktuell online");
         file.setDefault(LAST_SEEN_TIME, "%prefix% §6%player%§a war zuletzt online §6%time%");
