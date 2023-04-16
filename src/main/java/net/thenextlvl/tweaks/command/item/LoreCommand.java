@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 )
 public class LoreCommand implements TabExecutor {
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
         if (args.length < 2) return false;
@@ -59,10 +60,12 @@ public class LoreCommand implements TabExecutor {
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     private Consumer<? super ItemMeta> setLore(String[] lore) {
         return itemMeta -> itemMeta.setLore(Arrays.asList(lore));
     }
 
+    @SuppressWarnings("deprecation")
     private Consumer<? super ItemMeta> appendLore(String[] lore) {
         return itemMeta -> {
             List<String> currentLore = itemMeta.getLore();

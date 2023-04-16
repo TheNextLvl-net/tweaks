@@ -22,6 +22,7 @@ import java.util.List;
 )
 public class RenameCommand implements TabExecutor {
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
             throw new CommandSenderException();
