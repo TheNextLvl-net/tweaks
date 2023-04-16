@@ -42,6 +42,7 @@ public class Messages {
     public static final MessageKey<CommandSender> WEATHER_RAIN = new MessageKey<>("weather.rain", plugin.formatter());
     public static final MessageKey<CommandSender> WEATHER_SUN = new MessageKey<>("weather.sun", plugin.formatter());
     public static final MessageKey<CommandSender> WEATHER_THUNDER = new MessageKey<>("weather.thunder", plugin.formatter());
+    public static final MessageKey<CommandSender> LORE_EDIT_TIP = new MessageKey<>("lore.edit.tip", plugin.formatter());
 
     static {
         initEnglish();
@@ -79,6 +80,7 @@ public class Messages {
         file.setDefault(WEATHER_RAIN, "%prefix% §aIt is now raining in §6%world%");
         file.setDefault(WEATHER_SUN, "%prefix% §aIt is now sunny in §6%world%");
         file.setDefault(WEATHER_THUNDER, "%prefix% §aIt is now thundering in §6%world%");
+        file.setDefault(LORE_EDIT_TIP, "%prefix% §cUse §4\\n§c to add a new line and §4\\t§c to add indentations");
         file.save();
     }
 
@@ -111,6 +113,7 @@ public class Messages {
         file.setDefault(WEATHER_RAIN, "%prefix% §aEs regnet jetzt in §6%world%");
         file.setDefault(WEATHER_SUN, "%prefix% §aEs scheint jetzt die sonne in §6%world%");
         file.setDefault(WEATHER_THUNDER, "%prefix% §aEs gewittert jetzt in §6%world%");
+        file.setDefault(LORE_EDIT_TIP, "%prefix% §cNutze §4\\n§c für neue Zeile und §4\\t§c für Einrückungen");
         file.save();
     }
 
