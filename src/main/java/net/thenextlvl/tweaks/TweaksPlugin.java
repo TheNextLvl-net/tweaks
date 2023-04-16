@@ -8,6 +8,7 @@ import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
 import net.thenextlvl.tweaks.command.item.LoreCommand;
+import net.thenextlvl.tweaks.command.item.RenameCommand;
 import net.thenextlvl.tweaks.command.item.RepairCommand;
 import net.thenextlvl.tweaks.command.item.UnenchantCommand;
 import net.thenextlvl.tweaks.command.player.*;
@@ -68,6 +69,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new UnenchantCommand());
         registerCommand(new RepairCommand());
         registerCommand(new LoreCommand());
+        registerCommand(new RenameCommand());
     }
 
     private void registerCommand(CommandExecutor executor) {

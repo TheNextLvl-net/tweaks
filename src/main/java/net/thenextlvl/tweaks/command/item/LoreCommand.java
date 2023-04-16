@@ -21,13 +21,10 @@ import java.util.function.Consumer;
 public class LoreCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player))
-            throw new CommandSenderException();
-        if (args.length < 2)
-            return false;
+        if (!(sender instanceof Player player)) throw new CommandSenderException();
+        if (args.length < 2) return false;
 
-        String lore = String.join(" ", Arrays.copyOfRange(args, 1, args.length))
-                .replace("\\t", "   ");
+        String lore = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).replace("\\t", "   ");
         String[] loreLines = lore.split("\\\\n");
         for (int i = 0; i < loreLines.length; i++) {
             loreLines[i] = ChatColor.translateAlternateColorCodes('&', loreLines[i]);
@@ -46,17 +43,16 @@ public class LoreCommand implements TabExecutor {
             function = appendLore(loreLines);
         }
 
-        if (function == null)
-            return false;
+        if (function == null) return false;
 
-        if (item.editMeta(function)) {
-            inventory.setItemInMainHand(item);
-            // TODO: The lore was successfully updated
-            return true;
-        } else {
+        if (!item.editMeta(function)) {
             // TODO: Something went wrong during updating the lore to the item in your main hand.
             return false;
         }
+
+        inventory.setItemInMainHand(item);
+        // TODO: The lore was successfully updated
+        return true;
     }
 
     private Consumer<? super ItemMeta> setLore(String[] lore) {
@@ -73,8 +69,7 @@ public class LoreCommand implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length == 1)
-            return Arrays.asList("set", "append");
+        if (args.length == 1) return Arrays.asList("set", "append");
         return Arrays.asList(args[args.length - 1] + "\\n", args[args.length - 1] + "\\t");
     }
 }
