@@ -15,6 +15,6 @@ public class WorldNotAffectedException extends CommandException {
     @Override
     public void handle(Locale locale, CommandSender sender) {
         var placeholder = Placeholder.<CommandSender>of("world", world.getName());
-        sender.sendMessage(Messages.WORLD_NOT_AFFECTED.message(locale, sender, placeholder));
+        sender.sendRichMessage(Messages.WORLD_NOT_AFFECTED.message(locale, sender, placeholder));
     }
 }

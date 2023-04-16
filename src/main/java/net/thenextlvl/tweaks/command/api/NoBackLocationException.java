@@ -9,6 +9,6 @@ public class NoBackLocationException extends CommandException {
 
     @Override
     public void handle(Locale locale, CommandSender sender) {
-        sender.sendMessage(Messages.BACK_EMPTY.message(locale, sender));
+        sender.sendRichMessage(Messages.BACK_EMPTY.message(locale, sender));
     }
 }

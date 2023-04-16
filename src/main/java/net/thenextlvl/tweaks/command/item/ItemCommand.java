@@ -11,7 +11,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -36,26 +35,24 @@ public class ItemCommand implements TabExecutor {
         int amount = 1;
         if (args.length == 2) {
             try {
-                amount = Math.min(Integer.parseInt(args[1]), 2500);
+                amount = Math.max(1, Math.min(Integer.parseInt(args[1]), 2500));
             } catch (NumberFormatException e) {
                 return false;
             }
         }
 
         PlayerInventory inventory = player.getInventory();
-        while (true) {
+        do {
             int min = Math.min(amount, stack.getMaxStackSize());
             stack.setAmount(min);
             inventory.addItem(stack);
             amount -= min;
-
-            if (amount <= 0) break;
-        }
+        } while (amount > 0);
         return true;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) {
             return Arrays.stream(Material.values()).map(material -> material.getKey().asString()).toList();
         }

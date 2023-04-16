@@ -14,6 +14,6 @@ public class NoPermissionException extends CommandException {
     @Override
     public void handle(Locale locale, CommandSender sender) {
         var placeholder = Placeholder.<CommandSender>of("permission", permission);
-        sender.sendMessage(Messages.COMMAND_PERMISSION.message(locale, placeholder));
+        sender.sendRichMessage(Messages.COMMAND_PERMISSION.message(locale, placeholder));
     }
 }

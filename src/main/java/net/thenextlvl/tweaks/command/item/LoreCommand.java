@@ -8,8 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,8 +29,17 @@ public class LoreCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
         if (args.length < 1) return false;
+
+        var inventory = player.getInventory();
+        var item = inventory.getItemInMainHand();
+
+        if (item.getType().isEmpty()) {
+            player.sendRichMessage(Messages.HOLD_ITEM.message(player.locale(), player));
+            return true;
+        }
+
         if (args.length < 2) {
-            player.sendMessage(Messages.LORE_EDIT_TIP.message(player.locale(), sender));
+            player.sendRichMessage(Messages.LORE_EDIT_TIP.message(player.locale(), sender));
             return false;
         }
 
@@ -41,9 +48,6 @@ public class LoreCommand implements TabExecutor {
         for (int i = 0; i < loreLines.length; i++) {
             loreLines[i] = ChatColor.translateAlternateColorCodes('&', loreLines[i]);
         }
-
-        PlayerInventory inventory = player.getInventory();
-        ItemStack item = inventory.getItemInMainHand();
 
         Consumer<? super ItemMeta> function = null;
 

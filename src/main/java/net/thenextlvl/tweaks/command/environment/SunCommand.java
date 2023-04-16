@@ -21,7 +21,7 @@ public class SunCommand extends WorldCommand {
         world.setThundering(false);
         var placeholder = Placeholder.<CommandSender>of("world", world.getName());
         var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-        sender.sendMessage(Messages.WEATHER_SUN.message(locale, sender, placeholder));
+        sender.sendRichMessage(Messages.WEATHER_SUN.message(locale, sender, placeholder));
     }
 
     @Override

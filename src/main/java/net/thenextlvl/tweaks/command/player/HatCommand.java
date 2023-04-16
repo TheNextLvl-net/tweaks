@@ -28,10 +28,10 @@ public class HatCommand implements CommandExecutor {
 
         if (!item.getType().isEmpty() || helmet != null) {
             player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.PLAYERS, 1f, 1f);
-            sender.sendMessage(Messages.HAT_EQUIPPED.message(player.locale()));
+            sender.sendRichMessage(Messages.HAT_EQUIPPED.message(player.locale()));
             inventory.setItemInMainHand(helmet);
             inventory.setHelmet(item);
-        } else player.sendMessage(Messages.HAT_EQUIPPED.message(player.locale()));
+        } else player.sendRichMessage(Messages.HAT_EQUIPPED.message(player.locale()));
         return true;
     }
 }

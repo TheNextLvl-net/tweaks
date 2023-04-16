@@ -16,31 +16,27 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-@CommandInfo(name = "gamemode", usage = "/<command> [game mode] (player)", aliases = "gm", permission = "tweaks.command.gamemode", description = "change your own or someone else's game mode")
+@CommandInfo(
+        name = "gamemode",
+        usage = "/<command> [gamemode] (player)",
+        permission = "tweaks.command.gamemode",
+        description = "change your own or someone else's game mode",
+        aliases = {"gm"}
+)
 public class GameModeCommand implements TabExecutor {
 
     private static final String OTHERS_PERMISSION = "tweaks.command.gamemode.others";
 
-    public GameModeCommand() {
-    }
-
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) return false;
 
-        GameMode mode;
-        try {
-            mode = GameMode.valueOf(args[0].toUpperCase());
-        } catch (IllegalArgumentException e) {
-            try {
-                int i = Integer.parseInt(args[0]);
-                mode = GameMode.getByValue(i);
-                if (mode == null)
-                    return false;
-            } catch (NumberFormatException e1) {
-                return false;
-            }
-        }
+        GameMode gamemode = Arrays.stream(GameMode.values())
+                .filter(mode -> mode.name().toLowerCase().startsWith(args[0])
+                        || args[0].equalsIgnoreCase(String.valueOf(mode.getValue())))
+                .findFirst().orElse(null);
+        if (gamemode == null) return false;
 
         Player target;
         if (args.length == 2) target = Bukkit.getPlayer(args[1]);
@@ -54,10 +50,10 @@ public class GameModeCommand implements TabExecutor {
 
         if (target == null) throw new PlayerNotOnlineException(args[1]);
 
-        if (!sender.hasPermission("tweaks.command.gamemode." + mode.name().toLowerCase())) {
-            throw new NoPermissionException("tweaks.command.gamemode." + mode.name().toLowerCase());
+        if (!sender.hasPermission("tweaks.command.gamemode." + gamemode.name().toLowerCase())) {
+            throw new NoPermissionException("tweaks.command.gamemode." + gamemode.name().toLowerCase());
         }
-        target.setGameMode(mode);
+        target.setGameMode(gamemode);
         // TODO: Send message
         return true;
     }

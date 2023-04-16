@@ -1,7 +1,9 @@
 package net.thenextlvl.tweaks.command.item;
 
+import core.api.placeholder.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
+import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,14 +39,14 @@ public class UnenchantCommand implements TabExecutor {
             NamespacedKey namespacedKey = NamespacedKey.fromString(arg);
             Enchantment byKey = Enchantment.getByKey(namespacedKey);
             if (byKey == null) {
-                // TODO: Give the player an information
-                continue;
+                var enchantment = Placeholder.<CommandSender>of("enchantment", arg);
+                player.sendRichMessage(Messages.INVALID_ENCHANTMENT.message(player.locale(), player, enchantment));
+                return true;
             }
             itemInMainHand.removeEnchantment(byKey);
         }
 
         inventory.setItemInMainHand(itemInMainHand);
-        // TODO: Send a message
         return true;
     }
 

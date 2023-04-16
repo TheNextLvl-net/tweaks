@@ -41,10 +41,10 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
         try {
             if (executor().onCommand(sender, command1, label, args)) return;
             var usage = Placeholder.<CommandSender>of("usage", command1.getUsage()
-                    .replace("[", "§8[§6").replace("]", "§8]§c")
-                    .replace("(", "§8(§6").replace(")", "§8)§c")
-                    .replace("|", " §8| §6").replace("<command>", label));
-            sender.sendMessage(Messages.COMMAND_USAGE.message(sender, usage));
+                    .replace("[", "<dark_gray>[<gold>").replace("]", "<dark_gray>]<red>")
+                    .replace("(", "<dark_gray>(<gold>").replace(")", "<dark_gray>)<red>")
+                    .replace("|", " <dark_gray>| <gold>").replace("<command>", label));
+            sender.sendRichMessage(Messages.COMMAND_USAGE.message(sender, usage));
         } catch (CommandException e) {
             e.handle(sender);
         }

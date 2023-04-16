@@ -53,7 +53,7 @@ public class BackCommand implements CommandExecutor, Listener {
         player.setMetadata(metadataKey, new FixedMetadataValue(plugin, true));
         player.teleportAsync(pop, COMMAND).thenAccept(success -> {
             var message = success ? Messages.BACK_TELEPORT_SUCCESS : Messages.BACK_TELEPORT_FAIL;
-            player.sendMessage(message.message(player.locale(), player));
+            player.sendRichMessage(message.message(player.locale(), player));
         });
         return true;
     }

@@ -1,7 +1,13 @@
 package net.thenextlvl.tweaks.command.item;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
+import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,7 +16,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -30,36 +35,49 @@ public class EnchantCommand implements TabExecutor {
         NamespacedKey namespacedKey = NamespacedKey.fromString(args[0]);
         if (namespacedKey == null)
             return false;
-        Enchantment byKey = Enchantment.getByKey(namespacedKey);
-        if (byKey == null)
+        Enchantment enchantment = Enchantment.getByKey(namespacedKey);
+        if (enchantment == null)
             return false;
 
         PlayerInventory inventory = player.getInventory();
         ItemStack item = inventory.getItemInMainHand();
-        if (item.getType().isEmpty())
-            return false;
 
-        int level = byKey.getStartLevel();
-        if (args.length == 2) {
-            try {
-                level = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
-                return false;
-            }
+        if (item.getType().isEmpty()) {
+            player.sendRichMessage(Messages.HOLD_ITEM.message(player.locale(), player));
+            return true;
+        }
+        if (!enchantment.canEnchantItem(item)) {
+            var text = MiniMessage.miniMessage().deserialize(Messages.ENCHANTMENT_NOT_APPLICABLE.message(player.locale(), player),
+                    TagResolver.builder().tag("item", Tag.inserting(Component.translatable(item.translationKey()))).build());
+            player.sendMessage(text);
+            return true;
         }
 
-        item.addEnchantment(byKey, level);
+        int level = enchantment.getStartLevel();
+        if (args.length == 2) try {
+            level = Integer.parseInt(args[1]);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        level = Math.min(enchantment.getMaxLevel(), Math.max(enchantment.getStartLevel(), level));
+
+        int finalLevel = level;
+        item.addEnchantment(enchantment, level);
         inventory.setItemInMainHand(item);
+        var text = MiniMessage.miniMessage().deserialize(Messages.ENCHANTED_ITEM.message(player.locale(), player),
+                TagResolver.builder().tag("enchantment", Tag.inserting(enchantment.displayName(finalLevel)
+                        .style(Style.empty()))).build());
+        player.sendMessage(text);
         return true;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
             return null;
         PlayerInventory inventory = player.getInventory();
         ItemStack item = inventory.getItemInMainHand();
-        if (!item.getType().isEmpty())
+        if (item.getType().isEmpty())
             return null;
 
         if (args.length == 1) {
@@ -72,8 +90,12 @@ public class EnchantCommand implements TabExecutor {
             NamespacedKey namespacedKey = NamespacedKey.fromString(args[0]);
             if (namespacedKey == null)
                 return null;
-            Enchantment byKey = Enchantment.getByKey(namespacedKey);
-            return IntStream.range(byKey.getStartLevel(), byKey.getMaxLevel() + 1).mapToObj(Integer::toString).toList();
+            Enchantment enchantment = Enchantment.getByKey(namespacedKey);
+            if (enchantment == null)
+                return null;
+            if (enchantment.getStartLevel() == enchantment.getMaxLevel()) return null;
+            return IntStream.range(enchantment.getStartLevel(), enchantment.getMaxLevel() + 1)
+                    .mapToObj(Integer::toString).toList();
         }
         return null;
     }

@@ -6,13 +6,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
-@CommandInfo(name = "speed", usage = "/<command> [speed]", permission = "tweaks.command.speed", description = "change your own or someone else's walk or fly speed")
+@CommandInfo(
+        name = "speed",
+        usage = "/<command> [speed]",
+        permission = "tweaks.command.speed",
+        description = "change your own or someone else's walk or fly speed"
+)
 public class SpeedCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -42,9 +46,8 @@ public class SpeedCommand implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length > 1)
-            return null;
+    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length > 1) return null;
         return IntStream.range(0, 11).mapToObj(Integer::toString).toList();
     }
 }

@@ -21,7 +21,7 @@ public class ThunderCommand extends WorldCommand {
         world.setThundering(true);
         var placeholder = Placeholder.<CommandSender>of("world", world.getName());
         var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-        sender.sendMessage(Messages.WEATHER_THUNDER.message(locale, sender, placeholder));
+        sender.sendRichMessage(Messages.WEATHER_THUNDER.message(locale, sender, placeholder));
     }
 
     @Override

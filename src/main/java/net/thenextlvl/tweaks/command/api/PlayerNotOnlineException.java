@@ -14,6 +14,6 @@ public class PlayerNotOnlineException extends CommandException {
     @Override
     public void handle(Locale locale, CommandSender sender) {
         var placeholder = Placeholder.<CommandSender>of("player", input);
-        sender.sendMessage(Messages.PLAYER_NOT_ONLINE.message(locale, sender, placeholder));
+        sender.sendRichMessage(Messages.PLAYER_NOT_ONLINE.message(locale, sender, placeholder));
     }
 }

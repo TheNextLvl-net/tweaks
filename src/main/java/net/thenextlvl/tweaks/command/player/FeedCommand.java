@@ -28,10 +28,10 @@ public class FeedCommand extends PlayerCommand {
 
     private static void notifySatisfaction(CommandSender sender, Player target) {
         target.playSound(target, Sound.ENTITY_PLAYER_BURP, SoundCategory.VOICE, 1f, 1f);
-        target.sendMessage(Messages.SATISFIED_HUNGER_SELF.message(target.locale()));
+        target.sendRichMessage(Messages.SATISFIED_HUNGER_SELF.message(target.locale()));
         if (target.equals(sender)) return;
         var placeholder = Placeholder.<CommandSender>of("player", target.getName());
         Locale locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-        sender.sendMessage(Messages.SATISFIED_HUNGER_OTHERS.message(locale, placeholder));
+        sender.sendRichMessage(Messages.SATISFIED_HUNGER_OTHERS.message(locale, placeholder));
     }
 }
