@@ -56,6 +56,7 @@ bukkit {
         register("tweaks.command.gamemode.others")
         register("tweaks.command.gamemode.all") {
             this.children = listOf(
+                "tweaks.command.gamemode",
                 "tweaks.command.gamemode.survival",
                 "tweaks.command.gamemode.creative",
                 "tweaks.command.gamemode.adventure",
