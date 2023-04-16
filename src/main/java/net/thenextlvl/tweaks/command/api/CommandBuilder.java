@@ -4,7 +4,6 @@ import core.api.placeholder.Placeholder;
 import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +34,7 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
     private List<String> strip(@Nullable List<String> suggestions, String[] args) {
         if (suggestions == null) return Collections.emptyList();
         if (suggestions.isEmpty()) return suggestions;
-        return suggestions.stream().filter(s -> StringUtil.startsWithIgnoreCase(s, args[args.length - 1])).toList();
+        return suggestions.stream().filter(s -> s.contains(args[args.length - 1])).toList();
     }
 
     private void execute(CommandSender sender, Command command1, String label, String[] args) {
