@@ -9,13 +9,17 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 
-@CommandInfo(name = "rename", usage = "/<command> [text...]", permission = "tweaks.command.rename", description = "Changes the display name of the item in your hand")
+@CommandInfo(
+        name = "rename",
+        usage = "/<command> [text...]",
+        permission = "tweaks.command.rename",
+        description = "Changes the display name of the item in your hand"
+)
 public class RenameCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

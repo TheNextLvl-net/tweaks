@@ -10,14 +10,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-@CommandInfo(name = "lore", permission = "tweaks.command.lore", usage = "/<command> [set|append] [lore...]\nUse \\n to set multiple lines and \\t to make indentation")
+@CommandInfo(
+        name = "lore",
+        permission = "tweaks.command.lore",
+        description = "change the lore of your items",
+        usage = "/<command> [set|append] [lore...]"
+)
 public class LoreCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

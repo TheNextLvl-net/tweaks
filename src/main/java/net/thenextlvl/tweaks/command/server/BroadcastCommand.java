@@ -11,7 +11,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-@CommandInfo(name = "broadcast", permission = "tweaks.command.broadcast", description = "broadcast a message", usage = "/<command> [message]", aliases = {"bc"})
+@CommandInfo(
+        name = "broadcast",
+        permission = "tweaks.command.broadcast",
+        description = "broadcast a message",
+        usage = "/<command> [message]",
+        aliases = {"bc"}
+)
 @RequiredArgsConstructor
 public class BroadcastCommand implements CommandExecutor {
     private final TweaksPlugin plugin;
