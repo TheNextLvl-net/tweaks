@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -27,7 +26,7 @@ public class RingBufferStack<E> {
      * @param item the item to be pushed onto this stack.
      * @return the {@code item} argument.
      */
-    public E push(@NotNull E item) {
+    public E push(E item) {
         int newIndex = modulo(index++, array.length);
         array[newIndex] = item;
         return item;

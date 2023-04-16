@@ -68,7 +68,7 @@ public class LoreCommand implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) return Arrays.asList("set", "append");
         return Arrays.asList(args[args.length - 1] + "\\n", args[args.length - 1] + "\\t");
     }
