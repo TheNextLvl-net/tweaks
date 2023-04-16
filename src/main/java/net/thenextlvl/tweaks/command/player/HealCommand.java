@@ -30,10 +30,10 @@ public class HealCommand extends PlayerCommand {
         player.setRemainingAir(player.getMaximumAir());
         player.setFreezeTicks(0);
 
-        player.sendPlainMessage(Messages.RESTORED_HEALTH_SELF.message(player.locale()));
+        player.sendMessage(Messages.RESTORED_HEALTH_SELF.message(player.locale()));
         if (player == sender) return;
         var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
         var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-        sender.sendPlainMessage(Messages.RESTORED_HEALTH_OTHERS.message(locale, placeholder));
+        sender.sendMessage(Messages.RESTORED_HEALTH_OTHERS.message(locale, placeholder));
     }
 }

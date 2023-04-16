@@ -14,6 +14,6 @@ public class WorldNotFoundException extends CommandException {
     @Override
     public void handle(Locale locale, CommandSender sender) {
         var placeholder = Placeholder.<CommandSender>of("world", input);
-        sender.sendPlainMessage(Messages.WORLD_NOT_FOUND.message(locale, sender, placeholder));
+        sender.sendMessage(Messages.WORLD_NOT_FOUND.message(locale, sender, placeholder));
     }
 }

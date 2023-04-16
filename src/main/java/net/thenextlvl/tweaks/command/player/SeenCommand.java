@@ -43,7 +43,7 @@ public class SeenCommand implements TabExecutor {
         var target = Bukkit.getPlayer(args[0]);
         if (target == null) return false;
         var player = Placeholder.<CommandSender>of("player", target.getName());
-        sender.sendPlainMessage(Messages.LAST_SEEN_NOW.message(locale, sender, player));
+        sender.sendMessage(Messages.LAST_SEEN_NOW.message(locale, sender, player));
         return true;
     }
 
@@ -65,7 +65,7 @@ public class SeenCommand implements TabExecutor {
                 return format.format(lastSeen);
             });
 
-            sender.sendPlainMessage(Messages.LAST_SEEN_TIME.message(locale, sender, player, time));
+            sender.sendMessage(Messages.LAST_SEEN_TIME.message(locale, sender, player, time));
         });
     }
 

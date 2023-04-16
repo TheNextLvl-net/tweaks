@@ -46,7 +46,6 @@ public class RingBufferStack<E> {
 
         E obj = peek();
         array[modulo(--index, array.length)] = null;
-
         return obj;
     }
 

@@ -8,6 +8,6 @@ import java.util.Locale;
 public class CommandSenderException extends CommandException {
     @Override
     public void handle(Locale locale, CommandSender sender) {
-        sender.sendPlainMessage(Messages.COMMAND_SENDER.message(locale));
+        sender.sendMessage(Messages.COMMAND_SENDER.message(locale));
     }
 }

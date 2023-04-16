@@ -20,7 +20,7 @@ public class DayCommand extends WorldCommand {
         world.setTime(1000);
         var placeholder = Placeholder.<CommandSender>of("world", world.getName());
         var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-        sender.sendPlainMessage(Messages.TIME_DAY.message(locale, sender, placeholder));
+        sender.sendMessage(Messages.TIME_DAY.message(locale, sender, placeholder));
     }
 
     @Override

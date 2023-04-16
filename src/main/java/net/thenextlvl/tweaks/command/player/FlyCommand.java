@@ -22,10 +22,10 @@ public class FlyCommand extends PlayerCommand {
         var messageSelf = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_SELF : Messages.DISABLED_FLIGHT_SELF;
         var messageOthers = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_OTHERS : Messages.DISABLED_FLIGHT_OTHERS;
 
-        player.sendPlainMessage(messageSelf.message(player.locale()));
+        player.sendMessage(messageSelf.message(player.locale()));
         if (player == sender) return;
         var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
         var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-        sender.sendPlainMessage(messageOthers.message(locale, placeholder));
+        sender.sendMessage(messageOthers.message(locale, placeholder));
     }
 }
