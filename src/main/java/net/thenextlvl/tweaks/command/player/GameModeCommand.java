@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.player;
 
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
+import net.thenextlvl.tweaks.command.api.NoPermissionException;
 import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -29,7 +30,14 @@ public class GameModeCommand implements TabExecutor {
         try {
             mode = GameMode.valueOf(args[0].toUpperCase());
         } catch (IllegalArgumentException e) {
-            return false;
+            try {
+                int i = Integer.parseInt(args[0]);
+                mode = GameMode.getByValue(i);
+                if (mode == null)
+                    return false;
+            } catch (NumberFormatException e1) {
+                return false;
+            }
         }
 
         Player target;
@@ -39,9 +47,14 @@ public class GameModeCommand implements TabExecutor {
 
         if (target == null) throw new PlayerNotOnlineException(args[1]);
 
-
+        if (!sender.hasPermission("tweaks.command.gamemode." + mode.name().toLowerCase())) {
+            throw new NoPermissionException("tweaks.command.gamemode." + mode.name().toLowerCase());
+        }
+        if (sender != target && !sender.hasPermission("tweaks.command.gamemode.others")) {
+            throw new NoPermissionException("tweaks.command.gamemode.others");
+        }
         target.setGameMode(mode);
-
+        // TODO: Send message
         return true;
     }
 
