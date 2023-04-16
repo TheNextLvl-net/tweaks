@@ -23,7 +23,7 @@ A must-have command collection for your minecraft server
 - [x] /back - *go back to your last position*
 - [x] /heal (player) - *heal yourself or someone else*
 - [x] /feed (player) - *satisfy your own or someone else's hunger*
-- [ ] /gamemode [gamemode] (player) - *change your own or someone else's gamemode*
+- [x] /gamemode [gamemode] (player) - *change your own or someone else's gamemode*
 - [x] /fly (player) - *toggle your own or someone else's fly state*
 - [x] /speed [speed] (player) - *change your own or someone else's walk or fly speed*
 - [x] /ping (player) - *see your own or someone else's latency*
