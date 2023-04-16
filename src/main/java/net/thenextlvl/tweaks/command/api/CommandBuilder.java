@@ -44,7 +44,7 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
             var usage = Placeholder.<CommandSender>of("usage", command1.getUsage()
                     .replace("[", "§8[§6").replace("]", "§8]§c")
                     .replace("(", "§8(§6").replace(")", "§8)§c")
-                    .replace("<command>", label));
+                    .replace("|", " §8| §6").replace("<command>", label));
             sender.sendMessage(Messages.COMMAND_USAGE.message(sender, usage));
         } catch (CommandException e) {
             e.handle(sender);
