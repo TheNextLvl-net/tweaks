@@ -68,6 +68,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new LoreCommand());
         registerCommand(new RenameCommand());
         registerCommand(new EnchantCommand());
+        registerCommand(new ItemCommand());
     }
 
     private void registerCommand(CommandExecutor executor) {
