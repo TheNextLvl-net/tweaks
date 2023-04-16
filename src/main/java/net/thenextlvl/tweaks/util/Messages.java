@@ -24,6 +24,10 @@ public class Messages {
     public static final MessageKey<CommandSender> SATISFIED_HUNGER_OTHERS = new MessageKey<>("hunger.satisfied.others", plugin.formatter());
     public static final MessageKey<CommandSender> RESTORED_HEALTH_SELF = new MessageKey<>("health.restored.self", plugin.formatter());
     public static final MessageKey<CommandSender> RESTORED_HEALTH_OTHERS = new MessageKey<>("health.restored.others", plugin.formatter());
+    public static final MessageKey<CommandSender> ENABLED_FLIGHT_SELF = new MessageKey<>("flight.enabled.self", plugin.formatter());
+    public static final MessageKey<CommandSender> ENABLED_FLIGHT_OTHERS = new MessageKey<>("flight.enabled.others", plugin.formatter());
+    public static final MessageKey<CommandSender> DISABLED_FLIGHT_SELF = new MessageKey<>("flight.disabled.self", plugin.formatter());
+    public static final MessageKey<CommandSender> DISABLED_FLIGHT_OTHERS = new MessageKey<>("flight.disabled.others", plugin.formatter());
     public static final MessageKey<CommandSender> HAT_EQUIPPED = new MessageKey<>("hat.equipped", plugin.formatter());
     public static final MessageKey<CommandSender> HOL_ITEM = new MessageKey<>("hold.item", plugin.formatter());
     public static final MessageKey<CommandSender> LAST_SEEN_NOW = new MessageKey<>("last.seen.now", plugin.formatter());
@@ -50,6 +54,10 @@ public class Messages {
         file.setDefault(SATISFIED_HUNGER_OTHERS, "%prefix% §6%player%'s§a hunger has been satisfied");
         file.setDefault(RESTORED_HEALTH_SELF, "%prefix% §aYour health has been restored");
         file.setDefault(RESTORED_HEALTH_OTHERS, "%prefix% §6%player%'s§a health has been restored");
+        file.setDefault(DISABLED_FLIGHT_OTHERS, "%prefix% §6%player%§a can no longer fly");
+        file.setDefault(ENABLED_FLIGHT_OTHERS, "%prefix% §6%player%'s§a is now able to fly");
+        file.setDefault(DISABLED_FLIGHT_SELF, "%prefix% §aYou can no longer fly");
+        file.setDefault(ENABLED_FLIGHT_SELF, "%prefix% §aYou are now able to fly");
         file.setDefault(HAT_EQUIPPED, "%prefix% §aYou have equipped your item as a hat");
         file.setDefault(HOL_ITEM, "%prefix% §cYou have to hold an item in your main hand");
         file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is online at the moment");
@@ -70,6 +78,12 @@ public class Messages {
         file.setDefault(WORLD_NOT_FOUND, "%prefix% §cDie Welt §4%world%§c existiert nicht");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% §aDein Hunger wurde gestillt");
         file.setDefault(SATISFIED_HUNGER_OTHERS, "%prefix% §6%player%'s§a Hunger wurde gestillt");
+        file.setDefault(RESTORED_HEALTH_SELF, "%prefix% §aDu wurdest vollständig geheilt");
+        file.setDefault(RESTORED_HEALTH_OTHERS, "%prefix% §6%player%§a wurde vollständig geheilt");
+        file.setDefault(DISABLED_FLIGHT_OTHERS, "%prefix% §6%player%§a kann nicht länger fliegen");
+        file.setDefault(ENABLED_FLIGHT_OTHERS, "%prefix% §6%player%'s§a kann ab jetzt fliegen");
+        file.setDefault(DISABLED_FLIGHT_SELF, "%prefix% §aDu kannst nicht länger fliegen");
+        file.setDefault(ENABLED_FLIGHT_SELF, "%prefix% §aDu kannst ab jetzt fliegen");
         file.setDefault(HOL_ITEM, "%prefix% §cDu musst ein Item in der Haupthand halten");
         file.setDefault(LAST_SEEN_NOW, "%prefix% §6%player%§a is aktuell online");
         file.setDefault(LAST_SEEN_TIME, "%prefix% §6%player%§a war zuletzt online §6%time%");
