@@ -37,6 +37,11 @@ public class Messages {
     public static final MessageKey<CommandSender> BACK_EMPTY = new MessageKey<>("back.empty", plugin.formatter());
     public static final MessageKey<CommandSender> BACK_TELEPORT_SUCCESS = new MessageKey<>("back.teleport.success", plugin.formatter());
     public static final MessageKey<CommandSender> BACK_TELEPORT_FAIL = new MessageKey<>("back.teleport.fail", plugin.formatter());
+    public static final MessageKey<CommandSender> TIME_DAY = new MessageKey<>("time.day", plugin.formatter());
+    public static final MessageKey<CommandSender> TIME_NIGHT = new MessageKey<>("time.night", plugin.formatter());
+    public static final MessageKey<CommandSender> WEATHER_RAIN = new MessageKey<>("weather.rain", plugin.formatter());
+    public static final MessageKey<CommandSender> WEATHER_SUN = new MessageKey<>("weather.sun", plugin.formatter());
+    public static final MessageKey<CommandSender> WEATHER_THUNDER = new MessageKey<>("weather.thunder", plugin.formatter());
 
     static {
         initEnglish();
@@ -69,6 +74,11 @@ public class Messages {
         file.setDefault(BACK_EMPTY, "%prefix% §cYou can't go back any further");
         file.setDefault(BACK_TELEPORT_SUCCESS, "%prefix% §aTeleported you to your last position");
         file.setDefault(BACK_TELEPORT_FAIL, "%prefix% §cFailed to teleport you to your last position");
+        file.setDefault(TIME_DAY, "%prefix% §aIt is now day in §6%world%");
+        file.setDefault(TIME_NIGHT, "%prefix% §aIt is now night in §6%world%");
+        file.setDefault(WEATHER_RAIN, "%prefix% §aIt is now raining in §6%world%");
+        file.setDefault(WEATHER_SUN, "%prefix% §aIt is now sunny in §6%world%");
+        file.setDefault(WEATHER_THUNDER, "%prefix% §aIt is now thundering in §6%world%");
         file.save();
     }
 
@@ -96,6 +106,11 @@ public class Messages {
         file.setDefault(BACK_EMPTY, "%prefix% §cDu kannst nicht weiter zurück gehen");
         file.setDefault(BACK_TELEPORT_SUCCESS, "%prefix% §aDu wurdest zu deiner letzten Position teleportiert");
         file.setDefault(BACK_TELEPORT_FAIL, "%prefix% §cDu konntest nicht zu deiner letzten Position teleportiert werden");
+        file.setDefault(TIME_DAY, "%prefix% §aEs ist jetzt tag in §6%world%");
+        file.setDefault(TIME_NIGHT, "%prefix% §aEs ist jetzt nacht in §6%world%");
+        file.setDefault(WEATHER_RAIN, "%prefix% §aEs regnet jetzt in §6%world%");
+        file.setDefault(WEATHER_SUN, "%prefix% §aEs scheint jetzt die sonne in §6%world%");
+        file.setDefault(WEATHER_THUNDER, "%prefix% §aEs gewittert jetzt in §6%world%");
         file.save();
     }
 
