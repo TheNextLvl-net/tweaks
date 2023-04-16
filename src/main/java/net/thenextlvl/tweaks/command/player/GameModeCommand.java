@@ -19,6 +19,8 @@ import java.util.List;
 @CommandInfo(name = "gamemode", usage = "/<command> [game mode] (player)", aliases = "gm", permission = "tweaks.command.gamemode", description = "change your own or someone else's game mode")
 public class GameModeCommand implements TabExecutor {
 
+    private static final String OTHERS_PERMISSION = "tweaks.command.gamemode.others";
+
     public GameModeCommand() {
     }
 
@@ -50,8 +52,8 @@ public class GameModeCommand implements TabExecutor {
         if (!sender.hasPermission("tweaks.command.gamemode." + mode.name().toLowerCase())) {
             throw new NoPermissionException("tweaks.command.gamemode." + mode.name().toLowerCase());
         }
-        if (sender != target && !sender.hasPermission("tweaks.command.gamemode.others")) {
-            throw new NoPermissionException("tweaks.command.gamemode.others");
+        if (sender != target && !sender.hasPermission(OTHERS_PERMISSION)) {
+            throw new NoPermissionException(OTHERS_PERMISSION);
         }
         target.setGameMode(mode);
         // TODO: Send message
@@ -61,8 +63,12 @@ public class GameModeCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length <= 1)
-            return Arrays.stream(GameMode.values()).map(gameMode -> gameMode.name().toLowerCase()).toList();
-        else if (args.length == 2) return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+            return Arrays.stream(GameMode.values())
+                    .map(gameMode -> gameMode.name().toLowerCase())
+                    .filter(s -> sender.hasPermission("tweaks.command.gamemode." + s))
+                    .toList();
+        else if (args.length == 2 && sender.hasPermission(OTHERS_PERMISSION))
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
         return null;
     }
 }
