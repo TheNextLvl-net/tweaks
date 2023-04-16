@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 @CommandInfo(
         name = "inventory",
+        usage = "/<command> [player]",
         description = "open your own or someone else's inventory",
         permission = "tweaks.command.inventory",
         aliases = {"inv"}
