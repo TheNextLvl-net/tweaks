@@ -12,10 +12,10 @@ A must-have command collection for your minecraft server
 ## Item commands
 
 - [ ] /enchant [enchantment] (level) - *enchant your tools*
-- [x] /unenchant [enchantments] - *unenchant your tools*
+- [x] /unenchant [enchantment...] - *unenchant your tools*
 - [ ] /item [item] (amount) - *gives you an item of your choice*
-- [ ] /lore [lore] - *change the lore of your items*
-- [ ] /rename [name] - *change the name of your items*
+- [x] /lore [set|append] [lore...] - *change the lore of your items*
+- [ ] /rename [name...] - *change the name of your items*
 - [x] /repair (all) - *repair your tools*
 
 ## Player commands

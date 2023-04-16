@@ -19,7 +19,7 @@ import java.util.List;
         name = "unenchant",
         description = "unenchant your tools",
         permission = "tweaks.command.unenchant",
-        usage = "/<command> [enchantments]"
+        usage = "/<command> [enchantment...]"
 )
 public class UnenchantCommand implements TabExecutor {
     @Override
