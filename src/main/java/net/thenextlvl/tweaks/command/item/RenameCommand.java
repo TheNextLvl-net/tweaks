@@ -42,6 +42,6 @@ public class RenameCommand implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return Collections.emptyList();
+        return null;
     }
 }

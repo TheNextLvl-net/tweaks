@@ -7,10 +7,7 @@ import lombok.experimental.Accessors;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
-import net.thenextlvl.tweaks.command.item.LoreCommand;
-import net.thenextlvl.tweaks.command.item.RenameCommand;
-import net.thenextlvl.tweaks.command.item.RepairCommand;
-import net.thenextlvl.tweaks.command.item.UnenchantCommand;
+import net.thenextlvl.tweaks.command.item.*;
 import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
 import net.thenextlvl.tweaks.config.BackConfig;
@@ -70,6 +67,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new RepairCommand());
         registerCommand(new LoreCommand());
         registerCommand(new RenameCommand());
+        registerCommand(new EnchantCommand());
     }
 
     private void registerCommand(CommandExecutor executor) {
