@@ -47,13 +47,15 @@ public class GameModeCommand implements TabExecutor {
         else if (sender instanceof Player player) target = player;
         else throw new CommandSenderException();
 
+
+        if (sender != target && !sender.hasPermission(OTHERS_PERMISSION)) {
+            throw new NoPermissionException(OTHERS_PERMISSION);
+        }
+
         if (target == null) throw new PlayerNotOnlineException(args[1]);
 
         if (!sender.hasPermission("tweaks.command.gamemode." + mode.name().toLowerCase())) {
             throw new NoPermissionException("tweaks.command.gamemode." + mode.name().toLowerCase());
-        }
-        if (sender != target && !sender.hasPermission(OTHERS_PERMISSION)) {
-            throw new NoPermissionException(OTHERS_PERMISSION);
         }
         target.setGameMode(mode);
         // TODO: Send message
