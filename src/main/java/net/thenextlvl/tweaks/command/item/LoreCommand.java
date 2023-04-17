@@ -60,12 +60,12 @@ public class LoreCommand implements TabExecutor {
         if (function == null) return false;
 
         if (!item.editMeta(function)) {
-            // TODO: Something went wrong during updating the lore to the item in your main hand.
+            player.sendRichMessage(Messages.LORE_EDIT_FAIL.message(player.locale(), player));
             return false;
         }
 
         inventory.setItemInMainHand(item);
-        // TODO: The lore was successfully updated
+        player.sendRichMessage(Messages.LORE_EDIT_SUCCESS.message(player.locale(), player));
         return true;
     }
 
