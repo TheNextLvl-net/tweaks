@@ -1,16 +1,21 @@
 package net.thenextlvl.tweaks.command.player;
 
+import core.api.placeholder.Placeholder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.command.api.NoPermissionException;
 import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
+import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -54,12 +59,21 @@ public class GameModeCommand implements TabExecutor {
             throw new NoPermissionException("tweaks.command.gamemode." + gamemode.name().toLowerCase());
         }
         target.setGameMode(gamemode);
-        // TODO: Send message
+
+        MiniMessage mini = MiniMessage.miniMessage();
+
+        target.sendMessage(mini.deserialize(Messages.GAMEMODE_CHANGED_SELF.message(target.locale(), target),
+                TagResolver.builder().tag("gamemode", Tag.inserting(Component.translatable(gamemode.translationKey()))).build()));
+        if (target == sender) return true;
+        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
+        var placeholder = Placeholder.<CommandSender>of("player", target.getName());
+        sender.sendMessage(mini.deserialize(Messages.GAMEMODE_CHANGED_OTHERS.message(locale, sender, placeholder),
+                TagResolver.builder().tag("gamemode", Tag.inserting(Component.translatable(gamemode.translationKey()))).build()));
         return true;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length <= 1)
             return Arrays.stream(GameMode.values())
                     .map(gameMode -> gameMode.name().toLowerCase())

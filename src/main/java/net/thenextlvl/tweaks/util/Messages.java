@@ -48,6 +48,8 @@ public class Messages {
     public static final MessageKey<CommandSender> INVALID_ENCHANTMENT = new MessageKey<>("enchantment.invalid", plugin.formatter());
     public static final MessageKey<CommandSender> ENCHANTMENT_NOT_APPLICABLE = new MessageKey<>("enchantment.not.applicable", plugin.formatter());
     public static final MessageKey<CommandSender> ENCHANTED_ITEM = new MessageKey<>("enchantment.applied", plugin.formatter());
+    public static final MessageKey<CommandSender> GAMEMODE_CHANGED_SELF = new MessageKey<>("gamemode.changed.self", plugin.formatter());
+    public static final MessageKey<CommandSender> GAMEMODE_CHANGED_OTHERS = new MessageKey<>("gamemode.changed.others", plugin.formatter());
 
     static {
         initEnglish();
@@ -91,6 +93,8 @@ public class Messages {
         file.setDefault(INVALID_ENCHANTMENT, "%prefix% <dark_red>%enchantment%<red> is not a valid enchantment");
         file.setDefault(ENCHANTMENT_NOT_APPLICABLE, "<red>This enchantment is not applicable on <dark_red><item>");
         file.setDefault(ENCHANTED_ITEM, "%prefix% <green>Applied <gold><enchantment><green> to your item");
+        file.setDefault(GAMEMODE_CHANGED_SELF, "%prefix% <green>You are now in <gold><gamemode>");
+        file.setDefault(GAMEMODE_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green> is now in <gold><gamemode>");
         file.save();
     }
 
@@ -129,6 +133,8 @@ public class Messages {
         file.setDefault(INVALID_ENCHANTMENT, "%prefix% <dark_red>%enchantment%<red> ist keine gültige Verzauberung");
         file.setDefault(ENCHANTMENT_NOT_APPLICABLE, "%prefix% <red>Dieses enchantment ist nicht auf <dark_red><item><red> anwendbar");
         file.setDefault(ENCHANTED_ITEM, "%prefix% <green>Dein Item wurde mit <gold><enchantment><green> verzaubert");
+        file.setDefault(GAMEMODE_CHANGED_SELF, "%prefix% <green>Du bist jetzt im <gold><gamemode>");
+        file.setDefault(GAMEMODE_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green> ist jetzt im <gold><gamemode>");
         file.save();
     }
 
