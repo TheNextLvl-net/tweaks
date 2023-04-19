@@ -50,6 +50,10 @@ public class Messages {
     public static final MessageKey<CommandSender> ENCHANTED_ITEM = new MessageKey<>("enchantment.applied", plugin.formatter());
     public static final MessageKey<CommandSender> GAMEMODE_CHANGED_SELF = new MessageKey<>("gamemode.changed.self", plugin.formatter());
     public static final MessageKey<CommandSender> GAMEMODE_CHANGED_OTHERS = new MessageKey<>("gamemode.changed.others", plugin.formatter());
+    public static final MessageKey<CommandSender> WALK_SPEED_CHANGED_SELF = new MessageKey<>("speed.walk.changed.self", plugin.formatter());
+    public static final MessageKey<CommandSender> WALK_SPEED_CHANGED_OTHERS = new MessageKey<>("speed.walk.changed.others", plugin.formatter());
+    public static final MessageKey<CommandSender> FLY_SPEED_CHANGED_SELF = new MessageKey<>("speed.fly.changed.self", plugin.formatter());
+    public static final MessageKey<CommandSender> FLY_SPEED_CHANGED_OTHERS = new MessageKey<>("speed.fly.changed.others", plugin.formatter());
 
     static {
         initEnglish();
@@ -94,7 +98,11 @@ public class Messages {
         file.setDefault(ENCHANTMENT_NOT_APPLICABLE, "<red>This enchantment is not applicable on <dark_red><item>");
         file.setDefault(ENCHANTED_ITEM, "%prefix% <green>Applied <gold><enchantment><green> to your item");
         file.setDefault(GAMEMODE_CHANGED_SELF, "%prefix% <green>You are now in <gold><gamemode>");
-        file.setDefault(GAMEMODE_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green> is now in <gold><gamemode>");
+        file.setDefault(GAMEMODE_CHANGED_OTHERS, "%prefix% <gold>%player% <green>is now in <gold><gamemode>");
+        file.setDefault(WALK_SPEED_CHANGED_SELF, "%prefix% <green>Your walk speed is now <gold>%speed%");
+        file.setDefault(WALK_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>walk speed is now <gold>%speed%");
+        file.setDefault(FLY_SPEED_CHANGED_SELF, "%prefix% <green>Your fly speed is now <gold>%speed%");
+        file.setDefault(FLY_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>fly speed is now <gold>%speed%");
         file.save();
     }
 
@@ -134,7 +142,11 @@ public class Messages {
         file.setDefault(ENCHANTMENT_NOT_APPLICABLE, "%prefix% <red>Dieses enchantment ist nicht auf <dark_red><item><red> anwendbar");
         file.setDefault(ENCHANTED_ITEM, "%prefix% <green>Dein Item wurde mit <gold><enchantment><green> verzaubert");
         file.setDefault(GAMEMODE_CHANGED_SELF, "%prefix% <green>Du bist jetzt im <gold><gamemode>");
-        file.setDefault(GAMEMODE_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green> ist jetzt im <gold><gamemode>");
+        file.setDefault(GAMEMODE_CHANGED_OTHERS, "%prefix% <gold>%player% <green>ist jetzt im <gold><gamemode>");
+        file.setDefault(WALK_SPEED_CHANGED_SELF, "%prefix% <green>Deine Laufgeschwindigkeit is jetzt <gold>%speed%");
+        file.setDefault(WALK_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>Laufgeschwindigkeit ist jetzt <gold>%speed%");
+        file.setDefault(FLY_SPEED_CHANGED_SELF, "%prefix% <green>Deine Fluggeschwindigkeit is jetzt <gold>%speed%");
+        file.setDefault(FLY_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>Fluggeschwindigkeit ist jetzt <gold>%speed%");
         file.save();
     }
 

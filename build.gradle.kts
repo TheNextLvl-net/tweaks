@@ -53,6 +53,7 @@ bukkit {
     authors = listOf("CyntrixAlgorithm", "NonSwag")
 
     permissions {
+        register("tweaks.command.speed.others")
         register("tweaks.command.gamemode.others")
         register("tweaks.command.gamemode.all") {
             this.children = listOf(
