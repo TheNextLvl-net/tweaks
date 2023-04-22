@@ -37,7 +37,7 @@ public class RenameCommand implements TabExecutor {
 
         if (!item.editMeta(itemMeta -> itemMeta.setDisplayName(name))) {
             player.sendRichMessage(Messages.ITEM_RENAME_FAIL.message(player.locale(), player));
-            return false;
+            return true;
         }
 
         inventory.setItemInMainHand(item);
