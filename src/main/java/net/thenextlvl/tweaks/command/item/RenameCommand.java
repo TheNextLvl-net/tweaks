@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.item;
 
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
+import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -9,10 +10,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 
 @CommandInfo(
@@ -37,12 +36,12 @@ public class RenameCommand implements TabExecutor {
                 .replace("\\t", "   ");
 
         if (!item.editMeta(itemMeta -> itemMeta.setDisplayName(name))) {
-            // TODO: Something went wrong during updating the display name of the item in your hand.
+            player.sendRichMessage(Messages.ITEM_RENAME_FAIL.message(player.locale(), player));
             return false;
         }
 
         inventory.setItemInMainHand(item);
-        // TODO: The display name of the item in your hand was successfully updated.
+        player.sendRichMessage(Messages.ITEM_RENAME_SUCCESS.message(player.locale(), player));
         return true;
     }
 

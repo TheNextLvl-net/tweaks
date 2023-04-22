@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.item;
 
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
+import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -27,9 +28,12 @@ public class RepairCommand implements TabExecutor {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
 
         PlayerInventory inventory = player.getInventory();
-        if (args.length == 0) {
+        if (args.length == 0 && !inventory.getItemInMainHand().getType().isEmpty()) {
             inventory.setItemInMainHand(repairItem(inventory.getItemInMainHand()));
-            // TODO: Repaired the item in hand
+            player.sendRichMessage(Messages.REPAIRED_ITEM.message(player.locale(), player));
+            return true;
+        } else if (args.length == 0) {
+            player.sendRichMessage(Messages.HOLD_ITEM.message(player.locale(), player));
             return true;
         }
 
@@ -46,7 +50,7 @@ public class RepairCommand implements TabExecutor {
                 armor[i] = repairItem(armor[i]);
             }
             inventory.setArmorContents(armor);
-            // TODO: All items in your inventory were repaired.
+            player.sendRichMessage(Messages.REPAIRED_ALL.message(player.locale(), player));
             return true;
         }
 

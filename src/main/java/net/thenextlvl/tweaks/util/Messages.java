@@ -42,9 +42,9 @@ public class Messages {
     public static final MessageKey<CommandSender> WEATHER_RAIN = new MessageKey<>("weather.rain", plugin.formatter());
     public static final MessageKey<CommandSender> WEATHER_SUN = new MessageKey<>("weather.sun", plugin.formatter());
     public static final MessageKey<CommandSender> WEATHER_THUNDER = new MessageKey<>("weather.thunder", plugin.formatter());
-    public static final MessageKey<CommandSender> LORE_EDIT_TIP = new MessageKey<>("lore.edit.tip", plugin.formatter());
-    public static final MessageKey<CommandSender> LORE_EDIT_SUCCESS = new MessageKey<>("lore.edit.success", plugin.formatter());
-    public static final MessageKey<CommandSender> LORE_EDIT_FAIL = new MessageKey<>("lore.edit.fail", plugin.formatter());
+    public static final MessageKey<CommandSender> LORE_EDIT_TIP = new MessageKey<>("item.lore.tip", plugin.formatter());
+    public static final MessageKey<CommandSender> LORE_EDIT_SUCCESS = new MessageKey<>("item.lore.success", plugin.formatter());
+    public static final MessageKey<CommandSender> LORE_EDIT_FAIL = new MessageKey<>("item.lore.fail", plugin.formatter());
     public static final MessageKey<CommandSender> INVALID_ENCHANTMENT = new MessageKey<>("enchantment.invalid", plugin.formatter());
     public static final MessageKey<CommandSender> ENCHANTMENT_NOT_APPLICABLE = new MessageKey<>("enchantment.not.applicable", plugin.formatter());
     public static final MessageKey<CommandSender> ENCHANTED_ITEM = new MessageKey<>("enchantment.applied", plugin.formatter());
@@ -54,6 +54,10 @@ public class Messages {
     public static final MessageKey<CommandSender> WALK_SPEED_CHANGED_OTHERS = new MessageKey<>("speed.walk.changed.others", plugin.formatter());
     public static final MessageKey<CommandSender> FLY_SPEED_CHANGED_SELF = new MessageKey<>("speed.fly.changed.self", plugin.formatter());
     public static final MessageKey<CommandSender> FLY_SPEED_CHANGED_OTHERS = new MessageKey<>("speed.fly.changed.others", plugin.formatter());
+    public static final MessageKey<CommandSender> REPAIRED_ALL = new MessageKey<>("item.repaired.all", plugin.formatter());
+    public static final MessageKey<CommandSender> REPAIRED_ITEM = new MessageKey<>("item.repaired", plugin.formatter());
+    public static final MessageKey<CommandSender> ITEM_RENAME_FAIL = new MessageKey<>("item.rename.fail", plugin.formatter());
+    public static final MessageKey<CommandSender> ITEM_RENAME_SUCCESS = new MessageKey<>("item.rename.success", plugin.formatter());
 
     static {
         initEnglish();
@@ -103,6 +107,10 @@ public class Messages {
         file.setDefault(WALK_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>walk speed is now <gold>%speed%");
         file.setDefault(FLY_SPEED_CHANGED_SELF, "%prefix% <green>Your fly speed is now <gold>%speed%");
         file.setDefault(FLY_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>fly speed is now <gold>%speed%");
+        file.setDefault(REPAIRED_ALL, "%prefix% <green>All of your items got repaired");
+        file.setDefault(REPAIRED_ITEM, "%prefix% <green>Your item got repaired");
+        file.setDefault(ITEM_RENAME_FAIL, "%prefix% <red>Failed to rename your item");
+        file.setDefault(ITEM_RENAME_SUCCESS, "%prefix% <green>Successfully renamed your item");
         file.save();
     }
 
@@ -147,6 +155,10 @@ public class Messages {
         file.setDefault(WALK_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>Laufgeschwindigkeit ist jetzt <gold>%speed%");
         file.setDefault(FLY_SPEED_CHANGED_SELF, "%prefix% <green>Deine Fluggeschwindigkeit is jetzt <gold>%speed%");
         file.setDefault(FLY_SPEED_CHANGED_OTHERS, "%prefix% <gold>%player%'s <green>Fluggeschwindigkeit ist jetzt <gold>%speed%");
+        file.setDefault(REPAIRED_ALL, "%prefix% <green>Alle deine Items wurden repariert");
+        file.setDefault(REPAIRED_ITEM, "%prefix% <green>Dein Item wurde repariert");
+        file.setDefault(ITEM_RENAME_FAIL, "%prefix% <red>Dein Item konnte nicht umbenannt werden");
+        file.setDefault(ITEM_RENAME_SUCCESS, "%prefix% <green>Dein Item wurde erfolgreich umbenannt");
         file.save();
     }
 
