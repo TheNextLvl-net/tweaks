@@ -77,7 +77,7 @@ public class BackCommand implements CommandExecutor, Listener {
             return;
 
         RingBufferStack<Location> stack = map.getOrDefault(player, new RingBufferStack<>(defaultBufferSize));
-        stack.push(event.getTo());
+        stack.push(event.getFrom());
         map.put(player, stack);
     }
 
