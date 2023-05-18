@@ -65,6 +65,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new BroadcastCommand(this));
 
         // Item
+        registerCommand(new HeadCommand());
         registerCommand(new UnenchantCommand());
         registerCommand(new RepairCommand());
         registerCommand(new LoreCommand());
