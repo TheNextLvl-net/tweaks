@@ -1,4 +1,5 @@
 # Tweaks
+
 A must-have command collection for your minecraft server
 
 ## Environmental commands
@@ -31,11 +32,13 @@ A must-have command collection for your minecraft server
 - /hat - *equip your items as hats*
 - /enderchest (player) - *open your own or someone else's enderchest*
 - /inventory (player) - *open your own or someone else's inventory*
+
 ## Server commands
 
 - /broadcast [message] - *broadcast a message*
 
 ## Command permissions
+
 ### Environmental commands
 
 | Command | Permission             |
