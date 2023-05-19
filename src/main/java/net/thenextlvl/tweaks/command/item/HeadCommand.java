@@ -24,7 +24,8 @@ import java.util.UUID;
         name = "head",
         usage = "/<command> [value|player|url] (value)",
         description = "get heads or information about them",
-        permission = "tweaks.command.head"
+        permission = "tweaks.command.head",
+        aliases = {"skull"}
 )
 public class HeadCommand implements TabExecutor {
 
