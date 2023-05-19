@@ -52,14 +52,15 @@ A must-have command collection for your minecraft server
 
 ### Item commands
 
-| Command   | Permission               |
-|-----------|--------------------------|
-| enchant   | tweaks.command.enchant   |
-| unenchant | tweaks.command.unenchant |
-| item      | tweaks.command.item      |
-| lore      | tweaks.command.lore      |
-| rename    | tweaks.command.rename    |
-| repair    | tweaks.command.repair    |
+| Command   | Alias | Permission               |
+|-----------|-------|--------------------------|
+| enchant   |       | tweaks.command.enchant   |
+| unenchant |       | tweaks.command.unenchant |
+| item      | i     | tweaks.command.item      |
+| head      | skull | tweaks.command.head      |
+| lore      |       | tweaks.command.lore      |
+| rename    |       | tweaks.command.rename    |
+| repair    |       | tweaks.command.repair    |
 
 ### Player commands
 
