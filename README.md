@@ -15,6 +15,7 @@ A must-have command collection for your minecraft server
 - /enchant [enchantment] (level) - *enchant your tools*
 - /unenchant [enchantment...] - *unenchant your tools*
 - /item [item] (amount) - *gives you an item of your choice*
+- /head [value|player|url] (value) - *get heads or information about them*
 - /lore [set|append] [lore...] - *change the lore of your items*
 - /rename [name...] - *change the name of your items*
 - /repair (all) - *repair your tools*
