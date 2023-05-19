@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 
 @CommandInfo(
         name = "item",
-        usage = "/item [item] (amount)",
+        usage = "/<command> [item] (amount)",
         description = "gives you an item of your choice",
         permission = "tweaks.command.item",
         aliases = {"i"}

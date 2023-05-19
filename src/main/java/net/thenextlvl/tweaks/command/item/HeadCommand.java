@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @CommandInfo(
         name = "head",
-        usage = "/head [value|player|url] (value)",
+        usage = "/<command> [value|player|url] (value)",
         description = "get heads or information about them",
         permission = "tweaks.command.head"
 )

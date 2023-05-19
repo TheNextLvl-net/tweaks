@@ -22,7 +22,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-@CommandInfo(name = "enchant", usage = "/enchant [enchantment] (level)", permission = "tweaks.command.enchant", description = "enchant your tools")
+@CommandInfo(
+        name = "enchant",
+        usage = "/<command> [enchantment] (level)",
+        permission = "tweaks.command.enchant",
+        description = "enchant your tools"
+)
 public class EnchantCommand implements TabExecutor {
 
     @Override
