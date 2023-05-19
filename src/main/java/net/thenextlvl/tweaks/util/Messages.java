@@ -62,6 +62,7 @@ public class Messages {
     public static final MessageKey<CommandSender> ITEM_HEAD_PLAYER = new MessageKey<>("item.head.player", plugin.formatter());
     public static final MessageKey<CommandSender> ITEM_HEAD_URL = new MessageKey<>("item.head.url", plugin.formatter());
     public static final MessageKey<CommandSender> ITEM_HEAD_NONE = new MessageKey<>("item.head.none", plugin.formatter());
+    public static final MessageKey<CommandSender> ITEM_HEAD_RECEIVED = new MessageKey<>("item.head.received", plugin.formatter());
 
     static {
         initEnglish();
@@ -118,8 +119,10 @@ public class Messages {
         file.setDefault(ITEM_HEAD_VALUE, "%prefix% <gray>Skull value<dark_gray>: " +
                 "<click:copy_to_clipboard:\"%full-value%\"><hover:show_text:\"Click to Copy to Clipboard\"><white>%value%");
         file.setDefault(ITEM_HEAD_PLAYER, "%prefix% <gray>Skull owner<dark_gray>: <white>%owner%");
-        file.setDefault(ITEM_HEAD_URL, "%prefix% <gray>Skull url<dark_gray>: <white>%url%");
-        file.setDefault(ITEM_HEAD_NONE, "%prefix% <red>Could not find any skull data");
+        file.setDefault(ITEM_HEAD_URL, "%prefix% <gray>Skull url<dark_gray>: " +
+                "<click:copy_to_clipboard:\"%full-url%\"><hover:show_text:\"Click to Copy to Clipboard\"><white>%url%");
+        file.setDefault(ITEM_HEAD_NONE, "%prefix% <red>Could not find matching skull data");
+        file.setDefault(ITEM_HEAD_RECEIVED, "%prefix% <white>You received a player head");
         file.save();
     }
 
@@ -172,8 +175,11 @@ public class Messages {
                 "<click:copy_to_clipboard:\"%full-value%\"><hover:show_text:\"Klicken, um in die Zwischenablage zu kopieren\">" +
                 "<white>%value%");
         file.setDefault(ITEM_HEAD_PLAYER, "%prefix% <gray>Kopf Besitzer<dark_gray>: <white>%owner%");
-        file.setDefault(ITEM_HEAD_URL, "%prefix% <gray>Kopf URL<dark_gray>: <white>%url%");
-        file.setDefault(ITEM_HEAD_NONE, "%prefix% <red>Es konnte keine Kopfdaten gefunden werden");
+        file.setDefault(ITEM_HEAD_VALUE, "%prefix% <gray>Kopf URL<dark_gray>: " +
+                "<click:copy_to_clipboard:\"%full-url%\"><hover:show_text:\"Klicken, um in die Zwischenablage zu kopieren\">" +
+                "<white>%url%");
+        file.setDefault(ITEM_HEAD_NONE, "%prefix% <red>Es konnte keine passenden Kopfdaten gefunden werden");
+        file.setDefault(ITEM_HEAD_RECEIVED, "%prefix% <white>Du hast einen Spieler Kopf erhalten");
         file.save();
     }
 

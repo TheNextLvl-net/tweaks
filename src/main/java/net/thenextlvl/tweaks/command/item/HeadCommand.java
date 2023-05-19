@@ -6,6 +6,7 @@ import core.api.placeholder.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -14,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -33,27 +33,48 @@ public class HeadCommand implements TabExecutor {
         if (!(sender instanceof Player player))
             sender.sendRichMessage(Messages.COMMAND_SENDER.message(Messages.ENGLISH, sender));
         else if (args.length >= 1 && args[0].equalsIgnoreCase("value")) value(player, args);
-        else if (args.length >= 1 && args[0].equalsIgnoreCase("player")) player(player, args);
         else if (args.length >= 1 && args[0].equalsIgnoreCase("url")) url(player, args);
+        else if (args.length >= 1 && args[0].equalsIgnoreCase("player")) player(player, args);
         else return false;
         return true;
     }
 
     private void value(Player player, String[] args) {
-        var item = player.getInventory().getItemInMainHand();
         if (args.length < 2) {
-            var value = getValue(item);
+            var value = getValue(player.getInventory().getItemInMainHand());
             if (value != null) player.sendRichMessage(Messages.ITEM_HEAD_VALUE.message(player.locale(), player,
-                    Placeholder.of("value", () -> value.substring(0, value.length() * 10 / 100) + "…"),
+                    Placeholder.of("value", () -> value.substring(0, Math.min(value.length(), 30)) + "…"),
                     Placeholder.of("full-value", () -> value)));
             else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
-        } else setSkullValue(item, args[1]);
-    }
-
-    private void player(Player player, String[] args) {
+        } else {
+            player.getInventory().addItem(setValue(new ItemStack(Material.PLAYER_HEAD), args[1]));
+            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+        }
     }
 
     private void url(Player player, String[] args) {
+        if (args.length < 2) {
+            var url = getUrl(player.getInventory().getItemInMainHand());
+            if (url != null) player.sendRichMessage(Messages.ITEM_HEAD_URL.message(player.locale(), player,
+                    Placeholder.of("url", () -> url.substring(0, Math.min(url.length(), 30)) + "…"),
+                    Placeholder.of("full-url", () -> url)));
+            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+        } else {
+            player.getInventory().addItem(setImgURL(new ItemStack(Material.PLAYER_HEAD), args[1]));
+            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+        }
+    }
+
+    private void player(Player player, String[] args) {
+        if (args.length < 2) {
+            var owner = getOwner(player.getInventory().getItemInMainHand());
+            if (owner != null) player.sendRichMessage(Messages.ITEM_HEAD_PLAYER.message(player.locale(), player,
+                    Placeholder.of("owner", () -> owner)));
+            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+        } else {
+            player.getInventory().addItem(setOwner(new ItemStack(Material.PLAYER_HEAD), args[1]));
+            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+        }
     }
 
     @Override
@@ -69,21 +90,26 @@ public class HeadCommand implements TabExecutor {
         return suggestions;
     }
 
-    private static void setSkullImgURL(ItemStack item, String url) {
-        try {
-            setSkullValue(item, Base64.getEncoder().encodeToString(("{\"textures\":{\"SKIN\":{\"url\":\"" + new URI(url) + "\"}}}").getBytes()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @SuppressWarnings("deprecation")
+    private static ItemStack setValue(ItemStack item, String base64) {
+        var id = new UUID(base64.hashCode(), base64.hashCode());
+        var nbt = "{SkullOwner:{Id:\"" + id + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}";
+        return Bukkit.getUnsafe().modifyItemStack(item, nbt);
     }
 
-    @SuppressWarnings("deprecation")
-    private static void setSkullValue(ItemStack item, String base64) {
-        try {
-            Bukkit.getUnsafe().modifyItemStack(item, "{SkullOwner:{Id:\"" + new UUID(base64.hashCode(), base64.hashCode()) + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static ItemStack setImgURL(ItemStack item, String url) {
+        var link = "https://textures.minecraft.net/texture/";
+        if (!url.startsWith(link)) url = link + url;
+        var nbt = "{\"textures\":{\"SKIN\":{\"url\":\"" + url + "\"}}}";
+        var base64 = Base64.getEncoder().encodeToString(nbt.getBytes());
+        return setValue(item, base64);
+    }
+
+    private static ItemStack setOwner(ItemStack item, String owner) {
+        if (!(item.getItemMeta() instanceof SkullMeta skull)) return item;
+        skull.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
+        item.setItemMeta(skull);
+        return item;
     }
 
     private static @Nullable String getValue(ItemStack item) {
