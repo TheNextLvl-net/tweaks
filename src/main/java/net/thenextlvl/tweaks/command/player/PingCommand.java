@@ -5,6 +5,7 @@ import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 @CommandInfo(
         name = "ping",
@@ -23,5 +24,10 @@ public class PingCommand extends PlayerCommand {
             var placeholder = Placeholder.<CommandSender>of("player", player.getName());
             sender.sendRichMessage(Messages.PING_OTHERS.message(locale, sender, ping, placeholder));
         } else player.sendRichMessage(Messages.PING_SELF.message(player.locale(), player, ping));
+    }
+
+    @Override
+    protected @Nullable String getArgumentPermission(CommandSender sender, Player argument) {
+        return sender.equals(argument) ? null : "tweaks.command.ping.others";
     }
 }

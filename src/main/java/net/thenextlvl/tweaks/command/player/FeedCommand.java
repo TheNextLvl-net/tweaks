@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -33,5 +34,10 @@ public class FeedCommand extends PlayerCommand {
         var placeholder = Placeholder.<CommandSender>of("player", target.getName());
         Locale locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
         sender.sendRichMessage(Messages.SATISFIED_HUNGER_OTHERS.message(locale, placeholder));
+    }
+
+    @Override
+    protected @Nullable String getArgumentPermission(CommandSender sender, Player argument) {
+        return sender.equals(argument) ? null : "tweaks.command.feed.others";
     }
 }

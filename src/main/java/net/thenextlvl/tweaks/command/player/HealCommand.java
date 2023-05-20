@@ -7,6 +7,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 @CommandInfo(
         name = "heal",
@@ -35,5 +36,10 @@ public class HealCommand extends PlayerCommand {
         var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
         var placeholder = Placeholder.<CommandSender>of("player", player.getName());
         sender.sendRichMessage(Messages.RESTORED_HEALTH_OTHERS.message(locale, placeholder));
+    }
+
+    @Override
+    protected @Nullable String getArgumentPermission(CommandSender sender, Player argument) {
+        return sender.equals(argument) ? null : "tweaks.command.heal.others";
     }
 }
