@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -16,7 +17,9 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
 
     protected abstract void execute(CommandSender sender, T value);
 
-    protected abstract Stream<String> suggest();
+    protected abstract Stream<String> suggest(CommandSender sender);
+
+    protected abstract @Nullable String getArgumentPermission(CommandSender sender, T argument);
 
     @Override
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -32,13 +35,15 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
         } else {
             value = parse(args[0]);
         }
-
-        execute(sender, value);
+        var permission = getArgumentPermission(sender, value);
+        if (permission == null || sender.hasPermission(permission))
+            execute(sender, value);
+        else throw new NoPermissionException(permission);
         return true;
     }
 
     @Override
     public final List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        return args.length > 1 ? null : suggest().toList();
+        return args.length > 1 ? null : suggest(sender).toList();
     }
 }
