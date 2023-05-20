@@ -49,6 +49,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new ThunderCommand());
 
         // Player
+        registerCommand(new GodCommand());
         registerCommand(new FeedCommand());
         registerCommand(new FlyCommand());
         registerCommand(new HatCommand());

@@ -63,6 +63,10 @@ public class Messages {
     public static final MessageKey<CommandSender> ITEM_HEAD_URL = new MessageKey<>("item.head.url", plugin.formatter());
     public static final MessageKey<CommandSender> ITEM_HEAD_NONE = new MessageKey<>("item.head.none", plugin.formatter());
     public static final MessageKey<CommandSender> ITEM_HEAD_RECEIVED = new MessageKey<>("item.head.received", plugin.formatter());
+    public static final MessageKey<CommandSender> GOD_MODE_ACTIVE_SELF = new MessageKey<>("god.active.self", plugin.formatter());
+    public static final MessageKey<CommandSender> GOD_MODE_ACTIVE_OTHERS = new MessageKey<>("god.active.others", plugin.formatter());
+    public static final MessageKey<CommandSender> GOD_MODE_INACTIVE_SELF = new MessageKey<>("god.inactive.self", plugin.formatter());
+    public static final MessageKey<CommandSender> GOD_MODE_INACTIVE_OTHERS = new MessageKey<>("god.inactive.others", plugin.formatter());
 
     static {
         initEnglish();
@@ -123,6 +127,10 @@ public class Messages {
                 "<click:copy_to_clipboard:\"%full-url%\"><hover:show_text:\"Click to Copy to Clipboard\"><white>%url%");
         file.setDefault(ITEM_HEAD_NONE, "%prefix% <red>Could not find matching skull data");
         file.setDefault(ITEM_HEAD_RECEIVED, "%prefix% <white>You received a player head");
+        file.setDefault(GOD_MODE_ACTIVE_SELF, "%prefix% <white>You are now invulnerable");
+        file.setDefault(GOD_MODE_ACTIVE_OTHERS, "%prefix% <green>%player% <white>is now invulnerable");
+        file.setDefault(GOD_MODE_INACTIVE_SELF, "%prefix% <white>You are no longer invulnerable");
+        file.setDefault(GOD_MODE_INACTIVE_OTHERS, "%prefix% <green>%player% <white>is no longer invulnerable");
         file.save();
     }
 
@@ -180,6 +188,10 @@ public class Messages {
                 "<white>%url%");
         file.setDefault(ITEM_HEAD_NONE, "%prefix% <red>Es konnte keine passenden Kopfdaten gefunden werden");
         file.setDefault(ITEM_HEAD_RECEIVED, "%prefix% <white>Du hast einen Spieler Kopf erhalten");
+        file.setDefault(GOD_MODE_ACTIVE_SELF, "%prefix% <white>Du bist jetzt unverwundbar");
+        file.setDefault(GOD_MODE_ACTIVE_OTHERS, "%prefix% <green>%player% <white>ist jetzt unverwundbar");
+        file.setDefault(GOD_MODE_INACTIVE_SELF, "%prefix% <white>Du bist nicht länger unverwundbar");
+        file.setDefault(GOD_MODE_INACTIVE_OTHERS, "%prefix% <green>%player% <white>ist nicht länger unverwundbar");
         file.save();
     }
 
