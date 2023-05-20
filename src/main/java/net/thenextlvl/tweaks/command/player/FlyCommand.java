@@ -18,6 +18,7 @@ public class FlyCommand extends PlayerCommand {
     @Override
     protected void execute(CommandSender sender, Player player) {
         player.setAllowFlight(!player.getAllowFlight());
+        player.setFlying(player.getAllowFlight());
 
         var messageSelf = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_SELF : Messages.DISABLED_FLIGHT_SELF;
         var messageOthers = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_OTHERS : Messages.DISABLED_FLIGHT_OTHERS;
