@@ -53,6 +53,12 @@ bukkit {
     authors = listOf("CyntrixAlgorithm", "NonSwag")
 
     permissions {
+        register("tweaks.command.enderchest.others")
+        register("tweaks.command.feed.others")
+        register("tweaks.command.fly.others")
+        register("tweaks.command.god.others")
+        register("tweaks.command.heal.others")
+        register("tweaks.command.ping.others")
         register("tweaks.command.speed.others")
         register("tweaks.command.gamemode.others")
         register("tweaks.command.gamemode.all") {
