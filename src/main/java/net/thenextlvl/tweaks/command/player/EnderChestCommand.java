@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 @CommandInfo(
         name = "enderchest",
-        usage = "/<command> [player]",
+        usage = "/<command> (player)",
         description = "open your own or someone else's enderchest",
         permission = "tweaks.command.enderchest",
         aliases = {"ec"}
