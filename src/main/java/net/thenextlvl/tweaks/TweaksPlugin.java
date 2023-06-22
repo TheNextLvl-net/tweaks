@@ -45,11 +45,11 @@ public class TweaksPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        registerCommand(new DayCommand());
-        registerCommand(new NightCommand());
-        registerCommand(new RainCommand());
-        registerCommand(new SunCommand());
-        registerCommand(new ThunderCommand());
+        registerCommand(new DayCommand(this));
+        registerCommand(new NightCommand(this));
+        registerCommand(new RainCommand(this));
+        registerCommand(new SunCommand(this));
+        registerCommand(new ThunderCommand(this));
 
         // Player
         registerCommand(new GodCommand());
