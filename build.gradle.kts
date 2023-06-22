@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "1.2.0"
+version = "1.3.0"
 
 repositories {
     mavenCentral()
@@ -18,7 +18,7 @@ repositories {
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.26")
     compileOnly("net.thenextlvl.core:annotations:1.0.0")
-    compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
     implementation("com.tcoded:FoliaLib:0.2.0")
     implementation("net.thenextlvl.core:api:3.1.10")
@@ -32,20 +32,18 @@ tasks {
     test {
         useJUnitPlatform()
     }
-    assemble {
-        dependsOn(shadowJar)
-    }
     shadowJar {
         minimize()
         relocate("com.tcoded.folialib", "net.thenextlvl.tweaks.folialib")
     }
     runServer {
-        minecraftVersion("1.19.4")
+        minecraftVersion("1.20.1")
     }
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 bukkit {
