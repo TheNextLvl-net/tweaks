@@ -9,7 +9,12 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandInfo(name = "day", permission = "tweaks.command.day", description = "set the time to day", usage = "/<command> (world)")
+@CommandInfo(
+        name = "day",
+        permission = "tweaks.command.day",
+        description = "set the time to day",
+        usage = "/<command> (world)"
+)
 @RequiredArgsConstructor
 public class DayCommand extends WorldCommand {
 
