@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("xyz.jpenilla.run-paper") version "2.0.1"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.1"
+    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
     maven("https://repo.thenextlvl.net/releases")
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://nexuslite.gcnt.net/repos/other/")
 }
 
 dependencies {
@@ -19,6 +20,7 @@ dependencies {
     compileOnly("net.thenextlvl.core:annotations:1.0.0")
     compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
+    implementation("com.tcoded:FoliaLib:0.2.0")
     implementation("net.thenextlvl.core:api:3.1.10")
 
     annotationProcessor("org.projectlombok:lombok:1.18.26")
@@ -35,6 +37,7 @@ tasks {
     }
     shadowJar {
         minimize()
+        relocate("com.tcoded.folialib", "net.thenextlvl.tweaks.folialib")
     }
     runServer {
         minecraftVersion("1.19.4")
@@ -51,6 +54,8 @@ bukkit {
     apiVersion = "1.19"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
+
+    foliaSupported = true
 
     permissions {
         register("tweaks.command.enderchest.others")

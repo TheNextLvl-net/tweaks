@@ -1,5 +1,6 @@
 package net.thenextlvl.tweaks;
 
+import com.tcoded.folialib.FoliaLib;
 import core.annotation.FieldsAreNonnullByDefault;
 import core.api.placeholder.Placeholder;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class TweaksPlugin extends JavaPlugin {
             new BroadcastConfig("", "<red>Server <grey>| <message>", ""),
             new BackConfig(5)
     );
+    private FoliaLib foliaLib;
 
     @Override
     public void onLoad() {
@@ -38,6 +40,7 @@ public class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.foliaLib = new FoliaLib(this);
         registerCommands();
     }
 
