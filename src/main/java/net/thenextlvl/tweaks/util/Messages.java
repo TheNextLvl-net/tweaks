@@ -45,6 +45,7 @@ public class Messages {
     public static final MessageKey<CommandSender> LORE_EDIT_TIP = new MessageKey<>("item.lore.tip", plugin.formatter());
     public static final MessageKey<CommandSender> LORE_EDIT_SUCCESS = new MessageKey<>("item.lore.success", plugin.formatter());
     public static final MessageKey<CommandSender> LORE_EDIT_FAIL = new MessageKey<>("item.lore.fail", plugin.formatter());
+    public static final MessageKey<CommandSender> INVALID_ITEM = new MessageKey<>("item.invalid", plugin.formatter());
     public static final MessageKey<CommandSender> INVALID_ENCHANTMENT = new MessageKey<>("enchantment.invalid", plugin.formatter());
     public static final MessageKey<CommandSender> ENCHANTMENT_NOT_APPLICABLE = new MessageKey<>("enchantment.not.applicable", plugin.formatter());
     public static final MessageKey<CommandSender> ENCHANTED_ITEM = new MessageKey<>("enchantment.applied", plugin.formatter());
@@ -107,6 +108,7 @@ public class Messages {
         file.setDefault(LORE_EDIT_TIP, "%prefix% <red>Use <dark_red>\\n<red> to add a new line and <dark_red>\\t<red> to add indentations");
         file.setDefault(LORE_EDIT_SUCCESS, "%prefix% <white>Successfully changed the lore of your item");
         file.setDefault(LORE_EDIT_FAIL, "%prefix% <red>Failed to change the lore of your item");
+        file.setDefault(INVALID_ITEM, "%prefix% <dark_red>%item%<red> is not a valid item");
         file.setDefault(INVALID_ENCHANTMENT, "%prefix% <dark_red>%enchantment%<red> is not a valid enchantment");
         file.setDefault(ENCHANTMENT_NOT_APPLICABLE, "<red>This enchantment is not applicable on <dark_red><item>");
         file.setDefault(ENCHANTED_ITEM, "%prefix% <white>Applied <green><enchantment><white> to your item");
@@ -166,6 +168,7 @@ public class Messages {
         file.setDefault(LORE_EDIT_TIP, "%prefix% <red>Nutze <dark_red>\\n<red> für neue Zeile und <dark_red>\\t<red> für Einrückungen");
         file.setDefault(LORE_EDIT_SUCCESS, "%prefix% <white>Die Beschreibung deines Items wurde erfolgreich angepasst");
         file.setDefault(LORE_EDIT_FAIL, "%prefix% <red>Die Beschreibung deines Items konnte nicht angepasst werden");
+        file.setDefault(INVALID_ITEM, "%prefix% <dark_red>%item%<red> ist kein gültiges Item");
         file.setDefault(INVALID_ENCHANTMENT, "%prefix% <dark_red>%enchantment%<red> ist keine gültige Verzauberung");
         file.setDefault(ENCHANTMENT_NOT_APPLICABLE, "%prefix% <red>Dieses enchantment ist nicht auf <dark_red><item><red> anwendbar");
         file.setDefault(ENCHANTED_ITEM, "%prefix% <white>Dein Item wurde mit <green><enchantment><white> verzaubert");
