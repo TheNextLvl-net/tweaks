@@ -79,18 +79,16 @@ public class ItemCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) return Arrays.stream(Material.values())
-                    .filter(Material::isItem)
-                    .map(material -> material.getKey().asString()).toList();
-        if (args.length == 2) {
-            if (args[1].isEmpty())
-                return IntStream.range(1, 10).mapToObj(Integer::toString).toList();
-            try {
-                Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
-                return null;
-            }
-            return IntStream.range(0, 10).mapToObj(i -> args[1] + i).toList();
+                .filter(Material::isItem)
+                .map(material -> material.getKey().asString()).toList();
+        if (args.length != 2) return null;
+        if (args[1].isEmpty())
+            return IntStream.range(1, 10).mapToObj(Integer::toString).toList();
+        try {
+            Integer.parseInt(args[1]);
+        } catch (NumberFormatException e) {
+            return null;
         }
-        return null;
+        return IntStream.range(0, 10).mapToObj(i -> args[1] + i).toList();
     }
 }
