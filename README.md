@@ -2,6 +2,11 @@
 
 A must-have command collection for your minecraft server
 
+## Todo
+
+- Ability to view the inventory and ender chest of an offline player
+- Show armor of the player when viewing their inventory
+
 ## Environmental commands
 
 - /day (world) - *set the time to day*
