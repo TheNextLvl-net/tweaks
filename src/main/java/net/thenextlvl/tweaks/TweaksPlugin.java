@@ -31,7 +31,7 @@ public class TweaksPlugin extends JavaPlugin {
             new BroadcastConfig("", "<red>Server <grey>| <message>", ""),
             new BackConfig(5)
     );
-    private FoliaLib foliaLib;
+    private final FoliaLib foliaLib = new FoliaLib(this);
 
     @Override
     public void onLoad() {
@@ -40,7 +40,6 @@ public class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.foliaLib = new FoliaLib(this);
         registerCommands();
     }
 
