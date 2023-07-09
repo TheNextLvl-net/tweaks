@@ -45,6 +45,12 @@ public class TweaksPlugin extends JavaPlugin {
                     )
             )
     ) {{
+        if (getRoot().broadcastConfig() == null)
+            getLogger().severe("Your broadcast configuration is malformed");
+        if (getRoot().backConfig() == null)
+            getLogger().severe("Your back configuration is malformed");
+        if (getRoot().inventoryConfig() == null)
+            getLogger().severe("Your inventory configuration is malformed");
         if (!getFile().exists()) save();
     }}.getRoot();
 
