@@ -6,7 +6,6 @@ import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.command.api.PlayerNotAffectedException;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -18,7 +17,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -48,12 +46,6 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             if (inventory != null) updateInventory(inventory, provider);
         }), 1, 1, TimeUnit.SECONDS);
         this.plugin = plugin;
-    }
-
-    private ItemStack placeholder(Material icon, String title) {
-        var placeholder = new ItemStack(icon);
-        placeholder.editMeta(meta -> meta.displayName(Component.text(title)));
-        return placeholder;
     }
 
     @Override
@@ -90,13 +82,14 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     private void addPlaceholders(Inventory inventory) {
-        var placeholder = placeholder(Material.IRON_BARS, "§7-§8/§7-");
-        inventory.setItem(36, placeholder(Material.LIME_STAINED_GLASS_PANE, "§aHelmet"));
-        inventory.setItem(37, placeholder(Material.LIME_STAINED_GLASS_PANE, "§aChestplate"));
-        inventory.setItem(38, placeholder(Material.LIME_STAINED_GLASS_PANE, "§aLeggings"));
-        inventory.setItem(39, placeholder(Material.LIME_STAINED_GLASS_PANE, "§aBoots"));
-        inventory.setItem(41, placeholder(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "§bOff Hand"));
-        inventory.setItem(43, placeholder(Material.CYAN_STAINED_GLASS_PANE, "§3Cursor"));
+        var inventoryConfig = plugin.getTweaksConfig().inventoryConfig();
+        var placeholder = inventoryConfig.placeholder().serialize();
+        inventory.setItem(36, inventoryConfig.helmet().serialize());
+        inventory.setItem(37, inventoryConfig.chestplate().serialize());
+        inventory.setItem(38, inventoryConfig.leggings().serialize());
+        inventory.setItem(39, inventoryConfig.boots().serialize());
+        inventory.setItem(41, inventoryConfig.offHand().serialize());
+        inventory.setItem(43, inventoryConfig.cursor().serialize());
         IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
     }
 
