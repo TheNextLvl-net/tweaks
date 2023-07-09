@@ -41,10 +41,11 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
     public InventoryCommand(TweaksPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        var updateTime = Math.max(1, plugin.getTweaksConfig().inventoryConfig().updateTime());
         plugin.getFoliaLib().getImpl().runTimer(() -> providers.forEach((provider, viewers) -> {
             var inventory = inventories.get(provider);
             if (inventory != null) updateInventory(inventory, provider);
-        }), 1, 1, TimeUnit.SECONDS);
+        }), updateTime, updateTime, TimeUnit.MILLISECONDS);
         this.plugin = plugin;
     }
 

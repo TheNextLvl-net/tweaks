@@ -41,7 +41,8 @@ public class TweaksPlugin extends JavaPlugin {
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aBoots"),
                             new ConfigItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "§8» §bOff Hand"),
                             new ConfigItem(Material.CYAN_STAINED_GLASS_PANE, "§8» §3Cursor"),
-                            new ConfigItem(Material.IRON_BARS, "§7-§8/§7-")
+                            new ConfigItem(Material.IRON_BARS, "§7-§8/§7-"),
+                            1000
                     )
             )
     ) {{

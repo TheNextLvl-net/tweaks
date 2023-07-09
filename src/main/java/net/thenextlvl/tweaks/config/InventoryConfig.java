@@ -9,6 +9,7 @@ public record InventoryConfig(
         @SerializedName("boots") ConfigItem boots,
         @SerializedName("off-hand") ConfigItem offHand,
         @SerializedName("cursor") ConfigItem cursor,
-        @SerializedName("placeholder") ConfigItem placeholder
+        @SerializedName("placeholder") ConfigItem placeholder,
+        @SerializedName("update-time") long updateTime
 ) {
 }
