@@ -12,11 +12,10 @@ import net.thenextlvl.tweaks.command.environment.*;
 import net.thenextlvl.tweaks.command.item.*;
 import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
-import net.thenextlvl.tweaks.config.BackConfig;
-import net.thenextlvl.tweaks.config.BroadcastConfig;
-import net.thenextlvl.tweaks.config.TweaksConfig;
+import net.thenextlvl.tweaks.config.*;
 import net.thenextlvl.tweaks.util.Placeholders;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -33,6 +32,7 @@ public class TweaksPlugin extends JavaPlugin {
     private final TweaksConfig tweaksConfig = new GsonFile<>(
             new File(getDataFolder(), "config.json"),
             new TweaksConfig(
+                    new BackConfig(5),
                     new BroadcastConfig("", "<red>Server <grey>| <message>", ""),
                     new InventoryConfig(
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),
