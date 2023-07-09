@@ -21,6 +21,10 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
 
     protected abstract @Nullable String getArgumentPermission(CommandSender sender, T argument);
 
+    protected boolean isAllowed(CommandSender sender, T argument) {
+        return true;
+    }
+
     @Override
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player) && args.length < 1)

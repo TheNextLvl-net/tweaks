@@ -20,9 +20,7 @@ abstract class PlayerCommand extends OneOptionalArgumentCommand<Player> {
     @Override
     protected Player parse(String argument) throws CommandException {
         Player player = Bukkit.getPlayer(argument);
-        if (player == null) {
-            throw new PlayerNotOnlineException(argument);
-        }
+        if (player == null) throw new PlayerNotOnlineException(argument);
         return player;
     }
 
@@ -35,6 +33,7 @@ abstract class PlayerCommand extends OneOptionalArgumentCommand<Player> {
     protected Stream<String> suggest(CommandSender sender) {
         return Bukkit.getOnlinePlayers().stream()
                 .filter(player -> {
+                    if (!isAllowed(sender, player)) return false;
                     var permission = getArgumentPermission(sender, player);
                     return permission == null || sender.hasPermission(permission);
                 })
