@@ -18,6 +18,7 @@ public class Messages {
     public static final MessageKey<CommandSender> COMMAND_SENDER = new MessageKey<>("command.sender", plugin.formatter());
     public static final MessageKey<CommandSender> PLAYER_NOT_ONLINE = new MessageKey<>("player.not.online", plugin.formatter());
     public static final MessageKey<CommandSender> PLAYER_NOT_FOUND = new MessageKey<>("player.not.found", plugin.formatter());
+    public static final MessageKey<CommandSender> PLAYER_NOT_AFFECTED = new MessageKey<>("player.not.affected", plugin.formatter());
     public static final MessageKey<CommandSender> WORLD_NOT_AFFECTED = new MessageKey<>("world.not.affected", plugin.formatter());
     public static final MessageKey<CommandSender> WORLD_NOT_FOUND = new MessageKey<>("world.not.found", plugin.formatter());
     public static final MessageKey<CommandSender> SATISFIED_HUNGER_SELF = new MessageKey<>("hunger.satisfied.self", plugin.formatter());
@@ -83,6 +84,7 @@ public class Messages {
         file.setDefault(COMMAND_SENDER, "%prefix% <red>You cannot use this command");
         file.setDefault(PLAYER_NOT_ONLINE, "%prefix% <red>The player <dark_red>%player%<red> is not online");
         file.setDefault(PLAYER_NOT_FOUND, "%prefix% <red>The player <dark_red>%player%<red> is unknown to us");
+        file.setDefault(PLAYER_NOT_AFFECTED, "%prefix% <red>The player <dark_red>%player%<red> is not affected");
         file.setDefault(WORLD_NOT_AFFECTED, "%prefix% <red>The world <dark_red>%world%<red> is not affected");
         file.setDefault(WORLD_NOT_FOUND, "%prefix% <red>The world <dark_red>%world%<red> does not exist");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% <white>Your hunger has been satisfied");
@@ -146,6 +148,7 @@ public class Messages {
         file.setDefault(COMMAND_SENDER, "%prefix% <red>Du kannst diesen command nicht nutzen");
         file.setDefault(PLAYER_NOT_ONLINE, "%prefix% <red>Der Spieler <dark_red>%player%<red> ist nicht online");
         file.setDefault(PLAYER_NOT_FOUND, "%prefix% <red>Der Spieler <dark_red>%player%<red> ist uns nicht bekannt");
+        file.setDefault(PLAYER_NOT_AFFECTED, "%prefix% <red>Der Spieler <dark_red>%player%<red> ist nicht betroffen");
         file.setDefault(WORLD_NOT_AFFECTED, "%prefix% <red>Die Welt <dark_red>%world%<red> ist nicht betroffen");
         file.setDefault(WORLD_NOT_FOUND, "%prefix% <red>Die Welt <dark_red>%world%<red> existiert nicht");
         file.setDefault(SATISFIED_HUNGER_SELF, "%prefix% <white>Dein Hunger wurde gestillt");
