@@ -1,8 +1,10 @@
 package net.thenextlvl.tweaks.config;
 
+import com.google.gson.annotations.SerializedName;
+
 public record BroadcastConfig(
-        String header,
-        String format,
-        String footer
+        @SerializedName("header") String header,
+        @SerializedName("format") String format,
+        @SerializedName("footer") String footer
 ) {
 }

@@ -1,7 +1,10 @@
 package net.thenextlvl.tweaks.config;
 
+import com.google.gson.annotations.SerializedName;
+
 public record TweaksConfig(
-        BroadcastConfig broadcastConfig,
-        BackConfig backConfig
+        @SerializedName("back-config") BackConfig backConfig,
+        @SerializedName("broadcast-config") BroadcastConfig broadcastConfig,
+        @SerializedName("inventory-config") InventoryConfig inventoryConfig
 ) {
 }
