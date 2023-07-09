@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks;
 
 import com.tcoded.folialib.FoliaLib;
 import core.annotation.FieldsAreNonnullByDefault;
+import core.api.file.format.GsonFile;
 import core.api.placeholder.Placeholder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -21,16 +22,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 @Getter
 @FieldsAreNonnullByDefault
 public class TweaksPlugin extends JavaPlugin {
     @Accessors(fluent = true)
     private final Placeholder.Formatter<CommandSender> formatter = new Placeholder.Formatter<>();
 
-    private final TweaksConfig tweaksConfig = new TweaksConfig(
-            new BroadcastConfig("", "<red>Server <grey>| <message>", ""),
-            new BackConfig(5)
-    );
+    private final TweaksConfig tweaksConfig = new GsonFile<>(
+            new File(getDataFolder(), "config.json"),
+            new TweaksConfig(
+                    new BroadcastConfig("", "<red>Server <grey>| <message>", ""),
+                    new BackConfig(5)
+            )
+    ) {{
+        if (!getFile().exists()) save();
+    }}.getRoot();
+
     private final FoliaLib foliaLib = new FoliaLib(this);
 
     @Override
@@ -59,8 +68,8 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new PingCommand());
         registerCommand(new BackCommand(this));
         registerCommand(new SeenCommand(this));
-        registerCommand(new InventoryCommand());
-        registerCommand(new EnderChestCommand());
+        registerCommand(new InventoryCommand(this));
+        registerCommand(new EnderChestCommand(this));
         registerCommand(new SpeedCommand());
         registerCommand(new GameModeCommand());
 
