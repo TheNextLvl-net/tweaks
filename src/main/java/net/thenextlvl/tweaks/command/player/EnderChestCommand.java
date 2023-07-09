@@ -25,4 +25,15 @@ public class EnderChestCommand extends PlayerCommand {
     protected @Nullable String getArgumentPermission(CommandSender sender, Player argument) {
         return sender.equals(argument) ? null : "tweaks.command.enderchest.others";
     }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        viewers.remove(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getWhoClicked().hasPermission("tweaks.command.enderchest.edit")) return;
+        if (viewers.contains(event.getWhoClicked())) event.setCancelled(true);
+    }
 }

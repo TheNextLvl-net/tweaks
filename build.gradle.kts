@@ -56,6 +56,8 @@ bukkit {
     foliaSupported = true
 
     permissions {
+        register("tweaks.command.inventory.edit")
+        register("tweaks.command.enderchest.edit")
         register("tweaks.command.enderchest.others")
         register("tweaks.command.feed.others")
         register("tweaks.command.fly.others")
