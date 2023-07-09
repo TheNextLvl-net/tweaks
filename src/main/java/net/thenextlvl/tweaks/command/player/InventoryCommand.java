@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -99,24 +100,24 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
         var target = viewers.get(event.getPlayer());
         viewers.remove(event.getPlayer());
         if (providers.containsKey(target)) providers.get(target).remove(event.getPlayer());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onProviderInventoryClick(InventoryClickEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onProviderInventoryDrag(InventoryDragEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onViewerInventoryClick(InventoryClickEvent event) {
         event.setCancelled(onViewerInventoryAction(
                 event.getClickedInventory(),
@@ -126,7 +127,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         ));
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onViewerInventoryDrag(InventoryDragEvent event) {
         onViewerInventoryAction(event.getInventory(), event.getView(), event.getWhoClicked(), -1);
     }
