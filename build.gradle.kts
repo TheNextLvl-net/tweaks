@@ -21,7 +21,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
     implementation("com.tcoded:FoliaLib:0.2.0")
-    implementation("net.thenextlvl.core:api:3.1.10")
+    implementation("net.thenextlvl.core:api:3.1.12")
 
     annotationProcessor("org.projectlombok:lombok:1.18.26")
 
