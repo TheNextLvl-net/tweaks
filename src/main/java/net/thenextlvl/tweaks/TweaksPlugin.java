@@ -12,6 +12,7 @@ import net.thenextlvl.tweaks.command.environment.*;
 import net.thenextlvl.tweaks.command.item.*;
 import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
+import net.thenextlvl.tweaks.command.workstation.*;
 import net.thenextlvl.tweaks.config.*;
 import net.thenextlvl.tweaks.util.Placeholders;
 import org.bukkit.Bukkit;
@@ -99,6 +100,20 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new RenameCommand());
         registerCommand(new EnchantCommand());
         registerCommand(new ItemCommand());
+
+        // Workstation
+        registerCommand(new AnvilCommand());
+        // registerCommand(new BlastFurnaceCommand());
+        // registerCommand(new BrewingStandCommand());
+        registerCommand(new CartographyTableCommand());
+        registerCommand(new EnchantingTableCommand());
+        // registerCommand(new FurnaceCommand());
+        registerCommand(new GrindstoneCommand());
+        registerCommand(new LoomCommand());
+        registerCommand(new SmithingTableCommand());
+        // registerCommand(new SmokerCommand());
+        registerCommand(new StonecutterCommand());
+        registerCommand(new WorkbenchCommand());
     }
 
     private void registerCommand(CommandExecutor executor) {

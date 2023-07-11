@@ -2,6 +2,13 @@
 
 A must-have command collection for your minecraft server
 
+## Todo
+
+- /blast-furnace
+- /brewing-stand
+- /furnace
+- /smoker
+
 ## Environmental commands
 
 - /day (world) - *set the time to day*
@@ -37,6 +44,17 @@ A must-have command collection for your minecraft server
 ## Server commands
 
 - /broadcast [message] - *broadcast a message*
+
+## Workstation commands
+
+- /anvil
+- /cartography-table
+- /enchanting-table
+- /grindstone
+- /loom
+- /smithing-table
+- /stonecutter
+- /workbench
 
 ## Command permissions
 
@@ -78,3 +96,16 @@ A must-have command collection for your minecraft server
 | ping       | latency        | tweaks.command.ping                                                                                                                                                                                                                                                                                | player   | *.others   |
 | seen       | find           | tweaks.command.seen                                                                                                                                                                                                                                                                                |          |            |
 | speed      |                | tweaks.command.speed                                                                                                                                                                                                                                                                               | player   | *.others   |
+
+### Workstation commands
+
+| Command           | Alias       | Permission                       |
+|-------------------|-------------|----------------------------------|
+| anvil             |             | tweaks.command.anvil             |
+| cartography-table | cartography | tweaks.command.cartography-table |
+| enchanting-table  | enchanting  | tweaks.command.enchanting-table  |
+| grindstone        |             | tweaks.command.grindstone        |
+| loom              |             | tweaks.command.loom              |
+| smithing-table    | smithing    | tweaks.command.smithing-table    |
+| stonecutter       |             | tweaks.command.stonecutter       |
+| workbench         | wb          | tweaks.command.workbench         |
