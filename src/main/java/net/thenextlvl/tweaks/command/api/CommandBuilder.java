@@ -22,8 +22,8 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
         command.setDescription(info().description());
         command.setPermission(info().permission());
         command.setUsage(info().usage());
-        if (tabCompleter() != null) command.setTabCompleter((sender, command1, label, args) ->
-                strip(tabCompleter().onTabComplete(sender, command1, label, args), args));
+        command.setTabCompleter((sender, command1, label, args) ->
+                strip(tabCompleter() != null ? tabCompleter().onTabComplete(sender, command1, label, args) : null, args));
         command.setExecutor((sender, command1, label, args) -> {
             execute(sender, command1, label, args);
             return true;
