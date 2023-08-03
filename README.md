@@ -2,12 +2,12 @@
 
 A must-have command collection for your minecraft server
 
-## Todo
+## Features _(Configurable)_
 
-- /blast-furnace
-- /brewing-stand
-- /furnace
-- /smoker
+- You heal animals by feeding them
+- Unless an animal is at full health they can't breed
+- Cooldown for milking cows/mushroom-cows (with bowls)
+- Cooldown for Sheep wool growth
 
 ## Environmental commands
 
