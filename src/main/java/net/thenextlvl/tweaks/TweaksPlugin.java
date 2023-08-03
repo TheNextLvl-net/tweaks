@@ -14,6 +14,7 @@ import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
 import net.thenextlvl.tweaks.command.workstation.*;
 import net.thenextlvl.tweaks.config.*;
+import net.thenextlvl.tweaks.listener.EntityListener;
 import net.thenextlvl.tweaks.util.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -68,7 +69,12 @@ public class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        registerListeners();
         registerCommands();
+    }
+
+    private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new EntityListener(this), this);
     }
 
     private void registerCommands() {
