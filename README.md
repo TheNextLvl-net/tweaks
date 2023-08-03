@@ -1,6 +1,6 @@
 # Tweaks
 
-A must-have command collection for your minecraft server
+A lightweight alternative to EssentialsX without the hustle of saving user specific data
 
 ## Features _(Configurable)_
 
