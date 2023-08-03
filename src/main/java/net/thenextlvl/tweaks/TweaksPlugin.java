@@ -44,7 +44,8 @@ public class TweaksPlugin extends JavaPlugin {
                             new ConfigItem(Material.CYAN_STAINED_GLASS_PANE, "§8» §3Cursor"),
                             new ConfigItem(Material.IRON_BARS, "§7-§8/§7-"),
                             1000
-                    )
+                    ),
+                    new VanillaTweaks(0, 0, 0, false)
             )
     ) {{
         if (getRoot().broadcastConfig() == null)
@@ -53,6 +54,8 @@ public class TweaksPlugin extends JavaPlugin {
             getLogger().severe("Your back configuration is malformed");
         if (getRoot().inventoryConfig() == null)
             getLogger().severe("Your inventory configuration is malformed");
+        if (getRoot().vanillaTweaks() == null)
+            getLogger().severe("Your vanilla-tweaks configuration is malformed");
         if (!getFile().exists()) save();
     }}.getRoot();
 
