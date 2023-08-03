@@ -106,15 +106,11 @@ public class TweaksPlugin extends JavaPlugin {
 
         // Workstation
         registerCommand(new AnvilCommand());
-        // registerCommand(new BlastFurnaceCommand());
-        // registerCommand(new BrewingStandCommand());
         registerCommand(new CartographyTableCommand());
         registerCommand(new EnchantingTableCommand());
-        // registerCommand(new FurnaceCommand());
         registerCommand(new GrindstoneCommand());
         registerCommand(new LoomCommand());
         registerCommand(new SmithingTableCommand());
-        // registerCommand(new SmokerCommand());
         registerCommand(new StonecutterCommand());
         registerCommand(new WorkbenchCommand());
     }
