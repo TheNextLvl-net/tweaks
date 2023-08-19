@@ -109,3 +109,45 @@ A lightweight alternative to EssentialsX without the hustle of saving user speci
 | smithing-table    | smithing    | tweaks.command.smithing-table    |
 | stonecutter       |             | tweaks.command.stonecutter       |
 | workbench         | wb          | tweaks.command.workbench         |
+
+## Configuration
+
+### General
+
+| Option                 | Description                                                                                                            | Value           |
+|------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
+| back-buffer-stack-size | the amount of locations stored for the /back command<br/>_the larger the value the more ram will be reserved_          | `Integer` (1-n) |
+| override-join-message  | whether to override the join message<br/>_the message can be changed within the local files_                           | `true`, `false` |
+| override-quit-message  | whether to override the quit message<br/>_the message can be changed within the local files_                           | `true`, `false` |
+| override-chat          | whether to override the chat<br/>_the chat format can be changed within the [`chat-format`](#chat-placeholders) entry_ | `true`, `false` |
+| log-chat               | whether to send the chat to the console<br/>_not related with override-chat_                                           | `true`, `false` |
+
+### Chat Placeholders
+
+Placeholders can be used within the `chat-format` entry<br/>
+To insert a placeholder just use `<tag>`
+
+| Tag          | Description                    | Requires  |
+|--------------|--------------------------------|-----------|
+| prefix       | the prefix of the sender       | LuckPerms |
+| suffix       | the suffix of the sender       | LuckPerms |
+| group        | the group of the sender        | LuckPerms |
+| display_name | the display name of the sender |           |
+| message      | the original message sent      |           |
+| player       | the name of the sender         |           |
+| world        | the world of the sender        |           |
+
+### Inventory
+
+The `update-time` entry, is given in milliseconds.<br/>
+The lower the value the faster the `/invsee` inventory updates.<br/>
+The minimum value is 50ms to avoid lag.
+
+### Vanilla Tweaks
+
+| Option                     | Description                                                                                               | Value           |
+|----------------------------|-----------------------------------------------------------------------------------------------------------|-----------------|
+| cow-milking-cooldown       | the cooldown until a (mooshroom) cow give milk again                                                      | milliseconds    |
+| mushroom-stew-cooldown     | the cooldown until a mooshroom can give mushroom stew again                                               | milliseconds    |
+| sheep-wool-growth-cooldown | the minimum cooldown until sheep can grow back their wool                                                 | milliseconds    |
+| animal-heal-by-feeding     | whether animals should heal by feeding them<br/>_this implies animals can only breed when on full hearts_ | `true`, `false` |
