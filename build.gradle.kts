@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly("net.luckperms:api:5.4")
     compileOnly("org.projectlombok:lombok:1.18.26")
     compileOnly("net.thenextlvl.core:annotations:1.0.0")
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
@@ -52,6 +53,7 @@ bukkit {
     apiVersion = "1.19"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
+    softDepend = listOf("LuckPerms")
 
     foliaSupported = true
 
