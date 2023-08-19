@@ -16,6 +16,8 @@ public class Messages {
     public static final SystemMessageKey<CommandSender> COMMAND_USAGE = new SystemMessageKey<>("command.usage", plugin.formatter());
     public static final MessageKey<CommandSender> COMMAND_PERMISSION = new MessageKey<>("command.permission", plugin.formatter());
     public static final MessageKey<CommandSender> COMMAND_SENDER = new MessageKey<>("command.sender", plugin.formatter());
+    public static final MessageKey<CommandSender> JOIN_MESSAGE = new MessageKey<>("player.joined", plugin.formatter());
+    public static final MessageKey<CommandSender> QUIT_MESSAGE = new MessageKey<>("player.left", plugin.formatter());
     public static final MessageKey<CommandSender> PLAYER_NOT_ONLINE = new MessageKey<>("player.not.online", plugin.formatter());
     public static final MessageKey<CommandSender> PLAYER_NOT_FOUND = new MessageKey<>("player.not.found", plugin.formatter());
     public static final MessageKey<CommandSender> PLAYER_NOT_AFFECTED = new MessageKey<>("player.not.affected", plugin.formatter());
@@ -82,6 +84,8 @@ public class Messages {
         var file = MessageFile.getOrCreate(ENGLISH);
         file.setDefault(COMMAND_PERMISSION, "%prefix% <red>You have no rights <dark_gray>(<dark_red>%permission%<dark_gray>)");
         file.setDefault(COMMAND_SENDER, "%prefix% <red>You cannot use this command");
+        file.setDefault(JOIN_MESSAGE, "%prefix% <green>%player% <white>joined the game");
+        file.setDefault(QUIT_MESSAGE, "%prefix% <green>%player% <white>left the game");
         file.setDefault(PLAYER_NOT_ONLINE, "%prefix% <red>The player <dark_red>%player%<red> is not online");
         file.setDefault(PLAYER_NOT_FOUND, "%prefix% <red>The player <dark_red>%player%<red> is unknown to us");
         file.setDefault(PLAYER_NOT_AFFECTED, "%prefix% <red>The player <dark_red>%player%<red> is not affected");
@@ -146,6 +150,8 @@ public class Messages {
         var file = MessageFile.getOrCreate(Locale.forLanguageTag("de-DE"));
         file.setDefault(COMMAND_PERMISSION, "%prefix% <red>Darauf hast du keine rechte <dark_gray>(<dark_red>%permission%<dark_gray>)");
         file.setDefault(COMMAND_SENDER, "%prefix% <red>Du kannst diesen command nicht nutzen");
+        file.setDefault(JOIN_MESSAGE, "%prefix% <green>%player% <white>ist dem Spiel beigetreten");
+        file.setDefault(QUIT_MESSAGE, "%prefix% <green>%player% <white>hat das Spiel verlassen");
         file.setDefault(PLAYER_NOT_ONLINE, "%prefix% <red>Der Spieler <dark_red>%player%<red> ist nicht online");
         file.setDefault(PLAYER_NOT_FOUND, "%prefix% <red>Der Spieler <dark_red>%player%<red> ist uns nicht bekannt");
         file.setDefault(PLAYER_NOT_AFFECTED, "%prefix% <red>Der Spieler <dark_red>%player%<red> ist nicht betroffen");
