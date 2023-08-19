@@ -33,7 +33,7 @@ public class ChatListener implements Listener {
                         TagResolver.resolver("message_content", Tag.preProcessParsed(messageContent)),
                         TagResolver.resolver("message", Tag.inserting(message)),
                         TagResolver.resolver("player", Tag.inserting(source.name())),
-                        TagResolver.resolver("world", Tag.inserting(Component.text(source.getWorld().getName())))
+                        TagResolver.resolver("world", Tag.preProcessParsed(source.getWorld().getName()))
                 ).build()));
     }
 
