@@ -127,15 +127,16 @@ A lightweight alternative to EssentialsX without the hustle of saving user speci
 Placeholders can be used within the `chat-format` entry<br/>
 To insert a placeholder just use `<tag>`
 
-| Tag          | Description                    | Requires  |
-|--------------|--------------------------------|-----------|
-| prefix       | the prefix of the sender       | LuckPerms |
-| suffix       | the suffix of the sender       | LuckPerms |
-| group        | the group of the sender        | LuckPerms |
-| display_name | the display name of the sender |           |
-| message      | the original message sent      |           |
-| player       | the name of the sender         |           |
-| world        | the world of the sender        |           |
+| Tag             | Description                                                            | Requires  |
+|-----------------|------------------------------------------------------------------------|-----------|
+| prefix          | the prefix of the sender                                               | LuckPerms |
+| suffix          | the suffix of the sender                                               | LuckPerms |
+| group           | the group of the sender                                                | LuckPerms |
+| display_name    | the display name of the sender                                         |           |
+| message_content | the text content of the sent message<br/>_usable within click actions_ |           |
+| message         | the original message sent                                              |           |
+| player          | the name of the sender                                                 |           |
+| world           | the world of the sender                                                |           |
 
 ### Inventory
 

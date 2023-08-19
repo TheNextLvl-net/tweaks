@@ -3,6 +3,7 @@ package net.thenextlvl.tweaks.listener;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -24,10 +25,12 @@ public class ChatListener implements Listener {
         if (!plugin.config().generalConfig().logChat())
             event.viewers().remove(Bukkit.getConsoleSender());
         if (!plugin.config().generalConfig().overrideChat()) return;
+        var messageContent = event.message() instanceof TextComponent text ? text.content() : "";
         event.renderer((source, displayName, message, viewer) -> MiniMessage.miniMessage().deserialize(
                 plugin.config().formattingConfig().chatFormat(),
                 luckResolvers(source).resolvers(
                         TagResolver.resolver("display_name", Tag.inserting(displayName)),
+                        TagResolver.resolver("message_content", Tag.preProcessParsed(messageContent)),
                         TagResolver.resolver("message", Tag.inserting(message)),
                         TagResolver.resolver("player", Tag.inserting(source.name())),
                         TagResolver.resolver("world", Tag.inserting(Component.text(source.getWorld().getName())))
