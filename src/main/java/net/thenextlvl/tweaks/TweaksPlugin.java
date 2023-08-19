@@ -39,7 +39,8 @@ public class TweaksPlugin extends JavaPlugin {
                     new GeneralConfig(5, false, false, false, true),
                     new FormattingConfig(
                             "", "<red>Server <grey>| <message>", "",
-                            "<display_name><reset> <dark_gray>» <reset><message>"
+                            "<display_name><reset> <dark_gray>» <reset><click:copy_to_clipboard:'<message_content>'>" +
+                                    "<hover:show_text:'<lang:chat.copy.click>'><message>"
                     ),
                     new InventoryConfig(
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),
