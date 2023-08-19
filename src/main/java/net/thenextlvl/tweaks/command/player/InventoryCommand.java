@@ -41,8 +41,8 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
     public InventoryCommand(TweaksPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        var updateTime = Math.max(50, plugin.getTweaksConfig().inventoryConfig().updateTime());
-        plugin.getFoliaLib().getImpl().runTimer(() -> providers.forEach((provider, viewers) -> {
+        var updateTime = Math.max(50, plugin.config().inventoryConfig().updateTime());
+        plugin.foliaLib().getImpl().runTimer(() -> providers.forEach((provider, viewers) -> {
             var inventory = inventories.get(provider);
             if (inventory != null) updateInventory(inventory, provider);
         }), updateTime, updateTime, TimeUnit.MILLISECONDS);
@@ -83,7 +83,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     private void addPlaceholders(Inventory inventory) {
-        var inventoryConfig = plugin.getTweaksConfig().inventoryConfig();
+        var inventoryConfig = plugin.config().inventoryConfig();
         var placeholder = inventoryConfig.placeholder().serialize();
         inventory.setItem(36, inventoryConfig.helmet().serialize());
         inventory.setItem(37, inventoryConfig.chestplate().serialize());
@@ -131,7 +131,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         if (!inventories.containsKey(provider)) return;
         var viewers = providers.get(provider);
         var inventory = inventories.get(provider);
-        plugin.getFoliaLib().getImpl().runNextTick(() ->
+        plugin.foliaLib().getImpl().runNextTick(() ->
                 viewers.forEach(player -> updateInventory(inventory, provider))
         );
     }
@@ -140,7 +140,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         if (!viewers.containsKey(viewer)) return false;
         if (viewer.hasPermission("tweaks.command.inventory.edit")) {
             var target = viewers.get(viewer);
-            plugin.getFoliaLib().getImpl().runNextTick(() -> {
+            plugin.foliaLib().getImpl().runNextTick(() -> {
                 IntStream.range(0, 36).forEach(i -> {
                     var content = view.getTopInventory().getContents()[i];
                     target.getInventory().setItem(i, content);

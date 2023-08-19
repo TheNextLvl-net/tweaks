@@ -36,7 +36,7 @@ public class BackCommand implements CommandExecutor, Listener {
 
     public BackCommand(TweaksPlugin plugin) {
         this.plugin = plugin;
-        this.defaultBufferSize = plugin.getTweaksConfig().backConfig().bufferStackSize();
+        this.defaultBufferSize = plugin.config().generalConfig().backBufferStackSize();
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

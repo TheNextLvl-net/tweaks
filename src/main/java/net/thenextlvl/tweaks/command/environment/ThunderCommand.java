@@ -22,7 +22,7 @@ public class ThunderCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.getFoliaLib().getImpl().runNextTick(() -> {
+        plugin.foliaLib().getImpl().runNextTick(() -> {
             world.setStorm(true);
             world.setThundering(true);
             var placeholder = Placeholder.<CommandSender>of("world", world.getName());

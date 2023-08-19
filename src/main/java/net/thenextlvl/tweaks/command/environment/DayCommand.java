@@ -22,7 +22,7 @@ public class DayCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.getFoliaLib().getImpl().runNextTick(() -> {
+        plugin.foliaLib().getImpl().runNextTick(() -> {
             world.setTime(1000);
             var placeholder = Placeholder.<CommandSender>of("world", world.getName());
             var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;

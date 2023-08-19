@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.config.BroadcastConfig;
-import net.thenextlvl.tweaks.config.TweaksConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,21 +25,22 @@ public class BroadcastCommand implements CommandExecutor {
 
         if (args.length == 0) return false;
 
-        TweaksConfig tweaksConfig = plugin.getTweaksConfig();
-        BroadcastConfig broadcastConfig = tweaksConfig.broadcastConfig();
-        String format = broadcastConfig.format();
+        var tweaksConfig = plugin.config();
+        var formattingConfig = tweaksConfig.formattingConfig();
+
+        String format = formattingConfig.broadcastFormat();
         String message = String.join(" ", args).replace("\\t", "   ");
         String replace = format(format, message);
 
         var miniMessage = MiniMessage.miniMessage();
         var deserialize = miniMessage.deserialize(replace);
 
-        if (broadcastConfig.header() != null) {
-            Bukkit.broadcast(miniMessage.deserialize(broadcastConfig.header()));
+        if (formattingConfig.broadcastHeader() != null) {
+            Bukkit.broadcast(miniMessage.deserialize(formattingConfig.broadcastHeader()));
         }
         Bukkit.broadcast(deserialize);
-        if (broadcastConfig.footer() != null) {
-            Bukkit.broadcast(miniMessage.deserialize(broadcastConfig.footer()));
+        if (formattingConfig.broadcastFooter() != null) {
+            Bukkit.broadcast(miniMessage.deserialize(formattingConfig.broadcastFooter()));
         }
         return true;
     }

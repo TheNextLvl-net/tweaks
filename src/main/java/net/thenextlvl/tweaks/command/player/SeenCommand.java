@@ -48,26 +48,25 @@ public class SeenCommand implements TabExecutor {
     }
 
     private void lastSeenOffline(Locale locale, CommandSender sender, String[] args) {
-        plugin.getFoliaLib().getImpl()
-                .runAsync(() -> {
+        plugin.foliaLib().getImpl().runAsync(() -> {
 
-                    var target = Bukkit.getOfflinePlayer(args[0]);
-                    if (!target.hasPlayedBefore()) {
-                        new PlayerNotFoundException(args[0]).handle(locale, sender);
-                        return;
-                    }
+            var target = Bukkit.getOfflinePlayer(args[0]);
+            if (!target.hasPlayedBefore()) {
+                new PlayerNotFoundException(args[0]).handle(locale, sender);
+                return;
+            }
 
-                    var lastSeen = new Date(target.getLastSeen());
+            var lastSeen = new Date(target.getLastSeen());
 
-                    var player = Placeholder.<CommandSender>of("player", () ->
-                            target.getName() != null ? target.getName() : args[0]);
-                    var time = Placeholder.<CommandSender>of("time", () -> {
-                        var format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-                        return format.format(lastSeen);
-                    });
+            var player = Placeholder.<CommandSender>of("player", () ->
+                    target.getName() != null ? target.getName() : args[0]);
+            var time = Placeholder.<CommandSender>of("time", () -> {
+                var format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+                return format.format(lastSeen);
+            });
 
-                    sender.sendRichMessage(Messages.LAST_SEEN_TIME.message(locale, sender, player, time));
-                });
+            sender.sendRichMessage(Messages.LAST_SEEN_TIME.message(locale, sender, player, time));
+        });
     }
 
     @Override
