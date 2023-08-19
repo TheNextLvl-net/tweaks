@@ -14,6 +14,8 @@ import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
 import net.thenextlvl.tweaks.command.workstation.*;
 import net.thenextlvl.tweaks.config.*;
+import net.thenextlvl.tweaks.listener.ChatListener;
+import net.thenextlvl.tweaks.listener.ConnectionListener;
 import net.thenextlvl.tweaks.listener.EntityListener;
 import net.thenextlvl.tweaks.util.Placeholders;
 import org.bukkit.Bukkit;
@@ -26,16 +28,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 @Getter
+@Accessors(fluent = true)
 @FieldsAreNonnullByDefault
 public class TweaksPlugin extends JavaPlugin {
-    @Accessors(fluent = true)
     private final Placeholder.Formatter<CommandSender> formatter = new Placeholder.Formatter<>();
 
-    private final TweaksConfig tweaksConfig = new GsonFile<>(
+    private final TweaksConfig config = new GsonFile<>(
             new File(getDataFolder(), "config.json"),
             new TweaksConfig(
-                    new BackConfig(5),
-                    new BroadcastConfig("", "<red>Server <grey>| <message>", ""),
+                    new GeneralConfig(5, false, false, false, true),
+                    new FormattingConfig(
+                            "", "<red>Server <grey>| <message>", "",
+                            "<display_name><reset> <dark_gray>» <reset><message>"
+                    ),
                     new InventoryConfig(
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aChestplate"),
@@ -49,14 +54,14 @@ public class TweaksPlugin extends JavaPlugin {
                     new VanillaTweaks(0, 0, 0, false)
             )
     ) {{
-        if (getRoot().broadcastConfig() == null)
-            getLogger().severe("Your broadcast configuration is malformed");
-        if (getRoot().backConfig() == null)
-            getLogger().severe("Your back configuration is malformed");
+        if (getRoot().generalConfig() == null)
+            getLogger().severe("Your general-config-section is malformed");
+        if (getRoot().formattingConfig() == null)
+            getLogger().severe("Your formatting-config-section is malformed");
         if (getRoot().inventoryConfig() == null)
-            getLogger().severe("Your inventory configuration is malformed");
+            getLogger().severe("Your inventory-config-section is malformed");
         if (getRoot().vanillaTweaks() == null)
-            getLogger().severe("Your vanilla-tweaks configuration is malformed");
+            getLogger().severe("Your vanilla-tweaks-section is malformed");
         if (!getFile().exists()) save();
     }}.getRoot();
 
