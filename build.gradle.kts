@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "1.4.2"
+version = "1.4.3"
 
 repositories {
     mavenCentral()
@@ -23,6 +23,7 @@ dependencies {
 
     implementation("com.tcoded:FoliaLib:0.2.0")
     implementation("net.thenextlvl.core:api:3.1.12")
+    implementation("org.bstats:bstats-bukkit:3.0.2")
 
     annotationProcessor("org.projectlombok:lombok:1.18.26")
 
@@ -35,6 +36,7 @@ tasks {
     }
     shadowJar {
         minimize()
+        relocate("org.bstats", "net.thenextlvl.tweaks.bstats")
         relocate("com.tcoded.folialib", "net.thenextlvl.tweaks.folialib")
     }
     runServer {

@@ -1,6 +1,7 @@
 # Tweaks
 
-A lightweight alternative to EssentialsX without the hustle of saving user specific data
+A lightweight alternative to EssentialsX without the hustle of saving user specific data<br/>
+bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20Tweaks/19651)
 
 ## Features _(Configurable)_
 
