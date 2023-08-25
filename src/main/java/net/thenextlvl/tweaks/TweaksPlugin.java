@@ -18,6 +18,7 @@ import net.thenextlvl.tweaks.listener.ChatListener;
 import net.thenextlvl.tweaks.listener.ConnectionListener;
 import net.thenextlvl.tweaks.listener.EntityListener;
 import net.thenextlvl.tweaks.util.Placeholders;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
@@ -32,6 +33,7 @@ import java.io.File;
 @FieldsAreNonnullByDefault
 public class TweaksPlugin extends JavaPlugin {
     private final Placeholder.Formatter<CommandSender> formatter = new Placeholder.Formatter<>();
+    private final Metrics metrics = new Metrics(this, 19651);
 
     private final TweaksConfig config = new GsonFile<>(
             new File(getDataFolder(), "config.json"),
@@ -77,6 +79,11 @@ public class TweaksPlugin extends JavaPlugin {
     public void onEnable() {
         registerListeners();
         registerCommands();
+    }
+
+    @Override
+    public void onDisable() {
+        metrics.shutdown();
     }
 
     private void registerListeners() {
