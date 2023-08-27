@@ -70,9 +70,6 @@ public class EntityListener implements Listener {
         var now = System.currentTimeMillis();
         var container = entity.getPersistentDataContainer();
         var data = container.get(key, PersistentDataType.LONG);
-        System.out.println(now);
-        System.out.println(data);
-        System.out.println(cooldown);
         if (data != null && now - data < cooldown) cancellable.setCancelled(true);
         else container.set(key, PersistentDataType.LONG, now);
     }
