@@ -6,6 +6,7 @@ public record FormattingConfig(
         @SerializedName("broadcast-header") String broadcastHeader,
         @SerializedName("broadcast-format") String broadcastFormat,
         @SerializedName("broadcast-footer") String broadcastFooter,
-        @SerializedName("chat-format") String chatFormat
+        @SerializedName("chat-format") String chatFormat,
+        @SerializedName("delete-tag-format") String deleteTagFormat
 ) {
 }

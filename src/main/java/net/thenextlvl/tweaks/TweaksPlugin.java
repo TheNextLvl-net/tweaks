@@ -41,8 +41,11 @@ public class TweaksPlugin extends JavaPlugin {
                     new GeneralConfig(5, false, false, false, true),
                     new FormattingConfig(
                             "", "<red>Server <grey>| <message>", "",
-                            "<display_name><reset> <dark_gray>» <reset><click:copy_to_clipboard:'<message_content>'>" +
-                                    "<hover:show_text:'<lang:chat.copy.click>'><message>"
+                            "<delete:'<signature>'><display_name><reset> <dark_gray>» <reset>" +
+                                    "<click:copy_to_clipboard:'<message_content>'>" +
+                                    "<hover:show_text:'<lang:chat.copy.click>'><message>",
+                            "<hover:show_text:'<lang:key.keyboard.delete>'>" +
+                                    "<dark_gray>[<dark_red><bold>␡</bold><dark_gray>]<reset> "
                     ),
                     new InventoryConfig(
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),

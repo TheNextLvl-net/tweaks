@@ -115,29 +115,42 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 
 ### General
 
-| Option                 | Description                                                                                                            | Value           |
-|------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------|
-| back-buffer-stack-size | the amount of locations stored for the /back command<br/>_the larger the value the more ram will be reserved_          | `Integer` (1-n) |
-| override-join-message  | whether to override the join message<br/>_the message can be changed within the local files_                           | `true`, `false` |
-| override-quit-message  | whether to override the quit message<br/>_the message can be changed within the local files_                           | `true`, `false` |
-| override-chat          | whether to override the chat<br/>_the chat format can be changed within the [`chat-format`](#chat-placeholders) entry_ | `true`, `false` |
-| log-chat               | whether to send the chat to the console<br/>_not related with override-chat_                                           | `true`, `false` |
+| Option                 | Description                                                                                                                | Value           |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------|-----------------|
+| back-buffer-stack-size | the amount of locations stored for the /back command<br/>_the larger the value the more ram will be reserved_              | `Integer` (1-n) |
+| override-join-message  | whether to override the join message<br/>_the message can be changed within the local files_                               | `true`, `false` |
+| override-quit-message  | whether to override the quit message<br/>_the message can be changed within the local files_                               | `true`, `false` |
+| override-chat          | whether to override the chat<br/>_the chat format can be changed within the [`chat-format`](#minimessage-chat-tags) entry_ | `true`, `false` |
+| log-chat               | whether to send the chat to the console<br/>_not related with override-chat_                                               | `true`, `false` |
 
-### Chat Placeholders
+### MiniMessage Chat Tags
 
-Placeholders can be used within the `chat-format` entry<br/>
-To insert a placeholder just use `<tag>`
+These tags can be used within the `chat-format` entry<br/>
+To insert a tag just use `<tag>`
 
-| Tag             | Description                                                            | Requires  |
-|-----------------|------------------------------------------------------------------------|-----------|
-| prefix          | the prefix of the sender                                               | LuckPerms |
-| suffix          | the suffix of the sender                                               | LuckPerms |
-| group           | the group of the sender                                                | LuckPerms |
-| display_name    | the display name of the sender                                         |           |
-| message_content | the text content of the sent message<br/>_usable within click actions_ |           |
-| message         | the original message sent                                              |           |
-| player          | the name of the sender                                                 |           |
-| world           | the world of the sender                                                |           |
+| Tag             | Description                                                                                | Requires  |
+|-----------------|--------------------------------------------------------------------------------------------|-----------|
+| prefix          | the prefix of the sender                                                                   | LuckPerms |
+| suffix          | the suffix of the sender                                                                   | LuckPerms |
+| group           | the group of the sender                                                                    | LuckPerms |
+| signature       | the message signature                                                                      |           |
+| delete          | a clickable component to delete a certain message<br/>(requires the signature as argument) |           |
+| display_name    | the display name of the sender                                                             |           |
+| message_content | the text content of the sent message<br/>_usable within click actions_                     |           |
+| message         | the original message sent                                                                  |           |
+| player          | the name of the sender                                                                     |           |
+| world           | the world of the sender                                                                    |           |
+
+For more information visit: https://docs.advntr.dev/minimessage/format.html
+
+### Chat Message Deletion
+
+The delete tag requires the message signature which can be obtained via the `signature` tag.<br/>
+In general, it would look like this: `<delete:'<signature'>>`
+
+With the `delete-tag-format` option you can control the look and feel of the component
+
+For security reasons, the entire delete tag will only be visible to players with the permission `tweaks.chat.delete`
 
 ### Inventory
 

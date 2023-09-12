@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "1.4.4"
+version = "1.4.5"
 
 repositories {
     mavenCentral()
@@ -60,6 +60,7 @@ bukkit {
     foliaSupported = true
 
     permissions {
+        register("tweaks.chat.delete")
         register("tweaks.command.inventory.edit")
         register("tweaks.command.enderchest.edit")
         register("tweaks.command.enderchest.others")
