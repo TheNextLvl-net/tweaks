@@ -18,19 +18,24 @@ public class ConnectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event) {
+        event.getPlayer().sendOpLevel((byte) plugin.config().generalConfig().defaultPermissionLevel());
         if (!plugin.config().generalConfig().overrideJoinMessage()) return;
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendRichMessage(Messages.JOIN_MESSAGE.message(
-                event.getPlayer().locale(), event.getPlayer(), Placeholder.of("player", Player::getName))
-        ));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            var message = Messages.JOIN_MESSAGE.message(event.getPlayer().locale(), event.getPlayer(),
+                    Placeholder.of("player", Player::getName));
+            if (!message.isEmpty()) player.sendRichMessage(message);
+        });
         event.joinMessage(null);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerQuitEvent event) {
         if (!plugin.config().generalConfig().overrideQuitMessage()) return;
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendRichMessage(Messages.QUIT_MESSAGE.message(
-                event.getPlayer().locale(), event.getPlayer(), Placeholder.of("player", Player::getName))
-        ));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            var message = Messages.QUIT_MESSAGE.message(event.getPlayer().locale(), event.getPlayer(),
+                    Placeholder.of("player", Player::getName));
+            if (!message.isEmpty()) player.sendRichMessage(message);
+        });
         event.quitMessage(null);
     }
 }

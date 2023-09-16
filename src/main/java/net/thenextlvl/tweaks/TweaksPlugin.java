@@ -38,7 +38,7 @@ public class TweaksPlugin extends JavaPlugin {
     private final TweaksConfig config = new GsonFile<>(
             new File(getDataFolder(), "config.json"),
             new TweaksConfig(
-                    new GeneralConfig(5, false, false, false, true),
+                    new GeneralConfig(5, 4, false, false, false, true),
                     new FormattingConfig(
                             "", "<red>Server <grey>| <message>", "",
                             "<delete:'<signature>'><display_name><reset> <dark_gray>» <reset>" +
