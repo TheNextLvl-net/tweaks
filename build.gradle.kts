@@ -60,17 +60,59 @@ bukkit {
     foliaSupported = true
 
     permissions {
-        register("tweaks.chat.delete")
-        register("tweaks.command.inventory.edit")
-        register("tweaks.command.enderchest.edit")
-        register("tweaks.command.enderchest.others")
-        register("tweaks.command.feed.others")
-        register("tweaks.command.fly.others")
-        register("tweaks.command.god.others")
-        register("tweaks.command.heal.others")
-        register("tweaks.command.ping.others")
-        register("tweaks.command.speed.others")
-        register("tweaks.command.gamemode.others")
+        register("tweaks.commands.environmental") {
+            this.children = listOf(
+                "tweaks.command.day",
+                "tweaks.command.night",
+                "tweaks.command.rain",
+                "tweaks.command.sun",
+                "tweaks.command.thunder"
+            )
+        }
+        register("tweaks.commands.item") {
+            this.children = listOf(
+                "tweaks.command.enchant",
+                "tweaks.command.head",
+                "tweaks.command.item",
+                "tweaks.command.lore",
+                "tweaks.command.rename",
+                "tweaks.command.repair",
+                "tweaks.command.unenchant"
+            )
+        }
+        register("tweaks.commands.player") {
+            this.children = listOf(
+                "tweaks.command.back",
+                "tweaks.command.enderchest",
+                "tweaks.command.feed",
+                "tweaks.command.fly",
+                "tweaks.command.gamemode",
+                "tweaks.command.god",
+                "tweaks.command.hat",
+                "tweaks.command.heal",
+                "tweaks.command.inventory",
+                "tweaks.command.ping",
+                "tweaks.command.seen",
+                "tweaks.command.speed"
+            )
+        }
+        register("tweaks.commands.server") {
+            this.children = listOf(
+                "tweaks.command.broadcast"
+            )
+        }
+        register("tweaks.commands.workstation") {
+            this.children = listOf(
+                "tweaks.command.anvil",
+                "tweaks.command.cartography-table",
+                "tweaks.command.enchanting-table",
+                "tweaks.command.grindstone",
+                "tweaks.command.loom",
+                "tweaks.command.smithing-table",
+                "tweaks.command.stonecutter",
+                "tweaks.command.workbench"
+            )
+        }
         register("tweaks.command.gamemode.all") {
             this.children = listOf(
                 "tweaks.command.gamemode",
@@ -80,5 +122,16 @@ bukkit {
                 "tweaks.command.gamemode.spectator"
             )
         }
+        register("tweaks.command.gamemode.others")
+        register("tweaks.command.inventory.edit")
+        register("tweaks.command.enderchest.edit")
+        register("tweaks.command.enderchest.others")
+        register("tweaks.command.feed.others")
+        register("tweaks.command.fly.others")
+        register("tweaks.command.god.others")
+        register("tweaks.command.heal.others")
+        register("tweaks.command.ping.others")
+        register("tweaks.command.speed.others")
+        register("tweaks.chat.delete")
     }
 }
