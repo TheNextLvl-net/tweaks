@@ -9,7 +9,7 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 - Unless an animal is at full health they can't breed
 - Cooldown for milking cows/mushroom-cows (with bowls)
 - Cooldown for Sheep wool growth
-- You can define a default permission level (purely clientside)
+- You can define a default permission level (purely client-side)
 
 ## Commands
 
@@ -85,14 +85,14 @@ The group permission for this category is `tweaks.commands.workstation`
 
 ### General
 
-| Option                   | Description                                                                                                                | Value           |
-|--------------------------|----------------------------------------------------------------------------------------------------------------------------|-----------------|
-| back-buffer-stack-size   | the amount of locations stored for the /back command<br/>_the larger the value the more ram will be reserved_              | `Integer` (1-n) |
-| default-permission-level | the permission level is                                                                                                    | `byte` (0-4)    |
-| override-join-message    | whether to override the join message<br/>_the message can be changed within the local files_                               | `true`, `false` |
-| override-quit-message    | whether to override the quit message<br/>_the message can be changed within the local files_                               | `true`, `false` |
-| override-chat            | whether to override the chat<br/>_the chat format can be changed within the [`chat-format`](#minimessage-chat-tags) entry_ | `true`, `false` |
-| log-chat                 | whether to send the chat to the console<br/>_not related with override-chat_                                               | `true`, `false` |
+| Option                   | Description                                                                                                                                                                    | Value           |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| back-buffer-stack-size   | the amount of locations stored for the /back command<br/>_the larger the value the more ram will be reserved_                                                                  | `Integer` (1-n) |
+| default-permission-level | the permission level determines which commands a player can access<br/>_this option is purely-client side therefore has no effect on the server_<br/>(-1 disables this option) | `byte` (-1/0-4) |
+| override-join-message    | whether to override the join message<br/>_the message can be changed within the local files_                                                                                   | `true`, `false` |
+| override-quit-message    | whether to override the quit message<br/>_the message can be changed within the local files_                                                                                   | `true`, `false` |
+| override-chat            | whether to override the chat<br/>_the chat format can be changed within the [`chat-format`](#minimessage-chat-tags) entry_                                                     | `true`, `false` |
+| log-chat                 | whether to send the chat to the console<br/>_not related with override-chat_                                                                                                   | `true`, `false` |
 
 For more information about the permission level visit: https://minecraft.fandom.com/wiki/Permission_level
 
