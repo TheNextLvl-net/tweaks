@@ -18,7 +18,8 @@ public class ConnectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendOpLevel((byte) plugin.config().generalConfig().defaultPermissionLevel());
+        var permissionLevel = plugin.config().generalConfig().defaultPermissionLevel();
+        if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
         if (!plugin.config().generalConfig().overrideJoinMessage()) return;
         Bukkit.getOnlinePlayers().forEach(player -> {
             var message = Messages.JOIN_MESSAGE.message(event.getPlayer().locale(), event.getPlayer(),
