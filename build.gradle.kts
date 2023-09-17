@@ -1,12 +1,14 @@
+import net.minecrell.pluginyml.paper.PaperPluginDescription
+
 plugins {
     id("java")
     id("xyz.jpenilla.run-paper") version "2.0.1"
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
+    id("net.minecrell.plugin-yml.paper") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "net.thenextlvl"
-version = "1.4.6"
+version = "1.4.7"
 
 repositories {
     mavenCentral()
@@ -46,15 +48,21 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
 
-bukkit {
+paper {
     name = "Tweaks"
     main = "net.thenextlvl.tweaks.TweaksPlugin"
     apiVersion = "1.19"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
-    softDepend = listOf("LuckPerms")
 
     foliaSupported = true
+
+    serverDependencies {
+        register("LuckPerms") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+        }
+    }
 
     permissions {
         register("tweaks.commands.environmental") {
