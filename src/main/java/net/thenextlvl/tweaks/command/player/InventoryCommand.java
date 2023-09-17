@@ -12,9 +12,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.Nullable;
@@ -41,8 +44,8 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
     public InventoryCommand(TweaksPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
-        var updateTime = Math.max(50, plugin.config().inventoryConfig().updateTime());
-        plugin.foliaLib().getImpl().runTimer(() -> providers.forEach((provider, viewers) -> {
+        var updateTime = Math.max(1, plugin.config().inventoryConfig().updateTime());
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, task -> providers.forEach((provider, viewers) -> {
             var inventory = inventories.get(provider);
             if (inventory != null) updateInventory(inventory, provider);
         }), updateTime, updateTime, TimeUnit.MILLISECONDS);
@@ -60,7 +63,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         if (!isAllowed(sender, target)) throw new PlayerNotAffectedException(target);
         var inventory = Bukkit.createInventory(target, 54, Component.text(target.getName()));
         updateInventory(inventory, target);
-        addPlaceholders(inventory);
+        addPlaceholders(inventory, target);
         player.openInventory(inventory);
 
         inventories.put(target, inventory);
@@ -82,7 +85,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         inventory.setItem(52, target.getItemOnCursor());
     }
 
-    private void addPlaceholders(Inventory inventory) {
+    private void addPlaceholders(Inventory inventory, HumanEntity target) {
         var inventoryConfig = plugin.config().inventoryConfig();
         var placeholder = inventoryConfig.placeholder().serialize();
         inventory.setItem(36, inventoryConfig.helmet().serialize());
@@ -107,8 +110,53 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderInventoryCreative(InventoryCreativeEvent event) {
+        onProviderInventoryAction(event.getWhoClicked());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onProviderInventoryDrag(InventoryDragEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderItemDrop(PlayerDropItemEvent event) {
+        onProviderInventoryAction(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderItemPickup(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof HumanEntity player) onProviderInventoryAction(player);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderArrowPickup(PlayerPickupArrowEvent event) {
+        onProviderInventoryAction(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderSwapHandItems(PlayerSwapHandItemsEvent event) {
+        onProviderInventoryAction(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderItemBreak(PlayerItemBreakEvent event) {
+        onProviderInventoryAction(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderItemConsume(PlayerItemConsumeEvent event) {
+        onProviderInventoryAction(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderItemDamage(PlayerItemDamageEvent event) {
+        onProviderInventoryAction(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProviderItemMend(PlayerItemMendEvent event) {
+        onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -138,25 +186,24 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
     public boolean onViewerInventoryAction(@Nullable Inventory clicked, InventoryView view, HumanEntity viewer, int slot) {
         if (!viewers.containsKey(viewer)) return false;
-        if (viewer.hasPermission("tweaks.command.inventory.edit")) {
-            var target = viewers.get(viewer);
-            plugin.foliaLib().getImpl().runNextTick(() -> {
-                IntStream.range(0, 36).forEach(i -> {
-                    var content = view.getTopInventory().getContents()[i];
-                    target.getInventory().setItem(i, content);
-                });
-                target.getInventory().setHelmet(view.getTopInventory().getItem(45));
-                target.getInventory().setChestplate(view.getTopInventory().getItem(46));
-                target.getInventory().setLeggings(view.getTopInventory().getItem(47));
-                target.getInventory().setBoots(view.getTopInventory().getItem(48));
-                target.getInventory().setItemInOffHand(view.getTopInventory().getItem(50));
-                target.setItemOnCursor(view.getTopInventory().getItem(52));
+        if (!viewer.hasPermission("tweaks.command.inventory.edit")) return true;
+        var target = viewers.get(viewer);
+        target.getScheduler().run(plugin, task -> {
+            IntStream.range(0, 36).forEach(i -> {
+                var content = view.getTopInventory().getContents()[i];
+                target.getInventory().setItem(i, content);
             });
-            return view.getTopInventory().equals(clicked)
-                    && ((slot >= 36 && slot <= 44)
-                    || slot == 49
-                    || slot == 51
-                    || slot == 53);
-        } else return true;
+            target.getInventory().setHelmet(view.getTopInventory().getItem(45));
+            target.getInventory().setChestplate(view.getTopInventory().getItem(46));
+            target.getInventory().setLeggings(view.getTopInventory().getItem(47));
+            target.getInventory().setBoots(view.getTopInventory().getItem(48));
+            target.getInventory().setItemInOffHand(view.getTopInventory().getItem(50));
+            target.setItemOnCursor(view.getTopInventory().getItem(52));
+        }, null);
+        return view.getTopInventory().equals(clicked)
+                && ((slot >= 36 && slot <= 44)
+                || slot == 49
+                || slot == 51
+                || slot == 53);
     }
 }

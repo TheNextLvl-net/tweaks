@@ -127,9 +127,9 @@ For security reasons, the entire delete tag will only be visible to players with
 
 ### Inventory
 
-The `update-time` entry, is given in milliseconds.<br/>
+The `update-time` entry, is given in ticks _(20 ticks = 1 second)_.<br/>
 The lower the value the faster the `/invsee` inventory updates.<br/>
-The minimum value is 50ms to avoid lag.
+The minimum value is 1 tick to avoid lag.
 
 ### Vanilla Tweaks
 
