@@ -27,7 +27,7 @@ public class NightCommand extends WorldCommand {
             world.setTime(18000);
             var placeholder = Placeholder.<CommandSender>of("world", world.getName());
             var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-            sender.sendRichMessage(Messages.TIME_NIGHT.message(locale, sender, placeholder));
+            sender.sendRichMessage(Messages.time.night.message(locale, sender, placeholder));
         });
     }
 

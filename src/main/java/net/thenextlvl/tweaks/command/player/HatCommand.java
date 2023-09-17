@@ -1,8 +1,8 @@
 package net.thenextlvl.tweaks.command.player;
 
+import net.kyori.adventure.text.Component;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.Command;
@@ -28,10 +28,10 @@ public class HatCommand implements CommandExecutor {
 
         if (!item.getType().isEmpty() || helmet != null) {
             player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.PLAYERS, 1f, 1f);
-            sender.sendRichMessage(Messages.HAT_EQUIPPED.message(player.locale()));
+            sender.sendMessage(Component.translatable("tweaks.hat.equipped"));
             inventory.setItemInMainHand(helmet);
             inventory.setHelmet(item);
-        } else player.sendRichMessage(Messages.HAT_EQUIPPED.message(player.locale()));
+        } else sender.sendMessage(Component.translatable("tweaks.hold.item"));
         return true;
     }
 }

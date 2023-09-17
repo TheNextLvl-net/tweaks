@@ -1,8 +1,8 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -21,14 +21,12 @@ public class FlyCommand extends PlayerCommand {
         player.setAllowFlight(!player.getAllowFlight());
         player.setFlying(player.getAllowFlight());
 
-        var messageSelf = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_SELF : Messages.DISABLED_FLIGHT_SELF;
-        var messageOthers = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_OTHERS : Messages.DISABLED_FLIGHT_OTHERS;
+        var messageSelf = "tweaks." + (player.getAllowFlight() ? "flight.enabled.self" : "flight.disabled.self");
+        var messageOthers = "tweaks." + (player.getAllowFlight() ? "flight.enabled.others" : "flight.disabled.others");
 
-        player.sendRichMessage(messageSelf.message(player.locale()));
+        player.sendMessage(Component.translatable(messageSelf));
         if (player == sender) return;
-        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
-        var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-        sender.sendRichMessage(messageOthers.message(locale, placeholder));
+        sender.sendRichMessage("<lang:" + messageOthers + ">", Placeholder.component("player", player.name()));
     }
 
     @Override

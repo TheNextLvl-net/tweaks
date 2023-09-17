@@ -30,10 +30,10 @@ public class RepairCommand implements TabExecutor {
         PlayerInventory inventory = player.getInventory();
         if (args.length == 0 && !inventory.getItemInMainHand().getType().isEmpty()) {
             inventory.setItemInMainHand(repairItem(inventory.getItemInMainHand()));
-            player.sendRichMessage(Messages.REPAIRED_ITEM.message(player.locale(), player));
+            player.sendRichMessage(Messages.item.repaired.message(player.locale(), player));
             return true;
         } else if (args.length == 0) {
-            player.sendRichMessage(Messages.HOLD_ITEM.message(player.locale(), player));
+            player.sendRichMessage(Messages.hold.item.message(player.locale(), player));
             return true;
         }
 
@@ -50,7 +50,7 @@ public class RepairCommand implements TabExecutor {
                 armor[i] = repairItem(armor[i]);
             }
             inventory.setArmorContents(armor);
-            player.sendRichMessage(Messages.REPAIRED_ALL.message(player.locale(), player));
+            player.sendRichMessage(Messages.item.repaired.all.message(player.locale(), player));
             return true;
         }
 

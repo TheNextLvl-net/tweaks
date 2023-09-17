@@ -40,7 +40,7 @@ public class UnenchantCommand implements TabExecutor {
             Enchantment byKey = Enchantment.getByKey(namespacedKey);
             if (byKey == null) {
                 var enchantment = Placeholder.<CommandSender>of("enchantment", arg);
-                player.sendRichMessage(Messages.INVALID_ENCHANTMENT.message(player.locale(), player, enchantment));
+                player.sendRichMessage(Messages.enchantment.invalid.message(player.locale(), player, enchantment));
                 return true;
             }
             itemInMainHand.removeEnchantment(byKey);

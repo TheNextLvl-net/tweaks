@@ -2,9 +2,16 @@ package net.thenextlvl.tweaks;
 
 import core.annotation.FieldsAreNonnullByDefault;
 import core.api.file.format.GsonFile;
-import core.api.placeholder.Placeholder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.translation.GlobalTranslator;
+import net.kyori.adventure.translation.TranslationRegistry;
+import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
@@ -16,23 +23,26 @@ import net.thenextlvl.tweaks.config.*;
 import net.thenextlvl.tweaks.listener.ChatListener;
 import net.thenextlvl.tweaks.listener.ConnectionListener;
 import net.thenextlvl.tweaks.listener.EntityListener;
-import net.thenextlvl.tweaks.util.Placeholders;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Getter
 @Accessors(fluent = true)
 @FieldsAreNonnullByDefault
 public class TweaksPlugin extends JavaPlugin {
-    private final Placeholder.Formatter<CommandSender> formatter = new Placeholder.Formatter<>();
     private final Metrics metrics = new Metrics(this, 19651);
+    private final MiniMessage miniMessage = MiniMessage.builder()
+            .tags(TagResolver.standard())
+            .tags(TagResolver.resolver("prefix", Tag.inserting(Component.translatable("tweaks.prefix"))))
+            .build();
 
     private final TweaksConfig config = new GsonFile<>(
             new File(getDataFolder(), "config.json"),
@@ -72,7 +82,10 @@ public class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        Placeholders.init(this);
+        var registry = TranslationRegistry.create(Key.key("tweaks:messages"));
+        var bundle = ResourceBundle.getBundle("tweaks", Locale.US, UTF8ResourceBundleControl.get());
+        registry.registerAll(Locale.US, bundle, true);
+        GlobalTranslator.translator().addSource(registry);
     }
 
     @Override
@@ -146,5 +159,9 @@ public class TweaksPlugin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static TweaksPlugin get() {
+        return JavaPlugin.getPlugin(TweaksPlugin.class);
     }
 }

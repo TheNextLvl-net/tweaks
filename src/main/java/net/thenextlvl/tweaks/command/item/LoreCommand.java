@@ -34,12 +34,12 @@ public class LoreCommand implements TabExecutor {
         var item = inventory.getItemInMainHand();
 
         if (item.getType().isEmpty()) {
-            player.sendRichMessage(Messages.HOLD_ITEM.message(player.locale(), player));
+            player.sendRichMessage(Messages.hold.item.message(player.locale(), player));
             return true;
         }
 
         if (args.length < 2) {
-            player.sendRichMessage(Messages.LORE_EDIT_TIP.message(player.locale(), sender));
+            player.sendRichMessage(Messages.item.lore.tip.message(player.locale(), sender));
             return false;
         }
 
@@ -60,12 +60,12 @@ public class LoreCommand implements TabExecutor {
         if (function == null) return false;
 
         if (!item.editMeta(function)) {
-            player.sendRichMessage(Messages.LORE_EDIT_FAIL.message(player.locale(), player));
+            player.sendRichMessage(Messages.item.lore.fail.message(player.locale(), player));
             return false;
         }
 
         inventory.setItemInMainHand(item);
-        player.sendRichMessage(Messages.LORE_EDIT_SUCCESS.message(player.locale(), player));
+        player.sendRichMessage(Messages.item.lore.success.message(player.locale(), player));
         return true;
     }
 

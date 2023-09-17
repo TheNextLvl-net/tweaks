@@ -22,8 +22,8 @@ public class PingCommand extends PlayerCommand {
         if (sender != player) {
             var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
             var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-            sender.sendRichMessage(Messages.PING_OTHERS.message(locale, sender, ping, placeholder));
-        } else player.sendRichMessage(Messages.PING_SELF.message(player.locale(), player, ping));
+            sender.sendRichMessage(Messages.ping.others.message(locale, sender, ping, placeholder));
+        } else player.sendRichMessage(Messages.ping.self.message(player.locale(), player, ping));
     }
 
     @Override

@@ -1,13 +1,9 @@
 package net.thenextlvl.tweaks.command.item;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.Tag;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -48,13 +44,12 @@ public class EnchantCommand implements TabExecutor {
         ItemStack item = inventory.getItemInMainHand();
 
         if (item.getType().isEmpty()) {
-            player.sendRichMessage(Messages.HOLD_ITEM.message(player.locale(), player));
+            player.sendMessage(Component.translatable("tweaks.hold.item"));
             return true;
         }
         if (!enchantment.canEnchantItem(item)) {
-            var text = MiniMessage.miniMessage().deserialize(Messages.ENCHANTMENT_NOT_APPLICABLE.message(player.locale(), player),
-                    TagResolver.builder().tag("item", Tag.inserting(Component.translatable(item.translationKey()))).build());
-            player.sendMessage(text);
+            player.sendRichMessage("<lang:tweaks.enchantment.not.applicable>", Placeholder.component("item",
+                    Component.translatable(item)));
             return true;
         }
 
@@ -69,10 +64,8 @@ public class EnchantCommand implements TabExecutor {
         int finalLevel = level;
         item.addEnchantment(enchantment, level);
         inventory.setItemInMainHand(item);
-        var text = MiniMessage.miniMessage().deserialize(Messages.ENCHANTED_ITEM.message(player.locale(), player),
-                TagResolver.builder().tag("enchantment", Tag.inserting(enchantment.displayName(finalLevel)
-                        .style(Style.empty()))).build());
-        player.sendMessage(text);
+        player.sendRichMessage("<lang:tweaks.enchantment.applied>", Placeholder.component("enchantment",
+                Component.translatable(enchantment)));
         return true;
     }
 

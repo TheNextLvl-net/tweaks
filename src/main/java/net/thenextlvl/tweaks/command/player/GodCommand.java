@@ -18,8 +18,8 @@ public class GodCommand extends PlayerCommand {
     protected void execute(CommandSender sender, Player player) {
         player.setInvulnerable(!player.isInvulnerable());
 
-        var messageSelf = player.isInvulnerable() ? Messages.GOD_MODE_ACTIVE_SELF : Messages.GOD_MODE_INACTIVE_SELF;
-        var messageOthers = player.isInvulnerable() ? Messages.GOD_MODE_ACTIVE_OTHERS : Messages.GOD_MODE_INACTIVE_OTHERS;
+        var messageSelf = player.isInvulnerable() ? Messages.god.active.self : Messages.god.inactive.self;
+        var messageOthers = player.isInvulnerable() ? Messages.god.active.others : Messages.god.inactive.others;
 
         player.sendRichMessage(messageSelf.message(player.locale()));
         if (player == sender) return;

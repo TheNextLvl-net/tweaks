@@ -28,7 +28,7 @@ public class RainCommand extends WorldCommand {
             world.setThundering(false);
             var placeholder = Placeholder.<CommandSender>of("world", world.getName());
             var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-            sender.sendRichMessage(Messages.WEATHER_RAIN.message(locale, sender, placeholder));
+            sender.sendRichMessage(Messages.weather.rain.message(locale, sender, placeholder));
         });
     }
 

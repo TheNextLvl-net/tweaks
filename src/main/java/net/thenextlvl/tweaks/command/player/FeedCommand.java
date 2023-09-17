@@ -1,15 +1,13 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Locale;
 
 @CommandInfo(
         name = "feed",
@@ -29,11 +27,9 @@ public class FeedCommand extends PlayerCommand {
 
     private static void notifySatisfaction(CommandSender sender, Player target) {
         target.playSound(target, Sound.ENTITY_PLAYER_BURP, SoundCategory.VOICE, 1f, 1f);
-        target.sendRichMessage(Messages.SATISFIED_HUNGER_SELF.message(target.locale()));
+        sender.sendMessage(Component.translatable("tweaks.hunger.satisfied.self"));
         if (target.equals(sender)) return;
-        var placeholder = Placeholder.<CommandSender>of("player", target.getName());
-        Locale locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-        sender.sendRichMessage(Messages.SATISFIED_HUNGER_OTHERS.message(locale, placeholder));
+        sender.sendRichMessage("<lang:tweaks.hunger.satisfied.others>", Placeholder.component("player", target.name()));
     }
 
     @Override

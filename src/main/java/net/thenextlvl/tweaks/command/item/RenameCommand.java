@@ -36,12 +36,12 @@ public class RenameCommand implements TabExecutor {
                 .replace("\\t", "   ");
 
         if (!item.editMeta(itemMeta -> itemMeta.setDisplayName(name))) {
-            player.sendRichMessage(Messages.ITEM_RENAME_FAIL.message(player.locale(), player));
+            player.sendRichMessage(Messages.item.rename.fail.message(player.locale(), player));
             return true;
         }
 
         inventory.setItemInMainHand(item);
-        player.sendRichMessage(Messages.ITEM_RENAME_SUCCESS.message(player.locale(), player));
+        player.sendRichMessage(Messages.item.rename.success.message(player.locale(), player));
         return true;
     }
 

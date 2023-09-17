@@ -32,7 +32,7 @@ public class HeadCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
-            sender.sendRichMessage(Messages.COMMAND_SENDER.message(Messages.ENGLISH, sender));
+            sender.sendRichMessage(Messages.command.sender.message(Messages.ENGLISH, sender));
         else if (args.length >= 1 && args[0].equalsIgnoreCase("value")) value(player, args);
         else if (args.length >= 1 && args[0].equalsIgnoreCase("url")) url(player, args);
         else if (args.length >= 1 && args[0].equalsIgnoreCase("player")) player(player, args);
@@ -43,38 +43,38 @@ public class HeadCommand implements TabExecutor {
     private void value(Player player, String[] args) {
         if (args.length < 2) {
             var value = getValue(player.getInventory().getItemInMainHand());
-            if (value != null) player.sendRichMessage(Messages.ITEM_HEAD_VALUE.message(player.locale(), player,
+            if (value != null) player.sendRichMessage(Messages.item.head.value.message(player.locale(), player,
                     Placeholder.of("value", () -> value.substring(0, Math.min(value.length(), 30)) + "…"),
                     Placeholder.of("full-value", () -> value)));
-            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+            else player.sendRichMessage(Messages.item.head.none.message(player.locale(), player));
         } else {
             player.getInventory().addItem(setValue(new ItemStack(Material.PLAYER_HEAD), args[1]));
-            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+            player.sendRichMessage(Messages.item.head.received.message(player.locale(), player));
         }
     }
 
     private void url(Player player, String[] args) {
         if (args.length < 2) {
             var url = getUrl(player.getInventory().getItemInMainHand());
-            if (url != null) player.sendRichMessage(Messages.ITEM_HEAD_URL.message(player.locale(), player,
+            if (url != null) player.sendRichMessage(Messages.item.head.url.message(player.locale(), player,
                     Placeholder.of("url", () -> url.substring(0, Math.min(url.length(), 30)) + "…"),
                     Placeholder.of("full-url", () -> url)));
-            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+            else player.sendRichMessage(Messages.item.head.none.message(player.locale(), player));
         } else {
             player.getInventory().addItem(setImgURL(new ItemStack(Material.PLAYER_HEAD), args[1]));
-            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+            player.sendRichMessage(Messages.item.head.received.message(player.locale(), player));
         }
     }
 
     private void player(Player player, String[] args) {
         if (args.length < 2) {
             var owner = getOwner(player.getInventory().getItemInMainHand());
-            if (owner != null) player.sendRichMessage(Messages.ITEM_HEAD_PLAYER.message(player.locale(), player,
+            if (owner != null) player.sendRichMessage(Messages.item.head.player.message(player.locale(), player,
                     Placeholder.of("owner", () -> owner)));
-            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+            else player.sendRichMessage(Messages.item.head.none.message(player.locale(), player));
         } else {
             player.getInventory().addItem(setOwner(new ItemStack(Material.PLAYER_HEAD), args[1]));
-            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+            player.sendRichMessage(Messages.item.head.received.message(player.locale(), player));
         }
     }
 

@@ -1,15 +1,11 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.Tag;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.command.api.NoPermissionException;
 import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -60,15 +56,12 @@ public class GameModeCommand implements TabExecutor {
         }
         target.setGameMode(gamemode);
 
-        MiniMessage mini = MiniMessage.miniMessage();
+        sender.sendRichMessage("<lang:tweaks.gamemode.changed.self>", Placeholder.component("gamemode",
+                Component.translatable(gamemode)));
 
-        target.sendMessage(mini.deserialize(Messages.GAMEMODE_CHANGED_SELF.message(target.locale(), target),
-                TagResolver.builder().tag("gamemode", Tag.inserting(Component.translatable(gamemode.translationKey()))).build()));
-        if (target == sender) return true;
-        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
-        var placeholder = Placeholder.<CommandSender>of("player", target.getName());
-        sender.sendMessage(mini.deserialize(Messages.GAMEMODE_CHANGED_OTHERS.message(locale, sender, placeholder),
-                TagResolver.builder().tag("gamemode", Tag.inserting(Component.translatable(gamemode.translationKey()))).build()));
+        if (target != sender) sender.sendRichMessage("<lang:tweaks.gamemode.changed.others>",
+                Placeholder.component("gamemode", Component.translatable(gamemode)),
+                Placeholder.component("player", target.name()));
         return true;
     }
 

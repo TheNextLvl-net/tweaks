@@ -1,8 +1,8 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
@@ -31,11 +31,9 @@ public class HealCommand extends PlayerCommand {
         player.setRemainingAir(player.getMaximumAir());
         player.setFreezeTicks(0);
 
-        player.sendRichMessage(Messages.RESTORED_HEALTH_SELF.message(player.locale()));
+        sender.sendMessage(Component.translatable("tweaks.health.restored.self"));
         if (player == sender) return;
-        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
-        var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-        sender.sendRichMessage(Messages.RESTORED_HEALTH_OTHERS.message(locale, placeholder));
+        sender.sendRichMessage("<lang:tweaks.health.restored.others>", Placeholder.component("player", player.name()));
     }
 
     @Override

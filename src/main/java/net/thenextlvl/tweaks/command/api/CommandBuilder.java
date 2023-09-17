@@ -1,7 +1,6 @@
 package net.thenextlvl.tweaks.command.api;
 
-import core.api.placeholder.Placeholder;
-import net.thenextlvl.tweaks.util.Messages;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -40,11 +39,10 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
     private void execute(CommandSender sender, Command command, String label, String[] args) {
         try {
             if (executor().onCommand(sender, command, label, args)) return;
-            var usage = Placeholder.<CommandSender>of("usage", command.getUsage()
+            sender.sendRichMessage("<lang:tweaks.command.usage>", Placeholder.parsed("usage", command.getUsage()
                     .replace("[", "<dark_gray>[<gold>").replace("]", "<dark_gray>]<red>")
                     .replace("(", "<dark_gray>(<gold>").replace(")", "<dark_gray>)<red>")
-                    .replace("|", " <dark_gray>| <gold>").replace("<command>", label));
-            sender.sendRichMessage(Messages.COMMAND_USAGE.message(sender, usage));
+                    .replace("|", " <dark_gray>| <gold>").replace("<command>", label)));
         } catch (CommandException e) {
             e.handle(sender);
         }
