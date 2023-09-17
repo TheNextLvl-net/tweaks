@@ -37,10 +37,10 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
         return suggestions.stream().filter(s -> s.contains(args[args.length - 1])).toList();
     }
 
-    private void execute(CommandSender sender, Command command1, String label, String[] args) {
+    private void execute(CommandSender sender, Command command, String label, String[] args) {
         try {
-            if (executor().onCommand(sender, command1, label, args)) return;
-            var usage = Placeholder.<CommandSender>of("usage", command1.getUsage()
+            if (executor().onCommand(sender, command, label, args)) return;
+            var usage = Placeholder.<CommandSender>of("usage", command.getUsage()
                     .replace("[", "<dark_gray>[<gold>").replace("]", "<dark_gray>]<red>")
                     .replace("(", "<dark_gray>(<gold>").replace(")", "<dark_gray>)<red>")
                     .replace("|", " <dark_gray>| <gold>").replace("<command>", label));
