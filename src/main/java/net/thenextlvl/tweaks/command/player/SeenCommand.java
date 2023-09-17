@@ -48,7 +48,7 @@ public class SeenCommand implements TabExecutor {
     }
 
     private void lastSeenOffline(Locale locale, CommandSender sender, String[] args) {
-        plugin.foliaLib().getImpl().runAsync(() -> {
+        Bukkit.getAsyncScheduler().runNow(plugin, task -> {
 
             var target = Bukkit.getOfflinePlayer(args[0]);
             if (!target.hasPlayedBefore()) {

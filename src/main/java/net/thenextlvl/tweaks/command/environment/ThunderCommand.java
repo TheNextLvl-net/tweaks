@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.util.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,7 +23,7 @@ public class ThunderCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.foliaLib().getImpl().runNextTick(() -> {
+        Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
             world.setStorm(true);
             world.setThundering(true);
             var placeholder = Placeholder.<CommandSender>of("world", world.getName());

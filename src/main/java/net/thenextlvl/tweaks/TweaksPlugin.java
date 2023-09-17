@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks;
 
-import com.tcoded.folialib.FoliaLib;
 import core.annotation.FieldsAreNonnullByDefault;
 import core.api.file.format.GsonFile;
 import core.api.placeholder.Placeholder;
@@ -70,8 +69,6 @@ public class TweaksPlugin extends JavaPlugin {
             getLogger().severe("Your vanilla-tweaks-section is malformed");
         if (!getFile().exists()) save();
     }}.getRoot();
-
-    private final FoliaLib foliaLib = new FoliaLib(this);
 
     @Override
     public void onLoad() {

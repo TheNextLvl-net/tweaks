@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 @CommandInfo(
@@ -48,7 +47,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, task -> providers.forEach((provider, viewers) -> {
             var inventory = inventories.get(provider);
             if (inventory != null) updateInventory(inventory, provider);
-        }), updateTime, updateTime, TimeUnit.MILLISECONDS);
+        }), updateTime, updateTime);
         this.plugin = plugin;
     }
 
@@ -177,11 +176,10 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     public void onProviderInventoryAction(HumanEntity provider) {
         if (!providers.containsKey(provider)) return;
         if (!inventories.containsKey(provider)) return;
-        var viewers = providers.get(provider);
         var inventory = inventories.get(provider);
-        plugin.foliaLib().getImpl().runNextTick(() ->
-                viewers.forEach(player -> updateInventory(inventory, provider))
-        );
+        provider.getScheduler().run(plugin, task -> providers.get(provider)
+                        .forEach(player -> updateInventory(inventory, provider)),
+                inventory::close);
     }
 
     public boolean onViewerInventoryAction(@Nullable Inventory clicked, InventoryView view, HumanEntity viewer, int slot) {
