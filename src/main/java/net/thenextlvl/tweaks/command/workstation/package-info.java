@@ -1,4 +1,4 @@
-@ParametersAreNonnullByDefault
+@ParametersAreNotNullByDefault
 package net.thenextlvl.tweaks.command.workstation;
 
-import core.annotation.ParametersAreNonnullByDefault;
+import core.annotation.ParametersAreNotNullByDefault;

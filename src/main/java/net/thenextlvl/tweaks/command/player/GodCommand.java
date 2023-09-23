@@ -1,8 +1,9 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -13,19 +14,20 @@ import org.jetbrains.annotations.Nullable;
         description = "make you or someone else invulnerable",
         permission = "tweaks.command.god"
 )
+@RequiredArgsConstructor
 public class GodCommand extends PlayerCommand {
+    private final TweaksPlugin plugin;
+
     @Override
     protected void execute(CommandSender sender, Player player) {
         player.setInvulnerable(!player.isInvulnerable());
 
-        var messageSelf = player.isInvulnerable() ? Messages.GOD_MODE_ACTIVE_SELF : Messages.GOD_MODE_INACTIVE_SELF;
-        var messageOthers = player.isInvulnerable() ? Messages.GOD_MODE_ACTIVE_OTHERS : Messages.GOD_MODE_INACTIVE_OTHERS;
+        var messageSelf = player.isInvulnerable() ? "god.active.self" : "god.inactive.self";
+        var messageOthers = player.isInvulnerable() ? "god.active.others" : "god.inactive.others";
 
-        player.sendRichMessage(messageSelf.message(player.locale()));
-        if (player == sender) return;
-        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
-        var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-        sender.sendRichMessage(messageOthers.message(locale, placeholder));
+        plugin.bundle().sendMessage(player, messageSelf);
+        if (player != sender) plugin.bundle().sendMessage(player, messageOthers,
+                Placeholder.component("player", player.name()));
     }
 
     @Override

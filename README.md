@@ -23,21 +23,21 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 | /sun (world)     | let the sun shine     | tweaks.command.sun     |
 | /thunder (world) | let it thunder        | tweaks.command.thunder |
 
-The group permission for this category is `tweaks.commands.environmental`
+The perm-pack to grant all permissions: `tweaks.commands.environmental`
 
 ### Item commands
 
-| Command                          | Description                         | Alias | Permission               |
-|----------------------------------|-------------------------------------|-------|--------------------------|
-| /enchant [enchantment] (level)   | enchant your tools                  |       | tweaks.command.enchant   |
-| /head [value/player/url] (value) | get heads or information about them | skull | tweaks.command.head      |
-| /item [item] (amount)            | gives you an item of your choice    | i     | tweaks.command.item      |
-| /lore [set/append] [lore...]     | change the lore of your items       |       | tweaks.command.lore      |
-| /rename [name...]                | change the name of your items       |       | tweaks.command.rename    |
-| /repair (all)                    | repair your tools                   |       | tweaks.command.repair    |
-| /unenchant [enchantment...]      | unenchant your tools                |       | tweaks.command.unenchant |
+| Command                            | Description                         | Alias | Permission               |
+|------------------------------------|-------------------------------------|-------|--------------------------|
+| /enchant [enchantment] (level)     | enchant your tools                  |       | tweaks.command.enchant   |
+| /head [value/player/url] (value)   | get heads or information about them | skull | tweaks.command.head      |
+| /item [item] (amount)              | gives you an item of your choice    | i     | tweaks.command.item      |
+| /lore [set/append/unset] (lore...) | change the lore of your items       |       | tweaks.command.lore      |
+| /rename [name...]                  | change the name of your items       |       | tweaks.command.rename    |
+| /repair (all)                      | repair your tools                   |       | tweaks.command.repair    |
+| /unenchant [enchantment...]        | unenchant your tools                |       | tweaks.command.unenchant |
 
-The group permission for this category is `tweaks.commands.item`
+The perm-pack to grant all permissions: `tweaks.commands.item`
 
 ### Player commands
 
@@ -56,7 +56,7 @@ The group permission for this category is `tweaks.commands.item`
 | /seen [player]                | gives you information about a player                | find           | tweaks.command.seen                                                                                                                                                                                                                                                                                |          |            |
 | /speed [speed] (player)       | change your own or someone else's walk or fly speed |                | tweaks.command.speed                                                                                                                                                                                                                                                                               | player   | *.others   |
 
-The group permission for this category is `tweaks.commands.player`
+The perm-pack to grant all permissions: `tweaks.commands.player`
 
 ### Server commands
 
@@ -64,7 +64,7 @@ The group permission for this category is `tweaks.commands.player`
 |----------------------|---------------------|--------------------------|
 | /broadcast [message] | broadcast a message | tweaks.command.broadcast |
 
-The group permission for this category is `tweaks.commands.server`
+The perm-pack to grant all permissions: `tweaks.commands.server`
 
 ### Workstation commands
 
@@ -79,7 +79,7 @@ The group permission for this category is `tweaks.commands.server`
 | /stonecutter       |             | tweaks.command.stonecutter       |
 | /workbench         | wb          | tweaks.command.workbench         |
 
-The group permission for this category is `tweaks.commands.workstation`
+The perm-pack to grant all permissions: `tweaks.commands.workstation`
 
 ## Configuration
 
@@ -123,7 +123,21 @@ In general, it would look like this: `<delete:'<signature'>>`
 
 With the `delete-tag-format` option you can control the look and feel of the component
 
-For security reasons, the entire delete tag will only be visible to players with the permission `tweaks.chat.delete`
+For security reasons, the entire delete tag will only be visible to players with the
+permission `tweaks.chat.delete`<br/>
+To allow the deletion of the users own messages, grant: `tweaks.chat.delete.own`
+
+#### Hierarchy
+
+_(This feature is based on LuckPerms' weight system, therefore requires LuckPerms)_
+
+The chat hierarchy makes it possible to control who can delete who's messages.<br/>
+A users weight acts as an upper limits for their deletion privileges.
+
+For example, a user with a weight of 100 can delete messages from users with weights equal to or lower than 100,<br/>
+but not from those with weights higher than 100.
+
+To add a hierarchy permission use: `tweaks.chat.delete.<weight>`
 
 ### Inventory
 

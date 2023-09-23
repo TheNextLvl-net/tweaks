@@ -1,10 +1,13 @@
 package net.thenextlvl.tweaks;
 
-import core.annotation.FieldsAreNonnullByDefault;
+import core.annotation.FieldsAreNotNullByDefault;
 import core.api.file.format.GsonFile;
-import core.api.placeholder.Placeholder;
+import core.i18n.file.ComponentBundle;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
@@ -16,36 +19,28 @@ import net.thenextlvl.tweaks.config.*;
 import net.thenextlvl.tweaks.listener.ChatListener;
 import net.thenextlvl.tweaks.listener.ConnectionListener;
 import net.thenextlvl.tweaks.listener.EntityListener;
-import net.thenextlvl.tweaks.util.Placeholders;
+import net.thenextlvl.tweaks.listener.WorldListener;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Locale;
 
 @Getter
 @Accessors(fluent = true)
-@FieldsAreNonnullByDefault
+@FieldsAreNotNullByDefault
 public class TweaksPlugin extends JavaPlugin {
-    private final Placeholder.Formatter<CommandSender> formatter = new Placeholder.Formatter<>();
     private final Metrics metrics = new Metrics(this, 19651);
 
     private final TweaksConfig config = new GsonFile<>(
             new File(getDataFolder(), "config.json"),
             new TweaksConfig(
                     new GeneralConfig(5, (byte) -1, false, false, false, true),
-                    new FormattingConfig(
-                            "", "<red>Server <grey>| <message>", "",
-                            "<delete:'<signature>'><display_name><reset> <dark_gray>» <reset>" +
-                                    "<click:copy_to_clipboard:'<message_content>'>" +
-                                    "<hover:show_text:'<lang:chat.copy.click>'><message>",
-                            "<hover:show_text:'<lang:key.keyboard.delete>'>" +
-                                    "<dark_gray>[<dark_red><bold>␡</bold><dark_gray>]<reset> "
-                    ),
                     new InventoryConfig(
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aChestplate"),
@@ -61,18 +56,27 @@ public class TweaksPlugin extends JavaPlugin {
     ) {{
         if (getRoot().generalConfig() == null)
             getLogger().severe("Your general-config-section is malformed");
-        if (getRoot().formattingConfig() == null)
-            getLogger().severe("Your formatting-config-section is malformed");
         if (getRoot().inventoryConfig() == null)
             getLogger().severe("Your inventory-config-section is malformed");
         if (getRoot().vanillaTweaks() == null)
             getLogger().severe("Your vanilla-tweaks-section is malformed");
         if (!getFile().exists()) save();
     }}.getRoot();
+    private final File translations = new File(getDataFolder(), "translations");
+    private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
+            audience instanceof Player player ? player.locale() : Locale.US)
+            .register("tweaks", Locale.US)
+            .register("tweaks_german", Locale.GERMANY)
+            .fallback(Locale.US);
 
     @Override
     public void onLoad() {
-        Placeholders.init(this);
+        bundle().miniMessage(MiniMessage.builder()
+                .tags(TagResolver.builder()
+                        .resolvers(TagResolver.standard())
+                        .resolver(Placeholder.component("prefix", bundle.component(Locale.US, "prefix")))
+                        .build())
+                .build());
     }
 
     @Override
@@ -90,6 +94,7 @@ public class TweaksPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ConnectionListener(this), this);
         Bukkit.getPluginManager().registerEvents(new EntityListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new WorldListener(this), this);
     }
 
     private void registerCommands() {
@@ -100,30 +105,30 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new ThunderCommand(this));
 
         // Player
-        registerCommand(new GodCommand());
-        registerCommand(new FeedCommand());
-        registerCommand(new FlyCommand());
-        registerCommand(new HatCommand());
-        registerCommand(new HealCommand());
-        registerCommand(new PingCommand());
+        registerCommand(new GodCommand(this));
+        registerCommand(new FeedCommand(this));
+        registerCommand(new FlyCommand(this));
+        registerCommand(new HatCommand(this));
+        registerCommand(new HealCommand(this));
+        registerCommand(new PingCommand(this));
         registerCommand(new BackCommand(this));
         registerCommand(new SeenCommand(this));
         registerCommand(new InventoryCommand(this));
         registerCommand(new EnderChestCommand(this));
-        registerCommand(new SpeedCommand());
-        registerCommand(new GameModeCommand());
+        registerCommand(new SpeedCommand(this));
+        registerCommand(new GameModeCommand(this));
 
         // Server
         registerCommand(new BroadcastCommand(this));
 
         // Item
-        registerCommand(new HeadCommand());
-        registerCommand(new UnenchantCommand());
-        registerCommand(new RepairCommand());
-        registerCommand(new LoreCommand());
-        registerCommand(new RenameCommand());
-        registerCommand(new EnchantCommand());
-        registerCommand(new ItemCommand());
+        registerCommand(new HeadCommand(this));
+        registerCommand(new UnenchantCommand(this));
+        registerCommand(new RepairCommand(this));
+        registerCommand(new LoreCommand(this));
+        registerCommand(new RenameCommand(this));
+        registerCommand(new EnchantCommand(this));
+        registerCommand(new ItemCommand(this));
 
         // Workstation
         registerCommand(new AnvilCommand());
@@ -146,5 +151,9 @@ public class TweaksPlugin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static TweaksPlugin get() {
+        return JavaPlugin.getPlugin(TweaksPlugin.class);
     }
 }

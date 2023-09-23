@@ -2,9 +2,11 @@ package net.thenextlvl.tweaks.command.item;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonParser;
-import core.api.placeholder.Placeholder;
+import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
+import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -27,12 +29,13 @@ import java.util.UUID;
         permission = "tweaks.command.head",
         aliases = {"skull"}
 )
+@RequiredArgsConstructor
 public class HeadCommand implements TabExecutor {
+    private final TweaksPlugin plugin;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player))
-            sender.sendRichMessage(Messages.COMMAND_SENDER.message(Messages.ENGLISH, sender));
+        if (!(sender instanceof Player player)) throw new CommandSenderException();
         else if (args.length >= 1 && args[0].equalsIgnoreCase("value")) value(player, args);
         else if (args.length >= 1 && args[0].equalsIgnoreCase("url")) url(player, args);
         else if (args.length >= 1 && args[0].equalsIgnoreCase("player")) player(player, args);
@@ -43,38 +46,38 @@ public class HeadCommand implements TabExecutor {
     private void value(Player player, String[] args) {
         if (args.length < 2) {
             var value = getValue(player.getInventory().getItemInMainHand());
-            if (value != null) player.sendRichMessage(Messages.ITEM_HEAD_VALUE.message(player.locale(), player,
-                    Placeholder.of("value", () -> value.substring(0, Math.min(value.length(), 30)) + "…"),
-                    Placeholder.of("full-value", () -> value)));
-            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+            if (value != null) plugin.bundle().sendMessage(player, "item.head.value",
+                    Placeholder.parsed("value", value.substring(0, Math.min(value.length(), 30)) + "…"),
+                    Placeholder.parsed("full_value", value));
+            else plugin.bundle().sendMessage(player, "item.head.none");
         } else {
             player.getInventory().addItem(setValue(new ItemStack(Material.PLAYER_HEAD), args[1]));
-            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+            plugin.bundle().sendMessage(player, "item.head.received");
         }
     }
 
     private void url(Player player, String[] args) {
         if (args.length < 2) {
             var url = getUrl(player.getInventory().getItemInMainHand());
-            if (url != null) player.sendRichMessage(Messages.ITEM_HEAD_URL.message(player.locale(), player,
-                    Placeholder.of("url", () -> url.substring(0, Math.min(url.length(), 30)) + "…"),
-                    Placeholder.of("full-url", () -> url)));
-            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+            if (url != null) plugin.bundle().sendMessage(player, "item.head.url",
+                    Placeholder.parsed("url", url.substring(0, Math.min(url.length(), 30)) + "…"),
+                    Placeholder.parsed("full_url", url));
+            else plugin.bundle().sendMessage(player, "item.head.none");
         } else {
             player.getInventory().addItem(setImgURL(new ItemStack(Material.PLAYER_HEAD), args[1]));
-            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+            plugin.bundle().sendMessage(player, "item.head.received");
         }
     }
 
     private void player(Player player, String[] args) {
         if (args.length < 2) {
             var owner = getOwner(player.getInventory().getItemInMainHand());
-            if (owner != null) player.sendRichMessage(Messages.ITEM_HEAD_PLAYER.message(player.locale(), player,
-                    Placeholder.of("owner", () -> owner)));
-            else player.sendRichMessage(Messages.ITEM_HEAD_NONE.message(player.locale(), player));
+            if (owner != null) plugin.bundle().sendMessage(player, "item.head.player",
+                    Placeholder.parsed("owner", owner));
+            else plugin.bundle().sendMessage(player, "item.head.none");
         } else {
             player.getInventory().addItem(setOwner(new ItemStack(Material.PLAYER_HEAD), args[1]));
-            player.sendRichMessage(Messages.ITEM_HEAD_RECEIVED.message(player.locale(), player));
+            plugin.bundle().sendMessage(player, "item.head.received");
         }
     }
 

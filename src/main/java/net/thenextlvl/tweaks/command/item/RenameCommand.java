@@ -1,8 +1,9 @@
 package net.thenextlvl.tweaks.command.item;
 
+import lombok.RequiredArgsConstructor;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,10 @@ import java.util.List;
         permission = "tweaks.command.rename",
         description = "Changes the display name of the item in your hand"
 )
+@RequiredArgsConstructor
 public class RenameCommand implements TabExecutor {
+    private final TweaksPlugin plugin;
+
     @Override
     @SuppressWarnings("deprecation")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -36,12 +40,12 @@ public class RenameCommand implements TabExecutor {
                 .replace("\\t", "   ");
 
         if (!item.editMeta(itemMeta -> itemMeta.setDisplayName(name))) {
-            player.sendRichMessage(Messages.ITEM_RENAME_FAIL.message(player.locale(), player));
+            plugin.bundle().sendMessage(player, "item.rename.fail");
             return true;
         }
 
         inventory.setItemInMainHand(item);
-        player.sendRichMessage(Messages.ITEM_RENAME_SUCCESS.message(player.locale(), player));
+        plugin.bundle().sendMessage(player, "item.rename.success");
         return true;
     }
 

@@ -1,14 +1,12 @@
 package net.thenextlvl.tweaks.command.environment;
 
-import core.api.placeholder.Placeholder;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 @CommandInfo(
         name = "day",
@@ -25,9 +23,7 @@ public class DayCommand extends WorldCommand {
     protected void execute(CommandSender sender, World world) {
         Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
             world.setTime(1000);
-            var placeholder = Placeholder.<CommandSender>of("world", world.getName());
-            var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-            sender.sendRichMessage(Messages.TIME_DAY.message(locale, sender, placeholder));
+            plugin.bundle().sendMessage(sender, "time.day", Placeholder.parsed("world", world.getName()));
         });
     }
 

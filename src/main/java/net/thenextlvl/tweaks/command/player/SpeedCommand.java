@@ -1,10 +1,11 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.NoPermissionException;
 import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,9 +22,10 @@ import java.util.stream.IntStream;
         permission = "tweaks.command.speed",
         description = "change your own or someone else's walk or fly speed"
 )
+@RequiredArgsConstructor
 public class SpeedCommand implements TabExecutor {
-
     private static final String OTHERS_PERMISSION = "tweaks.command.speed.others";
+    private final TweaksPlugin plugin;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -54,15 +56,14 @@ public class SpeedCommand implements TabExecutor {
         else
             target.setWalkSpeed(speed / 10f);
 
-        var messageSelf = target.isFlying() ? Messages.FLY_SPEED_CHANGED_SELF : Messages.WALK_SPEED_CHANGED_SELF;
-        var messageOthers = target.isFlying() ? Messages.FLY_SPEED_CHANGED_OTHERS : Messages.WALK_SPEED_CHANGED_OTHERS;
+        var messageSelf = target.isFlying() ? "speed.fly.changed.self" : "speed.walk.changed.self";
+        var messageOthers = target.isFlying() ? "speed.fly.changed.others" : "speed.walk.changed.others";
 
-        var placeholder1 = Placeholder.<CommandSender>of("speed", speed);
-        target.sendRichMessage(messageSelf.message(target.locale(), target, placeholder1));
-        if (target == sender) return true;
-        var locale = sender instanceof Player player ? player.locale() : Messages.ENGLISH;
-        var placeholder2 = Placeholder.<CommandSender>of("player", target.getName());
-        sender.sendRichMessage(messageOthers.message(locale, sender, placeholder1, placeholder2));
+
+        plugin.bundle().sendMessage(sender, messageSelf, Placeholder.parsed("speed", String.valueOf(speed)));
+        if (target != sender) plugin.bundle().sendMessage(sender, messageOthers,
+                    Placeholder.parsed("speed", String.valueOf(speed)),
+                    Placeholder.component("player", target.name()));
         return true;
     }
 

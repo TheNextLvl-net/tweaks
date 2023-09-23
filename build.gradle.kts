@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "1.4.7"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
@@ -19,10 +19,11 @@ repositories {
 dependencies {
     compileOnly("net.luckperms:api:5.4")
     compileOnly("org.projectlombok:lombok:1.18.26")
-    compileOnly("net.thenextlvl.core:annotations:1.0.0")
+    compileOnly("net.thenextlvl.core:annotations:2.0.0")
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
-    implementation("net.thenextlvl.core:api:3.1.12")
+    implementation("net.thenextlvl.core:api:4.0.1")
+    implementation("net.thenextlvl.core:i18n:1.0.4")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
     annotationProcessor("org.projectlombok:lombok:1.18.26")
@@ -127,6 +128,13 @@ paper {
                 "tweaks.command.gamemode.spectator"
             )
         }
+        register("tweaks.chat.delete") {
+            this.children = listOf(
+                "tweaks.chat.delete.own"
+            )
+        }
+        register("tweaks.chat.delete.own")
+
         register("tweaks.command.gamemode.others")
         register("tweaks.command.inventory.edit")
         register("tweaks.command.enderchest.edit")
@@ -137,6 +145,5 @@ paper {
         register("tweaks.command.heal.others")
         register("tweaks.command.ping.others")
         register("tweaks.command.speed.others")
-        register("tweaks.chat.delete")
     }
 }

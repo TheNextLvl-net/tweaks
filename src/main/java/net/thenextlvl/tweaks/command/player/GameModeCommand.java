@@ -1,15 +1,13 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.Tag;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.command.api.NoPermissionException;
 import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -28,9 +26,10 @@ import java.util.List;
         description = "change your own or someone else's game mode",
         aliases = {"gm"}
 )
+@RequiredArgsConstructor
 public class GameModeCommand implements TabExecutor {
-
     private static final String OTHERS_PERMISSION = "tweaks.command.gamemode.others";
+    private final TweaksPlugin plugin;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -60,15 +59,12 @@ public class GameModeCommand implements TabExecutor {
         }
         target.setGameMode(gamemode);
 
-        MiniMessage mini = MiniMessage.miniMessage();
+        plugin.bundle().sendMessage(sender, "gamemode.changed.self", Placeholder.component("gamemode",
+                Component.translatable(gamemode)));
 
-        target.sendMessage(mini.deserialize(Messages.GAMEMODE_CHANGED_SELF.message(target.locale(), target),
-                TagResolver.builder().tag("gamemode", Tag.inserting(Component.translatable(gamemode.translationKey()))).build()));
-        if (target == sender) return true;
-        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
-        var placeholder = Placeholder.<CommandSender>of("player", target.getName());
-        sender.sendMessage(mini.deserialize(Messages.GAMEMODE_CHANGED_OTHERS.message(locale, sender, placeholder),
-                TagResolver.builder().tag("gamemode", Tag.inserting(Component.translatable(gamemode.translationKey()))).build()));
+        if (target != sender) plugin.bundle().sendMessage(sender, "gamemode.changed.others",
+                Placeholder.component("gamemode", Component.translatable(gamemode)),
+                Placeholder.component("player", target.name()));
         return true;
     }
 

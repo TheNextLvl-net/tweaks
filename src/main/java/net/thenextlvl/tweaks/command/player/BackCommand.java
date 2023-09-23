@@ -4,7 +4,6 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.command.api.NoBackLocationException;
-import net.thenextlvl.tweaks.util.Messages;
 import net.thenextlvl.tweaks.util.RingBufferStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,8 +51,8 @@ public class BackCommand implements CommandExecutor, Listener {
 
         player.setMetadata(metadataKey, new FixedMetadataValue(plugin, true));
         player.teleportAsync(pop, COMMAND).thenAccept(success -> {
-            var message = success ? Messages.BACK_TELEPORT_SUCCESS : Messages.BACK_TELEPORT_FAIL;
-            player.sendRichMessage(message.message(player.locale(), player));
+            if (success) plugin.bundle().sendMessage(player, "back.teleport.success");
+            else plugin.bundle().sendMessage(player, "back.teleport.fail");
         });
         return true;
     }

@@ -1,8 +1,9 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -14,21 +15,21 @@ import org.jetbrains.annotations.Nullable;
         permission = "tweaks.command.fly",
         aliases = {"flight"}
 )
+@RequiredArgsConstructor
 public class FlyCommand extends PlayerCommand {
+    private final TweaksPlugin plugin;
 
     @Override
     protected void execute(CommandSender sender, Player player) {
         player.setAllowFlight(!player.getAllowFlight());
         player.setFlying(player.getAllowFlight());
 
-        var messageSelf = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_SELF : Messages.DISABLED_FLIGHT_SELF;
-        var messageOthers = player.getAllowFlight() ? Messages.ENABLED_FLIGHT_OTHERS : Messages.DISABLED_FLIGHT_OTHERS;
+        var messageSelf = player.getAllowFlight() ? "flight.enabled.self" : "flight.disabled.self";
+        var messageOthers = player.getAllowFlight() ? "flight.enabled.others" : "flight.disabled.others";
 
-        player.sendRichMessage(messageSelf.message(player.locale()));
-        if (player == sender) return;
-        var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
-        var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-        sender.sendRichMessage(messageOthers.message(locale, placeholder));
+        plugin.bundle().sendMessage(player, messageSelf);
+        if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,
+                Placeholder.component("player", player.name()));
     }
 
     @Override

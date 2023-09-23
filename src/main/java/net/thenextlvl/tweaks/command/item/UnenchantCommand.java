@@ -1,9 +1,10 @@
 package net.thenextlvl.tweaks.command.item;
 
-import core.api.placeholder.Placeholder;
+import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,7 +24,10 @@ import java.util.List;
         permission = "tweaks.command.unenchant",
         usage = "/<command> [enchantment...]"
 )
+@RequiredArgsConstructor
 public class UnenchantCommand implements TabExecutor {
+    private final TweaksPlugin plugin;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
@@ -39,8 +43,7 @@ public class UnenchantCommand implements TabExecutor {
             NamespacedKey namespacedKey = NamespacedKey.fromString(arg);
             Enchantment byKey = Enchantment.getByKey(namespacedKey);
             if (byKey == null) {
-                var enchantment = Placeholder.<CommandSender>of("enchantment", arg);
-                player.sendRichMessage(Messages.INVALID_ENCHANTMENT.message(player.locale(), player, enchantment));
+                plugin.bundle().sendMessage(player, "enchantment.invalid", Placeholder.parsed("enchantment", arg));
                 return true;
             }
             itemInMainHand.removeEnchantment(byKey);
