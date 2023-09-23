@@ -123,7 +123,21 @@ In general, it would look like this: `<delete:'<signature'>>`
 
 With the `delete-tag-format` option you can control the look and feel of the component
 
-For security reasons, the entire delete tag will only be visible to players with the permission `tweaks.chat.delete`
+For security reasons, the entire delete tag will only be visible to players with the
+permission `tweaks.chat.delete`<br/>
+To allow the deletion of the users own messages, grant: `tweaks.chat.delete.own`
+
+#### Hierarchy
+
+_(This feature is based on LuckPerms' weight system, therefore requires LuckPerms)_
+
+The chat hierarchy makes it possible to control who can delete who's messages.<br/>
+A users weight acts as an upper limits for their deletion privileges.
+
+For example, a user with a weight of 100 can delete messages from users with weights equal to or lower than 100,<br/>
+but not from those with weights higher than 100.
+
+To add a hierarchy permission use: `tweaks.chat.delete.<weight>`
 
 ### Inventory
 
