@@ -1,7 +1,8 @@
 package net.thenextlvl.tweaks.command.player;
 
-import net.kyori.adventure.text.Component;
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,19 +15,21 @@ import org.jetbrains.annotations.Nullable;
         permission = "tweaks.command.fly",
         aliases = {"flight"}
 )
+@RequiredArgsConstructor
 public class FlyCommand extends PlayerCommand {
+    private final TweaksPlugin plugin;
 
     @Override
     protected void execute(CommandSender sender, Player player) {
         player.setAllowFlight(!player.getAllowFlight());
         player.setFlying(player.getAllowFlight());
 
-        var messageSelf = "tweaks." + (player.getAllowFlight() ? "flight.enabled.self" : "flight.disabled.self");
-        var messageOthers = "tweaks." + (player.getAllowFlight() ? "flight.enabled.others" : "flight.disabled.others");
+        var messageSelf = player.getAllowFlight() ? "flight.enabled.self" : "flight.disabled.self";
+        var messageOthers = player.getAllowFlight() ? "flight.enabled.others" : "flight.disabled.others";
 
-        player.sendMessage(Component.translatable(messageSelf));
-        if (player == sender) return;
-        sender.sendRichMessage("<lang:" + messageOthers + ">", Placeholder.component("player", player.name()));
+        plugin.bundle().sendMessage(player, messageSelf);
+        if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,
+                Placeholder.component("player", player.name()));
     }
 
     @Override

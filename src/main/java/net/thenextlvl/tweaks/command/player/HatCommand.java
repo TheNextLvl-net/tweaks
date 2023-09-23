@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.player;
 
-import net.kyori.adventure.text.Component;
+import lombok.RequiredArgsConstructor;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import org.bukkit.Sound;
@@ -15,7 +16,9 @@ import org.bukkit.entity.Player;
         description = "equip your items as hats",
         permission = "tweaks.command.hat"
 )
+@RequiredArgsConstructor
 public class HatCommand implements CommandExecutor {
+    private final TweaksPlugin plugin;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -28,10 +31,10 @@ public class HatCommand implements CommandExecutor {
 
         if (!item.getType().isEmpty() || helmet != null) {
             player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.PLAYERS, 1f, 1f);
-            sender.sendMessage(Component.translatable("tweaks.hat.equipped"));
+            plugin.bundle().sendMessage(sender, "hat.equipped");
             inventory.setItemInMainHand(helmet);
             inventory.setHelmet(item);
-        } else sender.sendMessage(Component.translatable("tweaks.hold.item"));
+        } else plugin.bundle().sendMessage(sender, "hold.item");
         return true;
     }
 }

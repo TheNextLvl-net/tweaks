@@ -1,6 +1,8 @@
 package net.thenextlvl.tweaks.command.player;
 
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.NoPermissionException;
 import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
@@ -20,9 +22,10 @@ import java.util.stream.IntStream;
         permission = "tweaks.command.speed",
         description = "change your own or someone else's walk or fly speed"
 )
+@RequiredArgsConstructor
 public class SpeedCommand implements TabExecutor {
-
     private static final String OTHERS_PERMISSION = "tweaks.command.speed.others";
+    private final TweaksPlugin plugin;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -53,13 +56,14 @@ public class SpeedCommand implements TabExecutor {
         else
             target.setWalkSpeed(speed / 10f);
 
-        var messageSelf = "tweaks." + (target.isFlying() ? "speed.fly.changed.self" : "speed.walk.changed.self");
-        var messageOthers = "tweaks." + (target.isFlying() ? "speed.fly.changed.others" : "speed.walk.changed.others");
+        var messageSelf = target.isFlying() ? "speed.fly.changed.self" : "speed.walk.changed.self";
+        var messageOthers = target.isFlying() ? "speed.fly.changed.others" : "speed.walk.changed.others";
 
-        sender.sendRichMessage("<lang:" + messageSelf + ">", Placeholder.parsed("speed", String.valueOf(speed)));
-        if (target != sender) sender.sendRichMessage("<lang:" + messageOthers + ">",
-                Placeholder.parsed("speed", String.valueOf(speed)),
-                Placeholder.component("player", target.name()));
+
+        plugin.bundle().sendMessage(sender, messageSelf, Placeholder.parsed("speed", String.valueOf(speed)));
+        if (target != sender) plugin.bundle().sendMessage(sender, messageOthers,
+                    Placeholder.parsed("speed", String.valueOf(speed)),
+                    Placeholder.component("player", target.name()));
         return true;
     }
 

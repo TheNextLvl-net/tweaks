@@ -1,7 +1,8 @@
 package net.thenextlvl.tweaks.command.player;
 
-import net.kyori.adventure.text.Component;
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -15,7 +16,10 @@ import org.jetbrains.annotations.Nullable;
         description = "heal yourself or someone else",
         permission = "tweaks.command.heal"
 )
+@RequiredArgsConstructor
 public class HealCommand extends PlayerCommand {
+    private final TweaksPlugin plugin;
+
     @Override
     protected void execute(CommandSender sender, Player player) {
         AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -31,9 +35,9 @@ public class HealCommand extends PlayerCommand {
         player.setRemainingAir(player.getMaximumAir());
         player.setFreezeTicks(0);
 
-        sender.sendMessage(Component.translatable("tweaks.health.restored.self"));
-        if (player == sender) return;
-        sender.sendRichMessage("<lang:tweaks.health.restored.others>", Placeholder.component("player", player.name()));
+        plugin.bundle().sendMessage(sender, "health.restored.self");
+        if (player != sender) plugin.bundle().sendMessage(sender, "health.restored.others",
+                Placeholder.component("player", player.name()));
     }
 
     @Override

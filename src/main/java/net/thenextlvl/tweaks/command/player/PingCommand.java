@@ -1,8 +1,9 @@
 package net.thenextlvl.tweaks.command.player;
 
-import core.api.placeholder.Placeholder;
+import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -14,16 +15,17 @@ import org.jetbrains.annotations.Nullable;
         permission = "tweaks.command.ping",
         aliases = {"latency"}
 )
+@RequiredArgsConstructor
 public class PingCommand extends PlayerCommand {
+    private final TweaksPlugin plugin;
 
     @Override
     protected void execute(CommandSender sender, Player player) {
-        var ping = Placeholder.<CommandSender>of("ping", player.getPing());
-        if (sender != player) {
-            var locale = sender instanceof Player p ? p.locale() : Messages.ENGLISH;
-            var placeholder = Placeholder.<CommandSender>of("player", player.getName());
-            sender.sendRichMessage(Messages.ping.others.message(locale, sender, ping, placeholder));
-        } else player.sendRichMessage(Messages.ping.self.message(player.locale(), player, ping));
+        if (sender != player) plugin.bundle().sendMessage(player, "ping.others",
+                Placeholder.component("player", player.name()),
+                Placeholder.parsed("ping", String.valueOf(player.getPing())));
+        else plugin.bundle().sendMessage(player, "ping.self",
+                Placeholder.parsed("ping", String.valueOf(player.getPing())));
     }
 
     @Override

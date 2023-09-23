@@ -40,7 +40,7 @@ public class SeenCommand implements TabExecutor {
     private boolean lastSeenOnline(CommandSender sender, String[] args) {
         var target = Bukkit.getPlayer(args[0]);
         if (target == null) return false;
-        sender.sendRichMessage("<lang:tweaks.last.seen.now>", Placeholder.component("player", target.name()));
+        plugin.bundle().sendMessage(sender, "last.seen.now", Placeholder.component("player", target.name()));
         return true;
     }
 
@@ -54,7 +54,7 @@ public class SeenCommand implements TabExecutor {
             var locale = sender instanceof Player player ? player.locale() : Locale.US;
             var format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 
-            sender.sendRichMessage("<lang:tweaks.last.seen.time>",
+            plugin.bundle().sendMessage(sender, "last.seen.time",
                     Placeholder.parsed("player", target.getName() != null ? target.getName() : args[0]),
                     Placeholder.parsed("time", format.format(lastSeen)));
         });

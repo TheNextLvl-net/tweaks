@@ -1,8 +1,9 @@
 package net.thenextlvl.tweaks.command.item;
 
+import lombok.RequiredArgsConstructor;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import net.thenextlvl.tweaks.util.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -21,7 +22,9 @@ import java.util.List;
         description = "repair your tools",
         permission = "tweaks.command.repair"
 )
+@RequiredArgsConstructor
 public class RepairCommand implements TabExecutor {
+    private final TweaksPlugin plugin;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -30,10 +33,10 @@ public class RepairCommand implements TabExecutor {
         PlayerInventory inventory = player.getInventory();
         if (args.length == 0 && !inventory.getItemInMainHand().getType().isEmpty()) {
             inventory.setItemInMainHand(repairItem(inventory.getItemInMainHand()));
-            player.sendRichMessage(Messages.item.repaired.message(player.locale(), player));
+            plugin.bundle().sendMessage(player, "item.repaired");
             return true;
         } else if (args.length == 0) {
-            player.sendRichMessage(Messages.hold.item.message(player.locale(), player));
+            plugin.bundle().sendMessage(player, "hold.item");
             return true;
         }
 
@@ -50,7 +53,7 @@ public class RepairCommand implements TabExecutor {
                 armor[i] = repairItem(armor[i]);
             }
             inventory.setArmorContents(armor);
-            player.sendRichMessage(Messages.item.repaired.all.message(player.locale(), player));
+            plugin.bundle().sendMessage(player, "item.repaired.all");
             return true;
         }
 

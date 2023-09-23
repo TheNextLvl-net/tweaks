@@ -1,7 +1,9 @@
 package net.thenextlvl.tweaks.command.player;
 
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.command.api.NoPermissionException;
@@ -24,9 +26,10 @@ import java.util.List;
         description = "change your own or someone else's game mode",
         aliases = {"gm"}
 )
+@RequiredArgsConstructor
 public class GameModeCommand implements TabExecutor {
-
     private static final String OTHERS_PERMISSION = "tweaks.command.gamemode.others";
+    private final TweaksPlugin plugin;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -56,10 +59,10 @@ public class GameModeCommand implements TabExecutor {
         }
         target.setGameMode(gamemode);
 
-        sender.sendRichMessage("<lang:tweaks.gamemode.changed.self>", Placeholder.component("gamemode",
+        plugin.bundle().sendMessage(sender, "gamemode.changed.self", Placeholder.component("gamemode",
                 Component.translatable(gamemode)));
 
-        if (target != sender) sender.sendRichMessage("<lang:tweaks.gamemode.changed.others>",
+        if (target != sender) plugin.bundle().sendMessage(sender, "gamemode.changed.others",
                 Placeholder.component("gamemode", Component.translatable(gamemode)),
                 Placeholder.component("player", target.name()));
         return true;

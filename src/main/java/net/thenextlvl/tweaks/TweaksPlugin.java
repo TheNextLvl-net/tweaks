@@ -5,9 +5,7 @@ import core.api.file.format.GsonFile;
 import core.i18n.file.ComponentBundle;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
@@ -38,23 +36,11 @@ import java.util.Locale;
 @FieldsAreNotNullByDefault
 public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
-    private final MiniMessage miniMessage = MiniMessage.builder()
-            .tags(TagResolver.standard())
-            .tags(TagResolver.resolver("prefix", Tag.inserting(Component.translatable("tweaks.prefix"))))
-            .build();
 
     private final TweaksConfig config = new GsonFile<>(
             new File(getDataFolder(), "config.json"),
             new TweaksConfig(
                     new GeneralConfig(5, (byte) -1, false, false, false, true),
-                    new FormattingConfig(
-                            "", "<red>Server <grey>| <message>", "",
-                            "<delete:'<signature>'><display_name><reset> <dark_gray>» <reset>" +
-                                    "<click:copy_to_clipboard:'<message_content>'>" +
-                                    "<hover:show_text:'<lang:chat.copy.click>'><message>",
-                            "<hover:show_text:'<lang:key.keyboard.delete>'>" +
-                                    "<dark_gray>[<dark_red><bold>␡</bold><dark_gray>]<reset> "
-                    ),
                     new InventoryConfig(
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),
                             new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aChestplate"),
@@ -70,8 +56,6 @@ public class TweaksPlugin extends JavaPlugin {
     ) {{
         if (getRoot().generalConfig() == null)
             getLogger().severe("Your general-config-section is malformed");
-        if (getRoot().formattingConfig() == null)
-            getLogger().severe("Your formatting-config-section is malformed");
         if (getRoot().inventoryConfig() == null)
             getLogger().severe("Your inventory-config-section is malformed");
         if (getRoot().vanillaTweaks() == null)
@@ -121,28 +105,28 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new ThunderCommand(this));
 
         // Player
-        registerCommand(new GodCommand());
-        registerCommand(new FeedCommand());
-        registerCommand(new FlyCommand());
-        registerCommand(new HatCommand());
-        registerCommand(new HealCommand());
-        registerCommand(new PingCommand());
+        registerCommand(new GodCommand(this));
+        registerCommand(new FeedCommand(this));
+        registerCommand(new FlyCommand(this));
+        registerCommand(new HatCommand(this));
+        registerCommand(new HealCommand(this));
+        registerCommand(new PingCommand(this));
         registerCommand(new BackCommand(this));
         registerCommand(new SeenCommand(this));
         registerCommand(new InventoryCommand(this));
         registerCommand(new EnderChestCommand(this));
-        registerCommand(new SpeedCommand());
-        registerCommand(new GameModeCommand());
+        registerCommand(new SpeedCommand(this));
+        registerCommand(new GameModeCommand(this));
 
         // Server
         registerCommand(new BroadcastCommand(this));
 
         // Item
         registerCommand(new HeadCommand(this));
-        registerCommand(new UnenchantCommand());
-        registerCommand(new RepairCommand());
+        registerCommand(new UnenchantCommand(this));
+        registerCommand(new RepairCommand(this));
         registerCommand(new LoreCommand(this));
-        registerCommand(new RenameCommand());
+        registerCommand(new RenameCommand(this));
         registerCommand(new EnchantCommand(this));
         registerCommand(new ItemCommand(this));
 

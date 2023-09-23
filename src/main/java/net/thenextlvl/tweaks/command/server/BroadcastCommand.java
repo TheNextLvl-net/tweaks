@@ -1,12 +1,15 @@
 package net.thenextlvl.tweaks.command.server;
 
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.audience.Audience;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
 
 @CommandInfo(
         name = "broadcast",
@@ -25,18 +28,18 @@ public class BroadcastCommand implements CommandExecutor {
         if (args.length == 0) return false;
 
         var tweaksConfig = plugin.config();
-        var formattingConfig = tweaksConfig.formattingConfig();
 
-        var format = formattingConfig.broadcastFormat();
         var message = String.join(" ", args).replace("\\t", "   ");
+        var format = format(plugin.bundle().format(sender, "broadcast.format"), message);
 
-        if (formattingConfig.broadcastHeader() != null)
-            Bukkit.broadcast(plugin.miniMessage().deserialize(formattingConfig.broadcastHeader()));
+        var receivers = new ArrayList<Audience>(Bukkit.getOnlinePlayers());
+        receivers.add(Bukkit.getConsoleSender());
 
-        Bukkit.broadcast(plugin.miniMessage().deserialize(format(format, message)));
-
-        if (formattingConfig.broadcastFooter() != null)
-            Bukkit.broadcast(plugin.miniMessage().deserialize(formattingConfig.broadcastFooter()));
+        receivers.forEach(audience -> {
+            plugin.bundle().sendMessage(audience, "broadcast.header");
+            plugin.bundle().sendMessage(audience, format);
+            plugin.bundle().sendMessage(audience, "broadcast.footer");
+        });
 
         return true;
     }
