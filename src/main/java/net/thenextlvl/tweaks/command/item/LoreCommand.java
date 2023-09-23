@@ -21,7 +21,7 @@ import java.util.function.Consumer;
         name = "lore",
         permission = "tweaks.command.lore",
         description = "change the lore of your items",
-        usage = "/<command> [set|append] [lore...]"
+        usage = "/<command> [set|append|unset] (lore...)"
 )
 public class LoreCommand implements TabExecutor {
     @Override
@@ -40,6 +40,7 @@ public class LoreCommand implements TabExecutor {
 
         if (args.length < 2) {
             player.sendRichMessage(Messages.item.lore.tip.message(player.locale(), sender));
+        if (args.length < 2 && !args[0].equalsIgnoreCase("unset")) {
             return false;
         }
 
@@ -50,6 +51,9 @@ public class LoreCommand implements TabExecutor {
         }
 
         Consumer<? super ItemMeta> function = null;
+
+        if (args[0].equalsIgnoreCase("unset"))
+            function = unsetLore();
 
         if (args[0].equalsIgnoreCase("set"))
             function = setLore(loreLines);
@@ -67,6 +71,10 @@ public class LoreCommand implements TabExecutor {
         inventory.setItemInMainHand(item);
         player.sendRichMessage(Messages.item.lore.success.message(player.locale(), player));
         return true;
+    }
+
+    private static Consumer<ItemMeta> unsetLore() {
+        return meta -> meta.lore(null);
     }
 
     @SuppressWarnings("deprecation")
