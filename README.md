@@ -23,7 +23,7 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 | /sun (world)     | let the sun shine     | tweaks.command.sun     |
 | /thunder (world) | let it thunder        | tweaks.command.thunder |
 
-The group permission for this category is `tweaks.commands.environmental`
+The perm-pack to grant all permissions: `tweaks.commands.environmental`
 
 ### Item commands
 
@@ -37,7 +37,7 @@ The group permission for this category is `tweaks.commands.environmental`
 | /repair (all)                      | repair your tools                   |       | tweaks.command.repair    |
 | /unenchant [enchantment...]        | unenchant your tools                |       | tweaks.command.unenchant |
 
-The group permission for this category is `tweaks.commands.item`
+The perm-pack to grant all permissions: `tweaks.commands.item`
 
 ### Player commands
 
@@ -56,7 +56,7 @@ The group permission for this category is `tweaks.commands.item`
 | /seen [player]                | gives you information about a player                | find           | tweaks.command.seen                                                                                                                                                                                                                                                                                |          |            |
 | /speed [speed] (player)       | change your own or someone else's walk or fly speed |                | tweaks.command.speed                                                                                                                                                                                                                                                                               | player   | *.others   |
 
-The group permission for this category is `tweaks.commands.player`
+The perm-pack to grant all permissions: `tweaks.commands.player`
 
 ### Server commands
 
@@ -64,7 +64,7 @@ The group permission for this category is `tweaks.commands.player`
 |----------------------|---------------------|--------------------------|
 | /broadcast [message] | broadcast a message | tweaks.command.broadcast |
 
-The group permission for this category is `tweaks.commands.server`
+The perm-pack to grant all permissions: `tweaks.commands.server`
 
 ### Workstation commands
 
@@ -79,7 +79,7 @@ The group permission for this category is `tweaks.commands.server`
 | /stonecutter       |             | tweaks.command.stonecutter       |
 | /workbench         | wb          | tweaks.command.workbench         |
 
-The group permission for this category is `tweaks.commands.workstation`
+The perm-pack to grant all permissions: `tweaks.commands.workstation`
 
 ## Configuration
 
