@@ -23,7 +23,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
     implementation("net.thenextlvl.core:api:4.0.1")
-    implementation("net.thenextlvl.core:i18n:1.0.4")
+    implementation("net.thenextlvl.core:i18n:1.0.6")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
     annotationProcessor("org.projectlombok:lombok:1.18.26")

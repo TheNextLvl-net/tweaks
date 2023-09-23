@@ -6,10 +6,12 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @CommandInfo(
         name = "broadcast",
@@ -19,7 +21,7 @@ import java.util.ArrayList;
         aliases = {"bc"}
 )
 @RequiredArgsConstructor
-public class BroadcastCommand implements CommandExecutor {
+public class BroadcastCommand implements TabExecutor {
     private final TweaksPlugin plugin;
 
     @Override
@@ -30,14 +32,14 @@ public class BroadcastCommand implements CommandExecutor {
         var tweaksConfig = plugin.config();
 
         var message = String.join(" ", args).replace("\\t", "   ");
-        var format = format(plugin.bundle().format(sender, "broadcast.format"), message);
 
         var receivers = new ArrayList<Audience>(Bukkit.getOnlinePlayers());
         receivers.add(Bukkit.getConsoleSender());
 
         receivers.forEach(audience -> {
             plugin.bundle().sendMessage(audience, "broadcast.header");
-            plugin.bundle().sendMessage(audience, format);
+            var format = format(plugin.bundle().format(audience, "broadcast.format"), message);
+            plugin.bundle().sendRawMessage(audience, format);
             plugin.bundle().sendMessage(audience, "broadcast.footer");
         });
 
@@ -52,5 +54,10 @@ public class BroadcastCommand implements CommandExecutor {
         }
 
         return String.join("\n", split);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        return Arrays.asList(args[args.length - 1] + "\\n", args[args.length - 1] + "\\t");
     }
 }
