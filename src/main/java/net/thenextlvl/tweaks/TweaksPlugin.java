@@ -1,17 +1,15 @@
 package net.thenextlvl.tweaks;
 
-import core.annotation.FieldsAreNonnullByDefault;
+import core.annotation.FieldsAreNotNullByDefault;
 import core.api.file.format.GsonFile;
+import core.i18n.file.ComponentBundle;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.translation.GlobalTranslator;
-import net.kyori.adventure.translation.TranslationRegistry;
-import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.thenextlvl.tweaks.command.api.CommandBuilder;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.environment.*;
@@ -23,20 +21,21 @@ import net.thenextlvl.tweaks.config.*;
 import net.thenextlvl.tweaks.listener.ChatListener;
 import net.thenextlvl.tweaks.listener.ConnectionListener;
 import net.thenextlvl.tweaks.listener.EntityListener;
+import net.thenextlvl.tweaks.listener.WorldListener;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Getter
 @Accessors(fluent = true)
-@FieldsAreNonnullByDefault
+@FieldsAreNotNullByDefault
 public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
     private final MiniMessage miniMessage = MiniMessage.builder()
@@ -79,13 +78,21 @@ public class TweaksPlugin extends JavaPlugin {
             getLogger().severe("Your vanilla-tweaks-section is malformed");
         if (!getFile().exists()) save();
     }}.getRoot();
+    private final File translations = new File(getDataFolder(), "translations");
+    private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
+            audience instanceof Player player ? player.locale() : Locale.US)
+            .register("tweaks", Locale.US)
+            .register("tweaks_german", Locale.GERMANY)
+            .fallback(Locale.US);
 
     @Override
     public void onLoad() {
-        var registry = TranslationRegistry.create(Key.key("tweaks:messages"));
-        var bundle = ResourceBundle.getBundle("tweaks", Locale.US, UTF8ResourceBundleControl.get());
-        registry.registerAll(Locale.US, bundle, true);
-        GlobalTranslator.translator().addSource(registry);
+        bundle().miniMessage(MiniMessage.builder()
+                .tags(TagResolver.builder()
+                        .resolvers(TagResolver.standard())
+                        .resolver(Placeholder.component("prefix", bundle.component(Locale.US, "prefix")))
+                        .build())
+                .build());
     }
 
     @Override
@@ -103,6 +110,7 @@ public class TweaksPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ConnectionListener(this), this);
         Bukkit.getPluginManager().registerEvents(new EntityListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new WorldListener(this), this);
     }
 
     private void registerCommands() {
@@ -130,13 +138,13 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new BroadcastCommand(this));
 
         // Item
-        registerCommand(new HeadCommand());
+        registerCommand(new HeadCommand(this));
         registerCommand(new UnenchantCommand());
         registerCommand(new RepairCommand());
-        registerCommand(new LoreCommand());
+        registerCommand(new LoreCommand(this));
         registerCommand(new RenameCommand());
-        registerCommand(new EnchantCommand());
-        registerCommand(new ItemCommand());
+        registerCommand(new EnchantCommand(this));
+        registerCommand(new ItemCommand(this));
 
         // Workstation
         registerCommand(new AnvilCommand());

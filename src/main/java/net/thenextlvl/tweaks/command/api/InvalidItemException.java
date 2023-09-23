@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.api;
 
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
 
 @RequiredArgsConstructor
@@ -10,6 +11,6 @@ public class InvalidItemException extends CommandException {
 
     @Override
     public void handle(CommandSender sender) {
-        sender.sendRichMessage("<lang:tweaks.item.invalid>", Placeholder.parsed("item", argument));
+        TweaksPlugin.get().bundle().sendMessage(sender, "item.invalid", Placeholder.parsed("item", argument));
     }
 }

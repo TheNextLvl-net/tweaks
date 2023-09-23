@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.api;
 
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -11,6 +12,7 @@ public class WorldNotAffectedException extends CommandException {
 
     @Override
     public void handle(CommandSender sender) {
-        sender.sendRichMessage("<lang:tweaks.world.not.affected>", Placeholder.parsed("world", world.getName()));
+        TweaksPlugin.get().bundle().sendMessage(sender, "world.not.affected",
+                Placeholder.parsed("world", world.getName()));
     }
 }

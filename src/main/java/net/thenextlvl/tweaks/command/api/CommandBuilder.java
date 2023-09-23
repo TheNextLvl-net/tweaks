@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.api;
 
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public record CommandBuilder(Plugin plugin, CommandInfo info,
+public record CommandBuilder(TweaksPlugin plugin, CommandInfo info,
                              CommandExecutor executor, @Nullable TabCompleter tabCompleter) {
 
     public PluginCommand build() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -39,7 +40,7 @@ public record CommandBuilder(Plugin plugin, CommandInfo info,
     private void execute(CommandSender sender, Command command, String label, String[] args) {
         try {
             if (executor().onCommand(sender, command, label, args)) return;
-            sender.sendRichMessage("<lang:tweaks.command.usage>", Placeholder.parsed("usage", command.getUsage()
+            plugin.bundle().sendMessage(sender, "command.usage", Placeholder.parsed("usage", command.getUsage()
                     .replace("[", "<dark_gray>[<gold>").replace("]", "<dark_gray>]<red>")
                     .replace("(", "<dark_gray>(<gold>").replace(")", "<dark_gray>)<red>")
                     .replace("|", " <dark_gray>| <gold>").replace("<command>", label)));

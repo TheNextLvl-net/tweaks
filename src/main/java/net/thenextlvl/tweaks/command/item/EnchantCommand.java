@@ -1,7 +1,10 @@
 package net.thenextlvl.tweaks.command.item;
 
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import org.bukkit.NamespacedKey;
@@ -24,7 +27,9 @@ import java.util.stream.IntStream;
         permission = "tweaks.command.enchant",
         description = "enchant your tools"
 )
+@RequiredArgsConstructor
 public class EnchantCommand implements TabExecutor {
+    private final TweaksPlugin plugin;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -44,11 +49,11 @@ public class EnchantCommand implements TabExecutor {
         ItemStack item = inventory.getItemInMainHand();
 
         if (item.getType().isEmpty()) {
-            player.sendMessage(Component.translatable("tweaks.hold.item"));
+            plugin.bundle().sendMessage(player, "hold.item");
             return true;
         }
         if (!enchantment.canEnchantItem(item)) {
-            player.sendRichMessage("<lang:tweaks.enchantment.not.applicable>", Placeholder.component("item",
+            plugin.bundle().sendMessage(player, "enchantment.not.applicable", Placeholder.component("item",
                     Component.translatable(item)));
             return true;
         }
@@ -61,11 +66,10 @@ public class EnchantCommand implements TabExecutor {
         }
         level = Math.min(enchantment.getMaxLevel(), Math.max(enchantment.getStartLevel(), level));
 
-        int finalLevel = level;
         item.addEnchantment(enchantment, level);
         inventory.setItemInMainHand(item);
-        player.sendRichMessage("<lang:tweaks.enchantment.applied>", Placeholder.component("enchantment",
-                Component.translatable(enchantment)));
+        plugin.bundle().sendMessage(player, "enchantment.applied", Placeholder.component("enchantment",
+                enchantment.displayName(level).style(Style.empty())));
         return true;
     }
 
@@ -80,8 +84,9 @@ public class EnchantCommand implements TabExecutor {
 
         if (args.length == 1) {
             return Arrays.stream(Enchantment.values())
-                    .filter(enchantment -> enchantment.canEnchantItem(item))
-                    .filter(enchantment -> item.getEnchantments().keySet().stream().noneMatch(enchantment::conflictsWith))
+                    .filter(enchantment -> enchantment.canEnchantItem(item)
+                            && (item.getEnchantments().keySet().stream().noneMatch(enchantment::conflictsWith)
+                            || item.getEnchantments().containsKey(enchantment)))
                     .map(enchantment -> enchantment.getKey().asString()).toList();
         }
         if (args.length == 2) {
