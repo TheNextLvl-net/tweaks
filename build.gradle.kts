@@ -1,3 +1,4 @@
+import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 plugins {
@@ -5,6 +6,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("net.minecrell.plugin-yml.paper") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.papermc.hangar-publish-plugin") version "0.1.0"
 }
 
 group = "net.thenextlvl"
@@ -145,5 +147,29 @@ paper {
         register("tweaks.command.heal.others")
         register("tweaks.command.ping.others")
         register("tweaks.command.speed.others")
+    }
+}
+
+hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
+    publications.register("plugin") {
+        version.set(project.version as String)
+        channel.set(if ((project.version as String).contains("-pre")) "Release" else "Snapshot")
+        id.set("Tweaks")
+        if (extra.has("HANGAR_API_TOKEN"))
+            apiKey.set(extra["HANGAR_API_TOKEN"] as String)
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                val versions: List<String> = (property("paperVersion") as String)
+                    .split(",")
+                    .map { it.trim() }
+                platformVersions.set(versions)
+                dependencies {
+                    url("Luckperms", "https://luckperms.net/") {
+                        required.set(false)
+                    }
+                }
+            }
+        }
     }
 }
