@@ -153,7 +153,7 @@ paper {
 hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
     publications.register("plugin") {
         version.set(project.version as String)
-        channel.set(if ((project.version as String).contains("-pre")) "Release" else "Snapshot")
+        channel.set(if ((project.version as String).contains("-pre")) "Snapshot" else "Release")
         id.set("Tweaks")
         if (extra.has("HANGAR_API_TOKEN"))
             apiKey.set(extra["HANGAR_API_TOKEN"] as String)
