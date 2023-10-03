@@ -1,6 +1,5 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.paper.PaperPluginDescription
-import java.io.ByteArrayOutputStream
 
 plugins {
     id("java")
@@ -151,22 +150,8 @@ paper {
     }
 }
 
-fun executeGitCommand(vararg command: String): String {
-    val byteOut = ByteArrayOutputStream()
-    exec {
-        commandLine = listOf("git", *command)
-        standardOutput = byteOut
-    }
-    return byteOut.toString(Charsets.UTF_8.name()).trim()
-}
-
-fun latestCommitMessage(): String {
-    return executeGitCommand("log", "-1", "--pretty=%B")
-}
-
 val versionString: String = project.version as String
 val isRelease: Boolean = !versionString.contains("-pre")
-var changelogContent: String = latestCommitMessage()
 
 hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
     publications.register("plugin") {
@@ -175,7 +160,6 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
         channel.set(if (isRelease) "Release" else "Snapshot")
         if (extra.has("HANGAR_API_TOKEN"))
             apiKey.set(extra["HANGAR_API_TOKEN"] as String)
-        changelog.set(changelogContent)
         platforms {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
