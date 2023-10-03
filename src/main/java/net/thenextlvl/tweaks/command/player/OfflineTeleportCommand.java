@@ -84,17 +84,23 @@ public class OfflineTeleportCommand implements TabExecutor {
         var nbt = file.getRoot();
         if (!nbt.containsKey("Dimension") || !nbt.get("Dimension").isString()) return null;
         if (!nbt.containsKey("Pos") || !nbt.get("Pos").isList()) return null;
+        if (!nbt.containsKey("Rotation") || !nbt.get("Rotation").isList()) return null;
         var position = nbt.<DoubleTag>getAsList("Pos");
-        if (position.size() != 3) return null;
+        var rotation = nbt.<FloatTag>getAsList("Rotation");
+        if (position.size() != 3 || rotation.size() != 2) return null;
         var dimension = nbt.get("Dimension").getAsString();
         var key = NamespacedKey.fromString(dimension);
+        System.out.println(key);
         if (key == null) return null;
         var world = Bukkit.getWorld(key);
         if (world == null) return null;
         return new Location(world,
                 position.get(0).getValue(),
                 position.get(1).getValue(),
-                position.get(2).getValue());
+                position.get(2).getValue(),
+                rotation.get(0).getValue(),
+                rotation.get(1).getValue()
+        );
     }
 
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
