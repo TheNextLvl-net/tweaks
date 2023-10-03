@@ -1,8 +1,7 @@
 package net.thenextlvl.tweaks.command.player;
 
 import core.nbt.file.NBTFile;
-import core.nbt.tag.CompoundTag;
-import core.nbt.tag.DoubleTag;
+import core.nbt.tag.*;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -73,7 +72,28 @@ public class OfflineTeleportCommand implements TabExecutor {
     }
 
     private boolean setLocation(OfflinePlayer player, Location location) {
-        return false;
+        var file = getNBTFile(player);
+        if (file == null) return false;
+        var nbt = file.getRoot();
+        nbt.remove("WorldUUIDLeast");
+        nbt.remove("WorldUUIDMost");
+        nbt.remove("Dimension");
+        nbt.remove("Rotation");
+        nbt.remove("Pos");
+        nbt.add(new LongTag("WorldUUIDLeast", location.getWorld().getUID().getLeastSignificantBits()));
+        nbt.add(new LongTag("WorldUUIDMost", location.getWorld().getUID().getMostSignificantBits()));
+        nbt.add(new StringTag("Dimension", location.getWorld().getKey().toString()));
+        nbt.add(new ListTag<>("Pos", List.of(
+                new DoubleTag(location.getX()),
+                new DoubleTag(location.getY()),
+                new DoubleTag(location.getZ())
+        ), DoubleTag.ID));
+        nbt.add(new ListTag<>("Rotation", List.of(
+                new FloatTag(location.getYaw()),
+                new FloatTag(location.getPitch())
+        ), FloatTag.ID));
+        file.save();
+        return true;
     }
 
     private @Nullable Location getLocation(OfflinePlayer player) {
