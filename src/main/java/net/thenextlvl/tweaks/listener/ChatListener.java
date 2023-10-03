@@ -41,8 +41,7 @@ public class ChatListener implements Listener {
                         TagResolver.resolver("message", Tag.inserting(message)),
                         TagResolver.resolver("player", Tag.preProcessParsed(source.getName())),
                         TagResolver.resolver("world", Tag.preProcessParsed(source.getWorld().getName())),
-                        TagResolver.resolver("signature", Tag.preProcessParsed(toString(event.signedMessage()))),
-                        TagResolver.resolver("delete", (args, context) -> createDeleteTag(args, source, viewer))
+                        TagResolver.resolver("delete", createDeleteTag(source, viewer, event.signedMessage()))
                 ).build()));
     }
 

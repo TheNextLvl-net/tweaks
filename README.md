@@ -118,9 +118,6 @@ For more information about minimessage visit: https://docs.advntr.dev/minimessag
 
 ### Chat Message Deletion
 
-The delete tag requires the message signature which can be obtained via the `signature` tag.<br/>
-In general, it would look like this: `<delete:'<signature'>>`
-
 With the `delete-tag-format` option you can control the look and feel of the component
 
 For security reasons, the entire delete tag will only be visible to players with the
