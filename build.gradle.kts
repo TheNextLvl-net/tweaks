@@ -10,11 +10,12 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "2.0.0"
+version = "2.0.1"
 
 repositories {
     mavenCentral()
     maven("https://repo.thenextlvl.net/releases")
+    maven("https://repo.thenextlvl.net/snapshots")
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
@@ -24,6 +25,7 @@ dependencies {
     compileOnly("net.thenextlvl.core:annotations:2.0.0")
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
+    implementation("net.thenextlvl.core:nbt:1.3.4")
     implementation("net.thenextlvl.core:api:4.0.1")
     implementation("net.thenextlvl.core:i18n:1.0.6")
     implementation("org.bstats:bstats-bukkit:3.0.2")
@@ -99,6 +101,7 @@ paper {
                 "tweaks.command.hat",
                 "tweaks.command.heal",
                 "tweaks.command.inventory",
+                "tweaks.command.offline-tp",
                 "tweaks.command.ping",
                 "tweaks.command.seen",
                 "tweaks.command.speed"
@@ -145,6 +148,7 @@ paper {
         register("tweaks.command.fly.others")
         register("tweaks.command.god.others")
         register("tweaks.command.heal.others")
+        register("tweaks.command.offline-tp.others")
         register("tweaks.command.ping.others")
         register("tweaks.command.speed.others")
     }

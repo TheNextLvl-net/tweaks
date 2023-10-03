@@ -117,6 +117,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new EnderChestCommand(this));
         registerCommand(new SpeedCommand(this));
         registerCommand(new GameModeCommand(this));
+        registerCommand(new OfflineTeleportCommand(this));
 
         // Server
         registerCommand(new BroadcastCommand(this));
