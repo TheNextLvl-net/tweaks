@@ -10,7 +10,6 @@ import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
-import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.luckperms.api.LuckPermsProvider;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -21,11 +20,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.util.*;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 @RequiredArgsConstructor
 public class ChatListener implements Listener {
     private final ClickCallback.Options options = ClickCallback.Options.builder().uses(1).build();
+    private final boolean luckperms = Bukkit.getPluginManager().isPluginEnabled("LuckPerms");
     private final TweaksPlugin plugin;
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -46,7 +47,7 @@ public class ChatListener implements Listener {
     }
 
     private TagResolver.Builder luckResolvers(Player player) {
-        if (!isLuckPermsLoaded()) return TagResolver.builder();
+        if (!luckperms) return TagResolver.builder();
         var user = LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player);
         var group = LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup());
         var meta = user.getCachedData().getMetaData(user.getQueryOptions());
@@ -60,25 +61,26 @@ public class ChatListener implements Listener {
         );
     }
 
-    private Tag createDeleteTag(ArgumentQueue args, Player source, Audience viewer) {
+    private Tag createDeleteTag(Player sender, Audience audience, SignedMessage signedMessage) {
         var empty = Tag.selfClosingInserting(Component.empty());
-        if (!(viewer instanceof Player player)) return empty;
-        else if (source.equals(viewer) && !player.hasPermission("tweaks.chat.delete.own")) return empty;
-        else if (isLuckPermsLoaded() && getWeight(source) > getChatDeleteWeight(player)) return empty;
-        else if (!player.hasPermission("tweaks.chat.delete")) return empty;
-        var signature = stringToSignature(args.popOr("The <delete> tag requires a message signature").value());
+        if (!(audience instanceof Player viewer)) return empty;
+        if (!canDelete(viewer, sender)) return empty;
         return Tag.selfClosingInserting(MiniMessage.miniMessage()
-                .deserialize(plugin.bundle().format(player.locale(), "chat.format.delete"))
-                .clickEvent(ClickEvent.callback(audience -> Bukkit.getOnlinePlayers().forEach(all ->
-                        all.deleteMessage(signature)), options)));
+                .deserialize(plugin.bundle().format(viewer.locale(), "chat.format.delete"))
+                .clickEvent(ClickEvent.callback(ignored -> {
+                    if (canDelete(viewer, sender)) Bukkit.getOnlinePlayers()
+                            .forEach(all -> all.deleteMessage(signedMessage));
+                }, options)));
     }
 
-    private boolean isLuckPermsLoaded() {
-        return Bukkit.getPluginManager().isPluginEnabled("LuckPerms");
+    private boolean canDelete(Player viewer, Player source) {
+        if (source.equals(viewer) && viewer.hasPermission("tweaks.chat.delete.own")) return true;
+        if (luckperms && getWeight(source) <= getChatDeleteWeight(viewer)) return true;
+        return viewer.hasPermission("tweaks.chat.delete");
     }
 
     private int getWeight(Player player) {
-        if (!isLuckPermsLoaded()) return 0;
+        if (!luckperms) return 0;
         var user = LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player);
         var group = LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup());
         return group != null ? group.getWeight().orElse(0) : 0;
@@ -92,38 +94,17 @@ public class ChatListener implements Listener {
                 .filter(permission -> permission.startsWith("tweaks.chat.delete."))
                 .filter(permission -> {
                     var split = permission.split("\\.");
-                    return split.length == 4
-                            && split[0].equals("tweaks")
-                            && split[1].equals("chat")
-                            && split[2].equals("delete")
-                            && !split[3].equals("all")
-                            && !split[3].equals("own");
+                    return split.length == 4 && !split[3].equals("own");
                 })
                 .map(permission -> {
                     try {
                         return Integer.parseInt(permission.split("\\.")[3]);
                     } catch (NumberFormatException ignored) {
-                        return 0;
+                        return -1;
                     }
                 })
                 .filter(weight -> weight >= 0)
                 .max(Integer::compareTo)
-                .orElse(0));
-    }
-
-    private String toString(SignedMessage signedMessage) {
-        var signature = signedMessage.signature();
-        if (signature == null) return "";
-        var strings = new ArrayList<String>();
-        for (var b : signature.bytes()) strings.add(String.valueOf(b));
-        return String.join(",", strings);
-    }
-
-    private SignedMessage.Signature stringToSignature(String string) {
-        if (string.isBlank()) return () -> new byte[0];
-        var strings = Arrays.asList(string.split(","));
-        var bytes = new byte[strings.size()];
-        for (var i = 0; i < strings.size(); i++) bytes[i] = Byte.parseByte(strings.get(i));
-        return () -> bytes;
+                .orElse(-1));
     }
 }
