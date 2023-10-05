@@ -1,7 +1,10 @@
 package net.thenextlvl.tweaks.command.player;
 
+import com.google.gson.annotations.SerializedName;
 import core.nbt.file.NBTFile;
-import core.nbt.tag.*;
+import core.nbt.snbt.SNBT;
+import core.nbt.snbt.SNBTBuilder;
+import core.nbt.tag.CompoundTag;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -33,6 +36,9 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 @RequiredArgsConstructor
 public class OfflineTeleportCommand implements TabExecutor {
     private final TweaksPlugin plugin;
+    private final SNBT snbt = new SNBTBuilder()
+            .enableComplexMapKeySerialization()
+            .create();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -74,26 +80,44 @@ public class OfflineTeleportCommand implements TabExecutor {
     private boolean setLocation(OfflinePlayer player, Location location) {
         var file = getNBTFile(player);
         if (file == null) return false;
-        var nbt = file.getRoot();
-        nbt.remove("WorldUUIDLeast");
-        nbt.remove("WorldUUIDMost");
-        nbt.remove("Dimension");
-        nbt.remove("Rotation");
-        nbt.remove("Pos");
-        nbt.add(new LongTag("WorldUUIDLeast", location.getWorld().getUID().getLeastSignificantBits()));
-        nbt.add(new LongTag("WorldUUIDMost", location.getWorld().getUID().getMostSignificantBits()));
-        nbt.add(new StringTag("Dimension", location.getWorld().getKey().toString()));
-        nbt.add(new ListTag<>("Pos", List.of(
-                new DoubleTag(location.getX()),
-                new DoubleTag(location.getY()),
-                new DoubleTag(location.getZ())
-        ), DoubleTag.ID));
-        nbt.add(new ListTag<>("Rotation", List.of(
-                new FloatTag(location.getYaw()),
-                new FloatTag(location.getPitch())
-        ), FloatTag.ID));
+        file.getRoot().addAll(snbt
+                .toTag(LocationData.of(location))
+                .getAsCompound());
         file.save();
         return true;
+    }
+
+    private record LocationData(
+            @SerializedName("WorldUUIDLeast") long worldUuidLeast,
+            @SerializedName("WorldUUIDMost") long worldUuidMost,
+            @SerializedName("Dimension") String dimension,
+            @SerializedName("Pos") double[] position,
+            @SerializedName("Rotation") float[] rotation
+    ) {
+        public static LocationData of(Location location) {
+            return new LocationData(
+                    location.getWorld().getUID().getLeastSignificantBits(),
+                    location.getWorld().getUID().getMostSignificantBits(),
+                    location.getWorld().getKey().toString(),
+                    new double[]{location.getX(), location.getY(), location.getZ()},
+                    new float[]{location.getYaw(), location.getPitch()}
+            );
+        }
+
+        public @Nullable Location toLocation() {
+            if (position().length != 3 || rotation().length != 2) return null;
+            var key = NamespacedKey.fromString(dimension());
+            if (key == null) return null;
+            var world = Bukkit.getWorld(key);
+            if (world == null) return null;
+            return new Location(world,
+                    position()[0],
+                    position()[1],
+                    position()[2],
+                    rotation()[0],
+                    rotation()[1]
+            );
+        }
     }
 
     private @Nullable Location getLocation(OfflinePlayer player) {
@@ -101,26 +125,7 @@ public class OfflineTeleportCommand implements TabExecutor {
         if (online != null) return online.getLocation();
         var file = getNBTFile(player);
         if (file == null) return null;
-        var nbt = file.getRoot();
-        if (!nbt.containsKey("Dimension") || !nbt.get("Dimension").isString()) return null;
-        if (!nbt.containsKey("Pos") || !nbt.get("Pos").isList()) return null;
-        if (!nbt.containsKey("Rotation") || !nbt.get("Rotation").isList()) return null;
-        var position = nbt.<DoubleTag>getAsList("Pos");
-        var rotation = nbt.<FloatTag>getAsList("Rotation");
-        if (position.size() != 3 || rotation.size() != 2) return null;
-        var dimension = nbt.get("Dimension").getAsString();
-        var key = NamespacedKey.fromString(dimension);
-        System.out.println(key);
-        if (key == null) return null;
-        var world = Bukkit.getWorld(key);
-        if (world == null) return null;
-        return new Location(world,
-                position.get(0).getValue(),
-                position.get(1).getValue(),
-                position.get(2).getValue(),
-                rotation.get(0).getValue(),
-                rotation.get(1).getValue()
-        );
+        return snbt.fromTag(file.getRoot(), LocationData.class).toLocation();
     }
 
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
