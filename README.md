@@ -61,9 +61,10 @@ The perm-pack to grant all permissions: `tweaks.commands.player`
 
 ### Server commands
 
-| Command              | Description         | Permission               |
-|----------------------|---------------------|--------------------------|
-| /broadcast [message] | broadcast a message | tweaks.command.broadcast |
+| Command              | Description          | Permission               |
+|----------------------|----------------------|--------------------------|
+| /broadcast [message] | broadcast a message  | tweaks.command.broadcast |
+| /lobby               | connect to the lobby |                          |
 
 The perm-pack to grant all permissions: `tweaks.commands.server`
 
@@ -96,6 +97,13 @@ The perm-pack to grant all permissions: `tweaks.commands.workstation`
 | log-chat                 | whether to send the chat to the console<br/>_not related with override-chat_                                                                                                   | `true`, `false` |
 
 For more information about the permission level visit: https://minecraft.fandom.com/wiki/Permission_level
+
+### Server
+
+| Option               | Description                                 | Value           |
+|----------------------|---------------------------------------------|-----------------|
+| enable-lobby-command | whether the lobby command should be enabled | `true`, `false` |
+| lobby-server-name    | the name of the lobby server                | String          |
 
 ### MiniMessage Chat Tags
 

@@ -14,6 +14,7 @@ import net.thenextlvl.tweaks.command.environment.*;
 import net.thenextlvl.tweaks.command.item.*;
 import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
+import net.thenextlvl.tweaks.command.server.LobbyCommand;
 import net.thenextlvl.tweaks.command.workstation.*;
 import net.thenextlvl.tweaks.config.*;
 import net.thenextlvl.tweaks.listener.ChatListener;
@@ -51,7 +52,8 @@ public class TweaksPlugin extends JavaPlugin {
                             new ConfigItem(Material.IRON_BARS, "§7-§8/§7-"),
                             20
                     ),
-                    new VanillaTweaks(0, 0, 0, false)
+                    new VanillaTweaks(0, 0, 0, false),
+                    new ServerConfig(true, "lobby")
             )
     ) {{
         if (getRoot().generalConfig() == null)
@@ -81,6 +83,7 @@ public class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        registerMessageChannel();
         registerListeners();
         registerCommands();
     }
@@ -88,6 +91,10 @@ public class TweaksPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         metrics.shutdown();
+    }
+
+    private void registerMessageChannel() {
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     private void registerListeners() {
@@ -121,6 +128,8 @@ public class TweaksPlugin extends JavaPlugin {
 
         // Server
         registerCommand(new BroadcastCommand(this));
+        if (isLobbyCommandEnabled())
+            registerCommand(new LobbyCommand(this));
 
         // Item
         registerCommand(new HeadCommand(this));
@@ -140,6 +149,10 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new SmithingTableCommand());
         registerCommand(new StonecutterCommand());
         registerCommand(new WorkbenchCommand());
+    }
+
+    private boolean isLobbyCommandEnabled() {
+        return config().serverConfig().enableLobbyCommand();
     }
 
     private void registerCommand(CommandExecutor executor) {
