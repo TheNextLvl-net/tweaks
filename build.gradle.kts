@@ -5,12 +5,12 @@ plugins {
     id("java")
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("net.minecrell.plugin-yml.paper") version "0.6.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.papermc.hangar-publish-plugin") version "0.1.0"
 }
 
 group = "net.thenextlvl"
-version = "2.0.2"
+version = "2.0.3"
 
 repositories {
     mavenCentral()
@@ -21,16 +21,16 @@ repositories {
 
 dependencies {
     compileOnly("net.luckperms:api:5.4")
-    compileOnly("org.projectlombok:lombok:1.18.26")
+    compileOnly("org.projectlombok:lombok:1.18.28")
     compileOnly("net.thenextlvl.core:annotations:2.0.0")
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
 
     implementation("net.thenextlvl.core:nbt:1.3.5")
-    implementation("net.thenextlvl.core:api:4.0.1")
-    implementation("net.thenextlvl.core:i18n:1.0.6")
+    implementation("net.thenextlvl.core:api:4.0.2")
+    implementation("net.thenextlvl.core:i18n:1.0.8")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
-    annotationProcessor("org.projectlombok:lombok:1.18.26")
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
@@ -44,7 +44,7 @@ tasks {
         relocate("org.bstats", "net.thenextlvl.tweaks.bstats")
     }
     runServer {
-        minecraftVersion("1.20.1")
+        minecraftVersion("1.20.2")
     }
 }
 
