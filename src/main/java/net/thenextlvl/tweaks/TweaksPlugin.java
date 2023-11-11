@@ -3,6 +3,7 @@ package net.thenextlvl.tweaks;
 import core.annotation.FieldsAreNotNullByDefault;
 import core.api.file.format.GsonFile;
 import core.i18n.file.ComponentBundle;
+import core.paper.messenger.PluginMessenger;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -83,7 +84,6 @@ public class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        registerMessageChannel();
         registerListeners();
         registerCommands();
     }
@@ -91,10 +91,6 @@ public class TweaksPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         metrics.shutdown();
-    }
-
-    private void registerMessageChannel() {
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     private void registerListeners() {
@@ -129,7 +125,7 @@ public class TweaksPlugin extends JavaPlugin {
         // Server
         registerCommand(new BroadcastCommand(this));
         if (isLobbyCommandEnabled())
-            registerCommand(new LobbyCommand(this));
+            registerCommand(new LobbyCommand(this, new PluginMessenger(this)));
 
         // Item
         registerCommand(new HeadCommand(this));
