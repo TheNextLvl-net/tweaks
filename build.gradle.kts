@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "2.0.4"
+version = "2.0.5"
 
 repositories {
     mavenCentral()
@@ -22,12 +22,12 @@ repositories {
 dependencies {
     compileOnly("net.luckperms:api:5.4")
     compileOnly("org.projectlombok:lombok:1.18.28")
-    compileOnly("net.thenextlvl.core:annotations:2.0.0")
-    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnly("net.thenextlvl.core:annotations:2.0.1")
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
-    implementation("net.thenextlvl.core:nbt:1.3.5")
-    implementation("net.thenextlvl.core:api:4.0.2")
-    implementation("net.thenextlvl.core:i18n:1.0.8")
+    implementation("net.thenextlvl.core:nbt:1.3.9")
+    implementation("net.thenextlvl.core:files:1.0.1")
+    implementation("net.thenextlvl.core:i18n:1.0.12")
     implementation("net.thenextlvl.core:paper:1.2.3")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
@@ -45,7 +45,7 @@ tasks {
         relocate("org.bstats", "net.thenextlvl.tweaks.bstats")
     }
     runServer {
-        minecraftVersion("1.20.2")
+        minecraftVersion("1.20.4")
     }
 }
 
