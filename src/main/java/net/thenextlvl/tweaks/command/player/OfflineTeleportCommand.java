@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.player;
 
 import com.google.gson.annotations.SerializedName;
+import core.io.IO;
 import core.nbt.file.NBTFile;
 import core.nbt.snbt.SNBT;
 import core.nbt.snbt.SNBTBuilder;
@@ -37,7 +38,6 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 public class OfflineTeleportCommand implements TabExecutor {
     private final TweaksPlugin plugin;
     private final SNBT snbt = new SNBTBuilder()
-            .enableComplexMapKeySerialization()
             .create();
 
     @Override
@@ -130,8 +130,8 @@ public class OfflineTeleportCommand implements TabExecutor {
 
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
         var worldFolder = Bukkit.getWorlds().get(0).getWorldFolder();
-        var file = new File(new File(worldFolder, "playerdata"), player.getUniqueId() + ".dat");
-        return file.exists() ? new NBTFile<>(file, new CompoundTag()) : null;
+        var io = IO.of(new File(worldFolder, "playerdata"), player.getUniqueId() + ".dat");
+        return io.exists() ? new NBTFile<>(io, new CompoundTag()) : null;
     }
 
     @Override

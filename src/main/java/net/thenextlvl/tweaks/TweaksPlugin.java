@@ -1,8 +1,9 @@
 package net.thenextlvl.tweaks;
 
 import core.annotation.FieldsAreNotNullByDefault;
-import core.api.file.format.GsonFile;
+import core.file.format.GsonFile;
 import core.i18n.file.ComponentBundle;
+import core.io.IO;
 import core.paper.messenger.PluginMessenger;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -40,7 +41,7 @@ public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
 
     private final TweaksConfig config = new GsonFile<>(
-            new File(getDataFolder(), "config.json"),
+            IO.of(getDataFolder(), "config.json"),
             new TweaksConfig(
                     new GeneralConfig(5, (byte) -1, false, false, false, true),
                     new InventoryConfig(
