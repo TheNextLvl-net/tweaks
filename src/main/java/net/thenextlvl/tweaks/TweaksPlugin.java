@@ -95,7 +95,9 @@ public class TweaksPlugin extends JavaPlugin {
 
     private void registerCommands() {
         registerCommand(new DayCommand(this));
+        registerCommand(new NoonCommand(this));
         registerCommand(new NightCommand(this));
+        registerCommand(new MidnightCommand(this));
         registerCommand(new RainCommand(this));
         registerCommand(new SunCommand(this));
         registerCommand(new ThunderCommand(this));
