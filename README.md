@@ -114,9 +114,9 @@ To insert a tag just use `<tag>`
 
 | Tag             | Description                                                                                | Requires  |
 |-----------------|--------------------------------------------------------------------------------------------|-----------|
-| prefix          | the prefix of the sender                                                                   | LuckPerms |
-| suffix          | the suffix of the sender                                                                   | LuckPerms |
-| group           | the group of the sender                                                                    | LuckPerms |
+| player_prefix   | the prefix of the sender                                                                   | LuckPerms |
+| player_suffix   | the suffix of the sender                                                                   | LuckPerms |
+| player_group    | the group of the sender                                                                    | LuckPerms |
 | signature       | the message signature                                                                      |           |
 | delete          | a clickable component to delete a certain message<br/>(requires the signature as argument) |           |
 | display_name    | the display name of the sender                                                             |           |

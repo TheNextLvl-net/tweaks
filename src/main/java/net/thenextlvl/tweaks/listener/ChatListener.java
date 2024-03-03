@@ -47,17 +47,16 @@ public class ChatListener implements Listener {
     }
 
     private TagResolver.Builder luckResolvers(Player player) {
-        if (!luckperms) return TagResolver.builder();
-        var user = LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player);
-        var group = LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup());
-        var meta = user.getCachedData().getMetaData(user.getQueryOptions());
+        var user = luckperms ? LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player) : null;
+        var group = user != null ? LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup()) : null;
+        var meta = user != null ? user.getCachedData().getMetaData(user.getQueryOptions()) : null;
         var groupName = group != null ? group.getDisplayName() != null ? group.getDisplayName() : group.getName() : "";
-        var prefix = meta.getPrefix() != null ? meta.getPrefix() : "";
-        var suffix = meta.getSuffix() != null ? meta.getSuffix() : "";
+        var prefix = meta != null && meta.getPrefix() != null ? meta.getPrefix() : "";
+        var suffix = meta != null && meta.getSuffix() != null ? meta.getSuffix() : "";
         return TagResolver.builder().resolvers(
-                TagResolver.resolver("group", Tag.preProcessParsed(groupName)),
-                TagResolver.resolver("prefix", Tag.preProcessParsed(prefix)),
-                TagResolver.resolver("suffix", Tag.preProcessParsed(suffix))
+                TagResolver.resolver("player_group", Tag.preProcessParsed(groupName)),
+                TagResolver.resolver("player_prefix", Tag.preProcessParsed(prefix)),
+                TagResolver.resolver("player_suffix", Tag.preProcessParsed(suffix))
         );
     }
 
@@ -65,8 +64,9 @@ public class ChatListener implements Listener {
         var empty = Tag.selfClosingInserting(Component.empty());
         if (!(audience instanceof Player viewer)) return empty;
         if (!canDelete(viewer, sender)) return empty;
+        var format = plugin.bundle().format(viewer.locale(), "chat.format.delete");
         return Tag.selfClosingInserting(MiniMessage.miniMessage()
-                .deserialize(plugin.bundle().format(viewer.locale(), "chat.format.delete"))
+                .deserialize(format != null ? format : "")
                 .clickEvent(ClickEvent.callback(ignored -> {
                     if (canDelete(viewer, sender)) Bukkit.getOnlinePlayers()
                             .forEach(all -> all.deleteMessage(signedMessage));
