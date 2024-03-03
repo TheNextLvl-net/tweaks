@@ -63,7 +63,7 @@ public class SpeedCommand implements TabExecutor {
         plugin.bundle().sendMessage(sender, messageSelf, Placeholder.parsed("speed", String.valueOf(speed)));
         if (target != sender) plugin.bundle().sendMessage(sender, messageOthers,
                     Placeholder.parsed("speed", String.valueOf(speed)),
-                    Placeholder.component("player", target.name()));
+                    Placeholder.parsed("player", target.getName()));
         return true;
     }
 

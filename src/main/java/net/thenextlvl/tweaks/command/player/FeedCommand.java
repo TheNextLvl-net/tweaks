@@ -32,7 +32,7 @@ public class FeedCommand extends PlayerCommand {
         target.playSound(target, Sound.ENTITY_PLAYER_BURP, SoundCategory.VOICE, 1f, 1f);
         plugin.bundle().sendMessage(sender, "hunger.satisfied.self");
         if (!target.equals(sender)) plugin.bundle().sendMessage(sender, "hunger.satisfied.others",
-                Placeholder.component("player", target.name()));
+                Placeholder.parsed("player", target.getName()));
     }
 
     @Override

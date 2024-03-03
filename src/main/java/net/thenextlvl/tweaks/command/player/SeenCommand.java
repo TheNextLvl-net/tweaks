@@ -40,7 +40,7 @@ public class SeenCommand implements TabExecutor {
     private boolean lastSeenOnline(CommandSender sender, String[] args) {
         var target = Bukkit.getPlayer(args[0]);
         if (target == null) return false;
-        plugin.bundle().sendMessage(sender, "last.seen.now", Placeholder.component("player", target.name()));
+        plugin.bundle().sendMessage(sender, "last.seen.now", Placeholder.parsed("player", target.getName()));
         return true;
     }
 

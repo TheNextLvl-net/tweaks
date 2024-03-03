@@ -20,7 +20,7 @@ public class ConnectionListener implements Listener {
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
         if (!plugin.config().generalConfig().overrideJoinMessage()) return;
         Bukkit.getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.joined",
-                Placeholder.component("player", event.getPlayer().name())));
+                Placeholder.parsed("player", event.getPlayer().getName())));
         event.joinMessage(null);
     }
 
@@ -28,7 +28,7 @@ public class ConnectionListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         if (!plugin.config().generalConfig().overrideQuitMessage()) return;
         Bukkit.getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.left",
-                Placeholder.component("player", event.getPlayer().name())));
+                Placeholder.parsed("player", event.getPlayer().getName())));
         event.quitMessage(null);
     }
 }

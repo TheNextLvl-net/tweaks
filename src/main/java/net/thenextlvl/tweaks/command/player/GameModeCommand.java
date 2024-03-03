@@ -64,7 +64,7 @@ public class GameModeCommand implements TabExecutor {
 
         if (target != sender) plugin.bundle().sendMessage(sender, "gamemode.changed.others",
                 Placeholder.component("gamemode", Component.translatable(gamemode)),
-                Placeholder.component("player", target.name()));
+                Placeholder.parsed("player", target.getName()));
         return true;
     }
 

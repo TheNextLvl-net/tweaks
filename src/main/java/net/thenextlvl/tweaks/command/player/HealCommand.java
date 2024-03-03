@@ -37,7 +37,7 @@ public class HealCommand extends PlayerCommand {
 
         plugin.bundle().sendMessage(sender, "health.restored.self");
         if (player != sender) plugin.bundle().sendMessage(sender, "health.restored.others",
-                Placeholder.component("player", player.name()));
+                Placeholder.parsed("player", player.getName()));
     }
 
     @Override

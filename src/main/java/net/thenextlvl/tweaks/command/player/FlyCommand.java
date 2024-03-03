@@ -29,7 +29,7 @@ public class FlyCommand extends PlayerCommand {
 
         plugin.bundle().sendMessage(player, messageSelf);
         if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,
-                Placeholder.component("player", player.name()));
+                Placeholder.parsed("player", player.getName()));
     }
 
     @Override
