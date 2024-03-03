@@ -45,7 +45,12 @@ public class SeenCommand implements TabExecutor {
         Bukkit.getAsyncScheduler().runNow(plugin, task -> {
 
             var target = Bukkit.getOfflinePlayer(args[0]);
-            if (!target.hasPlayedBefore()) throw new PlayerNotFoundException(args[0]);
+            if (!target.hasPlayedBefore()) {
+                new PlayerNotFoundException(
+                        target.getName() != null ? target.getName() : args[0]
+                ).handle(sender);
+                return;
+            }
 
             var lastSeen = new Date(target.getLastSeen());
             var locale = sender instanceof Player player ? player.locale() : Locale.US;
