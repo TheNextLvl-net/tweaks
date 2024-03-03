@@ -9,21 +9,21 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 @CommandInfo(
-        name = "night",
-        permission = "tweaks.command.night",
-        description = "set the time to night",
+        name = "midnight",
+        permission = "tweaks.command.midnight",
+        description = "set the time to midnight",
         usage = "/<command> (world)"
 )
 @RequiredArgsConstructor
-public class NightCommand extends WorldCommand {
+public class MidnightCommand extends WorldCommand {
 
     private final TweaksPlugin plugin;
 
     @Override
     protected void execute(CommandSender sender, World world) {
         Bukkit.getGlobalRegionScheduler().run(plugin, task -> {
-            world.setTime(13000);
-            plugin.bundle().sendMessage(sender, "time.night", Placeholder.parsed("world", world.getName()));
+            world.setTime(18000);
+            plugin.bundle().sendMessage(sender, "time.midnight", Placeholder.parsed("world", world.getName()));
         });
     }
 

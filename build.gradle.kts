@@ -74,7 +74,9 @@ paper {
         register("tweaks.commands.environmental") {
             this.children = listOf(
                 "tweaks.command.day",
+                "tweaks.command.noon",
                 "tweaks.command.night",
+                "tweaks.command.midnight",
                 "tweaks.command.rain",
                 "tweaks.command.sun",
                 "tweaks.command.thunder"

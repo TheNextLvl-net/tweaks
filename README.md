@@ -15,13 +15,15 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 
 ## Environmental commands
 
-| Command          | Description           | Permission             |
-|------------------|-----------------------|------------------------|
-| /day (world)     | set the time to day   | tweaks.command.day     |
-| /night (world)   | set the time to night | tweaks.command.night   |
-| /rain (world)    | let it rain           | tweaks.command.rain    |
-| /sun (world)     | let the sun shine     | tweaks.command.sun     |
-| /thunder (world) | let it thunder        | tweaks.command.thunder |
+| Command           | Description              | Permission              |
+|-------------------|--------------------------|-------------------------|
+| /day (world)      | set the time to day      | tweaks.command.day      |
+| /noon (world)     | set the time to noon     | tweaks.command.noon     |
+| /night (world)    | set the time to night    | tweaks.command.night    |
+| /midnight (world) | set the time to midnight | tweaks.command.midnight |
+| /rain (world)     | let it rain              | tweaks.command.rain     |
+| /sun (world)      | let the sun shine        | tweaks.command.sun      |
+| /thunder (world)  | let it thunder           | tweaks.command.thunder  |
 
 The perm-pack to grant all permissions: `tweaks.commands.environmental`
 
