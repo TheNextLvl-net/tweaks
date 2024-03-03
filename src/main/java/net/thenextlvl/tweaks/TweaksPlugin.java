@@ -57,15 +57,7 @@ public class TweaksPlugin extends JavaPlugin {
                     new VanillaTweaks(0, 0, 0, false),
                     new ServerConfig(true, "lobby")
             )
-    ) {{
-        if (getRoot().generalConfig() == null)
-            getLogger().severe("Your general-config-section is malformed");
-        if (getRoot().inventoryConfig() == null)
-            getLogger().severe("Your inventory-config-section is malformed");
-        if (getRoot().vanillaTweaks() == null)
-            getLogger().severe("Your vanilla-tweaks-section is malformed");
-        if (!getFile().exists()) save();
-    }}.getRoot();
+    ).validate().save().getRoot();
     private final File translations = new File(getDataFolder(), "translations");
     private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
             audience instanceof Player player ? player.locale() : Locale.US)
