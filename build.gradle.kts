@@ -3,10 +3,10 @@ import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 plugins {
     id("java")
-    id("xyz.jpenilla.run-paper") version "2.0.1"
+    id("xyz.jpenilla.run-paper") version "2.2.3"
     id("net.minecrell.plugin-yml.paper") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.papermc.hangar-publish-plugin") version "0.1.0"
+    id("io.papermc.hangar-publish-plugin") version "0.1.2"
 }
 
 group = "net.thenextlvl"
@@ -21,17 +21,17 @@ repositories {
 
 dependencies {
     compileOnly("net.luckperms:api:5.4")
-    compileOnly("org.projectlombok:lombok:1.18.28")
+    compileOnly("org.projectlombok:lombok:1.18.30")
     compileOnly("net.thenextlvl.core:annotations:2.0.1")
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
     implementation("net.thenextlvl.core:nbt:1.3.9")
-    implementation("net.thenextlvl.core:files:1.0.1")
-    implementation("net.thenextlvl.core:i18n:1.0.12")
+    implementation("net.thenextlvl.core:files:1.0.3")
+    implementation("net.thenextlvl.core:i18n:1.0.13")
     implementation("net.thenextlvl.core:paper:1.2.3")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
-    annotationProcessor("org.projectlombok:lombok:1.18.28")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
@@ -50,8 +50,8 @@ tasks {
 }
 
 java {
-    targetCompatibility = JavaVersion.VERSION_17
-    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_19
+    sourceCompatibility = JavaVersion.VERSION_19
 }
 
 paper {
