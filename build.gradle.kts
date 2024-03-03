@@ -176,7 +176,7 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
                     .map { it.trim() }
                 platformVersions.set(versions)
                 dependencies {
-                    url("Luckperms", "https://luckperms.net/") {
+                    url("LuckPerms", "https://luckperms.net/") {
                         required.set(false)
                     }
                 }
