@@ -35,7 +35,7 @@ public class HealCommand extends PlayerCommand {
         player.setRemainingAir(player.getMaximumAir());
         player.setFreezeTicks(0);
 
-        plugin.bundle().sendMessage(sender, "health.restored.self");
+        plugin.bundle().sendMessage(player, "health.restored.self");
         if (player != sender) plugin.bundle().sendMessage(sender, "health.restored.others",
                 Placeholder.parsed("player", player.getName()));
     }
