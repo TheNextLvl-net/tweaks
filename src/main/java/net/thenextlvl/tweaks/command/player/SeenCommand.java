@@ -13,10 +13,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.text.DateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @CommandInfo(
         name = "seen",
@@ -62,6 +59,9 @@ public class SeenCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        return args.length == 1 ? Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).toList() : null;
+        return args.length == 1 ? Arrays.stream(Bukkit.getOfflinePlayers())
+                .map(OfflinePlayer::getName)
+                .filter(Objects::nonNull)
+                .toList() : null;
     }
 }

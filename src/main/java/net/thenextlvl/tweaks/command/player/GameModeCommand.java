@@ -32,7 +32,7 @@ public class GameModeCommand implements TabExecutor {
     private final TweaksPlugin plugin;
 
     @Override
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("UnstableApiUsage")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) return false;
 
