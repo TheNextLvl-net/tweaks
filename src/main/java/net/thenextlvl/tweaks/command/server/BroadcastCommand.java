@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +30,6 @@ public class BroadcastCommand implements TabExecutor {
 
         if (args.length == 0) return false;
 
-        var tweaksConfig = plugin.config();
-
         var message = String.join(" ", args).replace("\\t", "   ");
 
         var receivers = new ArrayList<Audience>(Bukkit.getOnlinePlayers());
@@ -46,13 +45,10 @@ public class BroadcastCommand implements TabExecutor {
         return true;
     }
 
-    private String format(String format, String message) {
-        String[] split = message.split("\\\\n");
-
-        for (int i = 0; i < split.length; i++) {
-            split[i] = format.replace("<message>", split[i]);
-        }
-
+    private String format(@Nullable String format, String message) {
+        if (format == null) return message.replace("\\\\n", "\n");
+        var split = message.split("\\\\n");
+        for (int i = 0; i < split.length; i++) split[i] = format.replace("<message>", split[i]);
         return String.join("\n", split);
     }
 
