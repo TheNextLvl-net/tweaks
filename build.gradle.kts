@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "2.0.7"
+version = "2.0.8"
 
 repositories {
     mavenCentral()
@@ -112,7 +112,8 @@ paper {
         }
         register("tweaks.commands.server") {
             this.children = listOf(
-                "tweaks.command.broadcast"
+                "tweaks.command.broadcast",
+                "tweaks.command.motd"
             )
         }
         register("tweaks.commands.workstation") {

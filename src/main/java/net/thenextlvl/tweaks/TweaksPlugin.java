@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks;
 
 import core.annotation.FieldsAreNotNullByDefault;
+import core.file.FileIO;
 import core.file.format.GsonFile;
 import core.i18n.file.ComponentBundle;
 import core.io.IO;
@@ -17,6 +18,7 @@ import net.thenextlvl.tweaks.command.item.*;
 import net.thenextlvl.tweaks.command.player.*;
 import net.thenextlvl.tweaks.command.server.BroadcastCommand;
 import net.thenextlvl.tweaks.command.server.LobbyCommand;
+import net.thenextlvl.tweaks.command.server.MotdCommand;
 import net.thenextlvl.tweaks.command.workstation.*;
 import net.thenextlvl.tweaks.config.*;
 import net.thenextlvl.tweaks.listener.ChatListener;
@@ -40,7 +42,7 @@ import java.util.Locale;
 public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
 
-    private final TweaksConfig config = new GsonFile<>(
+    private final FileIO<TweaksConfig> configFile = new GsonFile<>(
             IO.of(getDataFolder(), "config.json"),
             new TweaksConfig(
                     new GeneralConfig(5, (byte) -1, false, false, false, true),
@@ -55,9 +57,9 @@ public class TweaksPlugin extends JavaPlugin {
                             20
                     ),
                     new VanillaTweaks(0, 0, 0, false),
-                    new ServerConfig(true, "lobby")
+                    new ServerConfig(true, "lobby", null)
             )
-    ).validate().save().getRoot();
+    ).validate().save();
     private final File translations = new File(getDataFolder(), "translations");
     private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
             audience instanceof Player player ? player.locale() : Locale.US)
@@ -73,6 +75,8 @@ public class TweaksPlugin extends JavaPlugin {
                         .resolver(Placeholder.component("prefix", bundle.component(Locale.US, "prefix")))
                         .build())
                 .build());
+        var motd = config().serverConfig().motd();
+        if (motd != null) Bukkit.motd(MiniMessage.miniMessage().deserialize(motd));
     }
 
     @Override
@@ -121,6 +125,7 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new BroadcastCommand(this));
         if (isLobbyCommandEnabled())
             registerCommand(new LobbyCommand(this, new PluginMessenger(this)));
+        registerCommand(new MotdCommand(this));
 
         // Item
         registerCommand(new HeadCommand(this));
@@ -156,6 +161,10 @@ public class TweaksPlugin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public TweaksConfig config() {
+        return configFile().getRoot();
     }
 
     public static TweaksPlugin get() {

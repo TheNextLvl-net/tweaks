@@ -63,10 +63,11 @@ The perm-pack to grant all permissions: `tweaks.commands.player`
 
 ### Server commands
 
-| Command              | Description          | Permission               |
-|----------------------|----------------------|--------------------------|
-| /broadcast [message] | broadcast a message  | tweaks.command.broadcast |
-| /lobby               | connect to the lobby |                          |
+| Command              | Description                   | Permission               |
+|----------------------|-------------------------------|--------------------------|
+| /broadcast [message] | broadcast a message           | tweaks.command.broadcast |
+| /lobby               | connect to the lobby          |                          |
+| /motd [message]      | change the motd of the server | tweaks.command.motd      |
 
 The perm-pack to grant all permissions: `tweaks.commands.server`
 
