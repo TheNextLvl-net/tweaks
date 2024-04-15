@@ -1,20 +1,17 @@
 package net.thenextlvl.tweaks.command.player;
 
-import com.google.gson.annotations.SerializedName;
 import core.io.IO;
 import core.nbt.file.NBTFile;
-import core.nbt.snbt.SNBT;
-import core.nbt.snbt.SNBTBuilder;
 import core.nbt.tag.CompoundTag;
+import core.nbt.tag.DoubleTag;
+import core.nbt.tag.FloatTag;
+import core.nbt.tag.ListTag;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -25,6 +22,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
@@ -37,8 +35,6 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 @RequiredArgsConstructor
 public class OfflineTeleportCommand implements TabExecutor {
     private final TweaksPlugin plugin;
-    private final SNBT snbt = new SNBTBuilder()
-            .create();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -61,7 +57,7 @@ public class OfflineTeleportCommand implements TabExecutor {
                         Placeholder.parsed("target", String.valueOf(target.getName())));
             } else plugin.bundle().sendMessage(player, "offline.teleport.location",
                     Placeholder.parsed("player", String.valueOf(source.getName())));
-        }, "otp-thread").start();
+        }, "tpo-thread").start();
         return true;
     }
 
@@ -80,57 +76,62 @@ public class OfflineTeleportCommand implements TabExecutor {
     private boolean setLocation(OfflinePlayer player, Location location) {
         var file = getNBTFile(player);
         if (file == null) return false;
-        file.getRoot().addAll(snbt
-                .toTag(LocationData.of(location))
-                .getAsCompound());
+        file.getRoot().addAll(toTag(location));
         file.save();
         return true;
     }
 
-    private record LocationData(
-            @SerializedName("WorldUUIDLeast") long worldUuidLeast,
-            @SerializedName("WorldUUIDMost") long worldUuidMost,
-            @SerializedName("Dimension") String dimension,
-            @SerializedName("Pos") double[] position,
-            @SerializedName("Rotation") float[] rotation
-    ) {
-        public static LocationData of(Location location) {
-            return new LocationData(
-                    location.getWorld().getUID().getLeastSignificantBits(),
-                    location.getWorld().getUID().getMostSignificantBits(),
-                    location.getWorld().getKey().toString(),
-                    new double[]{location.getX(), location.getY(), location.getZ()},
-                    new float[]{location.getYaw(), location.getPitch()}
-            );
-        }
+    private Location fromTag(CompoundTag tag) {
+        var world = getWorld(tag);
+        var pos = tag.<DoubleTag>getAsList("Pos");
+        var z = pos.get(2).getAsDouble();
+        var y = pos.get(1).getAsDouble();
+        var x = pos.get(0).getAsDouble();
+        var rotation = tag.<FloatTag>getAsList("Rotation");
+        var yaw = rotation.get(0).getAsFloat();
+        var pitch = rotation.get(1).getAsFloat();
+        return new Location(world, x, y, z, yaw, pitch);
+    }
 
-        public @Nullable Location toLocation() {
-            if (position().length != 3 || rotation().length != 2) return null;
-            var key = NamespacedKey.fromString(dimension());
-            if (key == null) return null;
-            var world = Bukkit.getWorld(key);
-            if (world == null) return null;
-            return new Location(world,
-                    position()[0],
-                    position()[1],
-                    position()[2],
-                    rotation()[0],
-                    rotation()[1]
-            );
-        }
+    private @Nullable World getWorld(CompoundTag tag) {
+        var uuidLeast = tag.get("WorldUUIDLeast").getAsLong();
+        var uuidMost = tag.get("WorldUUIDMost").getAsLong();
+        var world = Bukkit.getWorld(new UUID(uuidLeast, uuidMost));
+        if (world != null) return world;
+        var dimension = tag.get("Dimension").getAsString();
+        var key = NamespacedKey.fromString(dimension);
+        return key != null ? Bukkit.getWorld(key) : null;
+    }
+
+    private CompoundTag toTag(Location location) {
+        var pos = new ListTag<>(DoubleTag.ID);
+        pos.add(new DoubleTag(location.getX()));
+        pos.add(new DoubleTag(location.getY()));
+        pos.add(new DoubleTag(location.getZ()));
+
+        var rotation = new ListTag<>(FloatTag.ID);
+        rotation.add(new FloatTag(location.getYaw()));
+        rotation.add(new FloatTag(location.getPitch()));
+
+        var tag = new CompoundTag();
+        tag.add("WorldUUIDLeast", location.getWorld().getUID().getLeastSignificantBits());
+        tag.add("WorldUUIDMost", location.getWorld().getUID().getMostSignificantBits());
+        tag.add("Dimension", location.getWorld().getKey().toString());
+        tag.add("Pos", pos);
+        tag.add("Rotation", rotation);
+        return tag;
     }
 
     private @Nullable Location getLocation(OfflinePlayer player) {
         var online = player.getPlayer();
         if (online != null) return online.getLocation();
         var file = getNBTFile(player);
-        if (file == null) return null;
-        return snbt.fromTag(file.getRoot(), LocationData.class).toLocation();
+        return file != null ? fromTag(file.getRoot()) : null;
     }
 
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
-        var worldFolder = Bukkit.getWorlds().get(0).getWorldFolder();
-        var io = IO.of(new File(worldFolder, "playerdata"), player.getUniqueId() + ".dat");
+        var data = new File(Bukkit.getWorlds().get(0).getWorldFolder(), "playerdata");
+        var io = IO.of(data, player.getUniqueId() + ".dat");
         return io.exists() ? new NBTFile<>(io, new CompoundTag()) : null;
     }
 
