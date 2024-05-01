@@ -6,6 +6,7 @@ import core.nbt.tag.CompoundTag;
 import core.nbt.tag.DoubleTag;
 import core.nbt.tag.FloatTag;
 import core.nbt.tag.ListTag;
+import core.nbt.tag.Tag;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -94,13 +95,19 @@ public class OfflineTeleportCommand implements TabExecutor {
     }
 
     private @Nullable World getWorld(CompoundTag tag) {
-        var uuidLeast = tag.get("WorldUUIDLeast").getAsLong();
-        var uuidMost = tag.get("WorldUUIDMost").getAsLong();
-        var world = Bukkit.getWorld(new UUID(uuidLeast, uuidMost));
+        var uuidLeast = tag.optional("WorldUUIDLeast").map(Tag::getAsLong);
+        if (uuidLeast.isEmpty()) return null;
+
+        var uuidMost = tag.optional("WorldUUIDMost").map(Tag::getAsLong);
+        if (uuidMost.isEmpty()) return null;
+
+        var world = Bukkit.getWorld(new UUID(uuidLeast.get(), uuidMost.get()));
         if (world != null) return world;
-        var dimension = tag.get("Dimension").getAsString();
-        var key = NamespacedKey.fromString(dimension);
-        return key != null ? Bukkit.getWorld(key) : null;
+
+        var dimension = tag.optional("Dimension").map(Tag::getAsString);
+
+        var key = dimension.map(NamespacedKey::fromString);
+        return key.map(Bukkit::getWorld).orElse(null);
     }
 
     private CompoundTag toTag(Location location) {
