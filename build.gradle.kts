@@ -58,6 +58,7 @@ java {
 paper {
     name = "Tweaks"
     main = "net.thenextlvl.tweaks.TweaksPlugin"
+    description = "A useful command collection"
     apiVersion = "1.20"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
