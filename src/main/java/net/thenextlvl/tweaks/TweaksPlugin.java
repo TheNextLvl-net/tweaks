@@ -43,23 +43,21 @@ public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
 
     private final FileIO<TweaksConfig> configFile = new GsonFile<>(
-            IO.of(getDataFolder(), "config.json"),
-            new TweaksConfig(
-                    new GeneralConfig(5, (byte) -1, false, false, false, true),
-                    new InventoryConfig(
-                            new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),
-                            new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aChestplate"),
-                            new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aLeggings"),
-                            new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aBoots"),
-                            new ConfigItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "§8» §bOff Hand"),
-                            new ConfigItem(Material.CYAN_STAINED_GLASS_PANE, "§8» §3Cursor"),
-                            new ConfigItem(Material.IRON_BARS, "§7-§8/§7-"),
-                            20
-                    ),
-                    new VanillaTweaks(0, 0, 0, false),
-                    new ServerConfig(true, "lobby", null)
-            )
-    ).validate().save();
+            IO.of(getDataFolder(), "config.json"), new TweaksConfig(
+            new GeneralConfig(5, (byte) -1, false, false, false, true),
+            new InventoryConfig(
+                    new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aHelmet"),
+                    new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aChestplate"),
+                    new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aLeggings"),
+                    new ConfigItem(Material.LIME_STAINED_GLASS_PANE, "§8» §aBoots"),
+                    new ConfigItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "§8» §bOff Hand"),
+                    new ConfigItem(Material.CYAN_STAINED_GLASS_PANE, "§8» §3Cursor"),
+                    new ConfigItem(Material.IRON_BARS, "§7-§8/§7-"),
+                    20
+            ),
+            new VanillaTweaks(0, 0, 0, false),
+            new ServerConfig(true, "lobby", null)
+    )).validate().save();
     private final File translations = new File(getDataFolder(), "translations");
     private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
             audience instanceof Player player ? player.locale() : Locale.US)

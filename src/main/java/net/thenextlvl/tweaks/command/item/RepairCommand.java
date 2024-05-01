@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,11 +29,14 @@ public class RepairCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
 
-        PlayerInventory inventory = player.getInventory();
+        var inventory = player.getInventory();
+
         if (args.length == 0 && !inventory.getItemInMainHand().getType().isEmpty()) {
-            inventory.setItemInMainHand(repairItem(inventory.getItemInMainHand()));
-            plugin.bundle().sendMessage(player, "item.repaired");
+            var message = repair(inventory.getItemInMainHand()) ? "item.repaired.success" : "item.repaired.fail";
+
+            plugin.bundle().sendMessage(player, message);
             return true;
+
         } else if (args.length == 0) {
             plugin.bundle().sendMessage(player, "hold.item");
             return true;
@@ -42,17 +44,8 @@ public class RepairCommand implements TabExecutor {
 
         if (args.length == 1 && args[0].equalsIgnoreCase("all")) {
 
-            @Nullable ItemStack[] contents = inventory.getContents();
-            for (int i = 0; i < contents.length; i++) {
-                contents[i] = repairItem(contents[i]);
-            }
-            inventory.setContents(contents);
+            for (var item : inventory.getContents()) repair(item);
 
-            @Nullable ItemStack[] armor = inventory.getArmorContents();
-            for (int i = 0; i < armor.length; i++) {
-                armor[i] = repairItem(armor[i]);
-            }
-            inventory.setArmorContents(armor);
             plugin.bundle().sendMessage(player, "item.repaired.all");
             return true;
         }
@@ -60,10 +53,8 @@ public class RepairCommand implements TabExecutor {
         return false;
     }
 
-    private @Nullable ItemStack repairItem(@Nullable ItemStack item) {
-        if (item == null) return null;
-        item.editMeta(Damageable.class, damageable -> damageable.setDamage(0));
-        return item;
+    private boolean repair(@Nullable ItemStack item) {
+        return item != null && item.editMeta(Damageable.class, damageable -> damageable.setDamage(0));
     }
 
     @Override

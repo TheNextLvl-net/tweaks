@@ -9,8 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -33,10 +31,9 @@ public class RenameCommand implements TabExecutor {
         if (args.length < 1)
             return false;
 
-        PlayerInventory inventory = player.getInventory();
-        ItemStack item = inventory.getItemInMainHand();
+        var item = player.getInventory().getItemInMainHand();
 
-        String name = ChatColor.translateAlternateColorCodes('&', String.join(" ", args))
+        var name = ChatColor.translateAlternateColorCodes('&', String.join(" ", args))
                 .replace("\\t", "   ");
 
         if (!item.editMeta(itemMeta -> itemMeta.setDisplayName(name))) {
@@ -44,7 +41,6 @@ public class RenameCommand implements TabExecutor {
             return true;
         }
 
-        inventory.setItemInMainHand(item);
         plugin.bundle().sendMessage(player, "item.rename.success");
         return true;
     }

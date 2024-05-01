@@ -34,8 +34,7 @@ public class LoreCommand implements TabExecutor {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
         if (args.length < 1) return false;
 
-        var inventory = player.getInventory();
-        var item = inventory.getItemInMainHand();
+        var item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isEmpty()) {
             plugin.bundle().sendMessage(player, "hold.item");
@@ -71,7 +70,6 @@ public class LoreCommand implements TabExecutor {
             return false;
         }
 
-        inventory.setItemInMainHand(item);
         plugin.bundle().sendMessage(player, "item.lore.success");
         return true;
     }

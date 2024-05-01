@@ -62,7 +62,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         if (!isAllowed(sender, target)) throw new PlayerNotAffectedException(target);
         var inventory = Bukkit.createInventory(target, 54, Component.text(target.getName()));
         updateInventory(inventory, target);
-        addPlaceholders(inventory, target);
+        addPlaceholders(inventory);
         player.openInventory(inventory);
 
         inventories.put(target, inventory);
@@ -84,7 +84,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         inventory.setItem(52, target.getItemOnCursor());
     }
 
-    private void addPlaceholders(Inventory inventory, HumanEntity target) {
+    private void addPlaceholders(Inventory inventory) {
         var inventoryConfig = plugin.config().inventoryConfig();
         var placeholder = inventoryConfig.placeholder().serialize();
         inventory.setItem(36, inventoryConfig.helmet().serialize());

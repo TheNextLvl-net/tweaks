@@ -1,12 +1,14 @@
 package net.thenextlvl.tweaks.util;
 
+import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
+@SuppressWarnings({"UnusedReturnValue", "unchecked"})
 public class RingBufferStack<E> {
 
-    private final Object[] array;
+    private final @Getter Object[] array;
     private int index;
 
     public RingBufferStack(int size) {
@@ -75,9 +77,5 @@ public class RingBufferStack<E> {
     @Override
     public String toString() {
         return Arrays.toString(array);
-    }
-
-    public Object[] getArray() {
-        return array;
     }
 }
