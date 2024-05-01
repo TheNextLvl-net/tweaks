@@ -1,9 +1,7 @@
 package net.thenextlvl.tweaks.command.item;
 
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
@@ -72,9 +70,8 @@ public class ItemCommand implements TabExecutor {
 
         if (added > 0) plugin.bundle().sendMessage(player, "item.received",
                 Placeholder.parsed("amount", String.valueOf(added)),
-                Placeholder.component("item", Component.translatable(stack).hoverEvent(HoverEvent.showItem(
-                        stack.getType().key(), stack.getAmount(),
-                        BinaryTagHolder.binaryTagHolder(stack.getItemMeta().getAsString())))));
+                Placeholder.component("item", Component.translatable(stack)
+                        .hoverEvent(stack.asHoverEvent(showItem -> showItem))));
         else  plugin.bundle().sendMessage(player, "inventory.full");
         return true;
     }
