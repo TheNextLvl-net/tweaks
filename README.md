@@ -11,6 +11,15 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 - Cooldown for Sheep wool growth
 - You can define a default permission level (purely client-side)
 
+## Versions
+
+> [!IMPORTANT]
+> Tweaks only supports the latest version of Paper (1.20.6)
+> The latest version of Tweaks requires Java 21
+
+[Latest version supporting 1.19-1.20.4 (Java 19)]()<br>
+[Latest version supporting 1.19-1.20.4 (Java 17)]()<br>
+
 ## Commands
 
 ## Environmental commands
