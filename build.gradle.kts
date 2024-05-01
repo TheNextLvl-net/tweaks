@@ -4,34 +4,35 @@ import net.minecrell.pluginyml.paper.PaperPluginDescription
 plugins {
     id("java")
     id("xyz.jpenilla.run-paper") version "2.2.3"
+    id("io.github.goooler.shadow") version "8.1.7"
     id("net.minecrell.plugin-yml.paper") version "0.6.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.papermc.hangar-publish-plugin") version "0.1.2"
 }
 
 group = "net.thenextlvl"
-version = "2.0.10"
+version = "2.1.0"
 
 repositories {
     mavenCentral()
     maven("https://repo.thenextlvl.net/releases")
     maven("https://repo.thenextlvl.net/snapshots")
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
     compileOnly("net.luckperms:api:5.4")
-    compileOnly("org.projectlombok:lombok:1.18.30")
+    compileOnly("org.projectlombok:lombok:1.18.32")
     compileOnly("net.thenextlvl.core:annotations:2.0.1")
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
-    implementation("net.thenextlvl.core:nbt:1.3.9")
-    implementation("net.thenextlvl.core:files:1.0.3")
-    implementation("net.thenextlvl.core:i18n:1.0.13")
-    implementation("net.thenextlvl.core:paper:1.2.3")
+    implementation("net.thenextlvl.core:nbt:1.4.1")
+    implementation("net.thenextlvl.core:files:1.0.5-pre2")
+    implementation("net.thenextlvl.core:i18n:1.0.15")
+    implementation("net.thenextlvl.core:paper:1.3.0-pre1")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
@@ -45,19 +46,19 @@ tasks {
         relocate("org.bstats", "net.thenextlvl.tweaks.bstats")
     }
     runServer {
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.20.6")
     }
 }
 
 java {
-    targetCompatibility = JavaVersion.VERSION_19
-    sourceCompatibility = JavaVersion.VERSION_19
+    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 paper {
     name = "Tweaks"
     main = "net.thenextlvl.tweaks.TweaksPlugin"
-    apiVersion = "1.19"
+    apiVersion = "1.20"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
 
