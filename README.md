@@ -29,15 +29,16 @@ The perm-pack to grant all permissions: `tweaks.commands.environmental`
 
 ### Item commands
 
-| Command                            | Description                         | Alias | Permission               |
-|------------------------------------|-------------------------------------|-------|--------------------------|
-| /enchant [enchantment] (level)     | enchant your tools                  |       | tweaks.command.enchant   |
-| /head [value/player/url] (value)   | get heads or information about them | skull | tweaks.command.head      |
-| /item [item] (amount)              | gives you an item of your choice    | i     | tweaks.command.item      |
-| /lore [set/append/unset] (lore...) | change the lore of your items       |       | tweaks.command.lore      |
-| /rename [name...]                  | change the name of your items       |       | tweaks.command.rename    |
-| /repair (all)                      | repair your tools                   |       | tweaks.command.repair    |
-| /unenchant [enchantment...]        | unenchant your tools                |       | tweaks.command.unenchant |
+| Command                            | Description                         | Alias | Permission                 |
+|------------------------------------|-------------------------------------|-------|----------------------------|
+| /enchant [enchantment] (level)     | enchant your tools                  |       | tweaks.command.enchant     |
+| /head [value/player/url] (value)   | get heads or information about them | skull | tweaks.command.head        |
+| /item [item] (amount)              | gives you an item of your choice    | i     | tweaks.command.item        |
+| /lore [set/append/unset] (lore...) | change the lore of your items       |       | tweaks.command.lore        |
+| /rename [name...]                  | change the name of your items       |       | tweaks.command.rename      |
+| /repair (all)                      | repair your tools                   |       | tweaks.command.repair      |
+| /unbreakable                       | makes your item unbreakable         |       | tweaks.command.unbreakable |
+| /unenchant [enchantment...]        | unenchant your tools                |       | tweaks.command.unenchant   |
 
 The perm-pack to grant all permissions: `tweaks.commands.item`
 

@@ -129,6 +129,7 @@ public class TweaksPlugin extends JavaPlugin {
 
         // Item
         registerCommand(new HeadCommand(this));
+        registerCommand(new UnbreakableCommand(this));
         registerCommand(new UnenchantCommand(this));
         registerCommand(new RepairCommand(this));
         registerCommand(new LoreCommand(this));
