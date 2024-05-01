@@ -18,7 +18,7 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 > The latest version of Tweaks requires Java 21
 
 [Latest version supporting 1.19-1.20.4 (Java 19)](https://github.com/TheNextLvl-net/tweaks/releases/tag/v2.0.10)<br>
-[Latest version supporting 1.19-1.20.4 (Java 17)]()<br>
+[Latest version supporting 1.19-1.20.4 (Java 17)](https://github.com/TheNextLvl-net/tweaks/releases/tag/v2.0.5)<br>
 
 ## Commands
 
