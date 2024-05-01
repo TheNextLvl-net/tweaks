@@ -123,7 +123,7 @@ public class OfflineTeleportCommand implements TabExecutor {
         var tag = new CompoundTag();
         tag.add("WorldUUIDLeast", location.getWorld().getUID().getLeastSignificantBits());
         tag.add("WorldUUIDMost", location.getWorld().getUID().getMostSignificantBits());
-        tag.add("Dimension", location.getWorld().getKey().toString());
+        tag.add("Dimension", location.getWorld().key().asString());
         tag.add("Pos", pos);
         tag.add("Rotation", rotation);
         return tag;
