@@ -166,22 +166,18 @@ val isRelease: Boolean = !versionString.contains("-pre")
 hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
     publications.register("plugin") {
         id.set("Tweaks")
-        version.set(project.version as String)
+        version.set(versionString)
         channel.set(if (isRelease) "Release" else "Snapshot")
-        if (extra.has("HANGAR_API_TOKEN"))
-            apiKey.set(extra["HANGAR_API_TOKEN"] as String)
-        else apiKey.set(System.getenv("HANGAR_API_TOKEN"))
-        platforms {
-            register(Platforms.PAPER) {
-                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                val versions: List<String> = (property("paperVersion") as String)
-                    .split(",")
-                    .map { it.trim() }
-                platformVersions.set(versions)
-                dependencies {
-                    url("LuckPerms", "https://luckperms.net/") {
-                        required.set(false)
-                    }
+        apiKey.set(System.getenv("HANGAR_API_TOKEN"))
+        platforms.register(Platforms.PAPER) {
+            jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+            val versions: List<String> = (property("paperVersion") as String)
+                .split(",")
+                .map { it.trim() }
+            platformVersions.set(versions)
+            dependencies {
+                url("LuckPerms", "https://luckperms.net/") {
+                    required.set(false)
                 }
             }
         }
