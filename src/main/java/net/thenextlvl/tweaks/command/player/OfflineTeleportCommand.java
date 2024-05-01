@@ -137,7 +137,7 @@ public class OfflineTeleportCommand implements TabExecutor {
     }
 
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
-        var data = new File(Bukkit.getWorlds().get(0).getWorldFolder(), "playerdata");
+        var data = new File(Bukkit.getWorlds().getFirst().getWorldFolder(), "playerdata");
         var io = IO.of(data, player.getUniqueId() + ".dat");
         return io.exists() ? new NBTFile<>(io, new CompoundTag()) : null;
     }
