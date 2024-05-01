@@ -8,16 +8,14 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -35,18 +33,19 @@ public class EnchantCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
             throw new CommandSenderException();
+
         if (args.length < 1 || args.length > 2)
             return false;
 
-        NamespacedKey namespacedKey = NamespacedKey.fromString(args[0]);
+        var namespacedKey = NamespacedKey.fromString(args[0]);
         if (namespacedKey == null)
             return false;
-        Enchantment enchantment = Enchantment.getByKey(namespacedKey);
+
+        var enchantment = Registry.ENCHANTMENT.get(namespacedKey);
         if (enchantment == null)
             return false;
 
-        PlayerInventory inventory = player.getInventory();
-        ItemStack item = inventory.getItemInMainHand();
+        var item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isEmpty()) {
             plugin.bundle().sendMessage(player, "hold.item");
@@ -58,7 +57,7 @@ public class EnchantCommand implements TabExecutor {
             return true;
         }
 
-        int level = enchantment.getStartLevel();
+        var level = enchantment.getStartLevel();
         if (args.length == 2) try {
             level = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
@@ -67,7 +66,6 @@ public class EnchantCommand implements TabExecutor {
         level = Math.min(enchantment.getMaxLevel(), Math.max(enchantment.getStartLevel(), level));
 
         item.addEnchantment(enchantment, level);
-        inventory.setItemInMainHand(item);
         plugin.bundle().sendMessage(player, "enchantment.applied", Placeholder.component("enchantment",
                 enchantment.displayName(level).style(Style.empty())));
         return true;
@@ -77,13 +75,13 @@ public class EnchantCommand implements TabExecutor {
     public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
             return null;
-        PlayerInventory inventory = player.getInventory();
-        ItemStack item = inventory.getItemInMainHand();
+
+        var item = player.getInventory().getItemInMainHand();
         if (item.getType().isEmpty())
             return null;
 
         if (args.length == 1) {
-            return Arrays.stream(Enchantment.values())
+            return Registry.ENCHANTMENT.stream()
                     .filter(enchantment -> enchantment.canEnchantItem(item)
                             && (item.getEnchantments().keySet().stream().noneMatch(enchantment::conflictsWith)
                             || item.getEnchantments().containsKey(enchantment)))
@@ -93,9 +91,11 @@ public class EnchantCommand implements TabExecutor {
             NamespacedKey namespacedKey = NamespacedKey.fromString(args[0]);
             if (namespacedKey == null)
                 return null;
-            Enchantment enchantment = Enchantment.getByKey(namespacedKey);
+
+            Enchantment enchantment = Registry.ENCHANTMENT.get(namespacedKey);
             if (enchantment == null)
                 return null;
+
             if (enchantment.getStartLevel() == enchantment.getMaxLevel()) return null;
             return IntStream.range(enchantment.getStartLevel(), enchantment.getMaxLevel() + 1)
                     .mapToObj(Integer::toString).toList();

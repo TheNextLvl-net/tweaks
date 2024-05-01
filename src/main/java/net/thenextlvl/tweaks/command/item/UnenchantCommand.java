@@ -6,6 +6,7 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,20 +38,24 @@ public class UnenchantCommand implements TabExecutor {
         if (args.length == 0)
             return false;
 
-        PlayerInventory inventory = player.getInventory();
-        ItemStack itemInMainHand = inventory.getItemInMainHand();
+        var item = player.getInventory().getItemInMainHand();
 
-        for (String arg : args) {
-            NamespacedKey namespacedKey = NamespacedKey.fromString(arg);
-            Enchantment byKey = Enchantment.getByKey(namespacedKey);
-            if (byKey == null) {
-                plugin.bundle().sendMessage(player, "enchantment.invalid", Placeholder.parsed("enchantment", arg));
+        var enchantments = new ArrayList<Enchantment>();
+
+        for (var key : args) {
+            var namespacedKey = NamespacedKey.fromString(key);
+            var enchantment = namespacedKey != null ? Registry.ENCHANTMENT.get(namespacedKey) : null;
+
+            if (enchantment == null) {
+                plugin.bundle().sendMessage(player, "enchantment.invalid", Placeholder.parsed("enchantment", key));
                 return true;
             }
-            itemInMainHand.removeEnchantment(byKey);
+
+            enchantments.add(enchantment);
         }
 
-        inventory.setItemInMainHand(itemInMainHand);
+        enchantments.forEach(item::removeEnchantment);
+
         return true;
     }
 
