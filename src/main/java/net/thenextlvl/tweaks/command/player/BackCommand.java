@@ -4,7 +4,6 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import net.thenextlvl.tweaks.command.api.NoBackLocationException;
-import net.thenextlvl.tweaks.util.RingBufferStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -17,7 +16,10 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.*;
 
@@ -30,7 +32,7 @@ public class BackCommand implements CommandExecutor, Listener {
 
     private final String metadataKey = "tweaks-back";
     private final int defaultBufferSize;
-    private final WeakHashMap<Player, RingBufferStack<Location>> map = new WeakHashMap<>();
+    private final Map<Player, BlockingDeque<Location>> map = new WeakHashMap<>();
     private final TweaksPlugin plugin;
 
     public BackCommand(TweaksPlugin plugin) {
@@ -44,9 +46,10 @@ public class BackCommand implements CommandExecutor, Listener {
         if (!(sender instanceof Player player))
             throw new CommandSenderException();
 
-        RingBufferStack<Location> stack = map.get(player);
-        if (stack == null) throw new NoBackLocationException();
-        Location pop = stack.pop();
+        var deque = map.get(player);
+        if (deque == null) throw new NoBackLocationException();
+
+        var pop = deque.pollFirst();
         if (pop == null) throw new NoBackLocationException();
 
         player.setMetadata(metadataKey, new FixedMetadataValue(plugin, true));
@@ -63,7 +66,7 @@ public class BackCommand implements CommandExecutor, Listener {
         if (event.getCause() != PLUGIN && event.getCause() != COMMAND && event.getCause() != UNKNOWN)
             return;
 
-        Player player = event.getPlayer();
+        var player = event.getPlayer();
         if (event.getCause() == COMMAND) {
             if (!player.getMetadata(metadataKey).isEmpty()) {
                 player.removeMetadata(metadataKey, plugin);
@@ -71,28 +74,27 @@ public class BackCommand implements CommandExecutor, Listener {
             }
         }
 
-        CommandInfo annotation = getClass().getAnnotation(CommandInfo.class);
+        var annotation = getClass().getAnnotation(CommandInfo.class);
         if (!player.hasPermission(annotation.permission()))
             return;
 
-        RingBufferStack<Location> stack = map.getOrDefault(player, new RingBufferStack<>(defaultBufferSize));
-        stack.push(event.getFrom());
-        map.put(player, stack);
+        map.computeIfAbsent(player, ignored ->
+                new LinkedBlockingDeque<>(defaultBufferSize)
+        ).offerFirst(event.getFrom());
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        Player player = event.getPlayer();
+        var player = event.getPlayer();
 
         if (player.getLocation().getY() < player.getWorld().getMinHeight())
             return;
 
-        CommandInfo annotation = getClass().getAnnotation(CommandInfo.class);
+        var annotation = getClass().getAnnotation(CommandInfo.class);
         if (!player.hasPermission(annotation.permission()))
             return;
 
-        RingBufferStack<Location> stack = map.getOrDefault(player, new RingBufferStack<>(defaultBufferSize));
-        stack.push(player.getLocation());
-        map.put(player, stack);
+        var deque = map.computeIfAbsent(player, ignored -> new LinkedBlockingDeque<>(defaultBufferSize));
+        deque.offerFirst(player.getLocation());
     }
 }
