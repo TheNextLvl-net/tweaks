@@ -79,7 +79,7 @@ public class ItemCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) return Arrays.stream(Material.values())
-                .filter(material -> material.isItem() && !material.isLegacy())
+                .filter(material ->  !material.isLegacy() && material.isItem())
                 .map(material -> material.getKey().asString()).toList();
         if (args.length != 2) return null;
         if (args[1].isEmpty())
