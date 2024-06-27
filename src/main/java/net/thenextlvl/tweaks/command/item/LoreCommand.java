@@ -1,10 +1,11 @@
 package net.thenextlvl.tweaks.command.item;
 
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -29,7 +30,6 @@ public class LoreCommand implements TabExecutor {
     private final TweaksPlugin plugin;
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
         if (args.length < 1) return false;
@@ -46,11 +46,10 @@ public class LoreCommand implements TabExecutor {
             return false;
         }
 
-        String lore = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).replace("\\t", "   ");
-        String[] loreLines = lore.split("\\\\n");
-        for (int i = 0; i < loreLines.length; i++) {
-            loreLines[i] = ChatColor.translateAlternateColorCodes('&', loreLines[i]);
-        }
+        var lore = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).replace("\\t", "   ");
+        var loreLines = Arrays.stream(lore.split("\\\\n"))
+                .map(MiniMessage.miniMessage()::deserialize)
+                .toList();
 
         Consumer<? super ItemMeta> function = null;
 
@@ -78,17 +77,15 @@ public class LoreCommand implements TabExecutor {
         return meta -> meta.lore(null);
     }
 
-    @SuppressWarnings("deprecation")
-    private Consumer<? super ItemMeta> setLore(String[] lore) {
-        return itemMeta -> itemMeta.setLore(Arrays.asList(lore));
+    private Consumer<? super ItemMeta> setLore(List<Component> lore) {
+        return itemMeta -> itemMeta.lore(lore);
     }
 
-    @SuppressWarnings("deprecation")
-    private Consumer<? super ItemMeta> appendLore(String[] lore) {
+    private Consumer<? super ItemMeta> appendLore(List<Component> lore) {
         return itemMeta -> {
-            var currentLore = Objects.requireNonNullElse(itemMeta.getLore(), new ArrayList<String>());
-            currentLore.addAll(Arrays.asList(lore));
-            itemMeta.setLore(currentLore);
+            var currentLore = Objects.requireNonNullElse(itemMeta.lore(), new ArrayList<Component>());
+            currentLore.addAll(lore);
+            itemMeta.lore(currentLore);
         };
     }
 
