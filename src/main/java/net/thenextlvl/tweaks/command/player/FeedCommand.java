@@ -28,11 +28,11 @@ public class FeedCommand extends PlayerCommand {
         target.setFoodLevel(20);
     }
 
-    private void notifySatisfaction(CommandSender sender, Player target) {
-        target.playSound(target, Sound.ENTITY_PLAYER_BURP, SoundCategory.VOICE, 1f, 1f);
-        plugin.bundle().sendMessage(sender, "hunger.satisfied.self");
-        if (!target.equals(sender)) plugin.bundle().sendMessage(sender, "hunger.satisfied.others",
-                Placeholder.parsed("player", target.getName()));
+    private void notifySatisfaction(CommandSender sender, Player player) {
+        player.playSound(player, Sound.ENTITY_PLAYER_BURP, SoundCategory.VOICE, 1f, 1f);
+        plugin.bundle().sendMessage(player, "hunger.satisfied.self");
+        if (player != sender) plugin.bundle().sendMessage(sender, "hunger.satisfied.others",
+                Placeholder.parsed("player", player.getName()));
     }
 
     @Override

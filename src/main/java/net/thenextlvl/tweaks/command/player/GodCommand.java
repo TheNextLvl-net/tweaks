@@ -26,7 +26,7 @@ public class GodCommand extends PlayerCommand {
         var messageOthers = player.isInvulnerable() ? "god.active.others" : "god.inactive.others";
 
         plugin.bundle().sendMessage(player, messageSelf);
-        if (player != sender) plugin.bundle().sendMessage(player, messageOthers,
+        if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,
                 Placeholder.parsed("player", player.getName()));
     }
 
