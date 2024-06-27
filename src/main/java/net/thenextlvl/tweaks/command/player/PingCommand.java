@@ -21,7 +21,7 @@ public class PingCommand extends PlayerCommand {
 
     @Override
     protected void execute(CommandSender sender, Player player) {
-        if (sender != player) plugin.bundle().sendMessage(player, "ping.others",
+        if (sender != player) plugin.bundle().sendMessage(sender, "ping.others",
                 Placeholder.parsed("player", player.getName()),
                 Placeholder.parsed("ping", String.valueOf(player.getPing())));
         else plugin.bundle().sendMessage(player, "ping.self",
