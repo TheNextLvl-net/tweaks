@@ -3,6 +3,11 @@
 A lightweight alternative to EssentialsX without the hustle of saving user specific data<br/>
 bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20Tweaks/19651)
 
+## Download
+
+[Modrinth](https://modrinth.com/plugin/tweaks-1)<br>
+[Hangar](https://hangar.papermc.io/TheNextLvl/Tweaks)
+
 ## Features _(Configurable)_
 
 - You heal animals by feeding them
