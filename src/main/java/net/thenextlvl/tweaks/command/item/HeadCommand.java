@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.item;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonParser;
+import core.paper.item.ItemBuilder;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -20,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 
 @CommandInfo(
         name = "head",
@@ -51,7 +51,8 @@ public class HeadCommand implements TabExecutor {
                     Placeholder.parsed("full_value", value));
             else plugin.bundle().sendMessage(player, "item.head.none");
         } else {
-            player.getInventory().addItem(setValue(new ItemStack(Material.PLAYER_HEAD), args[1]));
+            var head = new ItemBuilder(Material.PLAYER_HEAD).headValue(args[1]);
+            player.getInventory().addItem(head.ensureServerConversions());
             plugin.bundle().sendMessage(player, "item.head.received");
         }
     }
@@ -64,7 +65,8 @@ public class HeadCommand implements TabExecutor {
                     Placeholder.parsed("full_url", url));
             else plugin.bundle().sendMessage(player, "item.head.none");
         } else {
-            player.getInventory().addItem(setImgURL(new ItemStack(Material.PLAYER_HEAD), args[1]));
+            var head = new ItemBuilder(Material.PLAYER_HEAD).headURL(args[1]);
+            player.getInventory().addItem(head.ensureServerConversions());
             plugin.bundle().sendMessage(player, "item.head.received");
         }
     }
@@ -76,7 +78,8 @@ public class HeadCommand implements TabExecutor {
                     Placeholder.parsed("owner", owner));
             else plugin.bundle().sendMessage(player, "item.head.none");
         } else {
-            player.getInventory().addItem(setOwner(new ItemStack(Material.PLAYER_HEAD), args[1]));
+            var head = new ItemBuilder(Material.PLAYER_HEAD).head(args[1]);
+            player.getInventory().addItem(head.ensureServerConversions());
             plugin.bundle().sendMessage(player, "item.head.received");
         }
     }
@@ -92,28 +95,6 @@ public class HeadCommand implements TabExecutor {
             for (var all : Bukkit.getOfflinePlayers()) suggestions.add(all.getName());
         }
         return suggestions;
-    }
-
-    @SuppressWarnings("deprecation")
-    private static ItemStack setValue(ItemStack item, String base64) {
-        var id = new UUID(base64.hashCode(), base64.hashCode());
-        var nbt = "{SkullOwner:{Id:\"" + id + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}";
-        return Bukkit.getUnsafe().modifyItemStack(item, nbt);
-    }
-
-    private static ItemStack setImgURL(ItemStack item, String url) {
-        var link = "https://textures.minecraft.net/texture/";
-        if (!url.startsWith(link)) url = link + url;
-        var nbt = "{\"textures\":{\"SKIN\":{\"url\":\"" + url + "\"}}}";
-        var base64 = Base64.getEncoder().encodeToString(nbt.getBytes());
-        return setValue(item, base64);
-    }
-
-    private static ItemStack setOwner(ItemStack item, String owner) {
-        if (!(item.getItemMeta() instanceof SkullMeta skull)) return item;
-        skull.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
-        item.setItemMeta(skull);
-        return item;
     }
 
     private static @Nullable String getValue(ItemStack item) {
@@ -140,7 +121,6 @@ public class HeadCommand implements TabExecutor {
                 .getAsString()
                 : null;
     }
-
 
     private @Nullable String getOwner(ItemStack item) {
         return item.getItemMeta() instanceof SkullMeta skull
