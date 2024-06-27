@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.item;
 
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
@@ -54,7 +55,11 @@ public class UnenchantCommand implements TabExecutor {
             enchantments.add(enchantment);
         }
 
-        enchantments.forEach(item::removeEnchantment);
+        enchantments.forEach(enchantment -> {
+            var message = item.removeEnchantment(enchantment) != 0 ? "enchantment.removed" : "enchantment.absent";
+            plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
+                    Component.translatable(enchantment.translationKey())));
+        });
 
         return true;
     }
