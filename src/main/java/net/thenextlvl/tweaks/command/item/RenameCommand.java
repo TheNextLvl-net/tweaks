@@ -1,10 +1,10 @@
 package net.thenextlvl.tweaks.command.item;
 
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -24,7 +24,6 @@ public class RenameCommand implements TabExecutor {
     private final TweaksPlugin plugin;
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player))
             throw new CommandSenderException();
@@ -33,10 +32,9 @@ public class RenameCommand implements TabExecutor {
 
         var item = player.getInventory().getItemInMainHand();
 
-        var name = ChatColor.translateAlternateColorCodes('&', String.join(" ", args))
-                .replace("\\t", "   ");
+        var name = MiniMessage.miniMessage().deserialize(String.join(" ", args).replace("\\t", "   "));
 
-        if (!item.editMeta(itemMeta -> itemMeta.setDisplayName(name))) {
+        if (!item.editMeta(itemMeta -> itemMeta.displayName(name))) {
             plugin.bundle().sendMessage(player, "item.rename.fail");
             return true;
         }
