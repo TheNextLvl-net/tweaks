@@ -27,10 +27,10 @@ dependencies {
     compileOnly("net.thenextlvl.core:annotations:2.0.1")
     compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
-    implementation("net.thenextlvl.core:nbt:1.4.1")
-    implementation("net.thenextlvl.core:files:1.0.5-pre2")
-    implementation("net.thenextlvl.core:i18n:1.0.15")
-    implementation("net.thenextlvl.core:paper:1.3.0-pre1")
+    implementation("net.thenextlvl.core:nbt:1.4.2")
+    implementation("net.thenextlvl.core:files:1.0.5")
+    implementation("net.thenextlvl.core:i18n:1.0.18")
+    implementation("net.thenextlvl.core:paper:1.3.5")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
     annotationProcessor("org.projectlombok:lombok:1.18.32")

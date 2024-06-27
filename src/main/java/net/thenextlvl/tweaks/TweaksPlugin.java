@@ -63,16 +63,13 @@ public class TweaksPlugin extends JavaPlugin {
             audience instanceof Player player ? player.locale() : Locale.US)
             .register("tweaks", Locale.US)
             .register("tweaks_german", Locale.GERMANY)
-            .fallback(Locale.US);
+            .miniMessage(bundle -> MiniMessage.builder().tags(TagResolver.resolver(
+                    TagResolver.standard(),
+                    Placeholder.component("prefix", bundle.component(Locale.US, "prefix"))
+            )).build());
 
     @Override
     public void onLoad() {
-        bundle().miniMessage(MiniMessage.builder()
-                .tags(TagResolver.builder()
-                        .resolvers(TagResolver.standard())
-                        .resolver(Placeholder.component("prefix", bundle.component(Locale.US, "prefix")))
-                        .build())
-                .build());
         var motd = config().serverConfig().motd();
         if (motd != null) Bukkit.motd(MiniMessage.miniMessage().deserialize(motd));
     }
