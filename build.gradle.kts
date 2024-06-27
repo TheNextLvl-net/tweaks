@@ -7,6 +7,7 @@ plugins {
     id("io.github.goooler.shadow") version "8.1.7"
     id("net.minecrell.plugin-yml.paper") version "0.6.0"
     id("io.papermc.hangar-publish-plugin") version "0.1.2"
+    id("com.modrinth.minotaur") version "2.+"
 }
 
 group = "net.thenextlvl"
@@ -163,6 +164,10 @@ paper {
 val versionString: String = project.version as String
 val isRelease: Boolean = !versionString.contains("-pre")
 
+val versions: List<String> = (property("gameVersions") as String)
+    .split(",")
+    .map { it.trim() }
+
 hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
     publications.register("plugin") {
         id.set("Tweaks")
@@ -171,9 +176,6 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
         apiKey.set(System.getenv("HANGAR_API_TOKEN"))
         platforms.register(Platforms.PAPER) {
             jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-            val versions: List<String> = (property("paperVersion") as String)
-                .split(",")
-                .map { it.trim() }
             platformVersions.set(versions)
             dependencies {
                 url("LuckPerms", "https://luckperms.net/") {
@@ -181,5 +183,19 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
                 }
             }
         }
+    }
+}
+
+modrinth {
+    token.set(System.getenv("MODRINTH_TOKEN"))
+    projectId.set("HLkJsjy0")
+    versionType = if (isRelease) "release" else "beta"
+    uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
+    gameVersions.set(versions)
+    loaders.add("paper")
+    loaders.add("folia")
+    syncBodyFrom.set(rootProject.file("README.md").readText())
+    dependencies {
+        optional.project("luckperms")
     }
 }
