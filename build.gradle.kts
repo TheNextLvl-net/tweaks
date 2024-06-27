@@ -194,7 +194,6 @@ modrinth {
     gameVersions.set(versions)
     loaders.add("paper")
     loaders.add("folia")
-    syncBodyFrom.set(rootProject.file("README.md").readText())
     dependencies {
         optional.project("luckperms")
     }
