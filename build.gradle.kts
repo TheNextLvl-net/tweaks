@@ -190,7 +190,7 @@ modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
     projectId.set("HLkJsjy0")
     versionType = if (isRelease) "release" else "beta"
-    uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
+    uploadFile.set(tasks.shadowJar)
     gameVersions.set(versions)
     loaders.add("paper")
     loaders.add("folia")
