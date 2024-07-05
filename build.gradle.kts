@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "net.thenextlvl"
-version = "2.1.2"
+version = "2.1.3"
 
 repositories {
     mavenCentral()
@@ -25,7 +25,7 @@ dependencies {
     compileOnly("net.luckperms:api:5.4")
     compileOnly("org.projectlombok:lombok:1.18.32")
     compileOnly("net.thenextlvl.core:annotations:2.0.1")
-    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
 
     implementation("net.thenextlvl.core:nbt:1.4.2")
     implementation("net.thenextlvl.core:files:1.0.5")
@@ -47,7 +47,7 @@ tasks {
         relocate("org.bstats", "net.thenextlvl.tweaks.bstats")
     }
     runServer {
-        minecraftVersion("1.20.6")
+        minecraftVersion("1.21")
     }
 }
 
@@ -60,7 +60,7 @@ paper {
     name = "Tweaks"
     main = "net.thenextlvl.tweaks.TweaksPlugin"
     description = "A useful command collection"
-    apiVersion = "1.20"
+    apiVersion = "1.21"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
 
