@@ -21,8 +21,8 @@ public abstract class OneOptionalArgumentCommand<T> implements TabExecutor {
 
     protected abstract @Nullable String getArgumentPermission(CommandSender sender, T argument);
 
-    protected boolean isAllowed(CommandSender sender, T argument) {
-        return true;
+    protected boolean isDenied(CommandSender sender, T argument) {
+        return false;
     }
 
     @Override

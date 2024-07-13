@@ -155,7 +155,7 @@ public class TweaksPlugin extends JavaPlugin {
             var builder = new CommandBuilder(this, annotation, executor, tabCompleter);
             Bukkit.getCommandMap().register(getName(), builder.build());
         } catch (Exception e) {
-            e.printStackTrace();
+            getComponentLogger().error("Failed to register command", e);
         }
     }
 

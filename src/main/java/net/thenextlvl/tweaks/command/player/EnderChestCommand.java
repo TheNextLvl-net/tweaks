@@ -35,7 +35,7 @@ public class EnderChestCommand extends PlayerCommand implements Listener {
     @Override
     protected void execute(CommandSender sender, Player target) {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
-        if (!isAllowed(sender, target)) throw new PlayerNotAffectedException(target);
+        if (isDenied(sender, target)) throw new PlayerNotAffectedException(target);
         if (!player.equals(target)) viewers.add(player);
         player.openInventory(target.getEnderChest());
     }

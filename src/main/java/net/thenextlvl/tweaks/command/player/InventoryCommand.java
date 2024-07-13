@@ -52,14 +52,14 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     @Override
-    protected boolean isAllowed(CommandSender sender, Player argument) {
-        return !sender.equals(argument);
+    protected boolean isDenied(CommandSender sender, Player argument) {
+        return sender.equals(argument);
     }
 
     @Override
     protected void execute(CommandSender sender, Player target) {
         if (!(sender instanceof Player player)) throw new CommandSenderException();
-        if (!isAllowed(sender, target)) throw new PlayerNotAffectedException(target);
+        if (isDenied(sender, target)) throw new PlayerNotAffectedException(target);
         var inventory = Bukkit.createInventory(target, 54, Component.text(target.getName()));
         updateInventory(inventory, target);
         addPlaceholders(inventory);

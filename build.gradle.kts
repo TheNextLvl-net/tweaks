@@ -23,17 +23,17 @@ repositories {
 
 dependencies {
     compileOnly("net.luckperms:api:5.4")
-    compileOnly("org.projectlombok:lombok:1.18.32")
+    compileOnly("org.projectlombok:lombok:1.18.34")
     compileOnly("net.thenextlvl.core:annotations:2.0.1")
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
 
     implementation("net.thenextlvl.core:nbt:1.4.2")
     implementation("net.thenextlvl.core:files:1.0.5")
-    implementation("net.thenextlvl.core:i18n:1.0.18")
+    implementation("net.thenextlvl.core:i18n:1.0.19")
     implementation("net.thenextlvl.core:paper:1.3.5")
     implementation("org.bstats:bstats-bukkit:3.0.2")
 
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }

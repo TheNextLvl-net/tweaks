@@ -1,5 +1,7 @@
 package net.thenextlvl.tweaks.command.item;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
@@ -8,11 +10,9 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +41,7 @@ public class EnchantCommand implements TabExecutor {
         if (namespacedKey == null)
             return false;
 
-        var enchantment = Registry.ENCHANTMENT.get(namespacedKey);
+        var enchantment = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(namespacedKey);
         if (enchantment == null)
             return false;
 
@@ -81,18 +81,18 @@ public class EnchantCommand implements TabExecutor {
             return null;
 
         if (args.length == 1) {
-            return Registry.ENCHANTMENT.stream()
+            return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).stream()
                     .filter(enchantment -> enchantment.canEnchantItem(item)
                             && (item.getEnchantments().keySet().stream().noneMatch(enchantment::conflictsWith)
                             || item.getEnchantments().containsKey(enchantment)))
                     .map(enchantment -> enchantment.getKey().asString()).toList();
         }
         if (args.length == 2) {
-            NamespacedKey namespacedKey = NamespacedKey.fromString(args[0]);
+            var namespacedKey = NamespacedKey.fromString(args[0]);
             if (namespacedKey == null)
                 return null;
 
-            Enchantment enchantment = Registry.ENCHANTMENT.get(namespacedKey);
+            var enchantment = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(namespacedKey);
             if (enchantment == null)
                 return null;
 
