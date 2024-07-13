@@ -33,7 +33,7 @@ abstract class PlayerCommand extends OneOptionalArgumentCommand<Player> {
     protected Stream<String> suggest(CommandSender sender) {
         return Bukkit.getOnlinePlayers().stream()
                 .filter(player -> {
-                    if (!isAllowed(sender, player)) return false;
+                    if (isDenied(sender, player)) return false;
                     var permission = getArgumentPermission(sender, player);
                     return permission == null || sender.hasPermission(permission);
                 })
