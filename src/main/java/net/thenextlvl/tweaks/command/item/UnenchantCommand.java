@@ -1,13 +1,14 @@
 package net.thenextlvl.tweaks.command.item;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.api.CommandInfo;
 import net.thenextlvl.tweaks.command.api.CommandSenderException;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -45,7 +46,8 @@ public class UnenchantCommand implements TabExecutor {
 
         for (var key : args) {
             var namespacedKey = NamespacedKey.fromString(key);
-            var enchantment = namespacedKey != null ? Registry.ENCHANTMENT.get(namespacedKey) : null;
+            var enchantment = namespacedKey != null ? RegistryAccess.registryAccess()
+                    .getRegistry(RegistryKey.ENCHANTMENT).get(namespacedKey) : null;
 
             if (enchantment == null) {
                 plugin.bundle().sendMessage(player, "enchantment.invalid", Placeholder.parsed("enchantment", key));
@@ -56,9 +58,10 @@ public class UnenchantCommand implements TabExecutor {
         }
 
         enchantments.forEach(enchantment -> {
-            var message = item.removeEnchantment(enchantment) != 0 ? "enchantment.removed" : "enchantment.absent";
+            var level = item.removeEnchantment(enchantment);
+            var message = level != 0 ? "enchantment.removed" : "enchantment.absent";
             plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
-                    Component.translatable(enchantment.translationKey())));
+                    enchantment.displayName(level).style(Style.empty())));
         });
 
         return true;
