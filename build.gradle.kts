@@ -35,7 +35,7 @@ dependencies {
 
     annotationProcessor("org.projectlombok:lombok:1.18.34")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.3")
 }
 
 tasks {
