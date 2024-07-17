@@ -1,4 +1,5 @@
 import io.papermc.hangarpublishplugin.model.Platforms
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
 plugins {
@@ -145,6 +146,16 @@ paper {
                 "tweaks.chat.delete.own"
             )
         }
+        register("tweaks.command.lobby") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+        }
+        register("tweaks.command.reply") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+        }
+        register("tweaks.command.msg") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+        }
+
         register("tweaks.chat.delete.own")
 
         register("tweaks.command.gamemode.others")
