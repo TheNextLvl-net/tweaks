@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 @CommandInfo(
         name = "vanish",
-        description = "hide yourself from others",
+        description = "hide yourself or someone else from others",
         permission = "tweaks.command.vanish",
         aliases = {"v"}
 )
