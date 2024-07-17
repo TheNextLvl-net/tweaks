@@ -30,6 +30,6 @@ public class ReplyCommand implements CommandExecutor {
             return true;
         }
         MessageCommand.message(plugin, args, sender, player);
-        return false;
+        return true;
     }
 }
