@@ -60,8 +60,14 @@ public class TweaksPlugin extends JavaPlugin {
                     20
             ),
             new VanillaTweaks(0, 0, 0, false),
-            new ServerConfig(true, "lobby", null)
+            new ServerConfig(isProxyEnabled(), "lobby", null)
     )).validate().save();
+
+    private boolean isProxyEnabled() {
+        return Bukkit.spigot().getPaperConfig().getBoolean("proxies.velocity.enabled")
+               || Bukkit.spigot().getSpigotConfig().getBoolean("settings.bungeecord");
+    }
+
     private final File translations = new File(getDataFolder(), "translations");
     private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
             audience instanceof Player player ? player.locale() : Locale.US)
@@ -119,12 +125,13 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new InventoryCommand(this));
         registerCommand(new EnderChestCommand(this));
         registerCommand(new SpeedCommand(this));
+        registerCommand(new VanishCommand(this));
         registerCommand(new GameModeCommand(this));
         registerCommand(new OfflineTeleportCommand(this));
 
         // Server
         registerCommand(new BroadcastCommand(this));
-        if (isLobbyCommandEnabled())
+        if (config().serverConfig().enableLobbyCommand())
             registerCommand(new LobbyCommand(this, new PluginMessenger(this)));
         registerCommand(new MotdCommand(this));
 
@@ -147,10 +154,6 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new SmithingTableCommand());
         registerCommand(new StonecutterCommand());
         registerCommand(new WorkbenchCommand());
-    }
-
-    private boolean isLobbyCommandEnabled() {
-        return config().serverConfig().enableLobbyCommand();
     }
 
     private void registerCommand(CommandExecutor executor) {
