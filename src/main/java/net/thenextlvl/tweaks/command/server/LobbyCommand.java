@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 @CommandInfo(
         name = "lobby",
         description = "connect to the lobby",
+        permission = "tweaks.command.lobby",
         aliases = {"l", "hub"}
 )
 @RequiredArgsConstructor
