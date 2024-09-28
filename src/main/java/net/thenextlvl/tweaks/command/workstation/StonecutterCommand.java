@@ -1,22 +1,21 @@
 package net.thenextlvl.tweaks.command.workstation;
 
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import io.papermc.paper.command.brigadier.Commands;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
-@CommandInfo(
-        name = "stonecutter",
-        description = "open a virtual stonecutter",
-        permission = "tweaks.command.stonecutter"
-)
-public class StonecutterCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) throw new CommandSenderException();
-        player.openStonecutter(null, true);
-        return true;
+@RequiredArgsConstructor
+@SuppressWarnings("UnstableApiUsage")
+public class StonecutterCommand {
+    public void register(Commands registrar) {
+        var literal = Commands.literal("stonecutter")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.stonecutter"))
+                .executes(context -> {
+                    ((Player) context.getSource().getSender()).openStonecutter(null, true);
+                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                })
+                .build();
+        registrar.register(literal, "Open a stonecutter");
     }
 }
