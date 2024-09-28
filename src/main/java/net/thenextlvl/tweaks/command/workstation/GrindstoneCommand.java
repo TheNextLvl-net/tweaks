@@ -2,11 +2,14 @@ package net.thenextlvl.tweaks.command.workstation;
 
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class GrindstoneCommand {
+    private final TweaksPlugin plugin;
+
     public void register(Commands registrar) {
         var literal = Commands.literal("grindstone")
                 .requires(stack -> stack.getSender() instanceof Player player

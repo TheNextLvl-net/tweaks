@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.workstation;
 
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class SmithingTableCommand {
+    private final TweaksPlugin plugin;
+
     public void register(Commands registrar) {
         var literal = Commands.literal("smithing-table")
                 .requires(stack -> stack.getSender() instanceof Player player
