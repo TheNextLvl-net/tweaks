@@ -29,22 +29,18 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Locale;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 @Getter
 @Accessors(fluent = true)
 @FieldsAreNotNullByDefault
 public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
-    private final Map<CommandSender, CommandSender> conversations = new WeakHashMap<>();
 
     private final FileIO<TweaksConfig> configFile = new GsonFile<>(
             IO.of(getDataFolder(), "config.json"), new TweaksConfig(
@@ -120,8 +116,6 @@ public class TweaksPlugin extends JavaPlugin {
         registerCommand(new PingCommand(this));
         registerCommand(new BackCommand(this));
         registerCommand(new SeenCommand(this));
-        registerCommand(new ReplyCommand(this));
-        registerCommand(new MessageCommand(this));
         registerCommand(new InventoryCommand(this));
         registerCommand(new EnderChestCommand(this));
         registerCommand(new SpeedCommand(this));

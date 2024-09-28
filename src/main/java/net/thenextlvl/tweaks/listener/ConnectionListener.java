@@ -10,9 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 @RequiredArgsConstructor
 public class ConnectionListener implements Listener {
     private final TweaksPlugin plugin;
@@ -33,13 +30,5 @@ public class ConnectionListener implements Listener {
         Bukkit.getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.left",
                 Placeholder.parsed("player", event.getPlayer().getName())));
         event.quitMessage(null);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void cleanup(PlayerQuitEvent event) {
-        new ArrayList<>(plugin.conversations().entrySet()).stream()
-                .filter(entry -> entry.getValue().equals(event.getPlayer()))
-                .map(Map.Entry::getKey)
-                .forEach(plugin.conversations()::remove);
     }
 }
