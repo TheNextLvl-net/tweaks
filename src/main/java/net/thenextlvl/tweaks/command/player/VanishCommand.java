@@ -1,25 +1,28 @@
 package net.thenextlvl.tweaks.command.player;
 
-import lombok.RequiredArgsConstructor;
+import com.mojang.brigadier.Command;
+import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandInfo(
-        name = "vanish",
-        description = "hide yourself or someone else from others",
-        permission = "tweaks.command.vanish",
-        aliases = {"v"}
-)
-@RequiredArgsConstructor
+import java.util.List;
+
+@SuppressWarnings("UnstableApiUsage")
 public class VanishCommand extends PlayerCommand {
-    private final TweaksPlugin plugin;
+    public VanishCommand(TweaksPlugin plugin) {
+        super(plugin);
+    }
+
+    public void register(Commands registrar) {
+        var command = create("vanish", "tweaks.command.vanish", "tweaks.command.vanish.others");
+        registrar.register(command, "Hide yourself or someone else from others", List.of("v"));
+    }
 
     @Override
-    protected void execute(CommandSender sender, Player target) {
+    protected int execute(CommandSender sender, Player target) {
         target.setVisibleByDefault(!target.isVisibleByDefault());
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> !target.equals(player))
@@ -33,5 +36,6 @@ public class VanishCommand extends PlayerCommand {
         plugin.bundle().sendMessage(target, messageSelf);
         if (target != sender) plugin.bundle().sendMessage(sender, messageOthers,
                 Placeholder.parsed("player", target.getName()));
+        return Command.SINGLE_SUCCESS;
     }
 }
