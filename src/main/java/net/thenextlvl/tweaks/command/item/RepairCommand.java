@@ -1,64 +1,59 @@
 package net.thenextlvl.tweaks.command.item;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 
-@CommandInfo(
-        name = "repair",
-        usage = "/<command> (all)",
-        description = "repair your tools",
-        permission = "tweaks.command.repair"
-)
 @RequiredArgsConstructor
-public class RepairCommand implements TabExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class RepairCommand {
     private final TweaksPlugin plugin;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) throw new CommandSenderException();
+    public void register(Commands registrar) {
+        var command = Commands.literal("repair")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.repair"))
+                .then(Commands.literal("all")
+                        .executes(this::repairAll))
+                .executes(this::repair)
+                .build();
+        registrar.register(command, "repair your tools", List.of("wb"));
+    }
 
+    private int repair(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
         var inventory = player.getInventory();
 
-        if (args.length == 0 && !inventory.getItemInMainHand().getType().isEmpty()) {
-            var message = repair(inventory.getItemInMainHand()) ? "item.repaired.success" : "item.repaired.fail";
-
-            plugin.bundle().sendMessage(player, message);
-            return true;
-
-        } else if (args.length == 0) {
+        if (inventory.getItemInMainHand().getType().isEmpty()) {
             plugin.bundle().sendMessage(player, "hold.item");
-            return true;
+            return 0;
         }
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("all")) {
+        var success = repair(inventory.getItemInMainHand());
+        var message = success ? "item.repaired.success" : "item.repaired.fail";
 
-            for (var item : inventory.getContents()) repair(item);
+        plugin.bundle().sendMessage(player, message);
+        return Command.SINGLE_SUCCESS;
+    }
 
-            plugin.bundle().sendMessage(player, "item.repaired.all");
-            return true;
-        }
-
-        return false;
+    private int repairAll(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
+        var inventory = player.getInventory();
+        for (var item : inventory.getContents()) repair(item);
+        plugin.bundle().sendMessage(player, "item.repaired.all");
+        return Command.SINGLE_SUCCESS;
     }
 
     private boolean repair(@Nullable ItemStack item) {
         return item != null && item.editMeta(Damageable.class, damageable -> damageable.setDamage(0));
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        return args.length <= 1 ? Collections.singletonList("all") : null;
     }
 }
