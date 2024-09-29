@@ -1,8 +1,6 @@
 package net.thenextlvl.tweaks.command.player;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.exceptions.BuiltInExceptions;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.papermc.paper.command.brigadier.Commands;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Bukkit;
@@ -35,9 +33,12 @@ public class EnderChestCommand extends PlayerCommand implements Listener {
     }
 
     @Override
-    protected int execute(CommandSender sender, Player target) throws CommandSyntaxException {
-        if (!(sender instanceof Player player))
-            throw new BuiltInExceptions().dispatcherUnknownCommand().create();
+    protected int execute(CommandSender sender, Player target) {
+        if (!(sender instanceof Player player)) {
+            plugin.bundle().sendMessage(sender, "command.sender");
+            return 0;
+        }
+
         if (!player.equals(target)) viewers.add(player);
         // todo: custom gui + offline mode
         player.openInventory(target.getEnderChest());

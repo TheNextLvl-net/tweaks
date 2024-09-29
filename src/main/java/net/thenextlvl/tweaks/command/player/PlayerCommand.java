@@ -1,7 +1,5 @@
 package net.thenextlvl.tweaks.command.player;
 
-import com.mojang.brigadier.exceptions.BuiltInExceptions;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import core.paper.command.CustomArgumentTypes;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -29,10 +27,11 @@ abstract class PlayerCommand {
                 .build();
     }
 
-    protected int execute(CommandSender sender) throws CommandSyntaxException {
+    protected int execute(CommandSender sender) {
         if (sender instanceof Player player) return execute(sender, player);
-        throw new BuiltInExceptions().dispatcherUnknownCommand().create();
+        plugin.bundle().sendMessage(sender, "command.sender");
+        return 0;
     }
 
-    protected abstract int execute(CommandSender sender, Player player) throws CommandSyntaxException;
+    protected abstract int execute(CommandSender sender, Player player);
 }
