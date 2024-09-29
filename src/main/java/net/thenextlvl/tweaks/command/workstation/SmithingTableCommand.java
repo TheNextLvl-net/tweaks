@@ -13,7 +13,7 @@ public class SmithingTableCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var literal = Commands.literal("smithing-table")
+        var command = Commands.literal("smithing-table")
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.smithing-table"))
                 .executes(context -> {
@@ -21,6 +21,6 @@ public class SmithingTableCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(literal, "Open an smithing table", List.of("smithing"));
+        registrar.register(command, "Open an smithing table", List.of("smithing"));
     }
 }

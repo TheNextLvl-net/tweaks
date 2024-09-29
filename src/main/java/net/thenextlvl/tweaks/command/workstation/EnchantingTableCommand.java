@@ -13,7 +13,7 @@ public class EnchantingTableCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var literal = Commands.literal("enchanting-table")
+        var command = Commands.literal("enchanting-table")
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchanting-table"))
                 .executes(context -> {
@@ -21,6 +21,6 @@ public class EnchantingTableCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(literal, "Open an enchanting table", List.of("enchanting"));
+        registrar.register(command, "Open an enchanting table", List.of("enchanting"));
     }
 }

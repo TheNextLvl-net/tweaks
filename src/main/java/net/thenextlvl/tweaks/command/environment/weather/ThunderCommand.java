@@ -14,8 +14,8 @@ public class ThunderCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var literal = create("thunder", "tweaks.command.thunder");
-        registrar.register(literal, "Let it thunder");
+        var command = create("thunder", "tweaks.command.thunder");
+        registrar.register(command, "Let it thunder");
     }
 
     @Override

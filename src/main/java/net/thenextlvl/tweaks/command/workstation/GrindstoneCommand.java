@@ -11,7 +11,7 @@ public class GrindstoneCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var literal = Commands.literal("grindstone")
+        var command = Commands.literal("grindstone")
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.grindstone"))
                 .executes(context -> {
@@ -19,6 +19,6 @@ public class GrindstoneCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(literal, "Open a grindstone");
+        registrar.register(command, "Open a grindstone");
     }
 }

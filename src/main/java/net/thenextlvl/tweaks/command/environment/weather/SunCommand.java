@@ -14,8 +14,8 @@ public class SunCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var literal = create("sun", "tweaks.command.sun");
-        registrar.register(literal, "Let the sun shine");
+        var command = create("sun", "tweaks.command.sun");
+        registrar.register(command, "Let the sun shine");
     }
 
     @Override

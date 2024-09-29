@@ -11,7 +11,7 @@ public class AnvilCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var literal = Commands.literal("anvil")
+        var command = Commands.literal("anvil")
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.anvil"))
                 .executes(context -> {
@@ -19,6 +19,6 @@ public class AnvilCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(literal, "Open an anvil inventory");
+        registrar.register(command, "Open an anvil inventory");
     }
 }

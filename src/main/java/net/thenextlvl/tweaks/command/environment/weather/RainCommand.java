@@ -14,8 +14,8 @@ public class RainCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var literal = create("rain", "tweaks.command.rain");
-        registrar.register(literal, "Let it rain");
+        var command = create("rain", "tweaks.command.rain");
+        registrar.register(command, "Let it rain");
     }
 
     @Override

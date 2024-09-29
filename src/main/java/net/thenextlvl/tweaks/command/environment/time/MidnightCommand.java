@@ -14,8 +14,8 @@ public class MidnightCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var literal = create("midnight", "tweaks.command.midnight");
-        registrar.register(literal, "Set the time to midnight");
+        var command = create("midnight", "tweaks.command.midnight");
+        registrar.register(command, "Set the time to midnight");
     }
 
     @Override

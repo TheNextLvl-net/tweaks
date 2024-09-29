@@ -13,7 +13,7 @@ public class CartographyTableCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var literal = Commands.literal("cartography-table")
+        var command = Commands.literal("cartography-table")
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.cartography-table"))
                 .executes(context -> {
@@ -21,6 +21,6 @@ public class CartographyTableCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(literal, "Open a cartography table", List.of("cartography"));
+        registrar.register(command, "Open a cartography table", List.of("cartography"));
     }
 }
