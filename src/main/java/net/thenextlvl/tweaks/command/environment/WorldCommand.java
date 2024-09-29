@@ -9,7 +9,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.environment.suggestion.WorldSuggestionProvider;
+import net.thenextlvl.tweaks.command.suggestion.WorldSuggestionProvider;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 

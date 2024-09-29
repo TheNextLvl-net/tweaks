@@ -16,7 +16,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.item.suggestion.EnchantmentSuggestionProvider;
+import net.thenextlvl.tweaks.command.suggestion.EnchantmentSuggestionProvider;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 

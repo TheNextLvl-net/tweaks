@@ -1,4 +1,4 @@
-package net.thenextlvl.tweaks.command.item.suggestion;
+package net.thenextlvl.tweaks.command.suggestion;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;

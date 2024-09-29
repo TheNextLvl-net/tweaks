@@ -7,7 +7,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.server.suggestion.TagSuggestionProvider;
+import net.thenextlvl.tweaks.command.suggestion.TagSuggestionProvider;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
