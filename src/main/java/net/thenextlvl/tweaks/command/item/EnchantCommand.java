@@ -16,7 +16,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.suggestion.EnchantmentSuggestionProvider;
+import net.thenextlvl.tweaks.command.suggestion.EnchantSuggestionProvider;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
@@ -33,7 +33,7 @@ public class EnchantCommand {
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
-                        .suggests(new EnchantmentSuggestionProvider())
+                        .suggests(new EnchantSuggestionProvider())
                         .then(Commands.argument("level", IntegerArgumentType.integer(1, 255))
                                 .suggests(this::suggestLevels)
                                 .executes(context -> enchant(context, context.getArgument("level", int.class))))

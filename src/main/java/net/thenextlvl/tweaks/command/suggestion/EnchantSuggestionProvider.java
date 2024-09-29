@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("UnstableApiUsage")
-public class EnchantmentSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
+public class EnchantSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     @Override
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
         if (!(context.getSource().getSender() instanceof Player player)) return builder.buildFuture();
