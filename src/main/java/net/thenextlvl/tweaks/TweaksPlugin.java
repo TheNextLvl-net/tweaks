@@ -165,8 +165,4 @@ public class TweaksPlugin extends JavaPlugin {
     public TweaksConfig config() {
         return configFile().getRoot();
     }
-
-    public static TweaksPlugin get() {
-        return JavaPlugin.getPlugin(TweaksPlugin.class);
-    }
 }
