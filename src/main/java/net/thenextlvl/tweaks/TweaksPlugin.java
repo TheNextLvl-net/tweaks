@@ -41,6 +41,7 @@ import java.util.Locale;
 @FieldsAreNotNullByDefault
 public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
+    private final PluginMessenger messenger = new PluginMessenger(this);
 
     private final FileIO<TweaksConfig> configFile = new GsonFile<>(
             IO.of(getDataFolder(), "config.json"), new TweaksConfig(
