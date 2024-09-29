@@ -24,8 +24,8 @@ public class MotdCommand {
                     var message = context.getArgument("motd", String.class);
                     var motd = MiniMessage.miniMessage().deserialize(message);
                     plugin.bundle().sendMessage(sender, "motd.changed", Placeholder.component("motd", motd));
-                    plugin.config().serverConfig().motd(message);
-                    plugin.configFile().save();
+                    plugin.config().general().motd(message);
+                    plugin.saveConfig();
                     plugin.getServer().motd(motd);
                     return Command.SINGLE_SUCCESS;
                 })

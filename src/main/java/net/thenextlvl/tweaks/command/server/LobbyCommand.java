@@ -19,7 +19,7 @@ public class LobbyCommand {
                                    && player.hasPermission("tweaks.command.lobby"))
                 .executes(context -> {
                     var sender = (Player) context.getSource().getSender();
-                    plugin.messenger().connect(sender, plugin.config().serverConfig().lobbyServerName());
+                    plugin.messenger().connect(sender, plugin.config().general().lobbyServerName());
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();
