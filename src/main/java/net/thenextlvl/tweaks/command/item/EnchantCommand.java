@@ -45,6 +45,13 @@ public class EnchantCommand {
         registrar.register(literal, "Enchant your tools");
     }
 
+    private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+        var key = (TypedKey<Enchantment>) context.getLastChild().getArgument("enchantment", TypedKey.class);
+        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).getOrThrow(key);
+        IntStream.rangeClosed(enchantment.getStartLevel(), enchantment.getMaxLevel()).forEach(builder::suggest);
+        return builder.buildFuture();
+    }
+
     private int enchant(CommandContext<CommandSourceStack> context, int level) {
         var player = (Player) context.getSource().getSender();
         var key = (TypedKey<Enchantment>) context.getArgument("enchantment", TypedKey.class);
@@ -69,12 +76,5 @@ public class EnchantCommand {
                 enchantment.displayName(level).style(Style.empty())));
 
         return Command.SINGLE_SUCCESS;
-    }
-
-    private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        var key = (TypedKey<Enchantment>) context.getLastChild().getArgument("enchantment", TypedKey.class);
-        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).getOrThrow(key);
-        IntStream.rangeClosed(enchantment.getStartLevel(), enchantment.getMaxLevel()).forEach(builder::suggest);
-        return builder.buildFuture();
     }
 }
