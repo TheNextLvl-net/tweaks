@@ -11,50 +11,46 @@ plugins {
     id("com.modrinth.minotaur") version "2.+"
 }
 
-group = "net.thenextlvl"
+group = "net.thenextlvl.tweaks"
 version = "2.1.5"
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+tasks.compileJava {
+    options.release.set(21)
+}
 
 repositories {
     mavenCentral()
     maven("https://repo.thenextlvl.net/releases")
-    maven("https://repo.thenextlvl.net/snapshots")
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
-    compileOnly("net.luckperms:api:5.4")
     compileOnly("org.projectlombok:lombok:1.18.34")
     compileOnly("net.thenextlvl.core:annotations:2.0.1")
+    compileOnly("net.thenextlvl.services:service-io:1.0.5")
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 
-    implementation("net.thenextlvl.core:nbt:1.4.2")
+    implementation("net.thenextlvl.core:adapters:1.0.9")
     implementation("net.thenextlvl.core:files:1.0.5")
     implementation("net.thenextlvl.core:i18n:1.0.19")
+    implementation("net.thenextlvl.core:nbt:1.4.2")
     implementation("net.thenextlvl.core:paper:1.5.1")
     implementation("org.bstats:bstats-bukkit:3.1.0")
 
     annotationProcessor("org.projectlombok:lombok:1.18.34")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.1")
 }
 
-tasks {
-    test {
-        useJUnitPlatform()
-    }
-    shadowJar {
-        minimize()
-        relocate("org.bstats", "net.thenextlvl.tweaks.bstats")
-    }
-    runServer {
-        minecraftVersion("1.21")
-    }
+tasks.shadowJar {
+    relocate("org.bstats", "net.thenextlvl.tweaks.bstats")
+    minimize()
 }
 
-java {
-    targetCompatibility = JavaVersion.VERSION_21
-    sourceCompatibility = JavaVersion.VERSION_21
+tasks.runServer {
+    minecraftVersion("1.21")
 }
 
 paper {
@@ -64,17 +60,68 @@ paper {
     apiVersion = "1.21"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
+    load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
 
     foliaSupported = true
 
     serverDependencies {
-        register("LuckPerms") {
+        register("ServiceIO") {
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
             required = false
         }
     }
 
     permissions {
+        register("extra-tweaks.spawn") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+            description = "Allows players to use the spawn command"
+        }
+        register("extra-tweaks.setspawn") {
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "Allows players to use the setspawn command"
+            children = listOf("extra-tweaks.spawn")
+        }
+
+        register("extra-tweaks.home") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+            description = "Allows players to teleport to their homes"
+        }
+        register("extra-tweaks.home.limit.bypass") {
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "Allows players to bypass the home limit"
+        }
+        register("extra-tweaks.home.delete") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+            description = "Allows players to delete their homes"
+            children = listOf("extra-tweaks.home.set")
+        }
+        register("extra-tweaks.home.set") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+            description = "Allows players to set homes"
+            children = listOf("extra-tweaks.home")
+        }
+        register("extra-tweaks.home.set.named") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+            description = "Allows players to set named homes"
+            children = listOf("extra-tweaks.home.set")
+        }
+
+        register("extra-tweaks.warp") {
+            default = BukkitPluginDescription.Permission.Default.TRUE
+            description = "Allows players to warp themselves"
+        }
+        register("extra-tweaks.warp.delete") {
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "Allows players to delete warps"
+            children = listOf("extra-tweaks.warp.set")
+        }
+        register("extra-tweaks.warp.set") {
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "Allows players to set warps"
+            children = listOf("extra-tweaks.warp")
+        }
+
+
         register("tweaks.commands.environmental") {
             this.children = listOf(
                 "tweaks.command.day",
@@ -189,7 +236,7 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
             jar.set(tasks.shadowJar.flatMap { it.archiveFile })
             platformVersions.set(versions)
             dependencies {
-                url("LuckPerms", "https://luckperms.net/") {
+                hangar("ServiceIO") {
                     required.set(false)
                 }
             }
@@ -206,6 +253,6 @@ modrinth {
     loaders.add("paper")
     loaders.add("folia")
     dependencies {
-        optional.project("luckperms")
+        optional.project("ServiceIO")
     }
 }
