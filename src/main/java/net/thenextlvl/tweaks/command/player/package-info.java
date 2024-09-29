@@ -1,7 +1,7 @@
 @TypesAreNotNullByDefault
 @FieldsAreNotNullByDefault
-@ParametersAreNotNullByDefault
 @MethodsReturnNotNullByDefault
+@ParametersAreNotNullByDefault
 package net.thenextlvl.tweaks.command.player;
 
 import core.annotation.FieldsAreNotNullByDefault;

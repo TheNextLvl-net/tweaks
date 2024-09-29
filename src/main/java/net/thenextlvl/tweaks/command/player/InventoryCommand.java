@@ -1,11 +1,10 @@
 package net.thenextlvl.tweaks.command.player;
 
+import com.mojang.brigadier.Command;
+import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import net.thenextlvl.tweaks.command.api.PlayerNotAffectedException;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -22,45 +21,45 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.stream.IntStream;
 
-@CommandInfo(
-        name = "inventory",
-        usage = "/<command> (player)",
-        description = "open your own or someone else's inventory",
-        permission = "tweaks.command.inventory",
-        aliases = {"inv", "invsee"}
-)
+@SuppressWarnings("UnstableApiUsage")
 public class InventoryCommand extends PlayerCommand implements Listener {
     private final Map<HumanEntity, Player> viewers = new WeakHashMap<>();
     private final Map<HumanEntity, Set<HumanEntity>> providers = new WeakHashMap<>();
     private final Map<HumanEntity, Inventory> inventories = new WeakHashMap<>();
-    private final TweaksPlugin plugin;
 
     public InventoryCommand(TweaksPlugin plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        super(plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
         var updateTime = Math.max(1, plugin.config().inventoryConfig().updateTime());
-        Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, task -> providers.forEach((provider, viewers) -> {
-            var inventory = inventories.get(provider);
-            if (inventory != null) updateInventory(inventory, provider);
-        }), updateTime, updateTime);
-        this.plugin = plugin;
+        plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, task ->
+                providers.forEach((provider, viewers) -> {
+                    var inventory = inventories.get(provider);
+                    if (inventory != null) updateInventory(inventory, provider);
+                }), updateTime, updateTime);
+    }
+
+    public void register(Commands registrar) {
+        var command = create("inventory", "tweaks.command.inventory", "tweaks.command.inventory.others");
+        registrar.register(command, "Open someone else's inventory", List.of("inv", "invsee"));
     }
 
     @Override
-    protected boolean isDenied(CommandSender sender, Player argument) {
-        return sender.equals(argument);
-    }
+    protected int execute(CommandSender sender, Player target) {
+        if (!(sender instanceof Player player)) {
+            plugin.bundle().sendMessage(sender, "command.sender");
+            return 0;
+        }
 
-    @Override
-    protected void execute(CommandSender sender, Player target) {
-        if (!(sender instanceof Player player)) throw new CommandSenderException();
-        if (isDenied(sender, target)) throw new PlayerNotAffectedException(target);
-        var inventory = Bukkit.createInventory(target, 54, Component.text(target.getName()));
+        if (sender.equals(target)) {
+            plugin.bundle().sendMessage(sender, "player.not.affected",
+                    Placeholder.parsed("player", sender.getName()));
+            return 0;
+        }
+
+        var inventory = plugin.getServer().createInventory(target, 54, Component.text(target.getName()));
         updateInventory(inventory, target);
         addPlaceholders(inventory);
         player.openInventory(inventory);
@@ -70,6 +69,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
                         Collections.newSetFromMap(new WeakHashMap<>()))
                 .add(player);
         viewers.put(player, target);
+        return Command.SINGLE_SUCCESS;
     }
 
     private void updateInventory(Inventory inventory, HumanEntity target) {
@@ -96,64 +96,64 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClose(InventoryCloseEvent event) {
         var target = viewers.get(event.getPlayer());
         viewers.remove(event.getPlayer());
         if (providers.containsKey(target)) providers.get(target).remove(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderInventoryClick(InventoryClickEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderInventoryCreative(InventoryCreativeEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderInventoryDrag(InventoryDragEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderItemDrop(PlayerDropItemEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof HumanEntity player) onProviderInventoryAction(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderArrowPickup(PlayerPickupArrowEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderSwapHandItems(PlayerSwapHandItemsEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderItemBreak(PlayerItemBreakEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderItemConsume(PlayerItemConsumeEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderItemDamage(PlayerItemDamageEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProviderItemMend(PlayerItemMendEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
@@ -199,9 +199,9 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             target.setItemOnCursor(view.getTopInventory().getItem(52));
         }, null);
         return view.getTopInventory().equals(clicked)
-                && ((slot >= 36 && slot <= 44)
-                || slot == 49
-                || slot == 51
-                || slot == 53);
+               && ((slot >= 36 && slot <= 44)
+                   || slot == 49
+                   || slot == 51
+                   || slot == 53);
     }
 }

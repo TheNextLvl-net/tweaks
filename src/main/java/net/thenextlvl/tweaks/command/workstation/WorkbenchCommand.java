@@ -1,23 +1,26 @@
 package net.thenextlvl.tweaks.command.workstation;
 
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import io.papermc.paper.command.brigadier.Commands;
+import lombok.RequiredArgsConstructor;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
-@CommandInfo(
-        name = "workbench",
-        description = "open a virtual workbench",
-        permission = "tweaks.command.workbench",
-        aliases = "wb"
-)
-public class WorkbenchCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) throw new CommandSenderException();
-        player.openWorkbench(null, true);
-        return true;
+import java.util.List;
+
+@RequiredArgsConstructor
+@SuppressWarnings("UnstableApiUsage")
+public class WorkbenchCommand {
+    private final TweaksPlugin plugin;
+
+    public void register(Commands registrar) {
+        var command = Commands.literal("workbench")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.workbench"))
+                .executes(context -> {
+                    ((Player) context.getSource().getSender()).openWorkbench(null, true);
+                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                })
+                .build();
+        registrar.register(command, "Open a workbench", List.of("wb"));
     }
 }

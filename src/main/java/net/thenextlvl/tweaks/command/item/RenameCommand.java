@@ -1,50 +1,43 @@
 package net.thenextlvl.tweaks.command.item;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-@CommandInfo(
-        name = "rename",
-        usage = "/<command> [text...]",
-        permission = "tweaks.command.rename",
-        description = "Changes the display name of the item in your hand"
-)
 @RequiredArgsConstructor
-public class RenameCommand implements TabExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class RenameCommand {
     private final TweaksPlugin plugin;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player))
-            throw new CommandSenderException();
-        if (args.length < 1)
-            return false;
+    public void register(Commands registrar) {
+        var command = Commands.literal("rename")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.rename"))
+                .then(Commands.argument("name", StringArgumentType.greedyString())
+                        .executes(this::rename))
+                .build();
+        registrar.register(command, "Changes the display name of the item in your hand");
+    }
 
+    private int rename(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
         var item = player.getInventory().getItemInMainHand();
 
-        var name = MiniMessage.miniMessage().deserialize(String.join(" ", args).replace("\\t", "   "));
+        var text = context.getArgument("name", String.class);
+        var name = MiniMessage.miniMessage().deserialize(text.replace("\\t", "\t"));
 
         if (!item.editMeta(itemMeta -> itemMeta.displayName(name))) {
             plugin.bundle().sendMessage(player, "item.rename.fail");
-            return true;
+            return 0;
         }
 
         plugin.bundle().sendMessage(player, "item.rename.success");
-        return true;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        return null;
+        return Command.SINGLE_SUCCESS;
     }
 }

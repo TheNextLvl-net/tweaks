@@ -1,47 +1,48 @@
 package net.thenextlvl.tweaks.command.environment;
 
-import net.thenextlvl.tweaks.command.api.CommandException;
-import net.thenextlvl.tweaks.command.api.OneOptionalArgumentCommand;
-import net.thenextlvl.tweaks.command.api.WorldNotAffectedException;
-import net.thenextlvl.tweaks.command.api.WorldNotFoundException;
-import org.bukkit.Bukkit;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.tweaks.TweaksPlugin;
+import net.thenextlvl.tweaks.command.suggestion.WorldSuggestionProvider;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.stream.Stream;
+@RequiredArgsConstructor
+@SuppressWarnings("UnstableApiUsage")
+public abstract class WorldCommand {
+    protected final TweaksPlugin plugin;
 
-abstract class WorldCommand extends OneOptionalArgumentCommand<World> {
-
-    @Override
-    protected World parse(Player player) {
-        World world = player.getWorld();
-
-        if (!isWorldAffected(world)) throw new WorldNotAffectedException(world);
-
-        return world;
+    public LiteralCommandNode<CommandSourceStack> create(String command, String permission) {
+        return Commands.literal(command)
+                .requires(stack -> stack.getSender().hasPermission(permission))
+                .then(Commands.argument("world", ArgumentTypes.world())
+                        .suggests(new WorldSuggestionProvider<>(plugin, this))
+                        .executes(context -> {
+                            var world = context.getArgument("world", World.class);
+                            return execute(context, world);
+                        }))
+                .executes(context -> execute(context, context.getSource().getLocation().getWorld()))
+                .build();
     }
 
-    @Override
-    protected World parse(String argument) throws CommandException {
-        World world = Bukkit.getWorld(argument);
-
-        if (world == null) throw new WorldNotFoundException(argument);
-        if (!isWorldAffected(world)) throw new WorldNotAffectedException(world);
-
-        return world;
+    private int execute(CommandContext<CommandSourceStack> context, World world) {
+        var sender = context.getSource().getSender();
+        if (!isWorldAffected(world)) {
+            plugin.bundle().sendMessage(sender, "world.not.affected",
+                    Placeholder.parsed("world", world.getName()));
+            return 0;
+        }
+        plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> execute(sender, world));
+        return Command.SINGLE_SUCCESS;
     }
 
-    @Override
-    protected Stream<String> suggest(CommandSender sender) {
-        return Bukkit.getWorlds().stream().filter(this::isWorldAffected).map(World::getName);
-    }
+    protected abstract void execute(CommandSender sender, World world);
 
-    protected abstract boolean isWorldAffected(World world);
-
-    @Override
-    protected @Nullable String getArgumentPermission(CommandSender sender, World argument) {
-        return null;
-    }
+    public abstract boolean isWorldAffected(World world);
 }

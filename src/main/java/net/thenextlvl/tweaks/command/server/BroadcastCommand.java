@@ -1,48 +1,44 @@
 package net.thenextlvl.tweaks.command.server;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.audience.Audience;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import net.thenextlvl.tweaks.command.suggestion.TagSuggestionProvider;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-@CommandInfo(
-        name = "broadcast",
-        permission = "tweaks.command.broadcast",
-        description = "broadcast a message",
-        usage = "/<command> [message]",
-        aliases = {"bc"}
-)
 @RequiredArgsConstructor
-public class BroadcastCommand implements TabExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class BroadcastCommand {
     private final TweaksPlugin plugin;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void register(Commands registrar) {
+        var command = Commands.literal("broadcast")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.broadcast"))
+                .then(Commands.argument("message", StringArgumentType.greedyString())
+                        .suggests(new TagSuggestionProvider<>())
+                        .executes(this::broadcast))
+                .build();
+        registrar.register(command, "Broadcast a message", List.of("bc"));
+    }
 
-        if (args.length == 0) return false;
-
-        var message = String.join(" ", args).replace("\\t", "   ");
-
-        var receivers = new ArrayList<Audience>(Bukkit.getOnlinePlayers());
-        receivers.add(Bukkit.getConsoleSender());
-
-        receivers.forEach(audience -> {
+    private int broadcast(CommandContext<CommandSourceStack> context) {
+        var message = context.getArgument("message", String.class)
+                .replace("\\t", "\t").replace("\\r", "\r");
+        plugin.getServer().forEachAudience(audience -> {
             plugin.bundle().sendMessage(audience, "broadcast.header");
             var format = format(plugin.bundle().format(audience, "broadcast.format"), message);
             plugin.bundle().sendRawMessage(audience, format);
             plugin.bundle().sendMessage(audience, "broadcast.footer");
         });
-
-        return true;
+        return Command.SINGLE_SUCCESS;
     }
 
     private String format(@Nullable String format, String message) {
@@ -50,10 +46,5 @@ public class BroadcastCommand implements TabExecutor {
         var split = message.split("\\\\n");
         for (int i = 0; i < split.length; i++) split[i] = format.replace("<message>", split[i]);
         return String.join("\n", split);
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        return Arrays.asList(args[args.length - 1] + "\\n", args[args.length - 1] + "\\t");
     }
 }

@@ -1,30 +1,28 @@
 package net.thenextlvl.tweaks.command.server;
 
-import core.paper.messenger.PluginMessenger;
+import com.mojang.brigadier.Command;
+import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandInfo(
-        name = "lobby",
-        description = "connect to the lobby",
-        permission = "tweaks.command.lobby",
-        aliases = {"l", "hub"}
-)
-@RequiredArgsConstructor
-public class LobbyCommand implements CommandExecutor {
-    private final TweaksPlugin plugin;
-    private final PluginMessenger messenger;
+import java.util.List;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) throw new CommandSenderException();
-        messenger.connect(player, plugin.config().serverConfig().lobbyServerName());
-        return true;
+@RequiredArgsConstructor
+@SuppressWarnings("UnstableApiUsage")
+public class LobbyCommand {
+    private final TweaksPlugin plugin;
+
+    public void register(Commands registrar) {
+        var command = Commands.literal("lobby")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.lobby"))
+                .executes(context -> {
+                    var sender = (Player) context.getSource().getSender();
+                    plugin.messenger().connect(sender, plugin.config().serverConfig().lobbyServerName());
+                    return Command.SINGLE_SUCCESS;
+                })
+                .build();
+        registrar.register(command, "Connect to the lobby server", List.of("hub", "l"));
     }
 }

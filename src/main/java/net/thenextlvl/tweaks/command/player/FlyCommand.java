@@ -1,26 +1,27 @@
 package net.thenextlvl.tweaks.command.player;
 
-import lombok.RequiredArgsConstructor;
+import com.mojang.brigadier.Command;
+import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
-@CommandInfo(
-        name = "fly",
-        usage = "/<command> (player)",
-        description = "toggle your own or someone else's fly state",
-        permission = "tweaks.command.fly",
-        aliases = {"flight"}
-)
-@RequiredArgsConstructor
+import java.util.List;
+
+@SuppressWarnings("UnstableApiUsage")
 public class FlyCommand extends PlayerCommand {
-    private final TweaksPlugin plugin;
+    public FlyCommand(TweaksPlugin plugin) {
+        super(plugin);
+    }
+
+    public void register(Commands registrar) {
+        var command = create("fly", "tweaks.command.fly", "tweaks.command.fly.others");
+        registrar.register(command, "Toggle your own or someone else's fly state", List.of("flight"));
+    }
 
     @Override
-    protected void execute(CommandSender sender, Player player) {
+    protected int execute(CommandSender sender, Player player) {
         player.setAllowFlight(!player.getAllowFlight());
         player.setFlying(player.getAllowFlight());
 
@@ -30,10 +31,7 @@ public class FlyCommand extends PlayerCommand {
         plugin.bundle().sendMessage(player, messageSelf);
         if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,
                 Placeholder.parsed("player", player.getName()));
-    }
 
-    @Override
-    protected @Nullable String getArgumentPermission(CommandSender sender, Player argument) {
-        return sender.equals(argument) ? null : "tweaks.command.fly.others";
+        return Command.SINGLE_SUCCESS;
     }
 }
