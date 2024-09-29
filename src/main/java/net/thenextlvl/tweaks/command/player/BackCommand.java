@@ -87,7 +87,8 @@ public class BackCommand implements Listener {
         if (player.getLocation().getY() < player.getWorld().getMinHeight()) return;
         if (!player.hasPermission("tweaks.command.back")) return;
 
-        var deque = map.computeIfAbsent(player, ignored -> new LinkedBlockingDeque<>(defaultBufferSize));
-        deque.offerFirst(player.getLocation());
+        map.computeIfAbsent(player, ignored ->
+                new LinkedBlockingDeque<>(defaultBufferSize)
+        ).offerFirst(player.getLocation());
     }
 }
