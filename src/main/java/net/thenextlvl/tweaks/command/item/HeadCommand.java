@@ -48,12 +48,16 @@ public class HeadCommand {
     }
 
     private int playerHead(CommandContext<CommandSourceStack> context) {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            var player = (Player) context.getSource().getSender();
-            var target = context.getArgument("player", String.class);
-            var head = new ItemBuilder(Material.PLAYER_HEAD).head(target);
+        var player = (Player) context.getSource().getSender();
+        var target = context.getArgument("player", String.class);
+        plugin.getServer().createProfile(null, target).update().thenAccept(profile -> {
+            var head = new ItemBuilder(Material.PLAYER_HEAD).head(profile);
             player.getInventory().addItem(head.ensureServerConversions());
             plugin.bundle().sendMessage(player, "item.head.received");
+        }).exceptionally(throwable -> {
+            plugin.getComponentLogger().error("Failed to update profile", throwable);
+            plugin.bundle().sendMessage(player, "item.head.fail");
+            return null;
         });
         return Command.SINGLE_SUCCESS;
     }
