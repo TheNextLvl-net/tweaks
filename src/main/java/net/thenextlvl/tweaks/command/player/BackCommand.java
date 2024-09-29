@@ -30,7 +30,7 @@ public class BackCommand implements Listener {
 
     public BackCommand(TweaksPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        this.defaultBufferSize = plugin.config().generalConfig().backBufferStackSize();
+        this.defaultBufferSize = plugin.config().general().backBufferStackSize();
         this.plugin = plugin;
     }
 
