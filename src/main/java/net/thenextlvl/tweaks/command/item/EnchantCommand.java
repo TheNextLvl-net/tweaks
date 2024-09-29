@@ -44,7 +44,8 @@ public class EnchantCommand {
 
     private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
         var key = (TypedKey<Enchantment>) context.getLastChild().getArgument("enchantment", TypedKey.class);
-        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).getOrThrow(key);
+        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).get(key);
+        if (enchantment == null) return builder.buildFuture();
         IntStream.rangeClosed(enchantment.getStartLevel(), enchantment.getMaxLevel()).forEach(builder::suggest);
         return builder.buildFuture();
     }
@@ -52,7 +53,13 @@ public class EnchantCommand {
     private int enchant(CommandContext<CommandSourceStack> context, int level) {
         var player = (Player) context.getSource().getSender();
         var key = (TypedKey<Enchantment>) context.getArgument("enchantment", TypedKey.class);
-        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).getOrThrow(key);
+        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).get(key);
+
+        if (enchantment == null) {
+            plugin.bundle().sendMessage(player, "enchantment.invalid",
+                    Placeholder.parsed("enchantment", key.key().asString()));
+            return 0;
+        }
 
         var item = player.getInventory().getItemInMainHand();
 

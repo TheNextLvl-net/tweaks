@@ -5,7 +5,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.TypedKey;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -30,11 +32,20 @@ public class UnenchantCommand {
         registrar.register(command, "Unenchant your tools");
     }
 
+    @SuppressWarnings("unchecked")
     private int unenchant(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
         var item = player.getInventory().getItemInMainHand();
 
-        var enchantment = context.getArgument("enchantment", Enchantment.class);
+        var key = (TypedKey<Enchantment>) context.getArgument("enchantment", TypedKey.class);
+        var enchantment = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
+
+        if (enchantment == null) {
+            plugin.bundle().sendMessage(player, "enchantment.invalid",
+                    Placeholder.parsed("enchantment", key.key().asString()));
+            return 0;
+        }
+
         var level = item.removeEnchantment(enchantment);
 
         var message = level != 0 ? "enchantment.removed" : "enchantment.absent";
