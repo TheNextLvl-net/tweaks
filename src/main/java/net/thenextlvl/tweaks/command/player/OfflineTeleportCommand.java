@@ -163,8 +163,6 @@ public class OfflineTeleportCommand {
         var data = new File(plugin.getServer().getWorlds().getFirst().getWorldFolder(), "playerdata");
         var io = IO.of(data, player.getUniqueId() + ".dat");
         var fallback = IO.of(data, player.getUniqueId() + ".dat_old");
-        System.out.println(io + " " + io.exists());
-        System.out.println(fallback + " " + fallback.exists());
         return io.exists() ? new NBTFile<>(io, new CompoundTag())
                 : fallback.exists() ? new NBTFile<>(fallback, new CompoundTag())
                 : null;
