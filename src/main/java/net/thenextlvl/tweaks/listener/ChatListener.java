@@ -32,7 +32,7 @@ public class ChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
         if (!plugin.config().generalConfig().logChat())
-            event.viewers().remove(Bukkit.getConsoleSender());
+            event.viewers().remove(plugin.getServer().getConsoleSender());
         if (!plugin.config().generalConfig().overrideChat()) return;
         var messageContent = event.message() instanceof TextComponent text ? text.content() : "";
         event.renderer((source, displayName, message, viewer) -> plugin.bundle().component(viewer, "chat.format",
@@ -68,7 +68,7 @@ public class ChatListener implements Listener {
         return Tag.selfClosingInserting(MiniMessage.miniMessage()
                 .deserialize(format != null ? format : "")
                 .clickEvent(ClickEvent.callback(ignored -> {
-                    if (canDelete(viewer, sender)) Bukkit.getOnlinePlayers()
+                    if (canDelete(viewer, sender)) plugin.getServer().getOnlinePlayers()
                             .forEach(all -> all.deleteMessage(signedMessage));
                 }, options)));
     }

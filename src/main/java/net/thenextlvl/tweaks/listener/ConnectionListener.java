@@ -3,7 +3,6 @@ package net.thenextlvl.tweaks.listener;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,7 +18,7 @@ public class ConnectionListener implements Listener {
         var permissionLevel = plugin.config().generalConfig().defaultPermissionLevel();
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
         if (!plugin.config().generalConfig().overrideJoinMessage()) return;
-        Bukkit.getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.joined",
+        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.joined",
                 Placeholder.parsed("player", event.getPlayer().getName())));
         event.joinMessage(null);
     }
@@ -27,7 +26,7 @@ public class ConnectionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onQuit(PlayerQuitEvent event) {
         if (!plugin.config().generalConfig().overrideQuitMessage()) return;
-        Bukkit.getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.left",
+        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.left",
                 Placeholder.parsed("player", event.getPlayer().getName())));
         event.quitMessage(null);
     }

@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,7 +23,7 @@ public class VanishCommand extends PlayerCommand {
     @Override
     protected int execute(CommandSender sender, Player target) {
         target.setVisibleByDefault(!target.isVisibleByDefault());
-        Bukkit.getOnlinePlayers().stream()
+        plugin.getServer().getOnlinePlayers().stream()
                 .filter(player -> !target.equals(player))
                 .forEach(player -> {
                     if (target.isVisibleByDefault()) player.showPlayer(plugin, target);
