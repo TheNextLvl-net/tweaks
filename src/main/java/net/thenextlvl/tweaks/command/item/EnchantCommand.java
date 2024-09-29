@@ -36,10 +36,7 @@ public class EnchantCommand {
                         .suggests(new EnchantmentSuggestionProvider())
                         .then(Commands.argument("level", IntegerArgumentType.integer(1, 255))
                                 .suggests(this::suggestLevels)
-                                .executes(context -> {
-                                    var level = context.getArgument("level", int.class);
-                                    return enchant(context, level);
-                                }))
+                                .executes(context -> enchant(context, context.getArgument("level", int.class))))
                         .executes(context -> enchant(context, 1)))
                 .build();
         registrar.register(literal, "Enchant your tools");
