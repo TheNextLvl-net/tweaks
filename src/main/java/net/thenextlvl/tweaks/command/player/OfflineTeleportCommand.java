@@ -1,65 +1,87 @@
 package net.thenextlvl.tweaks.command.player;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import core.io.IO;
 import core.nbt.file.NBTFile;
-import core.nbt.tag.CompoundTag;
-import core.nbt.tag.DoubleTag;
-import core.nbt.tag.FloatTag;
-import core.nbt.tag.ListTag;
 import core.nbt.tag.Tag;
+import core.nbt.tag.*;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
+import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
 import org.bukkit.*;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
-@CommandInfo(
-        name = "tpo",
-        usage = "/<command> [player] (player)",
-        description = "teleport offline-players to others or you to them",
-        permission = "tweaks.command.offline-tp"
-)
 @RequiredArgsConstructor
-public class OfflineTeleportCommand implements TabExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class OfflineTeleportCommand {
     private final TweaksPlugin plugin;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player))
-            throw new CommandSenderException();
-        if (args.length == 0 || args.length > 2)
-            return false;
-        new Thread(() -> {
-            var source = Bukkit.getOfflinePlayer(args[0]);
-            if (args.length == 1) {
-                var location = getLocation(source);
-                var message = location != null ? "offline.teleport.success.to" : "offline.teleport.fail.to";
-                if (location != null) player.teleportAsync(location, COMMAND);
-                plugin.bundle().sendMessage(player, message, Placeholder.parsed("player",
-                        String.valueOf(source.getName())));
-            } else if (!args[0].equalsIgnoreCase(args[1])) {
-                var target = Bukkit.getOfflinePlayer(args[1]);
-                plugin.bundle().sendMessage(player, teleport(source, target),
-                        Placeholder.parsed("source", String.valueOf(source.getName())),
-                        Placeholder.parsed("target", String.valueOf(target.getName())));
-            } else plugin.bundle().sendMessage(player, "offline.teleport.location",
-                    Placeholder.parsed("player", String.valueOf(source.getName())));
-        }, "tpo-thread").start();
-        return true;
+    public void register(Commands registrar) {
+        var command = Commands.literal("tpo")
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.offline-tp"))
+                .then(Commands.argument("player", StringArgumentType.word())
+                        .suggests(new OfflinePlayerSuggestionProvider(plugin))
+                        .then(Commands.argument("target", StringArgumentType.word())
+                                .suggests(new OfflinePlayerSuggestionProvider(plugin))
+                                .executes(context -> {
+                                    plugin.getServer().getAsyncScheduler().runNow(plugin,
+                                            task -> teleportOther(context));
+                                    return Command.SINGLE_SUCCESS;
+                                }))
+                        .executes(context -> {
+                            plugin.getServer().getAsyncScheduler().runNow(plugin,
+                                    task -> teleport(context));
+                            return Command.SINGLE_SUCCESS;
+                        }))
+                .build();
+        registrar.register(command, "Teleport offline-players to others or you to them");
+    }
+
+    private void teleportOther(CommandContext<CommandSourceStack> context) {
+        var sender = context.getSource().getSender();
+        var player = plugin.getServer().getOfflinePlayer(context.getArgument("player", String.class));
+        var target = plugin.getServer().getOfflinePlayer(context.getArgument("target", String.class));
+
+        var message = player.equals(target) ? "offline.teleport.location" : teleport(player, target);
+
+        plugin.bundle().sendMessage(sender, message,
+                Placeholder.parsed("source", String.valueOf(player.getName())),
+                Placeholder.parsed("target", String.valueOf(target.getName())));
+    }
+
+    private void teleport(CommandContext<CommandSourceStack> context) {
+        if (!(context.getSource().getSender() instanceof Player sender)) {
+            plugin.bundle().sendMessage(context.getSource().getSender(), "command.sender");
+            return;
+        }
+
+        var player = plugin.getServer().getOfflinePlayer(context.getArgument("player", String.class));
+        var placeholder = Placeholder.parsed("player", String.valueOf(player.getName()));
+
+        CompletableFuture.<@Nullable Location>completedFuture(getLocation(player))
+                .thenCompose(location -> {
+                    if (location != null) return sender.teleportAsync(location, COMMAND);
+                    return CompletableFuture.completedFuture(false);
+                }).thenAccept(success -> {
+                    var message = success ? "offline.teleport.success.to" : "offline.teleport.fail.to";
+                    plugin.bundle().sendMessage(sender, message, placeholder);
+                }).exceptionally(throwable -> {
+                    plugin.bundle().sendMessage(sender, "offline.teleport.fail.to", placeholder);
+                    plugin.getComponentLogger().error("Failed to teleport to offline player", throwable);
+                    return null;
+                });
     }
 
     private String teleport(OfflinePlayer source, OfflinePlayer target) {
@@ -82,8 +104,9 @@ public class OfflineTeleportCommand implements TabExecutor {
         return true;
     }
 
-    private Location fromTag(CompoundTag tag) {
+    private @Nullable Location fromTag(CompoundTag tag) {
         var world = getWorld(tag);
+        if (world == null) return null;
         var pos = tag.<DoubleTag>getAsList("Pos");
         var z = pos.get(2).getAsDouble();
         var y = pos.get(1).getAsDouble();
@@ -137,18 +160,13 @@ public class OfflineTeleportCommand implements TabExecutor {
     }
 
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
-        var data = new File(Bukkit.getWorlds().getFirst().getWorldFolder(), "playerdata");
+        var data = new File(plugin.getServer().getWorlds().getFirst().getWorldFolder(), "playerdata");
         var io = IO.of(data, player.getUniqueId() + ".dat");
-        return io.exists() ? new NBTFile<>(io, new CompoundTag()) : null;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        return args.length <= 2 ? Arrays.stream(Bukkit.getOfflinePlayers())
-                .filter(player -> args.length == 2 || !player.equals(sender))
-                .map(OfflinePlayer::getName)
-                .filter(Objects::nonNull)
-                .filter(name -> args.length != 2 || !args[0].equalsIgnoreCase(name))
-                .toList() : null;
+        var fallback = IO.of(data, player.getUniqueId() + ".dat_old");
+        System.out.println(io + " " + io.exists());
+        System.out.println(fallback + " " + fallback.exists());
+        return io.exists() ? new NBTFile<>(io, new CompoundTag())
+                : fallback.exists() ? new NBTFile<>(fallback, new CompoundTag())
+                : null;
     }
 }
