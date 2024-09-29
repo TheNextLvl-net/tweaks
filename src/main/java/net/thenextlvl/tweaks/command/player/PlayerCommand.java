@@ -1,42 +1,38 @@
 package net.thenextlvl.tweaks.command.player;
 
-import net.thenextlvl.tweaks.command.api.CommandException;
-import net.thenextlvl.tweaks.command.api.OneOptionalArgumentCommand;
-import net.thenextlvl.tweaks.command.api.PlayerNotOnlineException;
-import org.bukkit.Bukkit;
+import com.mojang.brigadier.exceptions.BuiltInExceptions;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import core.paper.command.CustomArgumentTypes;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import lombok.RequiredArgsConstructor;
+import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.stream.Stream;
+@RequiredArgsConstructor
+@SuppressWarnings("UnstableApiUsage")
+abstract class PlayerCommand {
+    protected final TweaksPlugin plugin;
 
-abstract class PlayerCommand extends OneOptionalArgumentCommand<Player> {
-
-    @Override
-    protected Player parse(Player player) {
-        return player;
+    public LiteralCommandNode<CommandSourceStack> create(String name, String permission, String permissionOther) {
+        return Commands.literal(name)
+                .requires(stack -> stack.getSender().hasPermission(permission))
+                .then(Commands.argument("player", CustomArgumentTypes.playerExact())
+                        .requires(stack -> stack.getSender().hasPermission(permissionOther))
+                        .executes(context -> {
+                            var player = context.getArgument("player", Player.class);
+                            return execute(context.getSource().getSender(), player);
+                        }))
+                .executes(context -> execute(context.getSource().getSender()))
+                .build();
     }
 
-    @Override
-    protected Player parse(String argument) throws CommandException {
-        Player player = Bukkit.getPlayer(argument);
-        if (player == null) throw new PlayerNotOnlineException(argument);
-        return player;
+    protected int execute(CommandSender sender) throws CommandSyntaxException {
+        if (sender instanceof Player player) return execute(sender, player);
+        throw new BuiltInExceptions().dispatcherUnknownCommand().create();
     }
 
-    @Override
-    protected @Nullable String getArgumentPermission(CommandSender sender, Player argument) {
-        return null;
-    }
-
-    @Override
-    protected Stream<String> suggest(CommandSender sender) {
-        return Bukkit.getOnlinePlayers().stream()
-                .filter(player -> {
-                    if (isDenied(sender, player)) return false;
-                    var permission = getArgumentPermission(sender, player);
-                    return permission == null || sender.hasPermission(permission);
-                })
-                .map(Player::getName);
-    }
+    protected abstract int execute(CommandSender sender, Player player) throws CommandSyntaxException;
 }
