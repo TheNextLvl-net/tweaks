@@ -2,99 +2,107 @@ package net.thenextlvl.tweaks.command.item;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonParser;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import core.paper.item.ItemBuilder;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.Bukkit;
+import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-@CommandInfo(
-        name = "head",
-        usage = "/<command> [value|player|url] (value)",
-        description = "get heads or information about them",
-        permission = "tweaks.command.head",
-        aliases = {"skull"}
-)
 @RequiredArgsConstructor
-public class HeadCommand implements TabExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class HeadCommand {
     private final TweaksPlugin plugin;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) throw new CommandSenderException();
-        else if (args.length >= 1 && args[0].equalsIgnoreCase("value")) value(player, args);
-        else if (args.length >= 1 && args[0].equalsIgnoreCase("url")) url(player, args);
-        else if (args.length >= 1 && args[0].equalsIgnoreCase("player")) player(player, args);
-        else return false;
-        return true;
+    public void register(Commands registrar) {
+        var command = Commands.literal("head")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.head"))
+                .then(Commands.literal("player")
+                        .then(Commands.argument("player", StringArgumentType.word())
+                                .suggests(new OfflinePlayerSuggestionProvider<>())
+                                .executes(this::playerHead))
+                        .executes(this::player))
+                .then(Commands.literal("url")
+                        .then(Commands.argument("url", StringArgumentType.greedyString())
+                                .executes(this::urlHead))
+                        .executes(this::url))
+                .then(Commands.literal("value")
+                        .then(Commands.argument("value", StringArgumentType.greedyString())
+                                .executes(this::valueHead))
+                        .executes(this::value))
+                .build();
+        registrar.register(command, "Get heads or information about them", List.of("skull"));
     }
 
-    private void value(Player player, String[] args) {
-        if (args.length < 2) {
-            var value = getValue(player.getInventory().getItemInMainHand());
-            if (value != null) plugin.bundle().sendMessage(player, "item.head.value",
-                    Placeholder.parsed("value", value.substring(0, Math.min(value.length(), 30)) + "…"),
-                    Placeholder.parsed("full_value", value));
-            else plugin.bundle().sendMessage(player, "item.head.none");
-        } else {
-            var head = new ItemBuilder(Material.PLAYER_HEAD).headValue(args[1]);
+    private int playerHead(CommandContext<CommandSourceStack> context) {
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            var player = (Player) context.getSource().getSender();
+            var target = context.getArgument("player", String.class);
+            var head = new ItemBuilder(Material.PLAYER_HEAD).head(target);
             player.getInventory().addItem(head.ensureServerConversions());
             plugin.bundle().sendMessage(player, "item.head.received");
-        }
+        });
+        return Command.SINGLE_SUCCESS;
     }
 
-    private void url(Player player, String[] args) {
-        if (args.length < 2) {
-            var url = getUrl(player.getInventory().getItemInMainHand());
-            if (url != null) plugin.bundle().sendMessage(player, "item.head.url",
-                    Placeholder.parsed("url", url.substring(0, Math.min(url.length(), 30)) + "…"),
-                    Placeholder.parsed("full_url", url));
-            else plugin.bundle().sendMessage(player, "item.head.none");
-        } else {
-            var head = new ItemBuilder(Material.PLAYER_HEAD).headURL(args[1]);
-            player.getInventory().addItem(head.ensureServerConversions());
-            plugin.bundle().sendMessage(player, "item.head.received");
-        }
+    private int valueHead(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
+        var value = context.getArgument("value", String.class);
+        var head = new ItemBuilder(Material.PLAYER_HEAD).headValue(value);
+        player.getInventory().addItem(head.ensureServerConversions());
+        plugin.bundle().sendMessage(player, "item.head.received");
+        return Command.SINGLE_SUCCESS;
     }
 
-    private void player(Player player, String[] args) {
-        if (args.length < 2) {
-            var owner = getOwner(player.getInventory().getItemInMainHand());
-            if (owner != null) plugin.bundle().sendMessage(player, "item.head.player",
-                    Placeholder.parsed("owner", owner));
-            else plugin.bundle().sendMessage(player, "item.head.none");
-        } else {
-            var head = new ItemBuilder(Material.PLAYER_HEAD).head(args[1]);
-            player.getInventory().addItem(head.ensureServerConversions());
-            plugin.bundle().sendMessage(player, "item.head.received");
-        }
+    private int urlHead(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
+        var url = context.getArgument("url", String.class);
+        var head = new ItemBuilder(Material.PLAYER_HEAD).headURL(url);
+        player.getInventory().addItem(head.ensureServerConversions());
+        plugin.bundle().sendMessage(player, "item.head.received");
+        return Command.SINGLE_SUCCESS;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        var suggestions = new ArrayList<String>();
-        if (args.length <= 1) {
-            suggestions.add("player");
-            suggestions.add("value");
-            suggestions.add("url");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("player")) {
-            for (var all : Bukkit.getOfflinePlayers()) suggestions.add(all.getName());
-        }
-        return suggestions;
+    private int player(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
+        var owner = getOwner(player.getInventory().getItemInMainHand());
+        if (owner != null) plugin.bundle().sendMessage(player, "item.head.player",
+                Placeholder.parsed("owner", owner));
+        else plugin.bundle().sendMessage(player, "item.head.none");
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int value(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
+        var value = getValue(player.getInventory().getItemInMainHand());
+        if (value != null) plugin.bundle().sendMessage(player, "item.head.value",
+                Placeholder.parsed("value", value.substring(0, Math.min(value.length(), 30)) + "…"),
+                Placeholder.parsed("full_value", value));
+        else plugin.bundle().sendMessage(player, "item.head.none");
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int url(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
+        var url = getUrl(player.getInventory().getItemInMainHand());
+        if (url != null) plugin.bundle().sendMessage(player, "item.head.url",
+                Placeholder.parsed("url", url.substring(0, Math.min(url.length(), 30)) + "…"),
+                Placeholder.parsed("full_url", url));
+        else plugin.bundle().sendMessage(player, "item.head.none");
+        return Command.SINGLE_SUCCESS;
     }
 
     private static @Nullable String getValue(ItemStack item) {
@@ -113,8 +121,7 @@ public class HeadCommand implements TabExecutor {
         var json = value != null ? JsonParser.parseString(
                 new String(Base64.getDecoder().decode(value))
         ) : null;
-        return json != null
-                ? json.getAsJsonObject()
+        return json != null ? json.getAsJsonObject()
                 .getAsJsonObject("textures")
                 .getAsJsonObject("SKIN")
                 .get("url")
