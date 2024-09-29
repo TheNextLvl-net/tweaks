@@ -1,82 +1,45 @@
 package net.thenextlvl.tweaks.command.item;
 
-import io.papermc.paper.registry.RegistryAccess;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryKey;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import org.bukkit.NamespacedKey;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import net.thenextlvl.tweaks.command.suggestion.UnenchantSuggestionProvider;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-@CommandInfo(
-        name = "unenchant",
-        description = "unenchant your tools",
-        permission = "tweaks.command.unenchant",
-        usage = "/<command> [enchantment...]"
-)
 @RequiredArgsConstructor
-public class UnenchantCommand implements TabExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class UnenchantCommand {
     private final TweaksPlugin plugin;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player))
-            throw new CommandSenderException();
-
-        if (args.length == 0)
-            return false;
-
-        var item = player.getInventory().getItemInMainHand();
-
-        var enchantments = new ArrayList<Enchantment>();
-
-        for (var key : args) {
-            var namespacedKey = NamespacedKey.fromString(key);
-            var enchantment = namespacedKey != null ? RegistryAccess.registryAccess()
-                    .getRegistry(RegistryKey.ENCHANTMENT).get(namespacedKey) : null;
-
-            if (enchantment == null) {
-                plugin.bundle().sendMessage(player, "enchantment.invalid", Placeholder.parsed("enchantment", key));
-                return true;
-            }
-
-            enchantments.add(enchantment);
-        }
-
-        enchantments.forEach(enchantment -> {
-            var level = item.removeEnchantment(enchantment);
-            var message = level != 0 ? "enchantment.removed" : "enchantment.absent";
-            plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
-                    enchantment.displayName(level).style(Style.empty())));
-        });
-
-        return true;
+    public void register(Commands registrar) {
+        var command = Commands.literal("unenchant")
+                .requires(stack -> stack.getSender() instanceof Player player
+                                   && player.hasPermission("tweaks.command.unenchant"))
+                .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
+                        .suggests(new UnenchantSuggestionProvider())
+                        .executes(this::unenchant))
+                .build();
+        registrar.register(command, "Unenchant your tools");
     }
 
-    @Override
-    public @Nullable List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player))
-            return null;
-        PlayerInventory inventory = player.getInventory();
-        ItemStack itemInMainHand = inventory.getItemInMainHand();
+    private int unenchant(CommandContext<CommandSourceStack> context) {
+        var player = (Player) context.getSource().getSender();
+        var item = player.getInventory().getItemInMainHand();
 
-        return itemInMainHand.getEnchantments().keySet().stream()
-                .map(enchantment -> enchantment.getKey().asString())
-                .filter(s -> !Arrays.asList(args).contains(s))
-                .toList();
+        var enchantment = context.getArgument("enchantment", Enchantment.class);
+        var level = item.removeEnchantment(enchantment);
+
+        var message = level != 0 ? "enchantment.removed" : "enchantment.absent";
+        plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
+                enchantment.displayName(level).style(Style.empty())));
+        return level != 0 ? Command.SINGLE_SUCCESS : 0;
     }
 }
