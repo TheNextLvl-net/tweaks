@@ -1,33 +1,35 @@
 package net.thenextlvl.tweaks.command.server;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 
-@CommandInfo(
-        name = "motd",
-        permission = "tweaks.command.motd",
-        description = "change the motd of the server",
-        usage = "/motd [message]"
-)
+import java.util.List;
+
 @RequiredArgsConstructor
-public class MotdCommand implements CommandExecutor {
+@SuppressWarnings("UnstableApiUsage")
+public class MotdCommand {
     private final TweaksPlugin plugin;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        var message = String.join(" ", args);
-        var motd = MiniMessage.miniMessage().deserialize(message);
-        plugin.bundle().sendMessage(sender, "motd.changed", Placeholder.component("motd", motd));
-        plugin.config().serverConfig().motd(message);
-        plugin.configFile().save();
-        Bukkit.motd(motd);
-        return true;
+    public void register(Commands registrar) {
+        var command = Commands.literal("motd")
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.motd"))
+                .then(Commands.argument("motd", StringArgumentType.greedyString()))
+                .executes(context -> {
+                    var sender = context.getSource().getSender();
+                    var message = context.getArgument("motd", String.class);
+                    var motd = MiniMessage.miniMessage().deserialize(message);
+                    plugin.bundle().sendMessage(sender, "motd.changed", Placeholder.component("motd", motd));
+                    plugin.config().serverConfig().motd(message);
+                    plugin.configFile().save();
+                    plugin.getServer().motd(motd);
+                    return Command.SINGLE_SUCCESS;
+                })
+                .build();
+        registrar.register(command, "Change the motd of the server", List.of("wb"));
     }
 }
