@@ -11,9 +11,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.luckperms.api.LuckPermsProvider;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,14 +24,15 @@ import java.util.WeakHashMap;
 @RequiredArgsConstructor
 public class ChatListener implements Listener {
     private final ClickCallback.Options options = ClickCallback.Options.builder().uses(1).build();
-    private final boolean luckperms = Bukkit.getPluginManager().isPluginEnabled("LuckPerms");
+    // todo: use ServiceIO
+    private final boolean luckperms = true;
     private final TweaksPlugin plugin;
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
-        if (!plugin.config().generalConfig().logChat())
+        if (!plugin.config().general().logChat())
             event.viewers().remove(plugin.getServer().getConsoleSender());
-        if (!plugin.config().generalConfig().overrideChat()) return;
+        if (!plugin.config().general().overrideChat()) return;
         var messageContent = event.message() instanceof TextComponent text ? text.content() : "";
         event.renderer((source, displayName, message, viewer) -> plugin.bundle().component(viewer, "chat.format",
                 luckResolvers(source).resolvers(
@@ -47,12 +46,16 @@ public class ChatListener implements Listener {
     }
 
     private TagResolver.Builder luckResolvers(Player player) {
-        var user = luckperms ? LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player) : null;
-        var group = user != null ? LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup()) : null;
-        var meta = user != null ? user.getCachedData().getMetaData(user.getQueryOptions()) : null;
-        var groupName = group != null ? group.getDisplayName() != null ? group.getDisplayName() : group.getName() : "";
-        var prefix = meta != null && meta.getPrefix() != null ? meta.getPrefix() : "";
-        var suffix = meta != null && meta.getSuffix() != null ? meta.getSuffix() : "";
+        // todo: use ServiceIO
+//        var user = luckperms ? LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player) : null;
+//        var group = user != null ? LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup()) : null;
+//        var meta = user != null ? user.getCachedData().getMetaData(user.getQueryOptions()) : null;
+//        var groupName = group != null ? group.getDisplayName() != null ? group.getDisplayName() : group.getName() : "";
+//        var prefix = meta != null && meta.getPrefix() != null ? meta.getPrefix() : "";
+//        var suffix = meta != null && meta.getSuffix() != null ? meta.getSuffix() : "";
+        var groupName = "";
+        var prefix = "";
+        var suffix = "";
         return TagResolver.builder().resolvers(
                 TagResolver.resolver("player_group", Tag.preProcessParsed(groupName)),
                 TagResolver.resolver("player_prefix", Tag.preProcessParsed(prefix)),
@@ -60,6 +63,7 @@ public class ChatListener implements Listener {
         );
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     private Tag createDeleteTag(Player sender, Audience audience, SignedMessage signedMessage) {
         var empty = Tag.selfClosingInserting(Component.empty());
         if (!(audience instanceof Player viewer)) return empty;
@@ -81,9 +85,11 @@ public class ChatListener implements Listener {
 
     private int getWeight(Player player) {
         if (!luckperms) return 0;
-        var user = LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player);
-        var group = LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup());
-        return group != null ? group.getWeight().orElse(0) : 0;
+        // todo: use ServiceIO
+//        var user = LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser(player);
+//        var group = LuckPermsProvider.get().getGroupManager().getGroup(user.getPrimaryGroup());
+//        return group != null ? group.getWeight().orElse(0) : 0;
+        return 0;
     }
 
     private final Map<Player, Integer> chatDeleteWeights = new WeakHashMap<>();
