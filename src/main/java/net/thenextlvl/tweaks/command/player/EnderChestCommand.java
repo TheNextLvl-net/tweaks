@@ -1,56 +1,55 @@
 package net.thenextlvl.tweaks.command.player;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.exceptions.BuiltInExceptions;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import io.papermc.paper.command.brigadier.Commands;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.api.CommandInfo;
-import net.thenextlvl.tweaks.command.api.CommandSenderException;
-import net.thenextlvl.tweaks.command.api.PlayerNotAffectedException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-@CommandInfo(
-        name = "enderchest",
-        usage = "/<command> (player)",
-        description = "open your own or someone else's enderchest",
-        permission = "tweaks.command.enderchest",
-        aliases = {"ec"}
-)
+@SuppressWarnings("UnstableApiUsage")
 public class EnderChestCommand extends PlayerCommand implements Listener {
     private final Set<HumanEntity> viewers = Collections.newSetFromMap(new WeakHashMap<>());
 
     public EnderChestCommand(TweaksPlugin plugin) {
+        super(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
+    public void register(Commands registrar) {
+        var command = create("enderchest", "tweaks.command.enderchest", "tweaks.command.enderchest.others");
+        registrar.register(command, "Open your own or someone else's enderchest", List.of("ec"));
+    }
+
     @Override
-    protected void execute(CommandSender sender, Player target) {
-        if (!(sender instanceof Player player)) throw new CommandSenderException();
-        if (isDenied(sender, target)) throw new PlayerNotAffectedException(target);
+    protected int execute(CommandSender sender, Player target) throws CommandSyntaxException {
+        if (!(sender instanceof Player player))
+            throw new BuiltInExceptions().dispatcherUnknownCommand().create();
         if (!player.equals(target)) viewers.add(player);
+        // todo: custom gui + offline mode
         player.openInventory(target.getEnderChest());
+        return Command.SINGLE_SUCCESS;
     }
 
-    @Override
-    protected @Nullable String getArgumentPermission(CommandSender sender, Player argument) {
-        return sender.equals(argument) ? null : "tweaks.command.enderchest.others";
-    }
-
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClose(InventoryCloseEvent event) {
         viewers.remove(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getWhoClicked().hasPermission("tweaks.command.enderchest.edit")) return;
         if (viewers.contains(event.getWhoClicked())) event.setCancelled(true);
