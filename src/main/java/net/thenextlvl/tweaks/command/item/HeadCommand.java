@@ -32,7 +32,7 @@ public class HeadCommand {
                                    && player.hasPermission("tweaks.command.head"))
                 .then(Commands.literal("player")
                         .then(Commands.argument("player", StringArgumentType.word())
-                                .suggests(new OfflinePlayerSuggestionProvider<>(plugin))
+                                .suggests(new OfflinePlayerSuggestionProvider(plugin))
                                 .executes(this::playerHead))
                         .executes(this::player))
                 .then(Commands.literal("url")

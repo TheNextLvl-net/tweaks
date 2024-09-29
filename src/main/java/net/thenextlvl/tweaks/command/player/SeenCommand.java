@@ -25,7 +25,7 @@ public class SeenCommand {
         var command = Commands.literal("seen")
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.seen"))
                 .then(Commands.argument("player", StringArgumentType.word())
-                        .suggests(new OfflinePlayerSuggestionProvider<>(plugin))
+                        .suggests(new OfflinePlayerSuggestionProvider(plugin))
                         .executes(context -> {
                             plugin.getServer().getAsyncScheduler().runNow(plugin, task -> seen(context));
                             return Command.SINGLE_SUCCESS;
