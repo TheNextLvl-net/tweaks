@@ -1,7 +1,6 @@
 package net.thenextlvl.tweaks.command.player;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -24,7 +23,7 @@ public class FeedCommand extends PlayerCommand {
     }
 
     @Override
-    protected int execute(CommandSender sender, Player player) throws CommandSyntaxException {
+    protected int execute(CommandSender sender, Player player) {
         player.setExhaustion(0f);
         player.setFoodLevel(20);
         player.setSaturation(20f);
