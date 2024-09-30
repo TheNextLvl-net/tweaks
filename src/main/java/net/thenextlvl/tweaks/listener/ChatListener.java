@@ -87,7 +87,9 @@ public class ChatListener implements Listener {
         return Placeholder.component("delete", component.clickEvent(ClickEvent.callback(ignored -> {
             if (!canDelete(viewer, sender)) return;
             plugin.getServer().getOnlinePlayers().forEach(all -> all.deleteMessage(message));
-        }, ClickCallback.Options.builder().uses(1).lifetime(Duration.ofMinutes(10)).build())));
+        }, ClickCallback.Options.builder().uses(1).lifetime(
+                Duration.ofMillis(plugin.config().general().messageDeletionTimeout())
+        ).build())));
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
