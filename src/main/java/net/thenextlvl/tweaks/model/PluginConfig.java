@@ -28,6 +28,7 @@ public class PluginConfig {
     @Getter
     @Accessors(fluent = true, chain = false)
     public static class GeneralConfig {
+        private @SerializedName("message-deletion-timeout") long messageDeletionTimeout = TimeUnit.MINUTES.toMillis(10);
         private @SerializedName("back-buffer-stack-size") int backBufferStackSize = 5;
         private @SerializedName("default-permission-level") byte defaultPermissionLevel = -1;
         private @SerializedName("override-join-message") boolean overrideJoinMessage = false;
