@@ -31,7 +31,7 @@ public class BroadcastCommand {
 
     private int broadcast(CommandContext<CommandSourceStack> context) {
         var message = context.getArgument("message", String.class)
-                .replace("\\t", "\t").replace("\\r", "\r");
+                .replace("\\t", "   ");
         plugin.getServer().forEachAudience(audience -> {
             plugin.bundle().sendMessage(audience, "broadcast.header");
             var format = format(plugin.bundle().format(audience, "broadcast.format"), message);

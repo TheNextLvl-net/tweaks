@@ -14,7 +14,6 @@ public class TagSuggestionProvider<S> implements SuggestionProvider<S> {
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         builder.suggest("\\n", () -> "line break");
         builder.suggest("\\t", () -> "tab");
-        builder.suggest("\\r", () -> "carriage return");
         builder.suggest("<newline>", () -> "line break");
         builder.suggest("<dark_blue>", () -> "dark blue");
         builder.suggest("<dark_green>", () -> "dark green");

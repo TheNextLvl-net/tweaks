@@ -30,7 +30,7 @@ public class RenameCommand {
         var item = player.getInventory().getItemInMainHand();
 
         var text = context.getArgument("name", String.class);
-        var name = MiniMessage.miniMessage().deserialize(text.replace("\\t", "\t"));
+        var name = MiniMessage.miniMessage().deserialize(text.replace("\\t", "  "));
 
         if (!item.editMeta(itemMeta -> itemMeta.displayName(name))) {
             plugin.bundle().sendMessage(player, "item.rename.fail");

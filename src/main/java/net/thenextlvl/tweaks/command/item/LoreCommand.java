@@ -76,7 +76,7 @@ public class LoreCommand {
 
     private List<Component> getLore(CommandContext<CommandSourceStack> context) {
         var text = context.getArgument("text", String.class)
-                .replace("\\t", "\t").replace("\\r", "\r");
+                .replace("\\t", "   ");
         return Arrays.stream(text.split("\\\\n"))
                 .map(plugin.bundle()::deserialize)
                 .toList();
