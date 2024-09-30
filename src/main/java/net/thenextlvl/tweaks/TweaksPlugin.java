@@ -101,8 +101,6 @@ public class TweaksPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         versionChecker().checkVersion();
-        var motd = config().general().motd();
-        if (motd != null) getServer().motd(MiniMessage.miniMessage().deserialize(motd));
     }
 
     @Override
@@ -110,6 +108,7 @@ public class TweaksPlugin extends JavaPlugin {
         initConfigs();
         initTranslations();
         initControllers();
+        initMotd();
         registerCommands();
         registerLinks();
         registerListeners();
@@ -330,6 +329,11 @@ public class TweaksPlugin extends JavaPlugin {
     private void initControllers() {
         if (getServer().getPluginManager().isPluginEnabled("ServiceIO"))
             this.serviceController = new ServiceController(this);
+    }
+
+    private void initMotd() {
+        var motd = config().general().motd();
+        if (motd != null) getServer().motd(MiniMessage.miniMessage().deserialize(motd));
     }
 
     public ComponentBundle bundle() {
