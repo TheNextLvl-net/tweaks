@@ -5,9 +5,11 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -34,12 +36,15 @@ public class HomeController {
      * Retrieves the maximum number of homes that the specified player can set.
      *
      * @param player the player whose maximum home count is being queried
-     * @return a CompletableFuture that will contain the maximum number of homes the player can set
+     * @return the maximum number of homes the player is allowed to set;
+     * if not explicitly defined in permissions, the default limit
+     * from the plugin configuration is returned;
      */
-    public CompletableFuture<Integer> getMaxHomeCount(OfflinePlayer player) {
-        var max = plugin.config().homes().limit();
-        if (plugin.serviceController() == null) return CompletableFuture.completedFuture(max);
-        return plugin.serviceController().getPermissions().tryGetPermissionHolder(player)
-                .thenApply(holder -> holder.intInfoNode("max-homes").orElse(max));
+    public int getMaxHomeCount(Player player) {
+        return Optional.ofNullable(plugin.serviceController())
+                .map(ServiceController::getPermissions)
+                .flatMap(controller -> controller.getPermissionHolder(player))
+                .flatMap(permissionHolder -> permissionHolder.intInfoNode("max-homes"))
+                .orElse(plugin.config().homes().limit());
     }
 }

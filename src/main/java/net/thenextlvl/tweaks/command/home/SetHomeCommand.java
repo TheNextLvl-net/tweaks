@@ -36,16 +36,17 @@ public class SetHomeCommand {
             var player = (Player) context.getSource().getSender();
             if (player.hasPermission("extra-tweaks.home.limit.bypass")) setHome(name, player);
             else if (plugin.dataController().hasHome(player, name)) setHome(name, player);
-            else plugin.homeController().getMaxHomeCount(player).thenAccept(limit -> {
-                    if (limit < 0) {
-                        setHome(name, player);
-                        return;
-                    }
-                    var count = plugin.dataController().getHomeCount(player);
-                    if (count >= limit) plugin.bundle().sendMessage(player, "command.home.limit",
-                            Placeholder.parsed("limit", String.valueOf(limit)));
-                    else setHome(name, player);
-                });
+            else {
+                var limit = plugin.homeController().getMaxHomeCount(player);
+                if (limit < 0) {
+                    setHome(name, player);
+                    return;
+                }
+                var count = plugin.dataController().getHomeCount(player);
+                if (count >= limit) plugin.bundle().sendMessage(player, "command.home.limit",
+                        Placeholder.parsed("limit", String.valueOf(limit)));
+                else setHome(name, player);
+            }
         });
         return Command.SINGLE_SUCCESS;
     }
