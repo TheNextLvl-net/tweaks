@@ -40,7 +40,7 @@ public class SeenCommand {
         var player = plugin.getServer().getOfflinePlayer(name);
 
         if (player.getPlayer() != null) {
-            plugin.bundle().sendMessage(sender, "last.seen.now", Placeholder.parsed("player",
+            plugin.bundle().sendMessage(sender, "command.last.seen.now", Placeholder.parsed("player",
                     player.getName() != null ? player.getName() : name));
             return;
         }
@@ -55,7 +55,7 @@ public class SeenCommand {
         var locale = sender instanceof Player p ? p.locale() : Locale.US;
         var format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 
-        plugin.bundle().sendMessage(sender, "last.seen.time",
+        plugin.bundle().sendMessage(sender, "command.last.seen.time",
                 Placeholder.parsed("player", player.getName() != null ? player.getName() : name),
                 Placeholder.parsed("time", format.format(lastSeen)));
     }

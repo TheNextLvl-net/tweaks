@@ -31,10 +31,10 @@ public class BroadcastCommand {
         var message = context.getArgument("message", String.class)
                 .replace("\\t", "   ");
         plugin.getServer().forEachAudience(audience -> {
-            plugin.bundle().sendMessage(audience, "broadcast.header");
-            var format = format(plugin.bundle().format(audience, "broadcast.format"), message);
+            plugin.bundle().sendMessage(audience, "command.broadcast.header");
+            var format = format(plugin.bundle().format(audience, "command.broadcast.format"), message);
             plugin.bundle().sendRawMessage(audience, format);
-            plugin.bundle().sendMessage(audience, "broadcast.footer");
+            plugin.bundle().sendMessage(audience, "command.broadcast.footer");
         });
         return Command.SINGLE_SUCCESS;
     }

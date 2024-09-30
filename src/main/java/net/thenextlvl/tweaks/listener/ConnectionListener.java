@@ -28,7 +28,7 @@ public class ConnectionListener implements Listener {
         var permissionLevel = plugin.config().general().defaultPermissionLevel();
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
         if (!plugin.config().general().overrideJoinMessage()) return;
-        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.joined",
+        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.connected",
                 Placeholder.parsed("player", event.getPlayer().getName())));
         event.joinMessage(null);
     }
@@ -36,7 +36,7 @@ public class ConnectionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (!plugin.config().general().overrideQuitMessage()) return;
-        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.left",
+        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.disconnected",
                 Placeholder.parsed("player", event.getPlayer().getName())));
         event.quitMessage(null);
     }

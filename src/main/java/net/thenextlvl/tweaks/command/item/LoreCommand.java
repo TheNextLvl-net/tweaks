@@ -60,12 +60,12 @@ public class LoreCommand {
         var item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isEmpty()) {
-            plugin.bundle().sendMessage(player, "hold.item");
+            plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
 
         var success = item.editMeta(consumer);
-        var message = success ? "item.lore.success" : "item.lore.fail";
+        var message = success ? "command.item.lore.success" : "command.item.lore.fail";
 
         plugin.bundle().sendMessage(player, message);
         return success ? Command.SINGLE_SUCCESS : 0;

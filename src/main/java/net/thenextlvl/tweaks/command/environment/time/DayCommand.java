@@ -20,7 +20,7 @@ public class DayCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.bundle().sendMessage(sender, "time.day", Placeholder.parsed("world", world.getName()));
+        plugin.bundle().sendMessage(sender, "command.time.day", Placeholder.parsed("world", world.getName()));
         world.setTime(1000);
     }
 

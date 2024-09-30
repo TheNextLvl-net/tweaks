@@ -30,8 +30,8 @@ public class VanishCommand extends PlayerCommand {
                     else player.hidePlayer(plugin, target);
                 });
 
-        var messageSelf = target.isVisibleByDefault() ? "vanish.disabled.self" : "vanish.enabled.self";
-        var messageOthers = target.isVisibleByDefault() ? "vanish.disabled.others" : "vanish.enabled.others";
+        var messageSelf = target.isVisibleByDefault() ? "command.vanish.disabled.self" : "command.vanish.enabled.self";
+        var messageOthers = target.isVisibleByDefault() ? "command.vanish.disabled.others" : "command.vanish.enabled.others";
         plugin.bundle().sendMessage(target, messageSelf);
         if (target != sender) plugin.bundle().sendMessage(sender, messageOthers,
                 Placeholder.parsed("player", target.getName()));

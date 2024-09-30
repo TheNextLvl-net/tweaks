@@ -26,9 +26,9 @@ public class UnbreakableCommand {
         var player = (Player) context.getSource().getSender();
         if (!player.getInventory().getItemInMainHand().editMeta(itemMeta -> {
             itemMeta.setUnbreakable(!itemMeta.isUnbreakable());
-            var message = itemMeta.isUnbreakable() ? "item.unbreakable.success" : "item.unbreakable.removed";
+            var message = itemMeta.isUnbreakable() ? "command.item.unbreakable.success" : "command.item.unbreakable.removed";
             plugin.bundle().sendMessage(player, message);
-        })) plugin.bundle().sendMessage(player, "item.unbreakable.fail");
+        })) plugin.bundle().sendMessage(player, "command.item.unbreakable.fail");
         return Command.SINGLE_SUCCESS;
     }
 }

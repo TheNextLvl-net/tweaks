@@ -56,11 +56,11 @@ public class ItemCommand {
         } while (amount > 0);
 
         if (added == 0) {
-            plugin.bundle().sendMessage(player, "inventory.full");
+            plugin.bundle().sendMessage(player, "command.inventory.full");
             return 0;
         }
 
-        plugin.bundle().sendMessage(player, "item.received",
+        plugin.bundle().sendMessage(player, "command.item.received",
                 Placeholder.parsed("amount", String.valueOf(added)),
                 Placeholder.component("item", Component.translatable(item)
                         .hoverEvent(item.asHoverEvent(showItem -> showItem))));

@@ -34,12 +34,12 @@ public class RepairCommand {
         var inventory = player.getInventory();
 
         if (inventory.getItemInMainHand().getType().isEmpty()) {
-            plugin.bundle().sendMessage(player, "hold.item");
+            plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
 
         var success = repair(inventory.getItemInMainHand());
-        var message = success ? "item.repaired.success" : "item.repaired.fail";
+        var message = success ? "command.item.repaired.success" : "command.item.repaired.fail";
 
         plugin.bundle().sendMessage(player, message);
         return Command.SINGLE_SUCCESS;
@@ -49,7 +49,7 @@ public class RepairCommand {
         var player = (Player) context.getSource().getSender();
         var inventory = player.getInventory();
         for (var item : inventory.getContents()) repair(item);
-        plugin.bundle().sendMessage(player, "item.repaired.all");
+        plugin.bundle().sendMessage(player, "command.item.repaired.all");
         return Command.SINGLE_SUCCESS;
     }
 

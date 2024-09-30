@@ -50,14 +50,14 @@ public class BackCommand implements Listener {
         var pop = deque != null ? deque.pollFirst() : null;
 
         if (deque == null || pop == null) {
-            plugin.bundle().sendMessage(player, "back.empty");
+            plugin.bundle().sendMessage(player, "command.back.none");
             return 0;
         }
 
         player.setMetadata(metadataKey, new FixedMetadataValue(plugin, true));
         player.teleportAsync(pop, COMMAND).thenAccept(success -> {
-            if (success) plugin.bundle().sendMessage(player, "back.teleport.success");
-            else plugin.bundle().sendMessage(player, "back.teleport.fail");
+            if (success) plugin.bundle().sendMessage(player, "command.back.teleport.success");
+            else plugin.bundle().sendMessage(player, "command.back.teleport.fail");
         });
         return Command.SINGLE_SUCCESS;
     }

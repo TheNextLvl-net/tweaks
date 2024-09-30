@@ -46,10 +46,10 @@ public class GameModeCommand {
         resolve.forEach(player -> {
             player.setGameMode(gamemode);
 
-            plugin.bundle().sendMessage(player, "gamemode.changed.self", Placeholder.component("gamemode",
+            plugin.bundle().sendMessage(player, "command.gamemode.changed.self", Placeholder.component("gamemode",
                     Component.translatable(gamemode)));
 
-            if (!sender.equals(player)) plugin.bundle().sendMessage(sender, "gamemode.changed.others",
+            if (!sender.equals(player)) plugin.bundle().sendMessage(sender, "command.gamemode.changed.others",
                     Placeholder.component("gamemode", Component.translatable(gamemode)),
                     Placeholder.parsed("player", player.getName()));
         });

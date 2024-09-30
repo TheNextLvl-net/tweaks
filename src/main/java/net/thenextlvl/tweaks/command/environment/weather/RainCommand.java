@@ -20,7 +20,7 @@ public class RainCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.bundle().sendMessage(sender, "weather.rain",
+        plugin.bundle().sendMessage(sender, "command.weather.rain",
                 Placeholder.parsed("world", world.getName()));
         world.setThundering(false);
         world.setStorm(true);

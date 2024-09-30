@@ -20,7 +20,7 @@ public class MidnightCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.bundle().sendMessage(sender, "time.midnight",
+        plugin.bundle().sendMessage(sender, "command.time.midnight",
                 Placeholder.parsed("world", world.getName()));
         world.setTime(18000);
     }

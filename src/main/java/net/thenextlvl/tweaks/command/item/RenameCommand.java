@@ -33,11 +33,11 @@ public class RenameCommand {
         var name = MiniMessage.miniMessage().deserialize(text.replace("\\t", "  "));
 
         if (!item.editMeta(itemMeta -> itemMeta.displayName(name))) {
-            plugin.bundle().sendMessage(player, "item.rename.fail");
+            plugin.bundle().sendMessage(player, "command.item.rename.fail");
             return 0;
         }
 
-        plugin.bundle().sendMessage(player, "item.rename.success");
+        plugin.bundle().sendMessage(player, "command.item.rename.success");
         return Command.SINGLE_SUCCESS;
     }
 }

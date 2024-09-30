@@ -55,7 +55,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         }
 
         if (sender.equals(target)) {
-            plugin.bundle().sendMessage(sender, "player.not.affected",
+            plugin.bundle().sendMessage(sender, "command.player.excluded",
                     Placeholder.parsed("player", sender.getName()));
             return 0;
         }

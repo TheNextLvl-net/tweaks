@@ -25,8 +25,8 @@ public class FlyCommand extends PlayerCommand {
         player.setAllowFlight(!player.getAllowFlight());
         player.setFlying(player.getAllowFlight());
 
-        var messageSelf = player.getAllowFlight() ? "flight.enabled.self" : "flight.disabled.self";
-        var messageOthers = player.getAllowFlight() ? "flight.enabled.others" : "flight.disabled.others";
+        var messageSelf = player.getAllowFlight() ? "command.flight.enabled.self" : "command.flight.disabled.self";
+        var messageOthers = player.getAllowFlight() ? "command.flight.enabled.others" : "command.flight.disabled.others";
 
         plugin.bundle().sendMessage(player, messageSelf);
         if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,
