@@ -32,8 +32,9 @@ public class CommandConfig {
     private @SerializedName("unbreakable") CommandDefinition unbreakable = new CommandDefinition("unbreakable", Set.of());
     private @SerializedName("unenchant") CommandDefinition unenchant = new CommandDefinition("unenchant", Set.of());
 
-    private @SerializedName("set-spawn") CommandDefinition setSpawn = new CommandDefinition("set-spawn", Set.of("setspawn"));
-    private @SerializedName("spawn") CommandDefinition spawn = new CommandDefinition("spawn", Set.of());
+    private @SerializedName("msg") CommandDefinition msg = new CommandDefinition("msg", Set.of("tell", "write", "t", "w"));
+    private @SerializedName("msg-toggle") CommandDefinition msgToggle = new CommandDefinition("msgtoggle", Set.of("togglemsg"));
+    private @SerializedName("reply") CommandDefinition reply = new CommandDefinition("reply", Set.of("r"));
 
     private @SerializedName("back") CommandDefinition back = new CommandDefinition("back", Set.of());
     private @SerializedName("enderchest") CommandDefinition enderchest = new CommandDefinition("enderchest", Set.of("ec"));
@@ -54,21 +55,6 @@ public class CommandConfig {
     private @SerializedName("lobby") CommandDefinition lobby = new CommandDefinition("lobby", Set.of("hub", "l"));
     private @SerializedName("motd") CommandDefinition motd = new CommandDefinition("motd", Set.of());
 
-    private @SerializedName("teleport-accept") CommandDefinition teleportAccept = new CommandDefinition("tpaccept", Set.of());
-    private @SerializedName("teleport-ask") CommandDefinition teleportAsk = new CommandDefinition("tpa", Set.of("tpask"));
-    private @SerializedName("teleport-deny") CommandDefinition teleportDeny = new CommandDefinition("tpadeny", Set.of("tpdeny"));
-    private @SerializedName("teleport-here") CommandDefinition teleportHere = new CommandDefinition("tpahere", Set.of("tphere"));
-    private @SerializedName("teleport-toggle") CommandDefinition teleportToggle = new CommandDefinition("tpatoggle", Set.of("toggletpa"));
-
-    private @SerializedName("msg") CommandDefinition msg = new CommandDefinition("msg", Set.of("tell", "write", "t", "w"));
-    private @SerializedName("msg-toggle") CommandDefinition msgToggle = new CommandDefinition("msgtoggle", Set.of("togglemsg"));
-    private @SerializedName("reply") CommandDefinition reply = new CommandDefinition("reply", Set.of("r"));
-
-    private @SerializedName("delete-warp") CommandDefinition deleteWarp = new CommandDefinition("delete-warp", Set.of("delwarp"));
-    private @SerializedName("set-warp") CommandDefinition setWarp = new CommandDefinition("set-warp", Set.of("setwarp"));
-    private @SerializedName("warp") CommandDefinition warp = new CommandDefinition("warp", Set.of());
-    private @SerializedName("warps") CommandDefinition warps = new CommandDefinition("warps", Set.of());
-
     private @SerializedName("discord") CommandDefinition discord = new CommandDefinition("discord", Set.of("dc"));
     private @SerializedName("reddit") CommandDefinition reddit = new CommandDefinition("reddit", Set.of());
     private @SerializedName("teamspeak") CommandDefinition teamspeak = new CommandDefinition("teamspeak", Set.of("teamspeak3", "ts", "ts3"));
@@ -76,6 +62,20 @@ public class CommandConfig {
     private @SerializedName("website") CommandDefinition website = new CommandDefinition("website", Set.of());
     private @SerializedName("x") CommandDefinition x = new CommandDefinition("x", Set.of("twitter"));
     private @SerializedName("youtube") CommandDefinition youtube = new CommandDefinition("youtube", Set.of("yt"));
+
+    private @SerializedName("set-spawn") CommandDefinition setSpawn = new CommandDefinition("set-spawn", Set.of("setspawn"));
+    private @SerializedName("spawn") CommandDefinition spawn = new CommandDefinition("spawn", Set.of());
+
+    private @SerializedName("teleport-accept") CommandDefinition teleportAccept = new CommandDefinition("tpaccept", Set.of());
+    private @SerializedName("teleport-ask") CommandDefinition teleportAsk = new CommandDefinition("tpa", Set.of("tpask"));
+    private @SerializedName("teleport-deny") CommandDefinition teleportDeny = new CommandDefinition("tpadeny", Set.of("tpdeny"));
+    private @SerializedName("teleport-here") CommandDefinition teleportHere = new CommandDefinition("tpahere", Set.of("tphere"));
+    private @SerializedName("teleport-toggle") CommandDefinition teleportToggle = new CommandDefinition("tpatoggle", Set.of("toggletpa"));
+
+    private @SerializedName("delete-warp") CommandDefinition deleteWarp = new CommandDefinition("delete-warp", Set.of("delwarp"));
+    private @SerializedName("set-warp") CommandDefinition setWarp = new CommandDefinition("set-warp", Set.of("setwarp"));
+    private @SerializedName("warp") CommandDefinition warp = new CommandDefinition("warp", Set.of());
+    private @SerializedName("warps") CommandDefinition warps = new CommandDefinition("warps", Set.of());
 
     private @SerializedName("anvil") CommandDefinition anvil = new CommandDefinition("anvil", Set.of());
     private @SerializedName("cartography-table") CommandDefinition cartographyTable = new CommandDefinition("cartography-table", Set.of("cartography"));
