@@ -41,7 +41,7 @@ public class BroadcastCommand {
 
     private String format(@Nullable String format, String message) {
         if (format == null) return message.replace("\\\\n", "\n");
-        var split = message.split("\\\\n");
+        var split = message.split("(\\\\n|<br>|<newline>)");
         for (int i = 0; i < split.length; i++) split[i] = format.replace("<message>", split[i]);
         return String.join("\n", split);
     }
