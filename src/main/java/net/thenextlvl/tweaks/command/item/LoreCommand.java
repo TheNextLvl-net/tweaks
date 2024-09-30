@@ -8,7 +8,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.suggestion.TagSuggestionProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -29,11 +28,9 @@ public class LoreCommand {
                                    && player.hasPermission("tweaks.command.lore"))
                 .then(Commands.literal("append")
                         .then(Commands.argument("text", StringArgumentType.greedyString())
-                                .suggests(new TagSuggestionProvider<>())
                                 .executes(this::append)))
                 .then(Commands.literal("set")
                         .then(Commands.argument("text", StringArgumentType.greedyString())
-                                .suggests(new TagSuggestionProvider<>())
                                 .executes(this::set)))
                 .then(Commands.literal("unset")
                         .executes(this::unset))

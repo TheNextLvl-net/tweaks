@@ -7,7 +7,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.suggestion.TagSuggestionProvider;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +22,6 @@ public class BroadcastCommand {
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.broadcast"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
-                        .suggests(new TagSuggestionProvider<>())
                         .executes(this::broadcast))
                 .build();
         registrar.register(command, "Broadcast a message", List.of("bc"));
