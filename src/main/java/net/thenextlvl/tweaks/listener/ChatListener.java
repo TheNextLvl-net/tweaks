@@ -16,12 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.Optional;
-import java.util.WeakHashMap;
 
 @RequiredArgsConstructor
 public class ChatListener implements Listener {
@@ -52,29 +49,50 @@ public class ChatListener implements Listener {
         var resolver = TagResolver.builder();
         var services = services();
         services.map(ServiceController::getGroups).flatMap(groups -> groups.getGroupHolder(player)
-                .map(GroupHolder::getPrimaryGroup).flatMap(groups::getGroup)).ifPresent(group -> {
-            group.getDisplayName().ifPresent(displayName -> resolver.resolver(Placeholder.parsed("group", displayName)));
-            group.getPrefix().ifPresent(prefix -> resolver.resolver(Placeholder.parsed("group_prefix", prefix)));
-            group.getSuffix().ifPresent(suffix -> resolver.resolver(Placeholder.parsed("group_suffix", suffix)));
-            resolver.resolver(Placeholder.parsed("group_name", group.getName()));
+                .map(GroupHolder::getPrimaryGroup).flatMap(groups::getGroup)).ifPresentOrElse(group -> {
+            resolver.resolver(Placeholder.parsed("group", group.getDisplayName().orElse(group.getName())));
+            resolver.resolver(Placeholder.parsed("group_prefix", group.getPrefix().orElse("")));
+            resolver.resolver(Placeholder.parsed("group_suffix", group.getSuffix().orElse("")));
+        }, () -> {
+            resolver.resolver(Placeholder.parsed("group", ""));
+            resolver.resolver(Placeholder.parsed("group_prefix", ""));
+            resolver.resolver(Placeholder.parsed("group_suffix", ""));
         });
-        services.map(ServiceController::getChat).flatMap(chat -> chat.getProfile(player)).ifPresent(profile -> {
-            profile.getDisplayName().ifPresent(displayName -> resolver.resolver(Placeholder.parsed("chat_display_name", displayName)));
-            profile.getPrefix().ifPresent(prefix -> resolver.resolver(Placeholder.parsed("chat_prefix", prefix)));
-            profile.getSuffix().ifPresent(suffix -> resolver.resolver(Placeholder.parsed("chat_suffix", suffix)));
+        services.map(ServiceController::getChat).flatMap(chat -> chat.getProfile(player)).ifPresentOrElse(profile -> {
+            resolver.resolver(Placeholder.parsed("chat_display_name", profile.getDisplayName().orElse(player.getName())));
+            resolver.resolver(Placeholder.parsed("chat_prefix", profile.getPrefix().orElse("")));
+            resolver.resolver(Placeholder.parsed("chat_suffix", profile.getSuffix().orElse("")));
+        }, () -> {
+            resolver.resolver(Placeholder.parsed("chat_display_name", player.getName()));
+            resolver.resolver(Placeholder.parsed("chat_prefix", ""));
+            resolver.resolver(Placeholder.parsed("chat_suffix", ""));
         });
-        services.map(ServiceController::getEconomy).ifPresent(economy -> {
-            economy.getAccount(player).ifPresent(account -> {
+        services.map(ServiceController::getEconomy).ifPresentOrElse(economy -> {
+            economy.getAccount(player).ifPresentOrElse(account -> {
                 resolver.resolver(Placeholder.parsed("balance", economy.format(account.getBalance())));
                 resolver.resolver(Placeholder.parsed("balance_unformatted", account.getBalance().toString()));
+            }, () -> {
+                resolver.resolver(Placeholder.parsed("balance", ""));
+                resolver.resolver(Placeholder.parsed("balance_unformatted", ""));
             });
-            economy.getBankController().flatMap(controller -> controller.getBank(player)).ifPresent(bank -> {
+            economy.getBankController().flatMap(controller -> controller.getBank(player)).ifPresentOrElse(bank -> {
                 resolver.resolver(Placeholder.parsed("bank_balance", bank.getBalance().toString()));
                 resolver.resolver(Placeholder.parsed("bank_balance_unformatted", bank.getBalance().toString()));
+            }, () -> {
+                resolver.resolver(Placeholder.parsed("bank_balance", ""));
+                resolver.resolver(Placeholder.parsed("bank_balance_unformatted", ""));
             });
             resolver.resolver(Placeholder.parsed("currency_name", economy.getCurrencyNameSingular(player.locale())));
             resolver.resolver(Placeholder.parsed("currency_name_plural", economy.getCurrencyNamePlural(player.locale())));
             resolver.resolver(Placeholder.parsed("currency_symbol", economy.getCurrencySymbol()));
+        }, () -> {
+            resolver.resolver(Placeholder.parsed("balance", ""));
+            resolver.resolver(Placeholder.parsed("balance_unformatted", ""));
+            resolver.resolver(Placeholder.parsed("bank_balance", ""));
+            resolver.resolver(Placeholder.parsed("bank_balance_unformatted", ""));
+            resolver.resolver(Placeholder.parsed("currency_name", ""));
+            resolver.resolver(Placeholder.parsed("currency_name_plural", ""));
+            resolver.resolver(Placeholder.parsed("currency_symbol", ""));
         });
         return resolver;
     }
@@ -108,26 +126,11 @@ public class ChatListener implements Listener {
                 .orElse(0);
     }
 
-    private final Map<Player, Integer> chatDeleteWeights = new WeakHashMap<>();
-
     private int getChatDeleteWeight(Player player) {
-        return chatDeleteWeights.computeIfAbsent(player, p -> p.getEffectivePermissions().stream()
-                .map(PermissionAttachmentInfo::getPermission)
-                .filter(permission -> permission.startsWith("tweaks.chat.delete."))
-                .filter(permission -> {
-                    var split = permission.split("\\.");
-                    return split.length == 4 && !split[3].equals("own");
-                })
-                .map(permission -> {
-                    try {
-                        return Integer.parseInt(permission.split("\\.")[3]);
-                    } catch (NumberFormatException ignored) {
-                        return -1;
-                    }
-                })
-                .filter(weight -> weight >= 0)
-                .max(Integer::compareTo)
-                .orElse(-1));
+        return services().map(ServiceController::getPermissions)
+                .flatMap(controller -> controller.getPermissionHolder(player))
+                .flatMap(holder -> holder.intInfoNode("chat-delete-weight"))
+                .orElse(-1);
     }
 
     private Optional<ServiceController> services() {
