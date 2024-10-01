@@ -26,6 +26,7 @@ public class CommandConfig {
 
     private @SerializedName("enchant") CommandDefinition enchant = new CommandDefinition("enchant", Set.of());
     private @SerializedName("head") CommandDefinition head = new CommandDefinition("head", Set.of("skull"));
+    private @SerializedName("item") CommandDefinition item = new CommandDefinition("item", Set.of("i"));
     private @SerializedName("lore") CommandDefinition lore = new CommandDefinition("lore", Set.of());
     private @SerializedName("rename") CommandDefinition rename = new CommandDefinition("rename", Set.of());
     private @SerializedName("repair") CommandDefinition repair = new CommandDefinition("repair", Set.of());
