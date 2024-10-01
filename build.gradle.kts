@@ -165,6 +165,7 @@ paper {
         register("tweaks.commands.server") {
             this.children = listOf(
                 "tweaks.command.broadcast",
+                "tweaks.command.lobby",
                 "tweaks.command.motd"
             )
         }
