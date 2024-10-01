@@ -45,5 +45,7 @@ public class ConnectionListener implements Listener {
     public void cleanup(PlayerQuitEvent event) {
         plugin.msgController().removeConversations(event.getPlayer());
         plugin.tpaController().removeRequests(event.getPlayer());
+        plugin.teleportController().remove(event.getPlayer());
+        plugin.backController().remove(event.getPlayer());
     }
 }

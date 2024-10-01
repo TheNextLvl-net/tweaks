@@ -59,4 +59,8 @@ public class TeleportController {
             return CompletableFuture.completedFuture(false);
         });
     }
+
+    public void remove(Player player) {
+        teleports.remove(player);
+    }
 }
