@@ -31,9 +31,9 @@ public class PluginConfig {
         private @SerializedName("message-deletion-timeout") long messageDeletionTimeout = TimeUnit.MINUTES.toMillis(10);
         private @SerializedName("back-buffer-stack-size") int backBufferStackSize = 5;
         private @SerializedName("default-permission-level") byte defaultPermissionLevel = -1;
-        private @SerializedName("override-join-message") boolean overrideJoinMessage = false;
-        private @SerializedName("override-quit-message") boolean overrideQuitMessage = false;
-        private @SerializedName("override-chat") boolean overrideChat = false;
+        private @SerializedName("override-join-message") boolean overrideJoinMessage = true;
+        private @SerializedName("override-quit-message") boolean overrideQuitMessage = true;
+        private @SerializedName("override-chat") boolean overrideChat = true;
         private @SerializedName("log-chat") boolean logChat = true;
 
         @Setter
