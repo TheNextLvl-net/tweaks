@@ -19,7 +19,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.*;
+import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @SuppressWarnings("UnstableApiUsage")
 public class BackCommand implements Listener {
@@ -43,28 +43,34 @@ public class BackCommand implements Listener {
         registrar.register(command, "Go back to your last position");
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private int back(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
 
         var deque = map.get(player);
-        var pop = deque != null ? deque.pollFirst() : null;
+        var peek = deque != null ? deque.peekFirst() : null;
 
-        if (deque == null || pop == null) {
+        if (deque == null || peek == null) {
             plugin.bundle().sendMessage(player, "command.back.none");
             return 0;
         }
 
         player.setMetadata(metadataKey, new FixedMetadataValue(plugin, true));
-        player.teleportAsync(pop, COMMAND).thenAccept(success -> {
-            if (success) plugin.bundle().sendMessage(player, "command.back.teleport.success");
-            else plugin.bundle().sendMessage(player, "command.back.teleport.fail");
+
+        plugin.teleportController().teleport(player, peek, COMMAND).thenAccept(success -> {
+            var message = success ? "command.back" : "command.teleport.cancelled";
+            plugin.bundle().sendMessage(player, message);
+            if (success) deque.remove(peek);
         });
         return Command.SINGLE_SUCCESS;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent event) {
-        if (event.getCause() != PLUGIN && event.getCause() != COMMAND && event.getCause() != UNKNOWN) return;
+        if (switch (event.getCause()) { // todo: config entry
+            case ENDER_PEARL, COMMAND, PLUGIN, END_PORTAL, SPECTATE, UNKNOWN -> false;
+            case NETHER_PORTAL, END_GATEWAY, CHORUS_FRUIT, DISMOUNT, EXIT_BED -> true;
+        }) return;
 
         var player = event.getPlayer();
 
