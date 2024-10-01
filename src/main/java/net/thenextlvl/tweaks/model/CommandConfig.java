@@ -14,6 +14,7 @@ public class CommandConfig {
     private @SerializedName("midnight") CommandDefinition midnight = new CommandDefinition("midnight", Set.of());
     private @SerializedName("night") CommandDefinition night = new CommandDefinition("night", Set.of());
     private @SerializedName("noon") CommandDefinition noon = new CommandDefinition("noon", Set.of());
+    private @SerializedName("time") CommandDefinition time = new CommandDefinition("time", Set.of());
 
     private @SerializedName("rain") CommandDefinition rain = new CommandDefinition("rain", Set.of());
     private @SerializedName("sun") CommandDefinition sun = new CommandDefinition("sun", Set.of());

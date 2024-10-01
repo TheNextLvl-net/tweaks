@@ -16,10 +16,7 @@ import lombok.experimental.Accessors;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.thenextlvl.tweaks.command.environment.time.DayCommand;
-import net.thenextlvl.tweaks.command.environment.time.MidnightCommand;
-import net.thenextlvl.tweaks.command.environment.time.NightCommand;
-import net.thenextlvl.tweaks.command.environment.time.NoonCommand;
+import net.thenextlvl.tweaks.command.environment.time.*;
 import net.thenextlvl.tweaks.command.environment.weather.RainCommand;
 import net.thenextlvl.tweaks.command.environment.weather.SunCommand;
 import net.thenextlvl.tweaks.command.environment.weather.ThunderCommand;
@@ -153,6 +150,7 @@ public class TweaksPlugin extends JavaPlugin {
         new MidnightCommand(this).register(registrar);
         new NightCommand(this).register(registrar);
         new NoonCommand(this).register(registrar);
+        new TimeCommand(this).register(registrar);
     }
 
     private void registerWeatherCommands(Commands registrar) {
