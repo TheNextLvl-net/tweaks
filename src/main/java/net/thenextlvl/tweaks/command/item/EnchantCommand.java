@@ -29,7 +29,7 @@ public class EnchantCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("enchant")
+        var command = Commands.literal(plugin.commands().enchant().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
@@ -39,7 +39,7 @@ public class EnchantCommand {
                                 .executes(context -> enchant(context, context.getArgument("level", int.class))))
                         .executes(context -> enchant(context, 1)))
                 .build();
-        registrar.register(command, "Enchant your tools");
+        registrar.register(command, "Enchant your tools", plugin.commands().enchant().aliases());
     }
 
     private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
@@ -56,7 +56,7 @@ public class EnchantCommand {
         var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).get(key);
 
         if (enchantment == null) {
-            plugin.bundle().sendMessage(player, "enchantment.invalid",
+            plugin.bundle().sendMessage(player, "command.enchantment.invalid",
                     Placeholder.parsed("enchantment", key.key().asString()));
             return 0;
         }
@@ -64,11 +64,11 @@ public class EnchantCommand {
         var item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isEmpty()) {
-            plugin.bundle().sendMessage(player, "hold.item");
+            plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
         if (!enchantment.canEnchantItem(item)) {
-            plugin.bundle().sendMessage(player, "enchantment.not.applicable",
+            plugin.bundle().sendMessage(player, "command.enchantment.applicable",
                     Placeholder.component("item", Component.translatable(item)));
             return 0;
         }
@@ -76,7 +76,7 @@ public class EnchantCommand {
         level = Math.min(enchantment.getMaxLevel(), Math.max(enchantment.getStartLevel(), level)); // todo: enchantment overflow setting
 
         item.addEnchantment(enchantment, level);
-        plugin.bundle().sendMessage(player, "enchantment.applied", Placeholder.component("enchantment",
+        plugin.bundle().sendMessage(player, "command.enchantment.applied", Placeholder.component("enchantment",
                 enchantment.displayName(level).style(Style.empty())));
 
         return Command.SINGLE_SUCCESS;

@@ -8,7 +8,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.suggestion.TagSuggestionProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -24,21 +23,19 @@ public class LoreCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("lore")
+        var command = Commands.literal(plugin.commands().lore().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.lore"))
                 .then(Commands.literal("append")
                         .then(Commands.argument("text", StringArgumentType.greedyString())
-                                .suggests(new TagSuggestionProvider<>())
                                 .executes(this::append)))
                 .then(Commands.literal("set")
                         .then(Commands.argument("text", StringArgumentType.greedyString())
-                                .suggests(new TagSuggestionProvider<>())
                                 .executes(this::set)))
                 .then(Commands.literal("unset")
                         .executes(this::unset))
                 .build();
-        registrar.register(command, "Change the lore of your items");
+        registrar.register(command, "Change the lore of your items", plugin.commands().lore().aliases());
     }
 
     private int append(CommandContext<CommandSourceStack> context) {
@@ -63,12 +60,12 @@ public class LoreCommand {
         var item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isEmpty()) {
-            plugin.bundle().sendMessage(player, "hold.item");
+            plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
 
         var success = item.editMeta(consumer);
-        var message = success ? "item.lore.success" : "item.lore.fail";
+        var message = success ? "command.item.lore.success" : "command.item.lore.fail";
 
         plugin.bundle().sendMessage(player, message);
         return success ? Command.SINGLE_SUCCESS : 0;
@@ -76,8 +73,8 @@ public class LoreCommand {
 
     private List<Component> getLore(CommandContext<CommandSourceStack> context) {
         var text = context.getArgument("text", String.class)
-                .replace("\\t", "\t").replace("\\r", "\r");
-        return Arrays.stream(text.split("\\\\n"))
+                .replace("\\t", "   ");
+        return Arrays.stream(text.split("(\\\\n|<br>|<newline>)"))
                 .map(plugin.bundle()::deserialize)
                 .toList();
     }

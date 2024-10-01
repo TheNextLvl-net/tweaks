@@ -14,13 +14,13 @@ public class NightCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("night", "tweaks.command.night");
-        registrar.register(command, "Set the time to night");
+        var command = create(plugin.commands().night().command(), "tweaks.command.night");
+        registrar.register(command, "Set the time to night", plugin.commands().night().aliases());
     }
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.bundle().sendMessage(sender, "time.night",
+        plugin.bundle().sendMessage(sender, "command.time.night",
                 Placeholder.parsed("world", world.getName()));
         world.setTime(13000);
     }

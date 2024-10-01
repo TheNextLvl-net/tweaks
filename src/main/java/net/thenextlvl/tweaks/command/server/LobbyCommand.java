@@ -6,23 +6,21 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class LobbyCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("lobby")
+        var command = Commands.literal(plugin.commands().lobby().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.lobby"))
                 .executes(context -> {
                     var sender = (Player) context.getSource().getSender();
-                    plugin.messenger().connect(sender, plugin.config().serverConfig().lobbyServerName());
+                    plugin.messenger().connect(sender, plugin.config().general().lobbyServerName());
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Connect to the lobby server", List.of("hub", "l"));
+        registrar.register(command, "Connect to the lobby server", plugin.commands().lobby().aliases());
     }
 }

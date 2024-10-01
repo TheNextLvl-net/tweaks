@@ -21,7 +21,7 @@ public class GameModeCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("gamemode")
+        var command = Commands.literal(plugin.commands().gamemode().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.gamemode"))
                 .then(Commands.argument("gamemode", new GameModeArgumentType())
                         .then(Commands.argument("players", ArgumentTypes.players())
@@ -37,7 +37,7 @@ public class GameModeCommand {
                             return 0;
                         }))
                 .build();
-        registrar.register(command, "Change your own or someone else's game mode", List.of("gm"));
+        registrar.register(command, "Change your own or someone else's game mode", plugin.commands().gamemode().aliases());
     }
 
     private int gamemode(CommandContext<CommandSourceStack> context, List<Player> resolve) {
@@ -46,10 +46,10 @@ public class GameModeCommand {
         resolve.forEach(player -> {
             player.setGameMode(gamemode);
 
-            plugin.bundle().sendMessage(player, "gamemode.changed.self", Placeholder.component("gamemode",
+            plugin.bundle().sendMessage(player, "command.gamemode.changed.self", Placeholder.component("gamemode",
                     Component.translatable(gamemode)));
 
-            if (!sender.equals(player)) plugin.bundle().sendMessage(sender, "gamemode.changed.others",
+            if (!sender.equals(player)) plugin.bundle().sendMessage(sender, "command.gamemode.changed.others",
                     Placeholder.component("gamemode", Component.translatable(gamemode)),
                     Placeholder.parsed("player", player.getName()));
         });

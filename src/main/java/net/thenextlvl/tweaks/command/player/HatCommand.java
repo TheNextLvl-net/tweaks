@@ -16,12 +16,12 @@ public class HatCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("hat")
+        var command = Commands.literal(plugin.commands().hat().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.hat"))
                 .executes(this::hat)
                 .build();
-        registrar.register(command, "Equip an item as a hat");
+        registrar.register(command, "Equip an item as a hat", plugin.commands().hat().aliases());
     }
 
     private int hat(CommandContext<CommandSourceStack> context) {
@@ -31,12 +31,12 @@ public class HatCommand {
         var helmet = inventory.getHelmet();
 
         if (item.getType().isEmpty() && helmet == null) {
-            plugin.bundle().sendMessage(player, "hold.item");
+            plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
 
         player.playSound(player, Sound.ITEM_ARMOR_EQUIP_GENERIC, SoundCategory.PLAYERS, 1f, 1f);
-        plugin.bundle().sendMessage(player, "hat.equipped");
+        plugin.bundle().sendMessage(player, "command.hat.equipped");
         inventory.setItemInMainHand(helmet);
         inventory.setHelmet(item);
 

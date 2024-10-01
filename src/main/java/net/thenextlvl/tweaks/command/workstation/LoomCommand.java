@@ -11,7 +11,7 @@ public class LoomCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("loom")
+        var command = Commands.literal(plugin.commands().loom().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.loom"))
                 .executes(context -> {
@@ -19,6 +19,6 @@ public class LoomCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Open a loom");
+        registrar.register(command, "Open a loom", plugin.commands().loom().aliases());
     }
 }

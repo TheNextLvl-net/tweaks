@@ -12,7 +12,7 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onWorldChanged(PlayerChangedWorldEvent event) {
-        var permissionLevel = plugin.config().generalConfig().defaultPermissionLevel();
+        var permissionLevel = plugin.config().general().defaultPermissionLevel();
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
     }
 }

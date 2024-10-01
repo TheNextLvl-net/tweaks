@@ -29,7 +29,7 @@ public class OfflineTeleportCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("tpo")
+        var command = Commands.literal(plugin.commands().offlineTeleport().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.offline-tp"))
                 .then(Commands.argument("player", StringArgumentType.word())
                         .suggests(new OfflinePlayerSuggestionProvider(plugin))
@@ -46,7 +46,8 @@ public class OfflineTeleportCommand {
                             return Command.SINGLE_SUCCESS;
                         }))
                 .build();
-        registrar.register(command, "Teleport offline-players to others or you to them");
+        registrar.register(command, "Teleport offline-players to others or you to them",
+                plugin.commands().offlineTeleport().aliases());
     }
 
     private void teleportOther(CommandContext<CommandSourceStack> context) {
@@ -54,7 +55,7 @@ public class OfflineTeleportCommand {
         var player = plugin.getServer().getOfflinePlayer(context.getArgument("player", String.class));
         var target = plugin.getServer().getOfflinePlayer(context.getArgument("target", String.class));
 
-        var message = player.equals(target) ? "offline.teleport.location" : teleport(player, target);
+        var message = player.equals(target) ? "command.offline.teleport.location" : teleport(player, target);
 
         plugin.bundle().sendMessage(sender, message,
                 Placeholder.parsed("source", String.valueOf(player.getName())),
@@ -75,10 +76,10 @@ public class OfflineTeleportCommand {
                     if (location != null) return sender.teleportAsync(location, COMMAND);
                     return CompletableFuture.completedFuture(false);
                 }).thenAccept(success -> {
-                    var message = success ? "offline.teleport.success.to" : "offline.teleport.fail.to";
+                    var message = success ? "command.offline.teleport.success.to" : "command.offline.teleport.fail.to";
                     plugin.bundle().sendMessage(sender, message, placeholder);
                 }).exceptionally(throwable -> {
-                    plugin.bundle().sendMessage(sender, "offline.teleport.fail.to", placeholder);
+                    plugin.bundle().sendMessage(sender, "command.offline.teleport.fail.to", placeholder);
                     plugin.getComponentLogger().error("Failed to teleport to offline player", throwable);
                     return null;
                 });
@@ -87,13 +88,13 @@ public class OfflineTeleportCommand {
     private String teleport(OfflinePlayer source, OfflinePlayer target) {
         var online = source.getPlayer();
         var location = getLocation(target);
-        if (location == null) return "offline.teleport.fail";
+        if (location == null) return "command.offline.teleport.fail";
         if (online == null) return setLocation(source, location)
-                ? "offline.teleport.success" : "offline.teleport.fail";
+                ? "command.offline.teleport.success" : "command.offline.teleport.fail";
         if (online.getLocation().equals(location))
-            return "offline.teleport.location";
+            return "command.offline.teleport.location";
         online.teleportAsync(location, COMMAND);
-        return "offline.teleport.success";
+        return "command.offline.teleport.success";
     }
 
     private boolean setLocation(OfflinePlayer player, Location location) {

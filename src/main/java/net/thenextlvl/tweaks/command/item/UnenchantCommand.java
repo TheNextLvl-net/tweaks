@@ -22,14 +22,14 @@ public class UnenchantCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("unenchant")
+        var command = Commands.literal(plugin.commands().unenchant().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.unenchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
                         .suggests(new UnenchantSuggestionProvider())
                         .executes(this::unenchant))
                 .build();
-        registrar.register(command, "Unenchant your tools");
+        registrar.register(command, "Unenchant your tools", plugin.commands().unenchant().aliases());
     }
 
     @SuppressWarnings("unchecked")
@@ -41,14 +41,14 @@ public class UnenchantCommand {
         var enchantment = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
 
         if (enchantment == null) {
-            plugin.bundle().sendMessage(player, "enchantment.invalid",
+            plugin.bundle().sendMessage(player, "command.enchantment.invalid",
                     Placeholder.parsed("enchantment", key.key().asString()));
             return 0;
         }
 
         var level = item.removeEnchantment(enchantment);
 
-        var message = level != 0 ? "enchantment.removed" : "enchantment.absent";
+        var message = level != 0 ? "command.enchantment.removed" : "command.enchantment.absent";
         plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
                 enchantment.displayName(level).style(Style.empty())));
         return level != 0 ? Command.SINGLE_SUCCESS : 0;

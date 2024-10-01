@@ -14,16 +14,16 @@ public class GodCommand extends PlayerCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("god", "tweaks.command.god", "tweaks.command.god.others");
-        registrar.register(command, "Make you or someone else invulnerable");
+        var command = create(plugin.commands().god().command(), "tweaks.command.god", "tweaks.command.god.others");
+        registrar.register(command, "Make you or someone else invulnerable", plugin.commands().god().aliases());
     }
 
     @Override
     protected int execute(CommandSender sender, Player player) {
         player.setInvulnerable(!player.isInvulnerable());
 
-        var messageSelf = player.isInvulnerable() ? "god.active.self" : "god.inactive.self";
-        var messageOthers = player.isInvulnerable() ? "god.active.others" : "god.inactive.others";
+        var messageSelf = player.isInvulnerable() ? "command.god.active.self" : "command.god.inactive.self";
+        var messageOthers = player.isInvulnerable() ? "command.god.active.others" : "command.god.inactive.others";
 
         plugin.bundle().sendMessage(player, messageSelf);
         if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,

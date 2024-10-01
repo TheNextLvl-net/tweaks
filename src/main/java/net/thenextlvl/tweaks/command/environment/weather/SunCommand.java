@@ -14,13 +14,13 @@ public class SunCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("sun", "tweaks.command.sun");
-        registrar.register(command, "Let the sun shine");
+        var command = create(plugin.commands().sun().command(), "tweaks.command.sun");
+        registrar.register(command, "Let the sun shine", plugin.commands().sun().aliases());
     }
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.bundle().sendMessage(sender, "weather.sun",
+        plugin.bundle().sendMessage(sender, "command.weather.sun",
                 Placeholder.parsed("world", world.getName()));
         world.setThundering(false);
         world.setStorm(false);

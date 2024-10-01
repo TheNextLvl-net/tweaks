@@ -5,15 +5,13 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class CartographyTableCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("cartography-table")
+        var command = Commands.literal(plugin.commands().cartographyTable().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.cartography-table"))
                 .executes(context -> {
@@ -21,6 +19,6 @@ public class CartographyTableCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Open a cartography table", List.of("cartography"));
+        registrar.register(command, "Open a cartography table", plugin.commands().cartographyTable().aliases());
     }
 }

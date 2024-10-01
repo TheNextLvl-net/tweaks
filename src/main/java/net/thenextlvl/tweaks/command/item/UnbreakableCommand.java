@@ -14,21 +14,21 @@ public class UnbreakableCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("unbreakable")
+        var command = Commands.literal(plugin.commands().unbreakable().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.unbreakable"))
                 .executes(this::unbreakable)
                 .build();
-        registrar.register(command, "Makes the item in your hand unbreakable");
+        registrar.register(command, "Makes the item in your hand unbreakable", plugin.commands().unbreakable().aliases());
     }
 
     private int unbreakable(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
         if (!player.getInventory().getItemInMainHand().editMeta(itemMeta -> {
             itemMeta.setUnbreakable(!itemMeta.isUnbreakable());
-            var message = itemMeta.isUnbreakable() ? "item.unbreakable.success" : "item.unbreakable.removed";
+            var message = itemMeta.isUnbreakable() ? "command.item.unbreakable.success" : "command.item.unbreakable.removed";
             plugin.bundle().sendMessage(player, message);
-        })) plugin.bundle().sendMessage(player, "item.unbreakable.fail");
+        })) plugin.bundle().sendMessage(player, "command.item.unbreakable.fail");
         return Command.SINGLE_SUCCESS;
     }
 }

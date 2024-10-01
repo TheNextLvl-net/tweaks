@@ -14,7 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -28,8 +27,10 @@ public class EnderChestCommand extends PlayerCommand implements Listener {
     }
 
     public void register(Commands registrar) {
-        var command = create("enderchest", "tweaks.command.enderchest", "tweaks.command.enderchest.others");
-        registrar.register(command, "Open your own or someone else's enderchest", List.of("ec"));
+        var command = create(plugin.commands().enderchest().command(),
+                "tweaks.command.enderchest", "tweaks.command.enderchest.others");
+        registrar.register(command, "Open your own or someone else's enderchest",
+                plugin.commands().enderchest().aliases());
     }
 
     @Override

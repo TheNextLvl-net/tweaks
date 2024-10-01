@@ -30,7 +30,7 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onAnimalBreed(PlayerInteractEntityEvent event) {
-        if (!plugin.config().vanillaTweaks().animalHealByFeeding()) return;
+        if (!plugin.config().vanilla().animalHealByFeeding()) return;
         if (!(event.getRightClicked() instanceof Animals animals)) return;
         var item = event.getPlayer().getInventory().getItem(event.getHand());
         if (!animals.isBreedItem(item) || animals.isDead()) return;
@@ -44,7 +44,7 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onSheepWoolRegrow(SheepRegrowWoolEvent event) {
-        var cooldown = plugin.config().vanillaTweaks().sheepWoolGrowthCooldown();
+        var cooldown = plugin.config().vanilla().sheepWoolGrowthCooldown();
         if (cooldown > 0) cooldown(event, event.getEntity(), woolRegrowCooldown, cooldown);
     }
 
@@ -53,7 +53,7 @@ public class EntityListener implements Listener {
         var item = event.getPlayer().getInventory().getItem(event.getHand());
         if (!item.getType().equals(Material.BUCKET)) return;
         if (!(event.getRightClicked() instanceof Cow cow)) return;
-        var cooldown = plugin.config().vanillaTweaks().cowMilkingCooldown();
+        var cooldown = plugin.config().vanilla().cowMilkingCooldown();
         if (cooldown > 0) cooldown(event, cow, cowMilkCooldown, cooldown);
     }
 
@@ -62,7 +62,7 @@ public class EntityListener implements Listener {
         var item = event.getPlayer().getInventory().getItem(event.getHand());
         if (!item.getType().equals(Material.BOWL)) return;
         if (!(event.getRightClicked() instanceof MushroomCow cow)) return;
-        var cooldown = plugin.config().vanillaTweaks().cowMilkingCooldown();
+        var cooldown = plugin.config().vanilla().cowMilkingCooldown();
         if (cooldown > 0) cooldown(event, cow, mushroomCowStewCooldown, cooldown);
     }
 

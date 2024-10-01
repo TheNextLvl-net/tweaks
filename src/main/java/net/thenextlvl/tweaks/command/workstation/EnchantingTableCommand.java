@@ -5,15 +5,13 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class EnchantingTableCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("enchanting-table")
+        var command = Commands.literal(plugin.commands().enchantingTable().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchanting-table"))
                 .executes(context -> {
@@ -21,6 +19,6 @@ public class EnchantingTableCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Open an enchanting table", List.of("enchanting"));
+        registrar.register(command, "Open an enchanting table", plugin.commands().enchantingTable().aliases());
     }
 }

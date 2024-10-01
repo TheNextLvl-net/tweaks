@@ -34,7 +34,7 @@ public abstract class WorldCommand {
     private int execute(CommandContext<CommandSourceStack> context, World world) {
         var sender = context.getSource().getSender();
         if (!isWorldAffected(world)) {
-            plugin.bundle().sendMessage(sender, "world.not.affected",
+            plugin.bundle().sendMessage(sender, "command.world.excluded",
                     Placeholder.parsed("world", world.getName()));
             return 0;
         }

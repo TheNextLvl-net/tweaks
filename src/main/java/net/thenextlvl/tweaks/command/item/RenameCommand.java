@@ -16,13 +16,13 @@ public class RenameCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("rename")
+        var command = Commands.literal(plugin.commands().rename().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.rename"))
                 .then(Commands.argument("name", StringArgumentType.greedyString())
                         .executes(this::rename))
                 .build();
-        registrar.register(command, "Changes the display name of the item in your hand");
+        registrar.register(command, "Changes the display name of the item in your hand", plugin.commands().rename().aliases());
     }
 
     private int rename(CommandContext<CommandSourceStack> context) {
@@ -30,14 +30,14 @@ public class RenameCommand {
         var item = player.getInventory().getItemInMainHand();
 
         var text = context.getArgument("name", String.class);
-        var name = MiniMessage.miniMessage().deserialize(text.replace("\\t", "\t"));
+        var name = MiniMessage.miniMessage().deserialize(text.replace("\\t", "  "));
 
         if (!item.editMeta(itemMeta -> itemMeta.displayName(name))) {
-            plugin.bundle().sendMessage(player, "item.rename.fail");
+            plugin.bundle().sendMessage(player, "command.item.rename.fail");
             return 0;
         }
 
-        plugin.bundle().sendMessage(player, "item.rename.success");
+        plugin.bundle().sendMessage(player, "command.item.rename.success");
         return Command.SINGLE_SUCCESS;
     }
 }

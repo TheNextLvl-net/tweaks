@@ -1,6 +1,7 @@
 package net.thenextlvl.tweaks.command.player;
 
 import com.mojang.brigadier.Command;
+import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -21,7 +22,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.stream.IntStream;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -33,7 +37,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     public InventoryCommand(TweaksPlugin plugin) {
         super(plugin);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        var updateTime = Math.max(1, plugin.config().inventoryConfig().updateTime());
+        var updateTime = Math.max(1, plugin.config().guis().inventory().updateTime());
         plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, task ->
                 providers.forEach((provider, viewers) -> {
                     var inventory = inventories.get(provider);
@@ -42,8 +46,10 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     public void register(Commands registrar) {
-        var command = create("inventory", "tweaks.command.inventory", "tweaks.command.inventory.others");
-        registrar.register(command, "Open someone else's inventory", List.of("inv", "invsee"));
+        var command = create(plugin.commands().inventory().command(),
+                "tweaks.command.inventory", "tweaks.command.inventory.others");
+        registrar.register(command, "Open someone else's inventory",
+                plugin.commands().inventory().aliases());
     }
 
     @Override
@@ -54,7 +60,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         }
 
         if (sender.equals(target)) {
-            plugin.bundle().sendMessage(sender, "player.not.affected",
+            plugin.bundle().sendMessage(sender, "command.player.excluded",
                     Placeholder.parsed("player", sender.getName()));
             return 0;
         }
@@ -85,14 +91,15 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     private void addPlaceholders(Inventory inventory) {
-        var inventoryConfig = plugin.config().inventoryConfig();
-        var placeholder = inventoryConfig.placeholder().serialize();
-        inventory.setItem(36, inventoryConfig.helmet().serialize());
-        inventory.setItem(37, inventoryConfig.chestplate().serialize());
-        inventory.setItem(38, inventoryConfig.leggings().serialize());
-        inventory.setItem(39, inventoryConfig.boots().serialize());
-        inventory.setItem(41, inventoryConfig.offHand().serialize());
-        inventory.setItem(43, inventoryConfig.cursor().serialize());
+        var inventoryConfig = plugin.config().guis().inventory();
+        var placeholder = new ItemBuilder(inventoryConfig.placeholder()).hideTooltip(true);
+        // todo: translated names
+        inventory.setItem(36, new ItemBuilder(inventoryConfig.helmet()));
+        inventory.setItem(37, new ItemBuilder(inventoryConfig.chestplate()));
+        inventory.setItem(38, new ItemBuilder(inventoryConfig.leggings()));
+        inventory.setItem(39, new ItemBuilder(inventoryConfig.boots()));
+        inventory.setItem(41, new ItemBuilder(inventoryConfig.offHand()));
+        inventory.setItem(43, new ItemBuilder(inventoryConfig.cursor()));
         IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
     }
 

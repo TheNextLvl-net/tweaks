@@ -7,11 +7,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import net.thenextlvl.tweaks.command.suggestion.TagSuggestionProvider;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
@@ -19,31 +16,30 @@ public class BroadcastCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("broadcast")
+        var command = Commands.literal(plugin.commands().broadcast().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.broadcast"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
-                        .suggests(new TagSuggestionProvider<>())
                         .executes(this::broadcast))
                 .build();
-        registrar.register(command, "Broadcast a message", List.of("bc"));
+        registrar.register(command, "Broadcast a message", plugin.commands().broadcast().aliases());
     }
 
     private int broadcast(CommandContext<CommandSourceStack> context) {
         var message = context.getArgument("message", String.class)
-                .replace("\\t", "\t").replace("\\r", "\r");
+                .replace("\\t", "   ");
         plugin.getServer().forEachAudience(audience -> {
-            plugin.bundle().sendMessage(audience, "broadcast.header");
-            var format = format(plugin.bundle().format(audience, "broadcast.format"), message);
+            plugin.bundle().sendMessage(audience, "command.broadcast.header");
+            var format = format(plugin.bundle().format(audience, "command.broadcast.format"), message);
             plugin.bundle().sendRawMessage(audience, format);
-            plugin.bundle().sendMessage(audience, "broadcast.footer");
+            plugin.bundle().sendMessage(audience, "command.broadcast.footer");
         });
         return Command.SINGLE_SUCCESS;
     }
 
     private String format(@Nullable String format, String message) {
         if (format == null) return message.replace("\\\\n", "\n");
-        var split = message.split("\\\\n");
+        var split = message.split("(\\\\n|<br>|<newline>)");
         for (int i = 0; i < split.length; i++) split[i] = format.replace("<message>", split[i]);
         return String.join("\n", split);
     }
