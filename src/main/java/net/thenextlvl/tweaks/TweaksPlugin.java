@@ -186,6 +186,7 @@ public class TweaksPlugin extends JavaPlugin {
         new PingCommand(this).register(registrar);
         new SeenCommand(this).register(registrar);
         new SpeedCommand(this).register(registrar);
+        new SuicideCommand(this).register(registrar);
         new VanishCommand(this).register(registrar);
     }
 

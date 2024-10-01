@@ -50,6 +50,7 @@ public class CommandConfig {
     private @SerializedName("ping") CommandDefinition ping = new CommandDefinition("ping", Set.of("latency", "ms"));
     private @SerializedName("seen") CommandDefinition seen = new CommandDefinition("seen", Set.of("find"));
     private @SerializedName("speed") CommandDefinition speed = new CommandDefinition("speed", Set.of());
+    private @SerializedName("suicide") CommandDefinition suicide = new CommandDefinition("suicide", Set.of());
     private @SerializedName("vanish") CommandDefinition vanish = new CommandDefinition("vanish", Set.of("v", "invisible"));
 
     private @SerializedName("broadcast") CommandDefinition broadcast = new CommandDefinition("broadcast", Set.of("bc"));

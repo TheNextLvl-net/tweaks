@@ -158,7 +158,8 @@ paper {
                 "tweaks.command.offline-tp",
                 "tweaks.command.ping",
                 "tweaks.command.seen",
-                "tweaks.command.speed"
+                "tweaks.command.speed",
+                "tweaks.command.suicide"
             )
         }
         register("tweaks.commands.server") {
