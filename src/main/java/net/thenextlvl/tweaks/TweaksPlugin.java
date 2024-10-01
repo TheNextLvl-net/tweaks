@@ -82,6 +82,7 @@ public class TweaksPlugin extends JavaPlugin {
     private @Nullable FileIO<PluginConfig> config;
     private @Nullable ServiceController serviceController;
 
+    private final BackController backController = new BackController(this);
     private final DataController dataController = new DataController(this);
     private final HomeController homeController = new HomeController(this);
     private final MSGController msgController = new MSGController();
