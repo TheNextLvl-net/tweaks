@@ -72,53 +72,53 @@ paper {
     }
 
     permissions {
-        register("extra-tweaks.spawn") {
+        register("tweaks.command.spawn") {
             default = BukkitPluginDescription.Permission.Default.TRUE
             description = "Allows players to use the spawn command"
         }
-        register("extra-tweaks.setspawn") {
+        register("tweaks.command.setspawn") {
             default = BukkitPluginDescription.Permission.Default.OP
             description = "Allows players to use the setspawn command"
-            children = listOf("extra-tweaks.spawn")
+            children = listOf("tweaks.command.spawn")
         }
 
-        register("extra-tweaks.home") {
+        register("tweaks.command.home") {
             default = BukkitPluginDescription.Permission.Default.TRUE
             description = "Allows players to teleport to their homes"
         }
-        register("extra-tweaks.home.limit.bypass") {
+        register("tweaks.command.home.limit.bypass") {
             default = BukkitPluginDescription.Permission.Default.OP
             description = "Allows players to bypass the home limit"
         }
-        register("extra-tweaks.home.delete") {
+        register("tweaks.command.home.delete") {
             default = BukkitPluginDescription.Permission.Default.TRUE
             description = "Allows players to delete their homes"
-            children = listOf("extra-tweaks.home.set")
+            children = listOf("tweaks.command.home.set")
         }
-        register("extra-tweaks.home.set") {
+        register("tweaks.command.home.set") {
             default = BukkitPluginDescription.Permission.Default.TRUE
             description = "Allows players to set homes"
-            children = listOf("extra-tweaks.home")
+            children = listOf("tweaks.command.home")
         }
-        register("extra-tweaks.home.set.named") {
+        register("tweaks.command.home.set.named") {
             default = BukkitPluginDescription.Permission.Default.TRUE
             description = "Allows players to set named homes"
-            children = listOf("extra-tweaks.home.set")
+            children = listOf("tweaks.command.home.set")
         }
 
-        register("extra-tweaks.warp") {
+        register("tweaks.command.warp") {
             default = BukkitPluginDescription.Permission.Default.TRUE
             description = "Allows players to warp themselves"
         }
-        register("extra-tweaks.warp.delete") {
+        register("tweaks.command.warp.delete") {
             default = BukkitPluginDescription.Permission.Default.OP
             description = "Allows players to delete warps"
-            children = listOf("extra-tweaks.warp.set")
+            children = listOf("tweaks.command.warp.set")
         }
-        register("extra-tweaks.warp.set") {
+        register("tweaks.command.warp.set") {
             default = BukkitPluginDescription.Permission.Default.OP
             description = "Allows players to set warps"
-            children = listOf("extra-tweaks.warp")
+            children = listOf("tweaks.command.warp")
         }
 
 

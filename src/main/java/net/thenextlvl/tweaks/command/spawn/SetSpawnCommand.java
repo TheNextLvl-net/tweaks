@@ -26,7 +26,7 @@ public class SetSpawnCommand {
 
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().setSpawn().command())
-                .requires(stack -> stack.getSender().hasPermission("extra-tweaks.setspawn"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.setspawn"))
                 .then(position()).executes(context -> {
                     var location = context.getSource().getLocation();
                     return setSpawn(context, location.getWorld(), location, location.getYaw(), location.getPitch());

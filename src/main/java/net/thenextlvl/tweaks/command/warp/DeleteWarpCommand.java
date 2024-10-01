@@ -17,7 +17,7 @@ public class DeleteWarpCommand {
 
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().deleteWarp().command())
-                .requires(stack -> stack.getSender().hasPermission("extra-tweaks.warp.delete"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp.delete"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new WarpSuggestionProvider(plugin))
                         .executes(this::deleteWarp))

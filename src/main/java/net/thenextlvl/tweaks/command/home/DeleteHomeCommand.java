@@ -19,7 +19,7 @@ public class DeleteHomeCommand {
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().deleteHome().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.home.delete"))
+                                   && player.hasPermission("tweaks.command.home.delete"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
                         .executes(context -> deleteHome(context, context.getArgument("name", String.class))))

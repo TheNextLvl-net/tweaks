@@ -30,7 +30,7 @@ public class TPAskCommand {
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().teleportAsk().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.tpa"))
+                                   && player.hasPermission("tweaks.command.tpa"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
                         .suggests(new TPASuggestionProvider(plugin))
                         .executes(this::ask))

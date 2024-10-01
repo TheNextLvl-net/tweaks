@@ -21,10 +21,10 @@ public class SetHomeCommand {
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().setHome().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.home.set"))
+                                   && player.hasPermission("tweaks.command.home.set"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
-                        .requires(stack -> stack.getSender().hasPermission("extra-tweaks.home.set.named"))
+                        .requires(stack -> stack.getSender().hasPermission("tweaks.command.home.set.named"))
                         .executes(context -> setHome(context, context.getArgument("name", String.class))))
                 .executes(context -> setHome(context, plugin.config().homes().unnamedName()))
                 .build();
@@ -34,7 +34,7 @@ public class SetHomeCommand {
     private int setHome(CommandContext<CommandSourceStack> context, String name) {
         CompletableFuture.runAsync(() -> {
             var player = (Player) context.getSource().getSender();
-            if (player.hasPermission("extra-tweaks.home.limit.bypass")) setHome(name, player);
+            if (player.hasPermission("tweaks.command.home.limit.bypass")) setHome(name, player);
             else if (plugin.dataController().hasHome(player, name)) setHome(name, player);
             else {
                 var limit = plugin.homeController().getMaxHomeCount(player);

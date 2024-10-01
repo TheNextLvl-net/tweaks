@@ -23,7 +23,7 @@ public class TPAcceptCommand {
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().teleportAccept().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.tpa.accept"))
+                                   && player.hasPermission("tweaks.command.tpa.accept"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
                         .suggests(new RequestSuggestionProvider(plugin))
                         .executes(context -> {

@@ -22,7 +22,7 @@ public class TPADenyCommand {
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().teleportDeny().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.tpa.deny"))
+                                   && player.hasPermission("tweaks.command.tpa.deny"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
                         .suggests(new RequestSuggestionProvider(plugin))
                         .executes(context -> {

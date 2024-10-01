@@ -21,7 +21,7 @@ public class WarpsCommand {
 
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().warps().command())
-                .requires(stack -> stack.getSender().hasPermission("extra-tweaks.warp"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp"))
                 .executes(this::warps)
                 .build();
         registrar.register(command, "List all warps", plugin.commands().warps().aliases());

@@ -20,7 +20,7 @@ public class MSGCommand {
 
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().msg().command())
-                .requires(stack -> stack.getSender().hasPermission("extra-tweaks.msg"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.msg"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
                         .suggests(new MSGSuggestionProvider(plugin))
                         .then(Commands.argument("message", StringArgumentType.greedyString())

@@ -17,7 +17,7 @@ public class SetWarpCommand {
 
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().setWarp().command())
-                .requires(stack -> stack.getSender().hasPermission("extra-tweaks.warp.set"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp.set"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new WarpSuggestionProvider(plugin))
                         .executes(this::setWarp))

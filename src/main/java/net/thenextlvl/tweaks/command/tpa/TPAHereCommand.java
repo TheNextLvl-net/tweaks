@@ -20,7 +20,7 @@ public class TPAHereCommand {
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().teleportHere().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.tpa.here"))
+                                   && player.hasPermission("tweaks.command.tpa.here"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
                         .suggests(new TPASuggestionProvider(plugin))
                         .executes(this::ask))

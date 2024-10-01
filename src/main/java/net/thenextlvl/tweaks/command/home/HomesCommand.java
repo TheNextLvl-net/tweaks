@@ -22,7 +22,7 @@ public class HomesCommand {
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().homes().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.home"))
+                                   && player.hasPermission("tweaks.command.home"))
                 .executes(this::homes)
                 .build();
         registrar.register(command, "List all of your homes", plugin.commands().homes().aliases());

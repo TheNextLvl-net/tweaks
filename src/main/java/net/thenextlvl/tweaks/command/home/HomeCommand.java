@@ -21,7 +21,7 @@ public class HomeCommand {
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().home().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.home"))
+                                   && player.hasPermission("tweaks.command.home"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
                         .executes(context -> home(context, context.getArgument("name", String.class))))

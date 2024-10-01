@@ -16,13 +16,13 @@ public class SpawnCommand {
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().spawn().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("extra-tweaks.spawn"))
+                                   && player.hasPermission("tweaks.command.spawn"))
                 .executes(context -> {
                     var player = (Player) context.getSource().getSender();
                     var location = plugin.config().spawn().location();
                     if (location == null) {
                         plugin.bundle().sendMessage(player, "command.spawn.undefined");
-                        if (player.hasPermission("extra-tweaks.setspawn"))
+                        if (player.hasPermission("tweaks.command.setspawn"))
                             plugin.bundle().sendMessage(player, "command.spawn.define");
                     } else plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
                         var message = success ? "command.spawn" : "command.teleport.cancelled";

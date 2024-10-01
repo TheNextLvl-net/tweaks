@@ -15,7 +15,7 @@ public class ReplyCommand {
 
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().reply().command())
-                .requires(stack -> stack.getSender().hasPermission("extra-tweaks.msg"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.msg"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
                         .executes(this::reply))
                 .build();
