@@ -19,6 +19,7 @@ public class CommandConfig {
     private @SerializedName("rain") CommandDefinition rain = new CommandDefinition("rain", Set.of());
     private @SerializedName("sun") CommandDefinition sun = new CommandDefinition("sun", Set.of());
     private @SerializedName("thunder") CommandDefinition thunder = new CommandDefinition("thunder", Set.of());
+    private @SerializedName("weather") CommandDefinition weather = new CommandDefinition("weather", Set.of());
 
     private @SerializedName("delete-home") CommandDefinition deleteHome = new CommandDefinition("delete-home", Set.of("delhome"));
     private @SerializedName("home") CommandDefinition home = new CommandDefinition("home", Set.of());
