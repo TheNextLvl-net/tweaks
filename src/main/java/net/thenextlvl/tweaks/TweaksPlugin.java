@@ -121,10 +121,11 @@ public class TweaksPlugin extends JavaPlugin {
     }
 
     private void registerListeners() {
+        getServer().getPluginManager().registerEvents(new BackListener(this), this);
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         getServer().getPluginManager().registerEvents(new ConnectionListener(this), this);
         getServer().getPluginManager().registerEvents(new EntityListener(this), this);
-        getServer().getPluginManager().registerEvents(new RespawnListener(this), this);
+        getServer().getPluginManager().registerEvents(new SpawnListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
     }
 
