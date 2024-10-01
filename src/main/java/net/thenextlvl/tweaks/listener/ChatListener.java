@@ -9,7 +9,6 @@ import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.thenextlvl.service.api.group.GroupHolder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.controller.ServiceController;
 import org.bukkit.entity.Player;
@@ -46,55 +45,28 @@ public class ChatListener implements Listener {
     }
 
     private TagResolver.Builder serviceResolvers(Player player) {
-        var resolver = TagResolver.builder();
-        var services = services();
-        services.map(ServiceController::getGroups).flatMap(groups -> groups.getGroupHolder(player)
-                .map(GroupHolder::getPrimaryGroup).flatMap(groups::getGroup)).ifPresentOrElse(group -> {
-            resolver.resolver(Placeholder.parsed("group", group.getDisplayName().orElse(group.getName())));
-            resolver.resolver(Placeholder.parsed("group_prefix", group.getPrefix().orElse("")));
-            resolver.resolver(Placeholder.parsed("group_suffix", group.getSuffix().orElse("")));
-        }, () -> {
-            resolver.resolver(Placeholder.parsed("group", ""));
-            resolver.resolver(Placeholder.parsed("group_prefix", ""));
-            resolver.resolver(Placeholder.parsed("group_suffix", ""));
-        });
-        services.map(ServiceController::getChat).flatMap(chat -> chat.getProfile(player)).ifPresentOrElse(profile -> {
-            resolver.resolver(Placeholder.parsed("chat_display_name", profile.getDisplayName().orElse(player.getName())));
-            resolver.resolver(Placeholder.parsed("chat_prefix", profile.getPrefix().orElse("")));
-            resolver.resolver(Placeholder.parsed("chat_suffix", profile.getSuffix().orElse("")));
-        }, () -> {
-            resolver.resolver(Placeholder.parsed("chat_display_name", player.getName()));
-            resolver.resolver(Placeholder.parsed("chat_prefix", ""));
-            resolver.resolver(Placeholder.parsed("chat_suffix", ""));
-        });
-        services.map(ServiceController::getEconomy).ifPresentOrElse(economy -> {
-            economy.getAccount(player).ifPresentOrElse(account -> {
-                resolver.resolver(Placeholder.parsed("balance", economy.format(account.getBalance())));
-                resolver.resolver(Placeholder.parsed("balance_unformatted", account.getBalance().toString()));
-            }, () -> {
-                resolver.resolver(Placeholder.parsed("balance", ""));
-                resolver.resolver(Placeholder.parsed("balance_unformatted", ""));
-            });
-            economy.getBankController().flatMap(controller -> controller.getBank(player)).ifPresentOrElse(bank -> {
-                resolver.resolver(Placeholder.parsed("bank_balance", bank.getBalance().toString()));
-                resolver.resolver(Placeholder.parsed("bank_balance_unformatted", bank.getBalance().toString()));
-            }, () -> {
-                resolver.resolver(Placeholder.parsed("bank_balance", ""));
-                resolver.resolver(Placeholder.parsed("bank_balance_unformatted", ""));
-            });
-            resolver.resolver(Placeholder.parsed("currency_name", economy.getCurrencyNameSingular(player.locale())));
-            resolver.resolver(Placeholder.parsed("currency_name_plural", economy.getCurrencyNamePlural(player.locale())));
-            resolver.resolver(Placeholder.parsed("currency_symbol", economy.getCurrencySymbol()));
-        }, () -> {
-            resolver.resolver(Placeholder.parsed("balance", ""));
-            resolver.resolver(Placeholder.parsed("balance_unformatted", ""));
-            resolver.resolver(Placeholder.parsed("bank_balance", ""));
-            resolver.resolver(Placeholder.parsed("bank_balance_unformatted", ""));
-            resolver.resolver(Placeholder.parsed("currency_name", ""));
-            resolver.resolver(Placeholder.parsed("currency_name_plural", ""));
-            resolver.resolver(Placeholder.parsed("currency_symbol", ""));
-        });
-        return resolver;
+        var resolver = TagResolver.builder().resolvers(
+                Placeholder.parsed("balance", ""),
+                Placeholder.parsed("balance", ""),
+                Placeholder.parsed("balance_unformatted", ""),
+                Placeholder.parsed("balance_unformatted", ""),
+                Placeholder.parsed("bank_balance", ""),
+                Placeholder.parsed("bank_balance", ""),
+                Placeholder.parsed("bank_balance_unformatted", ""),
+                Placeholder.parsed("bank_balance_unformatted", ""),
+                Placeholder.parsed("chat_display_name", player.getName()),
+                Placeholder.parsed("chat_prefix", ""),
+                Placeholder.parsed("chat_suffix", ""),
+                Placeholder.parsed("currency_name", ""),
+                Placeholder.parsed("currency_name_plural", ""),
+                Placeholder.parsed("currency_symbol", ""),
+                Placeholder.parsed("group", ""),
+                Placeholder.parsed("group_prefix", ""),
+                Placeholder.parsed("group_suffix", "")
+        );
+        return services().map(services -> services.serviceResolvers(player))
+                .map(resolver::resolvers)
+                .orElse(resolver);
     }
 
     private TagResolver.Single createDeleteTag(Player sender, Audience audience, SignedMessage message) {
@@ -117,20 +89,12 @@ public class ChatListener implements Listener {
         return viewer.hasPermission("tweaks.chat.delete");
     }
 
-    private int getWeight(Player player) {
-        return services().map(ServiceController::getGroups)
-                .flatMap(controller -> controller.getGroupHolder(player)
-                        .map(GroupHolder::getPrimaryGroup)
-                        .flatMap(controller::getGroup))
-                .map(group -> group.getWeight().orElse(0))
-                .orElse(0);
+    private int getChatDeleteWeight(Player player) {
+        return services().map(services -> services.getChatDeleteWeight(player)).orElse(-1);
     }
 
-    private int getChatDeleteWeight(Player player) {
-        return services().map(ServiceController::getPermissions)
-                .flatMap(controller -> controller.getPermissionHolder(player))
-                .flatMap(holder -> holder.intInfoNode("chat-delete-weight"))
-                .orElse(-1);
+    private int getWeight(Player player) {
+        return services().map(services -> services.getWeight(player)).orElse(-1);
     }
 
     private Optional<ServiceController> services() {
