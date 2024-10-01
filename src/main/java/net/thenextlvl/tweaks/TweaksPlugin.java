@@ -302,8 +302,6 @@ public class TweaksPlugin extends JavaPlugin {
                 audience -> audience instanceof Player player ? player.locale() : Locale.US)
                 .register("tweaks", Locale.US)
                 .register("tweaks_german", Locale.GERMANY)
-                .register("extra-tweaks", Locale.US)
-                .register("extra-tweaks_german", Locale.GERMANY)
                 .miniMessage(bundle -> MiniMessage.builder().tags(TagResolver.resolver(
                         TagResolver.standard(),
                         Placeholder.component("prefix", bundle.component(Locale.US, "prefix")),
