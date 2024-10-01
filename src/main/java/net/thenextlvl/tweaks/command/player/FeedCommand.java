@@ -9,8 +9,6 @@ import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @SuppressWarnings("UnstableApiUsage")
 public class FeedCommand extends PlayerCommand {
     public FeedCommand(TweaksPlugin plugin) {
@@ -18,8 +16,8 @@ public class FeedCommand extends PlayerCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("feed", "tweaks.command.feed", "tweaks.command.feed.others");
-        registrar.register(command, "Satisfy your own or someone else's hunger", List.of("flight"));
+        var command = create(plugin.commands().feed().command(), "tweaks.command.feed", "tweaks.command.feed.others");
+        registrar.register(command, "Satisfy your own or someone else's hunger", plugin.commands().feed().aliases());
     }
 
     @Override

@@ -22,7 +22,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.stream.IntStream;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -43,8 +46,10 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     public void register(Commands registrar) {
-        var command = create("inventory", "tweaks.command.inventory", "tweaks.command.inventory.others");
-        registrar.register(command, "Open someone else's inventory", List.of("inv", "invsee"));
+        var command = create(plugin.commands().inventory().command(),
+                "tweaks.command.inventory", "tweaks.command.inventory.others");
+        registrar.register(command, "Open someone else's inventory",
+                plugin.commands().inventory().aliases());
     }
 
     @Override

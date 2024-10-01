@@ -29,7 +29,7 @@ public class OfflineTeleportCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("tpo")
+        var command = Commands.literal(plugin.commands().offlineTeleport().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.offline-tp"))
                 .then(Commands.argument("player", StringArgumentType.word())
                         .suggests(new OfflinePlayerSuggestionProvider(plugin))
@@ -46,7 +46,8 @@ public class OfflineTeleportCommand {
                             return Command.SINGLE_SUCCESS;
                         }))
                 .build();
-        registrar.register(command, "Teleport offline-players to others or you to them");
+        registrar.register(command, "Teleport offline-players to others or you to them",
+                plugin.commands().offlineTeleport().aliases());
     }
 
     private void teleportOther(CommandContext<CommandSourceStack> context) {

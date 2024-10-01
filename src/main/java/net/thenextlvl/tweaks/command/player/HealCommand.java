@@ -15,8 +15,8 @@ public class HealCommand extends PlayerCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("heal", "tweaks.command.heal", "tweaks.command.heal.others");
-        registrar.register(command, "Heal yourself or someone else");
+        var command = create(plugin.commands().heal().command(), "tweaks.command.heal", "tweaks.command.heal.others");
+        registrar.register(command, "Heal yourself or someone else", plugin.commands().heal().aliases());
     }
 
     @Override

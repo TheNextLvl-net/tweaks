@@ -7,8 +7,6 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @SuppressWarnings("UnstableApiUsage")
 public class VanishCommand extends PlayerCommand {
     public VanishCommand(TweaksPlugin plugin) {
@@ -16,8 +14,10 @@ public class VanishCommand extends PlayerCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("vanish", "tweaks.command.vanish", "tweaks.command.vanish.others");
-        registrar.register(command, "Hide yourself or someone else from others", List.of("v"));
+        var command = create(plugin.commands().vanish().command(),
+                "tweaks.command.vanish", "tweaks.command.vanish.others");
+        registrar.register(command, "Hide yourself or someone else from others",
+                plugin.commands().vanish().aliases());
     }
 
     @Override

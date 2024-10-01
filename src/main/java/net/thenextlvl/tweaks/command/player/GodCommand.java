@@ -14,8 +14,8 @@ public class GodCommand extends PlayerCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("god", "tweaks.command.god", "tweaks.command.god.others");
-        registrar.register(command, "Make you or someone else invulnerable");
+        var command = create(plugin.commands().god().command(), "tweaks.command.god", "tweaks.command.god.others");
+        registrar.register(command, "Make you or someone else invulnerable", plugin.commands().god().aliases());
     }
 
     @Override

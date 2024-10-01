@@ -13,15 +13,13 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class ItemCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("item")
+        var command = Commands.literal(plugin.commands().item().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.item"))
                 .then(Commands.argument("item", ArgumentTypes.itemStack())
@@ -31,7 +29,7 @@ public class ItemCommand {
                                 .executes(context -> item(context, context.getArgument("amount", int.class))))
                         .executes(context -> item(context, 1)))
                 .build();
-        registrar.register(command, "Gives you an item of your choice", List.of("i"));
+        registrar.register(command, "Gives you an item of your choice", plugin.commands().item().aliases());
     }
 
     private int item(CommandContext<CommandSourceStack> context, int amount) {

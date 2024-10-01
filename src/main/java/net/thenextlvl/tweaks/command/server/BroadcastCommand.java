@@ -10,21 +10,19 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class BroadcastCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("broadcast")
+        var command = Commands.literal(plugin.commands().broadcast().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.broadcast"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
                         .executes(this::broadcast))
                 .build();
-        registrar.register(command, "Broadcast a message", List.of("bc"));
+        registrar.register(command, "Broadcast a message", plugin.commands().broadcast().aliases());
     }
 
     private int broadcast(CommandContext<CommandSourceStack> context) {

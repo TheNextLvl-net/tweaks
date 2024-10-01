@@ -17,7 +17,7 @@ public class SpeedCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("speed")
+        var command = Commands.literal(plugin.commands().speed().command())
                 // todo: speed reset
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed"))
                 .then(Commands.argument("speed", IntegerArgumentType.integer(-10, 10))
@@ -34,7 +34,8 @@ public class SpeedCommand {
                             return 0;
                         }))
                 .build();
-        registrar.register(command, "change your own or someone else's walk or fly speed");
+        registrar.register(command, "change your own or someone else's walk or fly speed",
+                plugin.commands().speed().aliases());
     }
 
     private int speed(CommandContext<CommandSourceStack> context, Player player) {

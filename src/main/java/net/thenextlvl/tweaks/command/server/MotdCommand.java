@@ -8,15 +8,13 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class MotdCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("motd")
+        var command = Commands.literal(plugin.commands().motd().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.motd"))
                 .then(Commands.argument("motd", StringArgumentType.greedyString()))
                 .executes(context -> {
@@ -30,6 +28,6 @@ public class MotdCommand {
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Change the motd of the server", List.of("wb"));
+        registrar.register(command, "Change the motd of the server", plugin.commands().motd().aliases());
     }
 }

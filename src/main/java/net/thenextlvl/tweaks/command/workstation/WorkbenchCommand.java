@@ -5,15 +5,13 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class WorkbenchCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("workbench")
+        var command = Commands.literal(plugin.commands().workbench().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.workbench"))
                 .executes(context -> {
@@ -21,6 +19,6 @@ public class WorkbenchCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Open a workbench", List.of("wb"));
+        registrar.register(command, "Open a workbench", plugin.commands().workbench().aliases());
     }
 }

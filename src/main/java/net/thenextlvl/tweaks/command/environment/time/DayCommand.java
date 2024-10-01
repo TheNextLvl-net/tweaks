@@ -14,8 +14,8 @@ public class DayCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("day", "tweaks.command.day");
-        registrar.register(command, "Set the time to day");
+        var command = create(plugin.commands().day().command(), "tweaks.command.day");
+        registrar.register(command, "Set the time to day", plugin.commands().day().aliases());
     }
 
     @Override

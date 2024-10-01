@@ -23,7 +23,7 @@ public class LoreCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("lore")
+        var command = Commands.literal(plugin.commands().lore().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.lore"))
                 .then(Commands.literal("append")
@@ -35,7 +35,7 @@ public class LoreCommand {
                 .then(Commands.literal("unset")
                         .executes(this::unset))
                 .build();
-        registrar.register(command, "Change the lore of your items");
+        registrar.register(command, "Change the lore of your items", plugin.commands().lore().aliases());
     }
 
     private int append(CommandContext<CommandSourceStack> context) {

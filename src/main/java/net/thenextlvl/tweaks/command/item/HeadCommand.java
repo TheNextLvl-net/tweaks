@@ -19,7 +19,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Base64;
-import java.util.List;
 
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
@@ -27,7 +26,7 @@ public class HeadCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("head")
+        var command = Commands.literal(plugin.commands().head().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.head"))
                 .then(Commands.literal("player")
@@ -44,7 +43,7 @@ public class HeadCommand {
                                 .executes(this::valueHead))
                         .executes(this::value))
                 .build();
-        registrar.register(command, "Get heads or information about them", List.of("skull"));
+        registrar.register(command, "Get heads or information about them", plugin.commands().head().aliases());
     }
 
     private int playerHead(CommandContext<CommandSourceStack> context) {

@@ -11,22 +11,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class RepairCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("repair")
+        var command = Commands.literal(plugin.commands().repair().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.repair"))
                 .then(Commands.literal("all")
                         .executes(this::repairAll))
                 .executes(this::repair)
                 .build();
-        registrar.register(command, "repair your tools", List.of("wb"));
+        registrar.register(command, "repair your tools", plugin.commands().repair().aliases());
     }
 
     private int repair(CommandContext<CommandSourceStack> context) {

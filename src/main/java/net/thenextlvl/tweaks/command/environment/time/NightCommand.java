@@ -14,8 +14,8 @@ public class NightCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("night", "tweaks.command.night");
-        registrar.register(command, "Set the time to night");
+        var command = create(plugin.commands().night().command(), "tweaks.command.night");
+        registrar.register(command, "Set the time to night", plugin.commands().night().aliases());
     }
 
     @Override

@@ -14,12 +14,12 @@ public class UnbreakableCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("unbreakable")
+        var command = Commands.literal(plugin.commands().unbreakable().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.unbreakable"))
                 .executes(this::unbreakable)
                 .build();
-        registrar.register(command, "Makes the item in your hand unbreakable");
+        registrar.register(command, "Makes the item in your hand unbreakable", plugin.commands().unbreakable().aliases());
     }
 
     private int unbreakable(CommandContext<CommandSourceStack> context) {

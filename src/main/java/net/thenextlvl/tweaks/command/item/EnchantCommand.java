@@ -29,7 +29,7 @@ public class EnchantCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("enchant")
+        var command = Commands.literal(plugin.commands().enchant().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
@@ -39,7 +39,7 @@ public class EnchantCommand {
                                 .executes(context -> enchant(context, context.getArgument("level", int.class))))
                         .executes(context -> enchant(context, 1)))
                 .build();
-        registrar.register(command, "Enchant your tools");
+        registrar.register(command, "Enchant your tools", plugin.commands().enchant().aliases());
     }
 
     private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {

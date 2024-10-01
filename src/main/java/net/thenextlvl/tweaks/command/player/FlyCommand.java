@@ -7,8 +7,6 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
 @SuppressWarnings("UnstableApiUsage")
 public class FlyCommand extends PlayerCommand {
     public FlyCommand(TweaksPlugin plugin) {
@@ -16,8 +14,8 @@ public class FlyCommand extends PlayerCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create("fly", "tweaks.command.fly", "tweaks.command.fly.others");
-        registrar.register(command, "Toggle your own or someone else's fly state", List.of("flight"));
+        var command = create(plugin.commands().fly().command(), "tweaks.command.fly", "tweaks.command.fly.others");
+        registrar.register(command, "Toggle your own or someone else's fly state", plugin.commands().fly().aliases());
     }
 
     @Override

@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class SeenCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("seen")
+        var command = Commands.literal(plugin.commands().seen().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.seen"))
                 .then(Commands.argument("player", StringArgumentType.word())
                         .suggests(new OfflinePlayerSuggestionProvider(plugin))
@@ -31,7 +30,7 @@ public class SeenCommand {
                             return Command.SINGLE_SUCCESS;
                         }))
                 .build();
-        registrar.register(command, "Gives you information about a player", List.of("find"));
+        registrar.register(command, "Gives you information about a player", plugin.commands().seen().aliases());
     }
 
     private void seen(CommandContext<CommandSourceStack> context) {

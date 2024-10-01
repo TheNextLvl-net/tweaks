@@ -11,7 +11,7 @@ public class StonecutterCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal("stonecutter")
+        var command = Commands.literal(plugin.commands().stonecutter().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.stonecutter"))
                 .executes(context -> {
@@ -19,6 +19,6 @@ public class StonecutterCommand {
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Open a stonecutter");
+        registrar.register(command, "Open a stonecutter", plugin.commands().stonecutter().aliases());
     }
 }
