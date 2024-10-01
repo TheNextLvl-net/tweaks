@@ -8,20 +8,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 @RequiredArgsConstructor
 public class ConnectionListener implements Listener {
     private final TweaksPlugin plugin;
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        var config = plugin.config().spawn();
-        if (config.location() == null) return;
-        if ((!config.teleportOnFirstJoin() || event.getPlayer().hasPlayedBefore())
-            && (!config.teleportOnJoin() || !event.getPlayer().hasPlayedBefore())) return;
-        event.setSpawnLocation(config.location());
-    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event) {
