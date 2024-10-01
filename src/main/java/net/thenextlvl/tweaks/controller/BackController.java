@@ -14,6 +14,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 @RequiredArgsConstructor
 public class BackController {
     private final Map<Player, BlockingDeque<Location>> positions = new WeakHashMap<>();
+    private final Map<Player, Location> positionLock = new WeakHashMap<>();
     private final TweaksPlugin plugin;
 
     public @Nullable Location peekFirst(Player player) {
@@ -35,6 +36,19 @@ public class BackController {
     }
 
     public void remove(Player player) {
+        positionLock.remove(player);
         positions.remove(player);
+    }
+
+    public @Nullable Location getLock(Player player) {
+        return positionLock.get(player);
+    }
+
+    public void lock(Player player, Location location) {
+        positionLock.put(player, location);
+    }
+
+    public void unlock(Player player) {
+        positionLock.remove(player);
     }
 }
