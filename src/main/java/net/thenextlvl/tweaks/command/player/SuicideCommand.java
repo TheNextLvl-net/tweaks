@@ -27,6 +27,7 @@ public class SuicideCommand {
     private int suicide(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
         player.damage(player.getHealth(), DamageSource.builder(DamageType.GENERIC_KILL).build());
+        plugin.bundle().sendMessage(player, "command.suicide");
         return Command.SINGLE_SUCCESS;
     }
 }
