@@ -6,22 +6,14 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @SuppressWarnings("UnstableApiUsage")
-public class BackCommand implements Listener {
-    private final String metadataKey = "tweaks-back";
+public class BackCommand {
     private final TweaksPlugin plugin;
 
     public BackCommand(TweaksPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.plugin = plugin;
     }
 
@@ -44,7 +36,7 @@ public class BackCommand implements Listener {
             return 0;
         }
 
-        player.setMetadata(metadataKey, new FixedMetadataValue(plugin, true));
+        plugin.backController().lock(player, location);
 
         plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
             var message = success ? "command.back" : "command.teleport.cancelled";
@@ -52,34 +44,5 @@ public class BackCommand implements Listener {
             plugin.bundle().sendMessage(player, message);
         });
         return Command.SINGLE_SUCCESS;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onTeleport(PlayerTeleportEvent event) {
-        if (switch (event.getCause()) { // todo: config entry
-            case ENDER_PEARL, COMMAND, PLUGIN, END_PORTAL, SPECTATE, UNKNOWN -> false;
-            case NETHER_PORTAL, END_GATEWAY, CHORUS_FRUIT, DISMOUNT, EXIT_BED -> true;
-        }) return;
-
-        var player = event.getPlayer();
-
-        if (event.getCause() == COMMAND && !player.getMetadata(metadataKey).isEmpty()) {
-            player.removeMetadata(metadataKey, plugin);
-            return;
-        }
-
-        if (!player.hasPermission("tweaks.command.back")) return;
-
-        plugin.backController().offerFirst(player, event.getFrom());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onDeath(PlayerDeathEvent event) {
-        var player = event.getPlayer();
-
-        if (player.getLocation().getY() < player.getWorld().getMinHeight()) return;
-        if (!player.hasPermission("tweaks.command.back")) return;
-
-        plugin.backController().offerFirst(player, player.getLocation());
     }
 }
