@@ -1,14 +1,13 @@
 package net.thenextlvl.tweaks.command.player;
 
-import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
 
 @SuppressWarnings("UnstableApiUsage")
-public class VanishCommand extends PlayerCommand {
+public class VanishCommand extends EntitiesCommand {
     public VanishCommand(TweaksPlugin plugin) {
         super(plugin);
     }
@@ -21,20 +20,19 @@ public class VanishCommand extends PlayerCommand {
     }
 
     @Override
-    protected int execute(CommandSender sender, Player target) {
-        target.setVisibleByDefault(!target.isVisibleByDefault());
+    protected void execute(CommandSender sender, Entity entity) {
+        entity.setVisibleByDefault(!entity.isVisibleByDefault());
         plugin.getServer().getOnlinePlayers().stream()
-                .filter(player -> !target.equals(player))
+                .filter(player -> !entity.equals(player))
                 .forEach(player -> {
-                    if (target.isVisibleByDefault()) player.showPlayer(plugin, target);
-                    else player.hidePlayer(plugin, target);
+                    if (entity.isVisibleByDefault()) player.showEntity(plugin, entity);
+                    else player.hideEntity(plugin, entity);
                 });
 
-        var messageSelf = target.isVisibleByDefault() ? "command.vanish.disabled.self" : "command.vanish.enabled.self";
-        var messageOthers = target.isVisibleByDefault() ? "command.vanish.disabled.others" : "command.vanish.enabled.others";
-        plugin.bundle().sendMessage(target, messageSelf);
-        if (target != sender) plugin.bundle().sendMessage(sender, messageOthers,
-                Placeholder.parsed("player", target.getName()));
-        return Command.SINGLE_SUCCESS;
+        var messageSelf = entity.isVisibleByDefault() ? "command.vanish.disabled.self" : "command.vanish.enabled.self";
+        var messageOthers = entity.isVisibleByDefault() ? "command.vanish.disabled.others" : "command.vanish.enabled.others";
+        plugin.bundle().sendMessage(entity, messageSelf);
+        if (entity != sender) plugin.bundle().sendMessage(sender, messageOthers,
+                Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));
     }
 }
