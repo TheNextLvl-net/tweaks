@@ -1,9 +1,10 @@
 package net.thenextlvl.tweaks.command.player;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import core.paper.command.CustomArgumentTypes;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
@@ -17,11 +18,11 @@ abstract class PlayerCommand {
     public LiteralCommandNode<CommandSourceStack> create(String name, String permission, String permissionOther) {
         return Commands.literal(name)
                 .requires(stack -> stack.getSender().hasPermission(permission))
-                .then(Commands.argument("player", CustomArgumentTypes.playerExact())
+                .then(Commands.argument("player", ArgumentTypes.player())
                         .requires(stack -> stack.getSender().hasPermission(permissionOther))
                         .executes(context -> {
-                            var player = context.getArgument("player", Player.class);
-                            return execute(context.getSource().getSender(), player);
+                            var players = context.getArgument("player", PlayerSelectorArgumentResolver.class);
+                            return execute(context.getSource().getSender(), players.resolve(context.getSource()).getFirst());
                         }))
                 .executes(context -> execute(context.getSource().getSender()))
                 .build();
