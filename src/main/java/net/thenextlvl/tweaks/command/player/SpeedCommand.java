@@ -11,6 +11,8 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class SpeedCommand {
@@ -21,15 +23,15 @@ public class SpeedCommand {
                 // todo: speed reset
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed"))
                 .then(Commands.argument("speed", IntegerArgumentType.integer(-10, 10))
-                        .then(Commands.argument("player", ArgumentTypes.player())
+                        .then(Commands.argument("players", ArgumentTypes.players())
                                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed.others"))
                                 .executes(context -> {
-                                    var player = context.getArgument("player", PlayerSelectorArgumentResolver.class);
-                                    return speed(context, player.resolve(context.getSource()).getFirst());
+                                    var player = context.getArgument("players", PlayerSelectorArgumentResolver.class);
+                                    return speed(context, player.resolve(context.getSource()));
                                 }))
                         .executes(context -> {
                             var sender = context.getSource().getSender();
-                            if (sender instanceof Player player) return speed(context, player);
+                            if (sender instanceof Player player) return speed(context, List.of(player));
                             plugin.bundle().sendMessage(sender, "command.sender");
                             return 0;
                         }))
@@ -38,21 +40,23 @@ public class SpeedCommand {
                 plugin.commands().speed().aliases());
     }
 
-    private int speed(CommandContext<CommandSourceStack> context, Player player) {
+    private int speed(CommandContext<CommandSourceStack> context, List<Player> players) {
         var sender = context.getSource().getSender();
         var speed = context.getArgument("speed", int.class);
 
-        if (player.isFlying()) player.setFlySpeed(speed / 10f);
-        else player.setWalkSpeed(speed / 10f);
+        players.forEach(player -> {
+            if (player.isFlying()) player.setFlySpeed(speed / 10f);
+            else player.setWalkSpeed(speed / 10f);
 
-        var messageSelf = player.isFlying() ? "command.speed.fly.changed.self" : "command.speed.walk.changed.self";
-        var messageOthers = player.isFlying() ? "command.speed.fly.changed.others" : "command.speed.walk.changed.others";
+            var messageSelf = player.isFlying() ? "command.speed.fly.changed.self" : "command.speed.walk.changed.self";
+            var messageOthers = player.isFlying() ? "command.speed.fly.changed.others" : "command.speed.walk.changed.others";
 
 
-        plugin.bundle().sendMessage(sender, messageSelf, Placeholder.parsed("speed", String.valueOf(speed)));
-        if (!player.equals(sender)) plugin.bundle().sendMessage(sender, messageOthers,
-                Placeholder.parsed("speed", String.valueOf(speed)),
-                Placeholder.parsed("player", player.getName()));
+            plugin.bundle().sendMessage(player, messageSelf, Placeholder.parsed("speed", String.valueOf(speed)));
+            if (!player.equals(sender)) plugin.bundle().sendMessage(sender, messageOthers,
+                    Placeholder.parsed("speed", String.valueOf(speed)),
+                    Placeholder.parsed("player", player.getName()));
+        });
         return 0;
     }
 }
