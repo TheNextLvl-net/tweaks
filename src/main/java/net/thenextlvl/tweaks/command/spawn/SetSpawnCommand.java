@@ -79,7 +79,7 @@ public class SetSpawnCommand {
         plugin.saveConfig();
 
         plugin.bundle().sendMessage(context.getSource().getSender(), "command.spawn.set",
-                Placeholder.parsed("world", world.key().asString()),
+                Placeholder.parsed("world", world.getName()),
                 Placeholder.parsed("x", formatter.format(position.x())),
                 Placeholder.parsed("y", formatter.format(position.y())),
                 Placeholder.parsed("z", formatter.format(position.z())),
