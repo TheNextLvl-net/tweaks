@@ -1,15 +1,16 @@
 package net.thenextlvl.tweaks.command.player;
 
-import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("UnstableApiUsage")
-public class HealCommand extends PlayerCommand {
+public class HealCommand extends EntitiesCommand {
     public HealCommand(TweaksPlugin plugin) {
         super(plugin);
     }
@@ -20,24 +21,27 @@ public class HealCommand extends PlayerCommand {
     }
 
     @Override
-    protected int execute(CommandSender sender, Player player) {
-        var attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        player.setHealth(attribute == null ? 20.0 : attribute.getValue());
+    protected void execute(CommandSender sender, Entity entity) {
+        if (entity instanceof LivingEntity living) {
+            var attribute = living.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            living.setHealth(attribute == null ? 20.0 : attribute.getValue());
 
-        player.setExhaustion(0f);
-        player.setFoodLevel(20);
-        player.setSaturation(20f);
+            living.setArrowsInBody(0);
+            living.setBeeStingersInBody(0);
+            living.setRemainingAir(living.getMaximumAir());
+        }
 
-        player.setArrowsInBody(0);
-        player.setBeeStingersInBody(0);
-        player.setFireTicks(0);
-        player.setFreezeTicks(0);
-        player.setRemainingAir(player.getMaximumAir());
+        if (entity instanceof Player player) {
+            player.setExhaustion(0f);
+            player.setFoodLevel(20);
+            player.setSaturation(20f);
+        }
 
-        plugin.bundle().sendMessage(player, "command.health.restored.self");
-        if (player != sender) plugin.bundle().sendMessage(sender, "command.health.restored.others",
-                Placeholder.parsed("player", player.getName()));
+        entity.setFireTicks(0);
+        entity.setFreezeTicks(0);
 
-        return Command.SINGLE_SUCCESS;
+        plugin.bundle().sendMessage(entity, "command.health.restored.self");
+        if (entity != sender) plugin.bundle().sendMessage(sender, "command.health.restored.others",
+                Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));
     }
 }
