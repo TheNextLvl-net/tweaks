@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.command.player;
 
-import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -8,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("UnstableApiUsage")
-public class FlyCommand extends PlayerCommand {
+public class FlyCommand extends PlayersCommand {
     public FlyCommand(TweaksPlugin plugin) {
         super(plugin);
     }
@@ -19,7 +18,7 @@ public class FlyCommand extends PlayerCommand {
     }
 
     @Override
-    protected int execute(CommandSender sender, Player player) {
+    protected void execute(CommandSender sender, Player player) {
         player.setAllowFlight(!player.getAllowFlight());
         player.setFlying(player.getAllowFlight());
 
@@ -29,7 +28,5 @@ public class FlyCommand extends PlayerCommand {
         plugin.bundle().sendMessage(player, messageSelf);
         if (player != sender) plugin.bundle().sendMessage(sender, messageOthers,
                 Placeholder.parsed("player", player.getName()));
-
-        return Command.SINGLE_SUCCESS;
     }
 }
