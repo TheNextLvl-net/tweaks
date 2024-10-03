@@ -22,6 +22,7 @@ public class EnchantSuggestionProvider implements SuggestionProvider<CommandSour
                 .filter(enchantment -> item.getEnchantments().containsKey(enchantment)
                                        || item.getEnchantments().keySet().stream().noneMatch(enchantment::conflictsWith))
                 .map(enchantment -> enchantment.key().asString())
+                .filter(s -> s.contains(builder.getRemaining()))
                 .forEach(builder::suggest);
         return builder.buildFuture();
     }
