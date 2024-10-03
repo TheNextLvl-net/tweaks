@@ -20,6 +20,7 @@ public class UnenchantSuggestionProvider implements SuggestionProvider<CommandSo
         RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).stream()
                 .filter(item::containsEnchantment)
                 .map(enchantment -> enchantment.key().asString())
+                .filter(s -> s.contains(builder.getRemaining()))
                 .forEach(builder::suggest);
         return builder.buildFuture();
     }
