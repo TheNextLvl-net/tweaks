@@ -1,6 +1,6 @@
 package net.thenextlvl.tweaks.command.player;
 
-import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -33,7 +33,7 @@ public class SpeedCommand {
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().speed().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed"))
-                .then(Commands.argument("speed", DoubleArgumentType.doubleArg(-10, 10))
+                .then(Commands.argument("speed", IntegerArgumentType.integer(-10, 10))
                         .then(speed("fly", SpeedType.FLY))
                         .then(speed("sneak", SpeedType.SNEAK))
                         .then(speed("walk", SpeedType.WALK))
