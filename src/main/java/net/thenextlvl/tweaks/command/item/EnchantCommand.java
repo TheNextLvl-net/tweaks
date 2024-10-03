@@ -29,12 +29,16 @@ public class EnchantCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
+        var max = plugin.config().general().enchantmentOverflow() ? 255 : RegistryAccess.registryAccess()
+                .getRegistry(RegistryKey.ENCHANTMENT).stream()
+                .mapToInt(Enchantment::getMaxLevel)
+                .max().orElse(10);
         var command = Commands.literal(plugin.commands().enchant().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
                         .suggests(new EnchantSuggestionProvider())
-                        .then(Commands.argument("level", IntegerArgumentType.integer(1, 255))
+                        .then(Commands.argument("level", IntegerArgumentType.integer(1, max))
                                 .suggests(this::suggestLevels)
                                 .executes(context -> enchant(context, context.getArgument("level", int.class))))
                         .executes(context -> enchant(context, 1)))
@@ -46,7 +50,10 @@ public class EnchantCommand {
         var key = (TypedKey<Enchantment>) context.getLastChild().getArgument("enchantment", TypedKey.class);
         var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).get(key);
         if (enchantment == null) return builder.buildFuture();
-        IntStream.rangeClosed(enchantment.getStartLevel(), enchantment.getMaxLevel()).forEach(builder::suggest);
+        IntStream.rangeClosed(enchantment.getStartLevel(), enchantment.getMaxLevel())
+                .mapToObj(String::valueOf)
+                .filter(s -> s.contains(builder.getRemaining()))
+                .forEach(builder::suggest);
         return builder.buildFuture();
     }
 
@@ -73,9 +80,11 @@ public class EnchantCommand {
             return 0;
         }
 
-        level = Math.min(enchantment.getMaxLevel(), Math.max(enchantment.getStartLevel(), level)); // todo: enchantment overflow setting
+        if (!plugin.config().general().enchantmentOverflow())
+            level = Math.min(level, enchantment.getMaxLevel());
+        level = Math.max(level, enchantment.getStartLevel());
 
-        item.addEnchantment(enchantment, level);
+        item.addUnsafeEnchantment(enchantment, level);
         plugin.bundle().sendMessage(player, "command.enchantment.applied", Placeholder.component("enchantment",
                 enchantment.displayName(level).style(Style.empty())));
 

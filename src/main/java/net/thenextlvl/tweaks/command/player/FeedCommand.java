@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.command.player;
 
-import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -10,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("UnstableApiUsage")
-public class FeedCommand extends PlayerCommand {
+public class FeedCommand extends PlayersCommand {
     public FeedCommand(TweaksPlugin plugin) {
         super(plugin);
     }
@@ -21,7 +20,7 @@ public class FeedCommand extends PlayerCommand {
     }
 
     @Override
-    protected int execute(CommandSender sender, Player player) {
+    protected void execute(CommandSender sender, Player player) {
         player.setExhaustion(0f);
         player.setFoodLevel(20);
         player.setSaturation(20f);
@@ -30,7 +29,5 @@ public class FeedCommand extends PlayerCommand {
         plugin.bundle().sendMessage(player, "command.hunger.satisfied.self");
         if (player != sender) plugin.bundle().sendMessage(sender, "command.hunger.satisfied.others",
                 Placeholder.parsed("player", player.getName()));
-
-        return Command.SINGLE_SUCCESS;
     }
 }
