@@ -3,7 +3,6 @@ package net.thenextlvl.tweaks.command.player;
 import com.mojang.brigadier.Command;
 import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
@@ -65,9 +64,10 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             return 0;
         }
 
-        var inventory = plugin.getServer().createInventory(target, 54, Component.text(target.getName()));
+        var inventory = plugin.getServer().createInventory(target, 54, plugin.bundle().component(player,
+                "gui.inventory.title", Placeholder.component("player", target.name())));
         updateInventory(inventory, target);
-        addPlaceholders(inventory);
+        addPlaceholders(inventory, player);
         player.openInventory(inventory);
 
         inventories.put(target, inventory);
@@ -90,16 +90,21 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         inventory.setItem(52, target.getItemOnCursor());
     }
 
-    private void addPlaceholders(Inventory inventory) {
+    private void addPlaceholders(Inventory inventory, Player player) {
         var inventoryConfig = plugin.config().guis().inventory();
         var placeholder = new ItemBuilder(inventoryConfig.placeholder()).hideTooltip(true);
-        // todo: translated names
-        inventory.setItem(36, new ItemBuilder(inventoryConfig.helmet()));
-        inventory.setItem(37, new ItemBuilder(inventoryConfig.chestplate()));
-        inventory.setItem(38, new ItemBuilder(inventoryConfig.leggings()));
-        inventory.setItem(39, new ItemBuilder(inventoryConfig.boots()));
-        inventory.setItem(41, new ItemBuilder(inventoryConfig.offHand()));
-        inventory.setItem(43, new ItemBuilder(inventoryConfig.cursor()));
+        inventory.setItem(36, new ItemBuilder(inventoryConfig.helmet())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.helmet")));
+        inventory.setItem(37, new ItemBuilder(inventoryConfig.chestplate())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.chestplate")));
+        inventory.setItem(38, new ItemBuilder(inventoryConfig.leggings())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.leggings")));
+        inventory.setItem(39, new ItemBuilder(inventoryConfig.boots())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.boots")));
+        inventory.setItem(41, new ItemBuilder(inventoryConfig.offHand())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.off-hand")));
+        inventory.setItem(43, new ItemBuilder(inventoryConfig.cursor())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.cursor")));
         IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
     }
 
