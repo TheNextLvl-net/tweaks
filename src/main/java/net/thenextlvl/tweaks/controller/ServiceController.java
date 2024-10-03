@@ -59,7 +59,7 @@ public class ServiceController {
                 builder.resolver(Placeholder.parsed("balance", economy.format(account.getBalance())));
                 builder.resolver(Placeholder.parsed("balance_unformatted", account.getBalance().toString()));
             });
-            economy.getBankController().flatMap(controller -> controller.getBank(player)).ifPresent(bank -> {
+            Optional.ofNullable(banks).flatMap(controller -> controller.getBank(player)).ifPresent(bank -> {
                 builder.resolver(Placeholder.parsed("bank_balance", bank.getBalance().toString()));
                 builder.resolver(Placeholder.parsed("bank_balance_unformatted", bank.getBalance().toString()));
             });
