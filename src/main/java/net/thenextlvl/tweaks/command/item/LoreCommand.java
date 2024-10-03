@@ -2,11 +2,13 @@ package net.thenextlvl.tweaks.command.item;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
@@ -26,16 +29,41 @@ public class LoreCommand {
         var command = Commands.literal(plugin.commands().lore().command())
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.lore"))
-                .then(Commands.literal("append")
-                        .then(Commands.argument("text", StringArgumentType.greedyString())
-                                .executes(this::append)))
-                .then(Commands.literal("set")
-                        .then(Commands.argument("text", StringArgumentType.greedyString())
-                                .executes(this::set)))
-                .then(Commands.literal("unset")
-                        .executes(this::unset))
+                .then(Commands.literal("clear").executes(this::clear))
+                .then(modify("append", this::append))
+                .then(modify("prepend", this::prepend))
+                .then(modify("set", this::set))
+                .then(replace())
                 .build();
         registrar.register(command, "Change the lore of your items", plugin.commands().lore().aliases());
+    }
+
+    private LiteralArgumentBuilder<CommandSourceStack> replace() {
+        return Commands.literal("replace")
+                .then(Commands.argument("text", StringArgumentType.string())
+                        .then(Commands.argument("replacement", StringArgumentType.greedyString())
+                                .executes(this::replace)));
+    }
+
+    private LiteralArgumentBuilder<CommandSourceStack> modify(String literal, Command<CommandSourceStack> command) {
+        return Commands.literal(literal)
+                .then(Commands.argument("text", StringArgumentType.greedyString())
+                        .executes(command));
+    }
+
+    private int replace(CommandContext<CommandSourceStack> context) {
+        return modifyLore(context, itemMeta -> {
+            var lore = itemMeta.lore();
+            if (lore == null) return;
+            var text = context.getArgument("text", String.class);
+            var replacement = deserialize(context.getArgument("replacement", String.class));
+            var config = TextReplacementConfig.builder()
+                    .matchLiteral(text)
+                    .replacement(replacement)
+                    .build();
+            lore.replaceAll(component -> component.replaceText(config));
+            itemMeta.lore(lore);
+        });
     }
 
     private int append(CommandContext<CommandSourceStack> context) {
@@ -47,11 +75,20 @@ public class LoreCommand {
         });
     }
 
+    private int prepend(CommandContext<CommandSourceStack> context) {
+        return modifyLore(context, itemMeta -> {
+            var lore = getLore(context);
+            lore.addAll(Objects.requireNonNullElseGet(itemMeta.lore(),
+                    ArrayList::new));
+            itemMeta.lore(lore);
+        });
+    }
+
     private int set(CommandContext<CommandSourceStack> context) {
         return modifyLore(context, itemMeta -> itemMeta.lore(getLore(context)));
     }
 
-    private int unset(CommandContext<CommandSourceStack> context) {
+    private int clear(CommandContext<CommandSourceStack> context) {
         return modifyLore(context, itemMeta -> itemMeta.lore(null));
     }
 
@@ -75,7 +112,11 @@ public class LoreCommand {
         var text = context.getArgument("text", String.class)
                 .replace("\\t", "   ");
         return Arrays.stream(text.split("(\\\\n|<br>|<newline>)"))
-                .map(plugin.bundle()::deserialize)
-                .toList();
+                .map(this::deserialize)
+                .collect(Collectors.toList());
+    }
+
+    private Component deserialize(String text) {
+        return plugin.bundle().deserialize(text);
     }
 }
