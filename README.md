@@ -18,6 +18,11 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 
 ## Versions
 
+> [!IMPORTANT]
+> Version 3.0.0 introduces several breaking changes: command, permission, and translation incompatibilities.<br>
+> It is highly recommended to delete the entire `Tweaks` folder before upgrading to avoid conflicts with outdated
+> configurations.
+
 > [!NOTE]
 > Tweaks only supports the latest version of Paper (1.21.1)<br>
 > The latest version of Tweaks requires Java 21
