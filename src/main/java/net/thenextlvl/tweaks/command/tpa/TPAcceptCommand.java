@@ -40,7 +40,7 @@ public class TPAcceptCommand {
                             request != null ? request.type() : TPA);
                 })
                 .build();
-        commands.register(command, "Accept a players teleport request", plugin.commands().teleportAccept().aliases());
+        commands.register(command, "Accept a teleport request", plugin.commands().teleportAccept().aliases());
     }
 
     static int accept(TweaksPlugin plugin, Player sender, @Nullable Player player, RequestType type) {

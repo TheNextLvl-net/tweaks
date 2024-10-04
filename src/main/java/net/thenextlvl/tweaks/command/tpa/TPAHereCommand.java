@@ -25,7 +25,7 @@ public class TPAHereCommand {
                         .suggests(new TPASuggestionProvider(plugin))
                         .executes(this::ask))
                 .build();
-        commands.register(command, "Ask a player teleport them to you", plugin.commands().teleportHere().aliases());
+        commands.register(command, "Request a player to teleport to you", plugin.commands().teleportHere().aliases());
     }
 
     private int ask(CommandContext<CommandSourceStack> context) {

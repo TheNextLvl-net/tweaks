@@ -39,7 +39,7 @@ public class TPADenyCommand {
                             request != null ? request.type() : TPA);
                 })
                 .build();
-        commands.register(command, "Deny a players teleport request", plugin.commands().teleportDeny().aliases());
+        commands.register(command, "Deny a teleport request", plugin.commands().teleportDeny().aliases());
     }
 
     static int deny(TweaksPlugin plugin, Player sender, @Nullable Player player, RequestType type) {
