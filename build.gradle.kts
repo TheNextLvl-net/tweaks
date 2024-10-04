@@ -151,7 +151,16 @@ paper {
         register("tweaks.command.vanish.others") { this.children = listOf("tweaks.command.vanish") }
 
         register("tweaks.command.lobby") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+
         register("tweaks.command.msg") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+        register("tweaks.command.msg.toggle") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+        register("tweaks.command.msg.reply") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+
+        register("tweaks.command.tpa") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+        register("tweaks.command.tpa.accept") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+        register("tweaks.command.tpa.deny") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+        register("tweaks.command.tpa.here") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+        register("tweaks.command.tpa.toggle") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
 
         register("tweaks.chat.delete") { this.children = listOf("tweaks.chat.delete.own") }
 
