@@ -8,14 +8,6 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 [Modrinth](https://modrinth.com/plugin/tweaks-1)<br>
 [Hangar](https://hangar.papermc.io/TheNextLvl/Tweaks)
 
-## Features _(Configurable)_
-
-- You heal animals by feeding them
-- Unless an animal is at full health, they can't breed
-- Cooldown for milking cows/mushroom-cows (with bowls)
-- Cooldown for Sheep wool growth
-- You can define a default permission level (purely client-side)
-
 ## Versions
 
 > [!IMPORTANT]
