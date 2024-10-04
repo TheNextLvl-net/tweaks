@@ -120,7 +120,7 @@ public class SpeedCommand {
 
     private int speed(CommandContext<CommandSourceStack> context, SpeedType type, List<Entity> entities) {
         var sender = context.getSource().getSender();
-        var speed = context.getArgument("speed", double.class) / 10d;
+        var speed = context.getArgument("speed", int.class) / 10d;
 
         entities.removeIf(entity -> !(entity instanceof Attributable));
         entities.forEach(entity -> {
