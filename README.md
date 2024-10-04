@@ -218,81 +218,265 @@ The perm-pack to grant all permissions: `tweaks.commands.workstation`
 
 ---
 
+# Chat Tags
+
+These tags can be used within the `chat-format` of your translation files. To insert a tag, use `<tag>`.
+
+| Tag             | Description                                                                  |
+|-----------------|------------------------------------------------------------------------------|
+| delete          | A clickable component to delete the message.                                 |
+| display_name    | The display name of the sender.                                              |
+| message         | The original message sent by the player.                                     |
+| message_content | The text content of the sent message. Usable within click and hover actions. |
+| player          | The username of the sender.                                                  |
+| world           | The world where the sender is located.                                       |
+
+## Group and Display-Related Tags
+
+> These tags require a [ServiceIO](https://github.com/TheNextLvl-net/service-io)-compatible group/chat plugin,
+> such as [LuckPerms](https://github.com/LuckPerms/LuckPerms)
+
+| Tag               | Description                                                          |
+|-------------------|----------------------------------------------------------------------|
+| chat_display_name | Displays the player's display name. (not the same as `display_name`) |
+| chat_prefix       | The prefix of the sender.                                            |
+| chat_suffix       | The suffix of the sender.                                            |
+| player_group      | The group of the sender.                                             |
+| group_prefix      | The prefix of the sender's group.                                    |
+| group_suffix      | The suffix of the sender's group.                                    |
+
+## Economy-Related Tags
+
+> These tags require a [ServiceIO](https://github.com/TheNextLvl-net/service-io)-compatible economy plugin,
+> such as [Economist](https://github.com/TheNextLvl-net/economist).
+
+| Tag                      | Description                                                                                        |
+|--------------------------|----------------------------------------------------------------------------------------------------|
+| balance                  | Displays the player's current balance, formatted according to the server's economy settings.       |
+| balance_unformatted      | Displays the player's balance without any formatting (raw number).                                 |
+| bank_balance             | Displays the player's bank account balance (if applicable), formatted as per the economy settings. |
+| bank_balance_unformatted | Displays the player's bank account balance without formatting (raw number).                        |
+| currency_name            | Displays the singular form of the server's currency name (e.g., "Dollar", "Coin").                 |
+| currency_name_plural     | Displays the plural form of the currency name (e.g., "Dollars", "Coins").                          |
+| currency_symbol          | Displays the symbol of the currency (e.g., "$", "€").                                              |
+
+For more information about MiniMessage, visit their [Documentation](https://docs.advntr.dev/minimessage/format.html)
+
+# Chat Message Deletion
+
+The `delete-tag-format` option allows you to customize the appearance of the message deletion component.
+For security purposes, only users with the permission `tweaks.chat.delete` will be able to see the delete tag.
+To allow users to delete their own messages, grant the permission: `tweaks.chat.delete.own`.
+
+---
+
+## Hierarchy
+
+> This feature requires [ServiceIO](https://github.com/TheNextLvl-net/service-io)
+> and a compatible permission plugin such as [LuckPerms](https://github.com/LuckPerms/LuckPerms).
+
+The chat hierarchy system controls who can delete whose messages based on a user's weight.
+A user's weight determines their deletion privileges.
+Users can only delete messages from others with equal or lower weights.
+
+### Example
+
+- **Admin:** deletion weight 99
+  Admins can delete messages from Admins, Moderators, and Players.
+
+- **Moderator:** deletion weight 50
+  Moderators can delete messages from Moderators and Players but not Admins.
+
+- **Player:** deletion weight undefined
+  Players can't delete messages from anyone.
+
+## Setting Weights in LuckPerms:
+
+To assign a hierarchy weight in LuckPerms, use the following permission:
+`meta.chat-delete-weight.<weight>`
+
+Alternatively, you can use the command:
+`/lp user <player> meta set chat-delete-weight <weight>`
+
 # Configuration
 
-## General
+## General Configuration
 
-| Option                   | Description                                                                                                                                                                    | Value           |
-|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| back-buffer-stack-size   | the amount of locations stored for the /back command<br/>_the larger the value the more ram will be reserved_                                                                  | `Integer` (1-n) |
-| default-permission-level | the permission level determines which commands a player can access<br/>_this option is purely-client side therefore has no effect on the server_<br/>(-1 disables this option) | `byte` (-1/0-4) |
-| override-join-message    | whether to override the join message<br/>_the message can be changed within the local files_                                                                                   | `true`, `false` |
-| override-quit-message    | whether to override the quit message<br/>_the message can be changed within the local files_                                                                                   | `true`, `false` |
-| override-chat            | whether to override the chat<br/>_the chat format can be changed within the [`chat-format`](#minimessage-chat-tags) entry_                                                     | `true`, `false` |
-| log-chat                 | whether to send the chat to the console<br/>_not related with override-chat_                                                                                                   | `true`, `false` |
+| Option                     | Description                                            |
+|----------------------------|--------------------------------------------------------|
+| `message-deletion-timeout` | Time in milliseconds chat messages may be deleted for. |
+| `back-buffer-stack-size`   | How many back-locations should be stored per user.     |
+| `default-permission-level` | _Clientside_ permission level assigned to users. (1-4) |
+| `enchantment-overflow`     | Enables or disables enchantment overflow.              |
+| `override-join-message`    | Whether join messages should be overridden.            |
+| `override-quit-message`    | Whether quit messages should be overridden.            |
+| `override-chat`            | Whether tweaks should override the chat.               |
+| `log-chat`                 | Whether the chat should be logged to console.          |
+| `lobby-server-name`        | Name of the lobby server (for `/lobby`).               |
+| `motd`                     | Message of the day for the server.                     |
 
-For more information about the permission level visit: https://minecraft.fandom.com/wiki/Permission_level
+## Features Configuration
 
-## Server
+| Option  | Description                                                            |
+|---------|------------------------------------------------------------------------|
+| `homes` | Enables or disables the homes feature.                                 |
+| `msg`   | Enables or disables the private message feature.                       |
+| `spawn` | Enables or disables the spawn feature.                                 |
+| `tpa`   | Enables or disables the teleport request feature.                      |
+| `warps` | Enables or disables the warps feature.                                 |
+| `lobby` | Enables or disables the lobby feature. (Right mode should be detected) |
 
-| Option               | Description                                 | Value           |
-|----------------------|---------------------------------------------|-----------------|
-| enable-lobby-command | whether the lobby command should be enabled | `true`, `false` |
-| lobby-server-name    | the name of the lobby server                | String          |
+## Features Social Configuration
 
-## MiniMessage Chat Tags
+| Option              | Description                                          |
+|---------------------|------------------------------------------------------|
+| `add-link-commands` | Enable link commands like `/discord`, `/reddit` etc. |
+| `add-server-links`  | Whether to add the links to the `Server Links` tab.  |
+| `announcements`     | Enables the announcements feature.                   |
+| `community`         | Enables the community feature.                       |
+| `feedback`          | Enables the feedback feature.                        |
+| `forum`             | Enables the forum feature.                           |
+| `guidelines`        | Enables the guidelines feature.                      |
+| `issues`            | Enables the issues feature.                          |
+| `news`              | Enables the news feature.                            |
+| `status`            | Enables the status feature.                          |
+| `support`           | Enables the support feature.                         |
+| `website`           | Enables the website feature.                         |
+| `discord`           | Enables the Discord link command.                    |
+| `reddit`            | Enables the Reddit link command.                     |
+| `teamspeak`         | Enables the TeamSpeak link command.                  |
+| `twitch`            | Enables the Twitch link command.                     |
+| `x`                 | Enables the X (Twitter) link command.                |
+| `youtube`           | Enables the YouTube link command.                    |
 
-These tags can be used within the `chat-format` entry<br/>
-To insert a tag use `<tag>`
+## Home Configuration
 
-| Tag             | Description                                                                                | Requires  |
-|-----------------|--------------------------------------------------------------------------------------------|-----------|
-| player_prefix   | the prefix of the sender                                                                   | LuckPerms |
-| player_suffix   | the suffix of the sender                                                                   | LuckPerms |
-| player_group    | the group of the sender                                                                    | LuckPerms |
-| signature       | the message signature                                                                      |           |
-| delete          | a clickable component to delete a certain message<br/>(requires the signature as argument) |           |
-| display_name    | the display name of the sender                                                             |           |
-| message_content | the text content of the sent message<br/>_usable within click actions_                     |           |
-| message         | the original message sent                                                                  |           |
-| player          | the name of the sender                                                                     |           |
-| world           | the world of the sender                                                                    |           |
+| Option         | Description                                                           |
+|----------------|-----------------------------------------------------------------------|
+| `limit`        | Maximum number of homes allowed (negative value indicates unlimited). |
+| `unnamed-name` | Default name for unnamed homes.                                       |
 
-For more information about minimessage visit: https://docs.advntr.dev/minimessage/format.html
+## Spawn Configuration
 
-## Chat Message Deletion
+| Option                    | Description                                              |
+|---------------------------|----------------------------------------------------------|
+| `teleport-on-first-join`  | Teleports player to spawn on first join.                 |
+| `teleport-on-join`        | Teleports player to spawn on join.                       |
+| `teleport-on-respawn`     | Teleports player to spawn on respawn.                    |
+| `ignore-respawn-position` | Ignores the exact respawn position.                      |
+| `location`                | Spawn location (in `world, x, y, z, yaw, pitch` format). |
 
-With the `delete-tag-format` option you can control the look and feel of the component
+## GUI Configuration
 
-For security reasons, the entire delete tag will only be visible to players with the
-permission `tweaks.chat.delete`<br/>
-To allow the deletion of the users own messages, grant: `tweaks.chat.delete.own`
+### Inventory GUI
 
-### Hierarchy
+| Option        | Description                                           |
+|---------------|-------------------------------------------------------|
+| `helmet`      | Material for the helmet placeholder slot in GUI.      |
+| `chestplate`  | Material for the chestplate placeholder slot in GUI.  |
+| `leggings`    | Material for the leggings placeholder slot in GUI.    |
+| `boots`       | Material for the boots placeholder slot in GUI.       |
+| `off-hand`    | Material for the off-hand placeholder slot in GUI.    |
+| `cursor`      | Material for the cursor placeholder slot in GUI.      |
+| `placeholder` | Material for placeholder slots in GUI.                |
+| `update-time` | Update time for the inventory GUI in ticks. (1s = 20) |
 
-_(This feature is based on LuckPerms' weight system, therefore, requires LuckPerms)_
+### Homes GUI
 
-The chat hierarchy makes it possible to control who can delete whose messages.<br/>
-A user's weight acts as an upper limit for their deletion privileges.
+| Option                 | Description                                                 |
+|------------------------|-------------------------------------------------------------|
+| `enabled`              | Enables or disables the homes GUI. (chat based if disabled) |
+| `rows`                 | Number of rows in the homes GUI.                            |
+| `action-slots`         | Slots in the homes GUI that may contain homes.              |
+| `button-slot-next`     | Slot for the next button in the homes GUI.                  |
+| `button-slot-previous` | Slot for the previous button in the homes GUI.              |
 
-For example, a user with a weight of 100 can delete messages from users with weights equal to or lower than 100,<br/>
-but not from those with weights higher than 100.
+### Warps GUI
 
-To add a hierarchy permission, use: `tweaks.chat.delete.<weight>`
+| Option                 | Description                                                |
+|------------------------|------------------------------------------------------------|
+| `enabled`              | Enables or disables the warps GUI. (chat base if disabled) |
+| `rows`                 | Number of rows in the warps GUI.                           |
+| `action-slots`         | Slots in the warps GUI that may contain warps.             |
+| `button-slot-next`     | Slot for the next button in the warps GUI.                 |
+| `button-slot-previous` | Slot for the previous button in the warps GUI.             |
 
-## Inventory
+### Name Icons
 
-The `update-time` entry, is given in ticks _(20 ticks = 1 second)_.<br/>
-The lower the value the faster the `/invsee` inventory updates.<br/>
-The minimum value is 1 tick to avoid lag.
+| Option       | Description                |
+|--------------|----------------------------|
+| `name-icons` | Icons for named locations. |
 
-## Vanilla Tweaks
+#### Example
 
-| Option                     | Description                                                                                                      | Value           |
-|----------------------------|------------------------------------------------------------------------------------------------------------------|-----------------|
-| cow-milking-cooldown       | the cooldown until a mooshroom/cow give milk again                                                               | milliseconds    |
-| mushroom-stew-cooldown     | the cooldown until a mooshroom can give mushroom stew again                                                      | milliseconds    |
-| sheep-wool-growth-cooldown | the minimum cooldown until sheep can grow back their wool<br/>(values below 2 minutes are not really noticeable) | milliseconds    |
-| animal-heal-by-feeding     | whether animals should heal by feeding them<br/>_this implies animals can only breed when on full hearts_        | `true`, `false` |
+```json
+{
+  "name-icons": {
+    "End Ship": "minecraft:elytra",
+    "Bastion": "minecraft:polished_blackstone_bricks",
+    "Mine": "minecraft:diamond",
+    "Casino": "minecraft:gold_ingot"
+  }
+}
+```
 
-For more information about sheep wool growth visit: https://minecraft.fandom.com/wiki/Tutorials/Wool_farming
+## Teleport Configuration
+
+| Option                    | Description                                             |
+|---------------------------|---------------------------------------------------------|
+| `cooldown`                | Cooldown time in milliseconds for teleportation.        |
+| `cooldown-allow-movement` | Allows movement during teleport cooldown.               |
+| `tpa-timeout`             | Timeout duration in milliseconds for teleport requests. |
+
+## Animals Configuration
+
+| Option                       | Description                                                               |
+|------------------------------|---------------------------------------------------------------------------|
+| `cow-milking-cooldown`       | Cooldown time in milliseconds for cow milking.                            |
+| `mushroom-stew-cooldown`     | Cooldown time in milliseconds for getting mushroom stew from a mooshroom. |
+| `sheep-wool-growth-cooldown` | Cooldown time in milliseconds before sheep can grow back their wool.      |
+| `animal-heal-by-feeding`     | Enables or disables animal healing by feeding them.                       |
+
+## Links Configuration
+
+| Option          | Description                            |
+|-----------------|----------------------------------------|
+| `announcements` | URL for announcements.                 |
+| `community`     | URL for community.                     |
+| `feedback`      | URL for feedback.                      |
+| `forum`         | URL for the forum.                     |
+| `guidelines`    | URL for guidelines.                    |
+| `issues`        | URL for issues tracking.               |
+| `news`          | URL for the news page.                 |
+| `status`        | URL for the status page.               |
+| `support`       | URL for the support page.              |
+| `website`       | URL for the main website.              |
+| `discord`       | URL for the Discord server invitation. |
+| `reddit`        | URL for the subreddit.                 |
+| `teamspeak`     | URL for the TeamSpeak server.          |
+| `twitch`        | URL for the Twitch channel.            |
+| `x`             | URL for the X (Twitter) profile.       |
+| `youtube`       | URL for the YouTube channel.           |
+
+# Commands file
+
+```json5
+{
+  "hello": {
+    // the key can't be changed
+    "command": "test",
+    // can be named whatever you want
+    "aliases": [
+      "test-1",
+      // can contain as many aliases you want
+      ""
+      // can even be empty to work on '/' 
+    ],
+  },
+  "nope": {
+    "command": "nope",
+    "aliases": []
+    // can be empty, to not register any aliases
+  }
+}
+```
