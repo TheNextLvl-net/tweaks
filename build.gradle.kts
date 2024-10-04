@@ -73,67 +73,103 @@ paper {
 
     permissions {
         register("tweaks.command.spawn") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-            description = "Allows players to use the spawn command"
+            this.default = BukkitPluginDescription.Permission.Default.TRUE
+            this.description = "Allows players to use the spawn command"
         }
         register("tweaks.command.setspawn") {
-            default = BukkitPluginDescription.Permission.Default.OP
-            description = "Allows players to use the setspawn command"
-            children = listOf("tweaks.command.spawn")
+            this.default = BukkitPluginDescription.Permission.Default.OP
+            this.description = "Allows players to use the setspawn command"
+            this.children = listOf("tweaks.command.spawn")
         }
 
         register("tweaks.command.home") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-            description = "Allows players to teleport to their homes"
+            this.default = BukkitPluginDescription.Permission.Default.TRUE
+            this.description = "Allows players to teleport to their homes"
         }
         register("tweaks.command.home.limit.bypass") {
-            default = BukkitPluginDescription.Permission.Default.OP
-            description = "Allows players to bypass the home limit"
+            this.default = BukkitPluginDescription.Permission.Default.OP
+            this.description = "Allows players to bypass the home limit"
         }
         register("tweaks.command.home.delete") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-            description = "Allows players to delete their homes"
-            children = listOf("tweaks.command.home.set")
+            this.default = BukkitPluginDescription.Permission.Default.TRUE
+            this.description = "Allows players to delete their homes"
+            this.children = listOf("tweaks.command.home.set")
         }
         register("tweaks.command.home.set") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-            description = "Allows players to set homes"
-            children = listOf("tweaks.command.home")
+            this.default = BukkitPluginDescription.Permission.Default.TRUE
+            this.description = "Allows players to set homes"
+            this.children = listOf("tweaks.command.home")
         }
         register("tweaks.command.home.set.named") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-            description = "Allows players to set named homes"
-            children = listOf("tweaks.command.home.set")
+            this.default = BukkitPluginDescription.Permission.Default.TRUE
+            this.description = "Allows players to set named homes"
+            this.children = listOf("tweaks.command.home.set")
         }
 
         register("tweaks.command.warp") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-            description = "Allows players to warp themselves"
+            this.default = BukkitPluginDescription.Permission.Default.TRUE
+            this.description = "Allows players to warp themselves"
         }
         register("tweaks.command.warp.delete") {
-            default = BukkitPluginDescription.Permission.Default.OP
-            description = "Allows players to delete warps"
-            children = listOf("tweaks.command.warp.set")
+            this.default = BukkitPluginDescription.Permission.Default.OP
+            this.description = "Allows players to delete warps"
+            this.children = listOf("tweaks.command.warp.set")
         }
         register("tweaks.command.warp.set") {
-            default = BukkitPluginDescription.Permission.Default.OP
-            description = "Allows players to set warps"
-            children = listOf("tweaks.command.warp")
+            this.default = BukkitPluginDescription.Permission.Default.OP
+            this.description = "Allows players to set warps"
+            this.children = listOf("tweaks.command.warp")
         }
+
+        register("tweaks.command.weather")
+        register("tweaks.command.weather.rain") { this.children = listOf("tweaks.command.weather") }
+        register("tweaks.command.weather.sun") { this.children = listOf("tweaks.command.weather") }
+        register("tweaks.command.weather.thunder") { this.children = listOf("tweaks.command.weather") }
+
+        register("tweaks.command.time")
+        register("tweaks.command.time.add") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.afternoon") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.day") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.midnight") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.night") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.noon") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.query") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.set") { this.children = listOf("tweaks.command.time.add") }
+        register("tweaks.command.time.sunrise") { this.children = listOf("tweaks.command.time") }
+        register("tweaks.command.time.sunset") { this.children = listOf("tweaks.command.time") }
+
+        register("tweaks.command.enderchest.edit") { this.children = listOf("tweaks.command.enderchest.others") }
+        register("tweaks.command.enderchest.others") { this.children = listOf("tweaks.command.enderchest") }
+        register("tweaks.command.feed.others") { this.children = listOf("tweaks.command.feed") }
+        register("tweaks.command.fly.others") { this.children = listOf("tweaks.command.fly") }
+        register("tweaks.command.gamemode.others") { this.children = listOf("tweaks.command.gamemode") }
+        register("tweaks.command.god.others") { this.children = listOf("tweaks.command.god") }
+        register("tweaks.command.heal.others") { this.children = listOf("tweaks.command.heal") }
+        register("tweaks.command.inventory.edit") { this.children = listOf("tweaks.command.inventory") }
+        register("tweaks.command.ping.others") { this.children = listOf("tweaks.command.ping") }
+        register("tweaks.command.speed.others") { this.children = listOf("tweaks.command.speed") }
+        register("tweaks.command.vanish.others") { this.children = listOf("tweaks.command.vanish") }
+
+        register("tweaks.command.lobby") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+        register("tweaks.command.msg") { this.default = BukkitPluginDescription.Permission.Default.TRUE }
+
+        register("tweaks.chat.delete") { this.children = listOf("tweaks.chat.delete.own") }
 
 
         register("tweaks.commands.environmental") {
+            this.description = "Grants access to all environmental commands"
+            this.default = BukkitPluginDescription.Permission.Default.OP
             this.children = listOf(
-                "tweaks.command.day",
-                "tweaks.command.noon",
-                "tweaks.command.night",
-                "tweaks.command.midnight",
-                "tweaks.command.rain",
-                "tweaks.command.sun",
-                "tweaks.command.thunder"
+                "tweaks.command.time.query",
+                "tweaks.command.time.set",
+                "tweaks.command.weather.rain",
+                "tweaks.command.weather.sun",
+                "tweaks.command.weather.thunder"
             )
         }
         register("tweaks.commands.item") {
+            this.description = "Grants access to all item commands"
+            this.default = BukkitPluginDescription.Permission.Default.OP
             this.children = listOf(
                 "tweaks.command.enchant",
                 "tweaks.command.head",
@@ -141,10 +177,13 @@ paper {
                 "tweaks.command.lore",
                 "tweaks.command.rename",
                 "tweaks.command.repair",
+                "tweaks.command.unbreakable",
                 "tweaks.command.unenchant"
             )
         }
         register("tweaks.commands.player") {
+            this.description = "Grants access to all player commands"
+            this.default = BukkitPluginDescription.Permission.Default.OP
             this.children = listOf(
                 "tweaks.command.back",
                 "tweaks.command.enderchest",
@@ -159,10 +198,14 @@ paper {
                 "tweaks.command.ping",
                 "tweaks.command.seen",
                 "tweaks.command.speed",
-                "tweaks.command.suicide"
+                "tweaks.command.suicide",
+                "tweaks.command.vanish"
             )
         }
+
         register("tweaks.commands.server") {
+            this.description = "Grants access to all server commands"
+            this.default = BukkitPluginDescription.Permission.Default.OP
             this.children = listOf(
                 "tweaks.command.broadcast",
                 "tweaks.command.lobby",
@@ -170,6 +213,8 @@ paper {
             )
         }
         register("tweaks.commands.workstation") {
+            this.description = "Grants access to all workstation commands"
+            this.default = BukkitPluginDescription.Permission.Default.OP
             this.children = listOf(
                 "tweaks.command.anvil",
                 "tweaks.command.cartography-table",
@@ -181,43 +226,6 @@ paper {
                 "tweaks.command.workbench"
             )
         }
-        register("tweaks.command.gamemode.all") {
-            this.children = listOf(
-                "tweaks.command.gamemode",
-                "tweaks.command.gamemode.survival",
-                "tweaks.command.gamemode.creative",
-                "tweaks.command.gamemode.adventure",
-                "tweaks.command.gamemode.spectator"
-            )
-        }
-        register("tweaks.chat.delete") {
-            this.children = listOf(
-                "tweaks.chat.delete.own"
-            )
-        }
-        register("tweaks.command.lobby") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-        }
-        register("tweaks.command.reply") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-        }
-        register("tweaks.command.msg") {
-            default = BukkitPluginDescription.Permission.Default.TRUE
-        }
-
-        register("tweaks.chat.delete.own")
-
-        register("tweaks.command.gamemode.others")
-        register("tweaks.command.inventory.edit")
-        register("tweaks.command.enderchest.edit")
-        register("tweaks.command.enderchest.others")
-        register("tweaks.command.feed.others")
-        register("tweaks.command.fly.others")
-        register("tweaks.command.god.others")
-        register("tweaks.command.heal.others")
-        register("tweaks.command.offline-tp.others")
-        register("tweaks.command.ping.others")
-        register("tweaks.command.speed.others")
     }
 }
 
