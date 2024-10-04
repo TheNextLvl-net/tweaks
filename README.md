@@ -254,13 +254,13 @@ These tags can be used within the `chat-format` of your translation files. To in
 
 For more information about MiniMessage, visit their [Documentation](https://docs.advntr.dev/minimessage/format.html)
 
+---
+
 # Chat Message Deletion
 
 The `delete-tag-format` option allows you to customize the appearance of the message deletion component.
 For security purposes, only users with the permission `tweaks.chat.delete` will be able to see the delete tag.
 To allow users to delete their own messages, grant the permission: `tweaks.chat.delete.own`.
-
----
 
 ## Hierarchy
 
@@ -289,6 +289,8 @@ To assign a hierarchy weight in LuckPerms, use the following permission:
 
 Alternatively, you can use the command:
 `/lp user <player> meta set chat-delete-weight <weight>`
+
+---
 
 # Configuration
 
@@ -449,6 +451,8 @@ Alternatively, you can use the command:
 | `twitch`        | URL for the Twitch channel.            |
 | `x`             | URL for the X (Twitter) profile.       |
 | `youtube`       | URL for the YouTube channel.           |
+
+---
 
 # Commands file
 
