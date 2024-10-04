@@ -23,21 +23,23 @@ public class TimeCommand {
         var command = Commands.literal(plugin.commands().time().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.time"))
                 .then(Commands.literal("set")
-                        .then(setTime())
-                        .then(setTime("afternoon", 9000))
-                        .then(setTime("day", 1000))
-                        .then(setTime("midnight", 18000))
-                        .then(setTime("morning", 0))
-                        .then(setTime("night", 13000))
-                        .then(setTime("noon", 6000))
-                        .then(setTime("sunrise", 23000))
-                        .then(setTime("sunset", 12000)))
+                        .then(setTime("afternoon", "tweaks.command.time.afternoon", 9000))
+                        .then(setTime("day", "tweaks.command.time.day", 1000))
+                        .then(setTime("midnight", "tweaks.command.time.midnight", 18000))
+                        .then(setTime("morning", "tweaks.command.time.morning", 0))
+                        .then(setTime("night", "tweaks.command.time.night", 13000))
+                        .then(setTime("noon", "tweaks.command.time.noon", 6000))
+                        .then(setTime("sunrise", "tweaks.command.time.sunrise", 23000))
+                        .then(setTime("sunset", "tweaks.command.time.sunset", 12000)))
+                .then(setTime())
                 .then(Commands.literal("add")
+                        .requires(stack -> stack.getSender().hasPermission("tweaks.command.time.add"))
                         .then(Commands.argument("time", ArgumentTypes.time())
                                 .then(Commands.argument("world", ArgumentTypes.world())
                                         .executes(context -> addTime(context, context.getArgument("world", World.class))))
                                 .executes(context -> addTime(context, context.getSource().getLocation().getWorld()))))
                 .then(Commands.literal("query")
+                        .requires(stack -> stack.getSender().hasPermission("tweaks.command.time.query"))
                         .then(query("day", world -> world.getFullTime() / 24000L % 2147483647L))
                         .then(query("daytime", world -> world.getFullTime() % 24000L))
                         .then(query("gametime", world -> world.getGameTime() % 2147483647L)))
@@ -54,6 +56,7 @@ public class TimeCommand {
 
     private RequiredArgumentBuilder<CommandSourceStack, Integer> setTime() {
         return Commands.argument("time", ArgumentTypes.time())
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.time.set"))
                 .then(Commands.argument("world", ArgumentTypes.world())
                         .executes(context -> {
                             var time = context.getArgument("time", int.class);
@@ -67,8 +70,9 @@ public class TimeCommand {
                 });
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> setTime(String literal, int ticks) {
+    private LiteralArgumentBuilder<CommandSourceStack> setTime(String literal, String permission, int ticks) {
         return Commands.literal(literal)
+                .requires(stack -> stack.getSender().hasPermission(permission))
                 .then(Commands.argument("world", ArgumentTypes.world())
                         .executes(context -> setTime(context, ticks, context.getArgument("world", World.class))))
                 .executes(context -> setTime(context, ticks, context.getSource().getLocation().getWorld()));
