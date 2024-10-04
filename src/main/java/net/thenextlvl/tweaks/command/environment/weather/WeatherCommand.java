@@ -19,15 +19,16 @@ public class WeatherCommand {
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().weather().command())
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.weather"))
-                .then(setWeather("clear", this::clear))
-                .then(setWeather("rain", this::rain))
-                .then(setWeather("thunder", this::thunder))
+                .then(setWeather("clear", "tweaks.command.weather.sun", this::clear))
+                .then(setWeather("rain", "tweaks.command.weather.rain", this::rain))
+                .then(setWeather("thunder", "tweaks.command.weather.thunder", this::thunder))
                 .build();
         registrar.register(command, "Gives you an item of your choice", plugin.commands().weather().aliases());
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> setWeather(String literal, Executor executor) {
+    private LiteralArgumentBuilder<CommandSourceStack> setWeather(String literal, String permission, Executor executor) {
         return Commands.literal(literal)
+                .requires(stack -> stack.getSender().hasPermission(permission))
                 .then(Commands.argument("world", ArgumentTypes.world())
                         .then(Commands.argument("duration", ArgumentTypes.time(1))
                                 .executes(context -> {
