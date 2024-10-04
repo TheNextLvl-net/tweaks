@@ -11,7 +11,7 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 ## Features _(Configurable)_
 
 - You heal animals by feeding them
-- Unless an animal is at full health they can't breed
+- Unless an animal is at full health, they can't breed
 - Cooldown for milking cows/mushroom-cows (with bowls)
 - Cooldown for Sheep wool growth
 - You can define a default permission level (purely client-side)
@@ -207,7 +207,7 @@ For more information about the permission level visit: https://minecraft.fandom.
 ## MiniMessage Chat Tags
 
 These tags can be used within the `chat-format` entry<br/>
-To insert a tag just use `<tag>`
+To insert a tag use `<tag>`
 
 | Tag             | Description                                                                                | Requires  |
 |-----------------|--------------------------------------------------------------------------------------------|-----------|
@@ -234,15 +234,15 @@ To allow the deletion of the users own messages, grant: `tweaks.chat.delete.own`
 
 ### Hierarchy
 
-_(This feature is based on LuckPerms' weight system, therefore requires LuckPerms)_
+_(This feature is based on LuckPerms' weight system, therefore, requires LuckPerms)_
 
-The chat hierarchy makes it possible to control who can delete who's messages.<br/>
-A users weight acts as an upper limits for their deletion privileges.
+The chat hierarchy makes it possible to control who can delete whose messages.<br/>
+A user's weight acts as an upper limit for their deletion privileges.
 
 For example, a user with a weight of 100 can delete messages from users with weights equal to or lower than 100,<br/>
 but not from those with weights higher than 100.
 
-To add a hierarchy permission use: `tweaks.chat.delete.<weight>`
+To add a hierarchy permission, use: `tweaks.chat.delete.<weight>`
 
 ## Inventory
 
