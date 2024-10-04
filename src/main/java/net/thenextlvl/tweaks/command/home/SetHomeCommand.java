@@ -28,7 +28,7 @@ public class SetHomeCommand {
                         .executes(context -> setHome(context, context.getArgument("name", String.class))))
                 .executes(context -> setHome(context, plugin.config().homes().unnamedName()))
                 .build();
-        registrar.register(command, "Set your homes", plugin.commands().setHome().aliases());
+        registrar.register(command, "Set a home", plugin.commands().setHome().aliases());
     }
 
     private int setHome(CommandContext<CommandSourceStack> context, String name) {
