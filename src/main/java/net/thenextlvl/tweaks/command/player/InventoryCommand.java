@@ -46,7 +46,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
     public void register(Commands registrar) {
         var command = create(plugin.commands().inventory().command(),
-                "tweaks.command.inventory", "tweaks.command.inventory.others");
+                "tweaks.command.inventory", "tweaks.command.inventory");
         registrar.register(command, "Open someone else's inventory",
                 plugin.commands().inventory().aliases());
     }

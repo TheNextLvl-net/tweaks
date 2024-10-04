@@ -14,7 +14,7 @@ public class ThunderCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().thunder().command(), "tweaks.command.thunder");
+        var command = create(plugin.commands().thunder().command(), "tweaks.command.weather.thunder");
         registrar.register(command, "Let it thunder", plugin.commands().thunder().aliases());
     }
 

@@ -14,7 +14,7 @@ public class SunCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().sun().command(), "tweaks.command.sun");
+        var command = create(plugin.commands().sun().command(), "tweaks.command.weather.sun");
         registrar.register(command, "Let the sun shine", plugin.commands().sun().aliases());
     }
 
