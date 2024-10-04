@@ -22,8 +22,6 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 [Modrinth](https://modrinth.com/plugin/tweaks-1)<br>
 [Hangar](https://hangar.papermc.io/TheNextLvl/Tweaks)
 
----
-
 ## What is New in the Latest Major Update
 
 This release brings a host of exciting new features and enhancements:
