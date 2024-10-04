@@ -32,6 +32,37 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 
 ---
 
+## What is New in the Latest Major Update
+
+This release brings a host of exciting new features and enhancements:
+
+- **New Commands & Features:** Added commands for `homes`, `spawn`, `tpa`, `warps`, and a variety of new social
+  commands.
+- **Advanced Configurations:**
+    - **Feature Toggles:** Every feature can now be enabled or disabled individually, giving you full control over your
+      server’s functionality.
+    - **Custom Links:** Set up server links to your website or social media platforms.
+    - **Teleportation Cooldowns:** Teleportation now includes configurable cooldowns to balance gameplay.
+    - **Conditional Spawn Teleportation:** Decide when players should be teleported to spawn based on specific
+      conditions.
+
+- **GUI Customization:**
+    - Icon Overrides: Customize the icons for your homes and warps GUIs to fit your server’s theme.
+    - **Chat vs. GUI:** Choose between using interactive GUIs or simple chat messages for warps and homes.
+    - **Full GUI Customization:** Modify the appearance and layout of GUIs to your liking.
+
+- **Improved Command Flexibility:**
+    - **Command Customization:** A new `commands.json` file allows you to rename commands and set up aliases
+      effortlessly.
+    - **Enchantment Overflow:** You can now allow enchantment overflow up to level 255 in commands for even more
+      control.
+
+- **Performance Enhancements:**
+    - **Message Deletion Timeout:** Configure a timeout for message deletion to prevent memory buildup from undeleted
+      messages.
+
+---
+
 # Commands
 
 ## Environmental commands
