@@ -26,7 +26,7 @@ public class WarpCommand {
                         .suggests(new WarpSuggestionProvider(plugin))
                         .executes(this::warp))
                 .build();
-        registrar.register(command, "Teleport to warps", plugin.commands().warp().aliases());
+        registrar.register(command, "Warp to a location", plugin.commands().warp().aliases());
     }
 
     private int warp(CommandContext<CommandSourceStack> context) {
