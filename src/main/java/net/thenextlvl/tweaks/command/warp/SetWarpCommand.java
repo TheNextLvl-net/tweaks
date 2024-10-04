@@ -22,7 +22,7 @@ public class SetWarpCommand {
                         .suggests(new WarpSuggestionProvider(plugin))
                         .executes(this::setWarp))
                 .build();
-        registrar.register(command, "Set warps", plugin.commands().setWarp().aliases());
+        registrar.register(command, "Set a warp point", plugin.commands().setWarp().aliases());
     }
 
     private int setWarp(CommandContext<CommandSourceStack> context) {

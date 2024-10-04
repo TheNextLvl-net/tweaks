@@ -48,7 +48,7 @@ public class CommandConfig {
     private @SerializedName("hat") CommandDefinition hat = new CommandDefinition("hat", Set.of());
     private @SerializedName("heal") CommandDefinition heal = new CommandDefinition("heal", Set.of());
     private @SerializedName("inventory") CommandDefinition inventory = new CommandDefinition("inventory", Set.of("invsee", "inv"));
-    private @SerializedName("offline-teleport") CommandDefinition offlineTeleport = new CommandDefinition("offline-teleport", Set.of("offline-tp", "otp", "tpo"));
+    private @SerializedName("offline-teleport") CommandDefinition offlineTeleport = new CommandDefinition("offline-teleport", Set.of("offline-tp", "tpo"));
     private @SerializedName("ping") CommandDefinition ping = new CommandDefinition("ping", Set.of("latency", "ms"));
     private @SerializedName("seen") CommandDefinition seen = new CommandDefinition("seen", Set.of("find"));
     private @SerializedName("speed") CommandDefinition speed = new CommandDefinition("speed", Set.of());

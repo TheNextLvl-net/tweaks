@@ -35,7 +35,7 @@ public class TPAskCommand {
                         .suggests(new TPASuggestionProvider(plugin))
                         .executes(this::ask))
                 .build();
-        commands.register(command, "Ask a player to be teleported", plugin.commands().teleportAsk().aliases());
+        commands.register(command, "Request to teleport to a player", plugin.commands().teleportAsk().aliases());
     }
 
     private int ask(CommandContext<CommandSourceStack> context) {

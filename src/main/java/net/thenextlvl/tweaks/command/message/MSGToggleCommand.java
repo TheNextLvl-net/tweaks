@@ -16,10 +16,10 @@ public class MSGToggleCommand {
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().msgToggle().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("tweaks.command.msg"))
+                                   && player.hasPermission("tweaks.command.msg.toggle"))
                 .executes(this::toggle)
                 .build();
-        commands.register(command, "Toggle private messages for you", plugin.commands().msgToggle().aliases());
+        commands.register(command, "Toggle receiving private messages", plugin.commands().msgToggle().aliases());
     }
 
     private int toggle(CommandContext<CommandSourceStack> context) {

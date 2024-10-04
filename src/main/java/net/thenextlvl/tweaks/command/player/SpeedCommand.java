@@ -60,7 +60,7 @@ public class SpeedCommand {
                             return 0;
                         }))
                 .build();
-        registrar.register(command, "change your own or someone else's walk or fly speed",
+        registrar.register(command, "Change your own or others fly, sneak or walk speed",
                 plugin.commands().speed().aliases());
     }
 

@@ -15,11 +15,11 @@ public class ReplyCommand {
 
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().reply().command())
-                .requires(stack -> stack.getSender().hasPermission("tweaks.command.msg"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.msg.reply"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
                         .executes(this::reply))
                 .build();
-        commands.register(command, "Reply to a private message", plugin.commands().reply().aliases());
+        commands.register(command, "Reply to the last received private message", plugin.commands().reply().aliases());
     }
 
     private int reply(CommandContext<CommandSourceStack> context) {

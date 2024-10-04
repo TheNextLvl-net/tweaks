@@ -22,7 +22,7 @@ public class DeleteWarpCommand {
                         .suggests(new WarpSuggestionProvider(plugin))
                         .executes(this::deleteWarp))
                 .build();
-        registrar.register(command, "Delete warps", plugin.commands().deleteWarp().aliases());
+        registrar.register(command, "Delete a warp point", plugin.commands().deleteWarp().aliases());
     }
 
     private int deleteWarp(CommandContext<CommandSourceStack> context) {

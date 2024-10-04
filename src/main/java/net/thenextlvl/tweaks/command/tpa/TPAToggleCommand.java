@@ -16,10 +16,10 @@ public class TPAToggleCommand {
     public void register(Commands commands) {
         var command = Commands.literal(plugin.commands().teleportToggle().command())
                 .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("tweaks.command.tpa"))
+                                   && player.hasPermission("tweaks.command.tpa.toggle"))
                 .executes(this::toggle)
                 .build();
-        commands.register(command, "Toggle teleport requests for you", plugin.commands().teleportToggle().aliases());
+        commands.register(command, "Toggle the ability to receive teleport requests", plugin.commands().teleportToggle().aliases());
     }
 
     private int toggle(CommandContext<CommandSourceStack> context) {

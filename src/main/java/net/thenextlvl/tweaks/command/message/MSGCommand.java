@@ -26,7 +26,7 @@ public class MSGCommand {
                         .then(Commands.argument("message", StringArgumentType.greedyString())
                                 .executes(this::message)))
                 .build();
-        commands.register(command, "Start private conversations with others", plugin.commands().msg().aliases());
+        commands.register(command, "Send a private message to a player", plugin.commands().msg().aliases());
     }
 
     private int message(CommandContext<CommandSourceStack> context) {
