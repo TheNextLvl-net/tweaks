@@ -6,8 +6,8 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.io.File;
 import java.sql.Connection;
@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NullMarked
 public class DataController {
     private static final String TPA_TOGGLED = "tpa_toggled";
     private static final String MSG_TOGGLED = "msg_toggled";
@@ -62,7 +63,7 @@ public class DataController {
     }
 
     @SneakyThrows
-    public @Unmodifiable Set<NamedLocation> getHomes(OfflinePlayer player) {
+    public Set<NamedLocation> getHomes(OfflinePlayer player) {
         return Objects.requireNonNullElseGet(executeQuery(
                 "SELECT name, world, x, y, z, yaw, pitch FROM homes WHERE uuid = ?",
                 this::parseNamedLocations, player.getUniqueId()
@@ -198,7 +199,7 @@ public class DataController {
     }
 
     @SneakyThrows
-    public @Unmodifiable Set<NamedLocation> getWarps() {
+    public Set<NamedLocation> getWarps() {
         return Objects.requireNonNullElseGet(executeQuery(
                 "SELECT name, world, x, y, z, yaw, pitch FROM warps",
                 this::parseNamedLocations

@@ -7,7 +7,9 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class FeedCommand extends PlayersCommand {
     public FeedCommand(TweaksPlugin plugin) {

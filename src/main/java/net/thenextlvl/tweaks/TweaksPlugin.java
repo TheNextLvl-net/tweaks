@@ -54,7 +54,8 @@ import org.bukkit.ServerLinks;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.io.File;
 import java.net.URI;
@@ -64,6 +65,7 @@ import java.util.Objects;
 import static org.bukkit.ServerLinks.Type.*;
 
 @Getter
+@NullMarked
 @Accessors(fluent = true)
 @SuppressWarnings("UnstableApiUsage")
 public class TweaksPlugin extends JavaPlugin {
@@ -282,9 +284,9 @@ public class TweaksPlugin extends JavaPlugin {
         this.config = new GsonFile<>(
                 IO.of(getDataFolder(), "config.json"),
                 new PluginConfig(), new GsonBuilder()
-                .registerTypeHierarchyAdapter(Location.class, LocationAdapter.Simple.INSTANCE)
-                .registerTypeHierarchyAdapter(Material.class, MaterialAdapter.NotNull.INSTANCE)
-                .registerTypeHierarchyAdapter(World.class, WorldAdapter.Key.INSTANCE)
+                .registerTypeHierarchyAdapter(Location.class, LocationAdapter.simple())
+                .registerTypeHierarchyAdapter(Material.class, MaterialAdapter.instance())
+                .registerTypeHierarchyAdapter(World.class, WorldAdapter.key())
                 .setPrettyPrinting()
                 .serializeNulls()
                 .create()

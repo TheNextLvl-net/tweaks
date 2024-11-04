@@ -10,10 +10,12 @@ import net.thenextlvl.tweaks.command.suggestion.RequestSuggestionProvider;
 import net.thenextlvl.tweaks.controller.TPAController;
 import net.thenextlvl.tweaks.controller.TPAController.RequestType;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class TPADenyCommand {

@@ -19,10 +19,12 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.EnchantSuggestionProvider;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings({"UnstableApiUsage", "unchecked"})
 public class EnchantCommand {

@@ -13,6 +13,7 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.TPASuggestionProvider;
 import net.thenextlvl.tweaks.controller.TPAController.RequestType;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.Duration;
 import java.util.concurrent.Executors;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class TPAskCommand {

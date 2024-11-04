@@ -5,7 +5,9 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 @RequiredArgsConstructor
 public class WorldListener implements Listener {
     private final TweaksPlugin plugin;

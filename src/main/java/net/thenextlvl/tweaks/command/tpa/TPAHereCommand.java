@@ -9,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.TPASuggestionProvider;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA_HERE;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class TPAHereCommand {

@@ -4,11 +4,13 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Collection;
 
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN;
 
+@NullMarked
 public class WarpGUI extends NamedLocationGUI {
     public WarpGUI(TweaksPlugin plugin, Player owner, Collection<NamedLocation> elements) {
         super(plugin, plugin.config().guis().warps(), owner, plugin.bundle().component(owner, "gui.title.warps"), elements);

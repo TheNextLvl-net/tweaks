@@ -10,9 +10,11 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.controller.TPAController;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class RequestSuggestionProvider implements SuggestionProvider<CommandSourceStack> {

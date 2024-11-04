@@ -6,9 +6,11 @@ import lombok.experimental.Accessors;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.*;
 
+@NullMarked
 @RequiredArgsConstructor
 public class TPAController {
     private final Map<Player, Set<Request>> requests = new WeakHashMap<>();

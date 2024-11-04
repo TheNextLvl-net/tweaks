@@ -7,12 +7,14 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.jspecify.annotations.NullMarked;
 
 import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 @RequiredArgsConstructor
 public class TeleportController {
     private final Map<Player, Location> teleports = new WeakHashMap<>();

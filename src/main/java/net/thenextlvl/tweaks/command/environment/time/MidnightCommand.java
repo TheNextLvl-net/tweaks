@@ -6,7 +6,9 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.environment.WorldCommand;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class MidnightCommand extends WorldCommand {
     public MidnightCommand(TweaksPlugin plugin) {

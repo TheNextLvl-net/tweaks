@@ -16,10 +16,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.SheepRegrowWoolEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.persistence.PersistentDataType;
+import org.jspecify.annotations.NullMarked;
 
 import static org.bukkit.GameMode.ADVENTURE;
 import static org.bukkit.GameMode.SURVIVAL;
 
+@NullMarked
 @RequiredArgsConstructor
 public class EntityListener implements Listener {
     private final TweaksPlugin plugin;
@@ -34,7 +36,7 @@ public class EntityListener implements Listener {
         if (!(event.getRightClicked() instanceof Animals animals)) return;
         var item = event.getPlayer().getInventory().getItem(event.getHand());
         if (!animals.isBreedItem(item) || animals.isDead()) return;
-        var attribute = animals.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        var attribute = animals.getAttribute(Attribute.MAX_HEALTH);
         if (attribute == null || animals.getHealth() == attribute.getValue()) return;
         animals.setHealth(Math.min(animals.getHealth() + 1, attribute.getValue()));
         var gameMode = event.getPlayer().getGameMode();

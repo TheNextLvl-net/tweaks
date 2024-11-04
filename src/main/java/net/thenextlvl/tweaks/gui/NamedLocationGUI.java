@@ -11,12 +11,14 @@ import net.thenextlvl.tweaks.model.NamedLocation;
 import net.thenextlvl.tweaks.model.PluginConfig;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @Getter
+@NullMarked
 public abstract class NamedLocationGUI extends PagedGUI<TweaksPlugin, NamedLocation> {
     private static final List<Material> materials = Arrays.stream(Material.values())
             .filter(material -> !material.isLegacy())

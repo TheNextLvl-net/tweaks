@@ -8,11 +8,13 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.OfflinePlayer;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class OfflinePlayerSuggestionProvider implements SuggestionProvider<CommandSourceStack> {

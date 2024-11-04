@@ -1,5 +1,6 @@
 package net.thenextlvl.tweaks.command.player;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -17,6 +18,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.List;
 import static org.bukkit.attribute.Attribute.*;
 import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class SpeedCommand {
@@ -115,7 +118,7 @@ public class SpeedCommand {
             if (!entity.equals(sender)) plugin.bundle().sendMessage(sender, "command.speed.reset.others",
                     Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));
         });
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     private int speed(CommandContext<CommandSourceStack> context, SpeedType type, List<Entity> entities) {
@@ -143,15 +146,15 @@ public class SpeedCommand {
                     Placeholder.parsed("speed", String.valueOf(speed)),
                     Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));
         });
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     @Getter
     @RequiredArgsConstructor
     private enum SpeedType {
-        FLY(GENERIC_FLYING_SPEED, "command.speed.fly.changed.others", "command.speed.fly.changed.self"),
-        SNEAK(PLAYER_SNEAKING_SPEED, "command.speed.sneak.changed.others", "command.speed.sneak.changed.self"),
-        WALK(GENERIC_MOVEMENT_SPEED, "command.speed.walk.changed.others", "command.speed.walk.changed.self");
+        FLY(FLYING_SPEED, "command.speed.fly.changed.others", "command.speed.fly.changed.self"),
+        SNEAK(SNEAKING_SPEED, "command.speed.sneak.changed.others", "command.speed.sneak.changed.self"),
+        WALK(MOVEMENT_SPEED, "command.speed.walk.changed.others", "command.speed.walk.changed.self");
 
         private final Attribute attribute;
         private final String messageOther;

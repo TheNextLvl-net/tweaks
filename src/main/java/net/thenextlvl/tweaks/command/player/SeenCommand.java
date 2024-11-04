@@ -10,11 +10,13 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class SeenCommand {

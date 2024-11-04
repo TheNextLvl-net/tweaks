@@ -19,7 +19,8 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.stream.IntStream;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class InventoryCommand extends PlayerCommand implements Listener {
     private final Map<HumanEntity, Player> viewers = new WeakHashMap<>();

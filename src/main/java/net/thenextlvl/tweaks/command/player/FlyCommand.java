@@ -5,7 +5,9 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class FlyCommand extends PlayersCommand {
     public FlyCommand(TweaksPlugin plugin) {

@@ -11,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.function.Function;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class TimeCommand {
@@ -99,4 +101,6 @@ public class TimeCommand {
                 Placeholder.parsed("world", world.getName()));
         return Command.SINGLE_SUCCESS;
     }
+
+    // todo: respect paper-global.yml -> commands.time-command-affects-all-worlds
 }

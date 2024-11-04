@@ -4,10 +4,12 @@ import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Set;
 
 @Getter
+@NullMarked
 @Accessors(fluent = true, chain = false)
 public class CommandConfig {
     private @SerializedName("day") CommandDefinition day = new CommandDefinition("day", Set.of());

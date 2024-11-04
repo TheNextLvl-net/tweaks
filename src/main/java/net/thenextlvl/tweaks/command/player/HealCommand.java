@@ -8,7 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class HealCommand extends EntitiesCommand {
     public HealCommand(TweaksPlugin plugin) {
@@ -23,7 +25,7 @@ public class HealCommand extends EntitiesCommand {
     @Override
     protected void execute(CommandSender sender, Entity entity) {
         if (entity instanceof LivingEntity living) {
-            var attribute = living.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            var attribute = living.getAttribute(Attribute.MAX_HEALTH);
             living.setHealth(attribute == null ? 20.0 : attribute.getValue());
 
             living.setArrowsInBody(0);
