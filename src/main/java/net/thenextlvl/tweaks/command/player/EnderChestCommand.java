@@ -12,11 +12,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class EnderChestCommand extends PlayerCommand implements Listener {
     private final Set<HumanEntity> viewers = Collections.newSetFromMap(new WeakHashMap<>());

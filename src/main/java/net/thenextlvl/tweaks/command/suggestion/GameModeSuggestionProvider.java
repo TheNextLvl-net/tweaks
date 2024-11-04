@@ -5,10 +5,12 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import core.paper.command.SuggestionProvider;
 import org.bukkit.GameMode;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 public class GameModeSuggestionProvider implements SuggestionProvider {
     @Override
     public CompletableFuture<Suggestions> suggest(CommandContext<?> context, SuggestionsBuilder builder) {

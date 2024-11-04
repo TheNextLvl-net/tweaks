@@ -3,10 +3,12 @@ package net.thenextlvl.tweaks.model;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Objects;
 
 @Getter
+@NullMarked
 public class NamedLocation extends Location {
     private final String name;
 

@@ -6,9 +6,11 @@ import core.paper.command.WrappedArgumentType;
 import net.kyori.adventure.text.Component;
 import net.thenextlvl.tweaks.command.suggestion.GameModeSuggestionProvider;
 import org.bukkit.GameMode;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Arrays;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class GameModeArgumentType extends WrappedArgumentType<String, GameMode> {
     public GameModeArgumentType() {

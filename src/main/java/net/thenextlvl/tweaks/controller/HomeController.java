@@ -6,13 +6,14 @@ import net.thenextlvl.tweaks.model.NamedLocation;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 @RequiredArgsConstructor
 public class HomeController {
     private final TweaksPlugin plugin;
@@ -22,7 +23,7 @@ public class HomeController {
                 .exceptionally(throwable -> null);
     }
 
-    public CompletableFuture<@Unmodifiable Set<NamedLocation>> getHomes(OfflinePlayer player) {
+    public CompletableFuture<Set<NamedLocation>> getHomes(OfflinePlayer player) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().getHomes(player))
                 .exceptionally(throwable -> Set.of());
     }

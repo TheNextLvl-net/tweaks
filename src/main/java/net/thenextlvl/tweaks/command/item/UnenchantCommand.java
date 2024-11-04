@@ -15,7 +15,9 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.UnenchantSuggestionProvider;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
 public class UnenchantCommand {

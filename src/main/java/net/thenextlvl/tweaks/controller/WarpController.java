@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
 import org.bukkit.Location;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 @RequiredArgsConstructor
 public class WarpController {
     private final TweaksPlugin plugin;
@@ -19,7 +20,7 @@ public class WarpController {
                 .exceptionally(throwable -> null);
     }
 
-    public CompletableFuture<@Unmodifiable Set<NamedLocation>> getWarps() {
+    public CompletableFuture<Set<NamedLocation>> getWarps() {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarps())
                 .exceptionally(throwable -> Set.of());
     }

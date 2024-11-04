@@ -8,9 +8,11 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class UnenchantSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     @Override

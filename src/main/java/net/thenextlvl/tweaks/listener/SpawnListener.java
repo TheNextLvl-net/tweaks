@@ -7,8 +7,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.jspecify.annotations.NullMarked;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
+@NullMarked
 @RequiredArgsConstructor
 public class SpawnListener implements Listener {
     private final TweaksPlugin plugin;

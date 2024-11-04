@@ -2,11 +2,13 @@ package net.thenextlvl.tweaks.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
+@NullMarked
 @RequiredArgsConstructor
 public class MSGController {
     private final Map<CommandSender, CommandSender> conversations = new WeakHashMap<>();

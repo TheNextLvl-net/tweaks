@@ -8,12 +8,14 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Getter
+@NullMarked
 @Accessors(fluent = true, chain = false)
 public class PluginConfig {
     private @SerializedName("features") FeatureConfig features = new FeatureConfig();

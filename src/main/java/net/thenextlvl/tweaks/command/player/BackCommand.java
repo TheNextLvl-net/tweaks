@@ -6,9 +6,11 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
+@NullMarked
 @SuppressWarnings("UnstableApiUsage")
 public class BackCommand {
     private final TweaksPlugin plugin;

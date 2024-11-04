@@ -11,12 +11,14 @@ import net.thenextlvl.service.api.group.GroupHolder;
 import net.thenextlvl.service.api.permission.PermissionController;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Function;
 
 @Getter
+@NullMarked
 public class ServiceController {
     private final @Nullable BankController banks;
     private final @Nullable ChatController chat;
