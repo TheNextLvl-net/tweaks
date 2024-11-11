@@ -17,6 +17,6 @@ public class TwitchCommand {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.twitch");
             return Command.SINGLE_SUCCESS;
         }).build();
-        registrar.register(command, "Watch us on Twitch", plugin.commands().twitch().aliases());
+        registrar.register(command, "Follow us on Twitch", plugin.commands().twitch().aliases());
     }
 }
