@@ -93,6 +93,12 @@ public class CommandConfig {
     private @SerializedName("stonecutter") CommandDefinition stonecutter = new CommandDefinition("stonecutter");
     private @SerializedName("workbench") CommandDefinition workbench = new CommandDefinition("workbench", "wb");
 
+    private boolean isProxyEnabled() {
+        var plugin = JavaPlugin.getPlugin(TweaksPlugin.class);
+        return plugin.getServer().spigot().getPaperConfig().getBoolean("proxies.velocity.enabled")
+               || plugin.getServer().spigot().getSpigotConfig().getBoolean("settings.bungeecord");
+    }
+
     @Getter
     @Accessors(fluent = true, chain = false)
     public static class CommandDefinition {

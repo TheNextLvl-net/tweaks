@@ -4,10 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -139,7 +137,6 @@ public class PluginConfig {
         private @SerializedName("spawn") boolean spawn = true;
         private @SerializedName("tpa") boolean tpa = true;
         private @SerializedName("warps") boolean warps = true;
-        private @SerializedName("lobby") boolean lobby = isProxyEnabled();
 
         private @SerializedName("social") SocialConfig social = new SocialConfig();
 
@@ -166,12 +163,6 @@ public class PluginConfig {
             private @SerializedName("twitch") boolean twitch = true;
             private @SerializedName("x") boolean x = true;
             private @SerializedName("youtube") boolean youtube = true;
-        }
-
-        private boolean isProxyEnabled() {
-            var plugin = JavaPlugin.getPlugin(TweaksPlugin.class);
-            return plugin.getServer().spigot().getPaperConfig().getBoolean("proxies.velocity.enabled")
-                   || plugin.getServer().spigot().getSpigotConfig().getBoolean("settings.bungeecord");
         }
     }
 
