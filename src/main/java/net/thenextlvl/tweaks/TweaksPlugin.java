@@ -140,98 +140,97 @@ public class TweaksPlugin extends JavaPlugin {
     }
 
     private void registerTimeCommands(Commands registrar) {
-        new DayCommand(this).register(registrar);
-        new MidnightCommand(this).register(registrar);
-        new NightCommand(this).register(registrar);
-        new NoonCommand(this).register(registrar);
-        new TimeCommand(this).register(registrar);
+        if (commands().day().enabled()) new DayCommand(this).register(registrar);
+        if (commands().midnight().enabled()) new MidnightCommand(this).register(registrar);
+        if (commands().night().enabled()) new NightCommand(this).register(registrar);
+        if (commands().noon().enabled()) new NoonCommand(this).register(registrar);
+        if (commands().time().enabled()) new TimeCommand(this).register(registrar);
     }
 
     private void registerWeatherCommands(Commands registrar) {
-        new RainCommand(this).register(registrar);
-        new SunCommand(this).register(registrar);
-        new ThunderCommand(this).register(registrar);
-        new WeatherCommand(this).register(registrar);
+        if (commands().rain().enabled()) new RainCommand(this).register(registrar);
+        if (commands().sun().enabled()) new SunCommand(this).register(registrar);
+        if (commands().thunder().enabled()) new ThunderCommand(this).register(registrar);
+        if (commands().weather().enabled()) new WeatherCommand(this).register(registrar);
     }
 
     private void registerItemCommands(Commands registrar) {
-        new EnchantCommand(this).register(registrar);
-        new HeadCommand(this).register(registrar);
-        new ItemCommand(this).register(registrar);
-        new LoreCommand(this).register(registrar);
-        new RenameCommand(this).register(registrar);
-        new RepairCommand(this).register(registrar);
-        new UnbreakableCommand(this).register(registrar);
-        new UnenchantCommand(this).register(registrar);
+        if (commands().enchant().enabled()) new EnchantCommand(this).register(registrar);
+        if (commands().head().enabled()) new HeadCommand(this).register(registrar);
+        if (commands().item().enabled()) new ItemCommand(this).register(registrar);
+        if (commands().lore().enabled()) new LoreCommand(this).register(registrar);
+        if (commands().rename().enabled()) new RenameCommand(this).register(registrar);
+        if (commands().repair().enabled()) new RepairCommand(this).register(registrar);
+        if (commands().unbreakable().enabled()) new UnbreakableCommand(this).register(registrar);
+        if (commands().unenchant().enabled()) new UnenchantCommand(this).register(registrar);
     }
 
     private void registerPlayerCommands(Commands registrar) {
-        new BackCommand(this).register(registrar);
-        new EnderChestCommand(this).register(registrar);
-        new FeedCommand(this).register(registrar);
-        new FlyCommand(this).register(registrar);
-        new GameModeCommand(this).register(registrar);
-        new GodCommand(this).register(registrar);
-        new HatCommand(this).register(registrar);
-        new HealCommand(this).register(registrar);
-        new InventoryCommand(this).register(registrar);
-        new OfflineTeleportCommand(this).register(registrar);
-        new PingCommand(this).register(registrar);
-        new SeenCommand(this).register(registrar);
-        new SpeedCommand(this).register(registrar);
-        new SuicideCommand(this).register(registrar);
-        new VanishCommand(this).register(registrar);
+        if (commands().back().enabled()) new BackCommand(this).register(registrar);
+        if (commands().enderchest().enabled()) new EnderChestCommand(this).register(registrar);
+        if (commands().feed().enabled()) new FeedCommand(this).register(registrar);
+        if (commands().fly().enabled()) new FlyCommand(this).register(registrar);
+        if (commands().gamemode().enabled()) new GameModeCommand(this).register(registrar);
+        if (commands().god().enabled()) new GodCommand(this).register(registrar);
+        if (commands().hat().enabled()) new HatCommand(this).register(registrar);
+        if (commands().heal().enabled()) new HealCommand(this).register(registrar);
+        if (commands().inventory().enabled()) new InventoryCommand(this).register(registrar);
+        if (commands().offlineTeleport().enabled()) new OfflineTeleportCommand(this).register(registrar);
+        if (commands().ping().enabled()) new PingCommand(this).register(registrar);
+        if (commands().seen().enabled()) new SeenCommand(this).register(registrar);
+        if (commands().speed().enabled()) new SpeedCommand(this).register(registrar);
+        if (commands().suicide().enabled()) new SuicideCommand(this).register(registrar);
+        if (commands().vanish().enabled()) new VanishCommand(this).register(registrar);
     }
 
     private void registerServerCommands(Commands registrar) {
-        new BroadcastCommand(this).register(registrar);
-        if (config().features().lobby())
-            new LobbyCommand(this).register(registrar);
-        new MotdCommand(this).register(registrar);
+        if (commands().back().enabled()) new BroadcastCommand(this).register(registrar);
+        if (commands().lobby().enabled()) new LobbyCommand(this).register(registrar);
+        if (commands().motd().enabled()) new MotdCommand(this).register(registrar);
     }
 
     private void registerWorkstationCommands(Commands registrar) {
-        new AnvilCommand(this).register(registrar);
-        new CartographyTableCommand(this).register(registrar);
-        new EnchantingTableCommand(this).register(registrar);
-        new GrindstoneCommand(this).register(registrar);
-        new LoomCommand(this).register(registrar);
-        new SmithingTableCommand(this).register(registrar);
-        new StonecutterCommand(this).register(registrar);
-        new WorkbenchCommand(this).register(registrar);
+        if (commands().anvil().enabled()) new AnvilCommand(this).register(registrar);
+        if (commands().cartographyTable().enabled()) new CartographyTableCommand(this).register(registrar);
+        if (commands().enchantingTable().enabled()) new EnchantingTableCommand(this).register(registrar);
+        if (commands().grindstone().enabled()) new GrindstoneCommand(this).register(registrar);
+        if (commands().loom().enabled()) new LoomCommand(this).register(registrar);
+        if (commands().smithingTable().enabled()) new SmithingTableCommand(this).register(registrar);
+        if (commands().stonecutter().enabled()) new StonecutterCommand(this).register(registrar);
+        if (commands().workbench().enabled()) new WorkbenchCommand(this).register(registrar);
     }
 
     private void registerHomeCommands(Commands registrar) {
-        new DeleteHomeCommand(this).register(registrar);
-        new HomeCommand(this).register(registrar);
-        new HomesCommand(this).register(registrar);
-        new SetHomeCommand(this).register(registrar);
+        if (commands().deleteHome().enabled()) new DeleteHomeCommand(this).register(registrar);
+        if (commands().home().enabled()) new HomeCommand(this).register(registrar);
+        if (commands().homes().enabled()) new HomesCommand(this).register(registrar);
+        if (commands().setHome().enabled()) new SetHomeCommand(this).register(registrar);
     }
 
     private void registerMSGCommands(Commands registrar) {
-        new MSGCommand(this).register(registrar);
-        new MSGToggleCommand(this).register(registrar);
-        new ReplyCommand(this).register(registrar);
+        if (commands().msg().enabled()) new MSGCommand(this).register(registrar);
+        if (commands().msgToggle().enabled()) new MSGToggleCommand(this).register(registrar);
+        if (commands().reply().enabled()) new ReplyCommand(this).register(registrar);
     }
 
     private void registerSpawnCommands(Commands registrar) {
-        new SetSpawnCommand(this).register(registrar);
-        new SpawnCommand(this).register(registrar);
+        if (commands().setSpawn().enabled()) new SetSpawnCommand(this).register(registrar);
+        if (commands().spawn().enabled()) new SpawnCommand(this).register(registrar);
     }
 
     private void registerTpaCommands(Commands registrar) {
-        new TPADenyCommand(this).register(registrar);
-        new TPAHereCommand(this).register(registrar);
-        new TPAcceptCommand(this).register(registrar);
-        new TPAskCommand(this).register(registrar);
-        new TPAToggleCommand(this).register(registrar);
+        if (commands().teleportAccept().enabled()) new TPAcceptCommand(this).register(registrar);
+        if (commands().teleportAsk().enabled()) new TPAskCommand(this).register(registrar);
+        if (commands().teleportDeny().enabled()) new TPADenyCommand(this).register(registrar);
+        if (commands().teleportHere().enabled()) new TPAHereCommand(this).register(registrar);
+        if (commands().teleportToggle().enabled()) new TPAToggleCommand(this).register(registrar);
     }
 
     private void registerWarpCommands(Commands registrar) {
-        new DeleteWarpCommand(this).register(registrar);
-        new SetWarpCommand(this).register(registrar);
-        new WarpCommand(this).register(registrar);
-        new WarpsCommand(this).register(registrar);
+        if (commands().deleteWarp().enabled()) new DeleteWarpCommand(this).register(registrar);
+        if (commands().setWarp().enabled()) new SetWarpCommand(this).register(registrar);
+        if (commands().warp().enabled()) new WarpCommand(this).register(registrar);
+        if (commands().warps().enabled()) new WarpsCommand(this).register(registrar);
     }
 
     private void registerLinkCommands(Commands registrar) {
