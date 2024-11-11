@@ -4,10 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -139,7 +137,9 @@ public class PluginConfig {
         private @SerializedName("spawn") boolean spawn = true;
         private @SerializedName("tpa") boolean tpa = true;
         private @SerializedName("warps") boolean warps = true;
-        private @SerializedName("lobby") boolean lobby = isProxyEnabled();
+        private @SerializedName("workstation") boolean workstation = true;
+        private @SerializedName("weather") boolean weather = true;
+        private @SerializedName("time") boolean time = true;
 
         private @SerializedName("social") SocialConfig social = new SocialConfig();
 
@@ -163,15 +163,10 @@ public class PluginConfig {
             private @SerializedName("discord") boolean discord = true;
             private @SerializedName("reddit") boolean reddit = true;
             private @SerializedName("teamspeak") boolean teamspeak = true;
+            private @SerializedName("tiktok") boolean tiktok = true;
             private @SerializedName("twitch") boolean twitch = true;
             private @SerializedName("x") boolean x = true;
             private @SerializedName("youtube") boolean youtube = true;
-        }
-
-        private boolean isProxyEnabled() {
-            var plugin = JavaPlugin.getPlugin(TweaksPlugin.class);
-            return plugin.getServer().spigot().getPaperConfig().getBoolean("proxies.velocity.enabled")
-                   || plugin.getServer().spigot().getSpigotConfig().getBoolean("settings.bungeecord");
         }
     }
 
@@ -192,6 +187,7 @@ public class PluginConfig {
         private @SerializedName("discord") String discord = "https://discord.gg/invite/example";
         private @SerializedName("reddit") String reddit = "https://www.reddit.com/r/example";
         private @SerializedName("teamspeak") String teamspeak = "teamspeak.example.com";
+        private @SerializedName("tiktok") String tiktok = "https://www.tiktok.com/@example";
         private @SerializedName("twitch") String twitch = "https://www.twitch.tv/example";
         private @SerializedName("x") String x = "https://x.com/example";
         private @SerializedName("youtube") String youtube = "https://www.youtube.com/example";

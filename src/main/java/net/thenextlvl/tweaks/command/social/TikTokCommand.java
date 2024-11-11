@@ -9,14 +9,14 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
-public class TwitchCommand {
+public class TikTokCommand {
     private final TweaksPlugin plugin;
 
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().twitch().command()).executes(context -> {
-            plugin.bundle().sendMessage(context.getSource().getSender(), "social.twitch");
+        var command = Commands.literal(plugin.commands().tiktok().command()).executes(context -> {
+            plugin.bundle().sendMessage(context.getSource().getSender(), "social.tiktok");
             return Command.SINGLE_SUCCESS;
         }).build();
-        registrar.register(command, "Follow us on Twitch", plugin.commands().twitch().aliases());
+        registrar.register(command, "Follow us on TikTok", plugin.commands().tiktok().aliases());
     }
 }
