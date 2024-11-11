@@ -76,7 +76,7 @@ public class TweaksPlugin extends JavaPlugin {
     private final CommandConfig commands = new GsonFile<>(
             IO.of(getDataFolder(), "commands.json"),
             new CommandConfig()
-    ).validate().saveIfAbsent().getRoot();
+    ).validate().save().getRoot();
 
     private @Nullable ComponentBundle bundle;
     private @Nullable FileIO<PluginConfig> config;
@@ -234,15 +234,14 @@ public class TweaksPlugin extends JavaPlugin {
     }
 
     private void registerLinkCommands(Commands registrar) {
-        var social = config().features().social();
-        if (social.discord()) new DiscordCommand(this).register(registrar);
-        if (social.reddit()) new RedditCommand(this).register(registrar);
-        if (social.teamspeak()) new TeamSpeakCommand(this).register(registrar);
-        if (social.twitch()) new TwitchCommand(this).register(registrar);
-        if (social.tiktok()) new TikTokCommand(this).register(registrar);
-        if (social.website()) new WebsiteCommand(this).register(registrar);
-        if (social.x()) new XCommand(this).register(registrar);
-        if (social.youtube()) new YouTubeCommand(this).register(registrar);
+        if (commands().discord().enabled()) new DiscordCommand(this).register(registrar);
+        if (commands().reddit().enabled()) new RedditCommand(this).register(registrar);
+        if (commands().teamspeak().enabled()) new TeamSpeakCommand(this).register(registrar);
+        if (commands().tiktok().enabled()) new TikTokCommand(this).register(registrar);
+        if (commands().twitch().enabled()) new TwitchCommand(this).register(registrar);
+        if (commands().website().enabled()) new WebsiteCommand(this).register(registrar);
+        if (commands().x().enabled()) new XCommand(this).register(registrar);
+        if (commands().youtube().enabled()) new YouTubeCommand(this).register(registrar);
     }
 
     private void registerLinks() {
