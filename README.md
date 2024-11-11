@@ -6,7 +6,7 @@ bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20
 ## Versions
 
 > [!WARNING]
-> There is a known issue when updating from version 3.0.0 to 3.1.0 _or upcoming_, all commands will be disabled.<br>
+> There is a known issue when updating from version 3.0.x to 3.1.0 _or upcoming_, all commands will be disabled.<br>
 > This won't be fixed soon because it is of low priority and only happens when updating.<br>
 > After updating, you can fix this by replacing all `enabled: false` with `enabled: true` in `commands.json`
 
