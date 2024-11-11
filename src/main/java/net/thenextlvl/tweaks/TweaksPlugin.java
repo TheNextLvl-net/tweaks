@@ -240,6 +240,7 @@ public class TweaksPlugin extends JavaPlugin {
         if (social.reddit()) new RedditCommand(this).register(registrar);
         if (social.teamspeak()) new TeamSpeakCommand(this).register(registrar);
         if (social.twitch()) new TwitchCommand(this).register(registrar);
+        if (social.tiktok()) new TikTokCommand(this).register(registrar);
         if (social.website()) new WebsiteCommand(this).register(registrar);
         if (social.x()) new XCommand(this).register(registrar);
         if (social.youtube()) new YouTubeCommand(this).register(registrar);
@@ -251,6 +252,7 @@ public class TweaksPlugin extends JavaPlugin {
 
         if (social.discord()) registerLink("url.discord", config().links().discord());
         if (social.reddit()) registerLink("url.reddit", config().links().reddit());
+        if (social.tiktok()) registerLink("url.tiktok", config().links().tiktok());
         if (social.twitch()) registerLink("url.twitch", config().links().twitch());
         if (social.x()) registerLink("url.x", config().links().x());
         if (social.youtube()) registerLink("url.youtube", config().links().youtube());
@@ -313,6 +315,7 @@ public class TweaksPlugin extends JavaPlugin {
                         Placeholder.parsed("status", config().links().status()),
                         Placeholder.parsed("support", config().links().support()),
                         Placeholder.parsed("teamspeak", config().links().teamspeak()),
+                        Placeholder.parsed("tiktok", config().links().tiktok()),
                         Placeholder.parsed("twitch", config().links().twitch()),
                         Placeholder.parsed("website", config().links().website()),
                         Placeholder.parsed("x", config().links().x()),

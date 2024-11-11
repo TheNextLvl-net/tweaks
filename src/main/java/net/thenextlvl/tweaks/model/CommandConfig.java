@@ -65,6 +65,7 @@ public class CommandConfig {
     private @SerializedName("discord") CommandDefinition discord = new CommandDefinition("discord", "dc");
     private @SerializedName("reddit") CommandDefinition reddit = new CommandDefinition("reddit");
     private @SerializedName("teamspeak") CommandDefinition teamspeak = new CommandDefinition("teamspeak", "teamspeak3", "ts", "ts3");
+    private @SerializedName("tiktok") CommandDefinition tiktok = new CommandDefinition("tiktok");
     private @SerializedName("twitch") CommandDefinition twitch = new CommandDefinition("twitch");
     private @SerializedName("website") CommandDefinition website = new CommandDefinition("website");
     private @SerializedName("x") CommandDefinition x = new CommandDefinition("x", "twitter");

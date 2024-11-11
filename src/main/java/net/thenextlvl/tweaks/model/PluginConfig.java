@@ -160,6 +160,7 @@ public class PluginConfig {
             private @SerializedName("discord") boolean discord = true;
             private @SerializedName("reddit") boolean reddit = true;
             private @SerializedName("teamspeak") boolean teamspeak = true;
+            private @SerializedName("tiktok") boolean tiktok = true;
             private @SerializedName("twitch") boolean twitch = true;
             private @SerializedName("x") boolean x = true;
             private @SerializedName("youtube") boolean youtube = true;
@@ -183,6 +184,7 @@ public class PluginConfig {
         private @SerializedName("discord") String discord = "https://discord.gg/invite/example";
         private @SerializedName("reddit") String reddit = "https://www.reddit.com/r/example";
         private @SerializedName("teamspeak") String teamspeak = "teamspeak.example.com";
+        private @SerializedName("tiktok") String tiktok = "https://www.tiktok.com/@example";
         private @SerializedName("twitch") String twitch = "https://www.twitch.tv/example";
         private @SerializedName("x") String x = "https://x.com/example";
         private @SerializedName("youtube") String youtube = "https://www.youtube.com/example";
