@@ -137,6 +137,9 @@ public class PluginConfig {
         private @SerializedName("spawn") boolean spawn = true;
         private @SerializedName("tpa") boolean tpa = true;
         private @SerializedName("warps") boolean warps = true;
+        private @SerializedName("workstation") boolean workstation = true;
+        private @SerializedName("weather") boolean weather = true;
+        private @SerializedName("time") boolean time = true;
 
         private @SerializedName("social") SocialConfig social = new SocialConfig();
 

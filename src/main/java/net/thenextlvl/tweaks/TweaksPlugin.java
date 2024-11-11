@@ -127,9 +127,9 @@ public class TweaksPlugin extends JavaPlugin {
             registerItemCommands(registrar);
             registerPlayerCommands(registrar);
             registerServerCommands(registrar);
-            registerTimeCommands(registrar);
-            registerWeatherCommands(registrar);
-            registerWorkstationCommands(registrar);
+            if (features.time()) registerTimeCommands(registrar);
+            if (features.weather()) registerWeatherCommands(registrar);
+            if (features.workstation()) registerWorkstationCommands(registrar);
             if (features.homes()) registerHomeCommands(registrar);
             if (features.msg()) registerMSGCommands(registrar);
             if (features.spawn()) registerSpawnCommands(registrar);
