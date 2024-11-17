@@ -1,3 +1,8 @@
+== v3.1.1
+
+- **Welcome message**: Added welcome message for new players
+- **Chat placeholders**: Resolve placeholders like prefix and suffix in connection messages
+
 == v3.1.0
 
 - **TikTok Server Link**: Added `tiktok` command and server link
