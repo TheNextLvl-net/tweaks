@@ -1,7 +1,8 @@
 # Tweaks
 
-A modern alternative to EssentialsX<br/>
-bStat Metrics can be found [here](https://bstats.org/plugin/bukkit/TheNextLvl%20Tweaks/19651)
+A modern alternative to EssentialsX
+
+[<img src="https://bstats.org/signatures/bukkit/TheNextLvl%20Tweaks.svg">](https://bstats.org/plugin/bukkit/TheNextLvl%20Tweaks)
 
 ## Versions
 
