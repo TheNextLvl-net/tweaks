@@ -61,6 +61,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.bukkit.ServerLinks.Type.*;
 
@@ -337,5 +338,32 @@ public class TweaksPlugin extends JavaPlugin {
 
     public PluginConfig config() {
         return Objects.requireNonNull(config, "Config not initialized yet!").getRoot();
+    }
+
+    public TagResolver.Builder serviceResolvers(Player player) {
+        var resolver = TagResolver.builder().resolvers(
+                Placeholder.component("custom_name", Optional.ofNullable(player.customName())
+                        .orElseGet(player::name)),
+                Placeholder.component("display_name", player.displayName()),
+                Placeholder.parsed("balance", ""),
+                Placeholder.parsed("balance_unformatted", ""),
+                Placeholder.parsed("bank_balance", ""),
+                Placeholder.parsed("bank_balance_unformatted", ""),
+                Placeholder.parsed("chat_display_name", player.getName()),
+                Placeholder.parsed("chat_prefix", ""),
+                Placeholder.parsed("chat_suffix", ""),
+                Placeholder.parsed("currency_name", ""),
+                Placeholder.parsed("currency_name_plural", ""),
+                Placeholder.parsed("currency_symbol", ""),
+                Placeholder.parsed("group", ""),
+                Placeholder.parsed("group_prefix", ""),
+                Placeholder.parsed("group_suffix", ""),
+                Placeholder.parsed("language_tag", player.locale().toLanguageTag()),
+                Placeholder.parsed("locale", player.locale().getDisplayName(player.locale())),
+                Placeholder.parsed("player", player.getName()),
+                Placeholder.parsed("world", player.getWorld().getName())
+        );
+        if (serviceController == null) return resolver;
+        return resolver.resolvers(serviceController.serviceResolvers(player));
     }
 }
