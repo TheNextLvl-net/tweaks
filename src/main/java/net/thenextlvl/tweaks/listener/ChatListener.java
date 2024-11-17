@@ -32,43 +32,12 @@ public class ChatListener implements Listener {
         if (!plugin.config().general().overrideChat()) return;
         var messageContent = event.message() instanceof TextComponent text ? text.content() : "";
         event.renderer((source, displayName, message, viewer) -> plugin.bundle().component(viewer, "chat.format",
-                serviceResolvers(source).resolvers(
-                        Placeholder.component("custom_name", Optional.ofNullable(source.customName())
-                                .orElseGet(source::name)),
+                plugin.serviceResolvers(source).resolvers(
                         Placeholder.component("display_name", displayName),
                         Placeholder.component("message", message),
                         Placeholder.parsed("message_content", messageContent),
-                        Placeholder.parsed("player", source.getName()),
-                        Placeholder.parsed("world", source.getWorld().getName()),
-                        Placeholder.parsed("language_tag", String.valueOf(source.locale().toLanguageTag())),
-                        Placeholder.parsed("locale", String.valueOf(source.locale().getDisplayName(source.locale()))),
                         createDeleteTag(source, viewer, event.signedMessage())
                 ).build()));
-    }
-
-    private TagResolver.Builder serviceResolvers(Player player) {
-        var resolver = TagResolver.builder().resolvers(
-                Placeholder.parsed("balance", ""),
-                Placeholder.parsed("balance", ""),
-                Placeholder.parsed("balance_unformatted", ""),
-                Placeholder.parsed("balance_unformatted", ""),
-                Placeholder.parsed("bank_balance", ""),
-                Placeholder.parsed("bank_balance", ""),
-                Placeholder.parsed("bank_balance_unformatted", ""),
-                Placeholder.parsed("bank_balance_unformatted", ""),
-                Placeholder.parsed("chat_display_name", player.getName()),
-                Placeholder.parsed("chat_prefix", ""),
-                Placeholder.parsed("chat_suffix", ""),
-                Placeholder.parsed("currency_name", ""),
-                Placeholder.parsed("currency_name_plural", ""),
-                Placeholder.parsed("currency_symbol", ""),
-                Placeholder.parsed("group", ""),
-                Placeholder.parsed("group_prefix", ""),
-                Placeholder.parsed("group_suffix", "")
-        );
-        return services().map(services -> services.serviceResolvers(player))
-                .map(resolver::resolvers)
-                .orElse(resolver);
     }
 
     private TagResolver.Single createDeleteTag(Player sender, Audience audience, SignedMessage message) {

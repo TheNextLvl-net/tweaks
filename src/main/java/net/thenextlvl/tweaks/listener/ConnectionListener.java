@@ -20,16 +20,26 @@ public class ConnectionListener implements Listener {
         var permissionLevel = plugin.config().general().defaultPermissionLevel();
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
         if (!plugin.config().general().overrideJoinMessage()) return;
-        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.connected",
-                Placeholder.parsed("player", event.getPlayer().getName())));
+        var id = event.getPlayer().hasPlayedBefore()
+                ? plugin.getServer().getOnlinePlayers().size()
+                : plugin.getServer().getOfflinePlayers().length;
+        var message = event.getPlayer().hasPlayedBefore() ? "player.connected" : "player.welcome";
+        var resolvers = plugin.serviceResolvers(event.getPlayer())
+                .resolver(Placeholder.parsed("id", String.valueOf(id)))
+                .build();
+        plugin.getServer().forEachAudience(audience -> plugin.bundle().sendMessage(
+                audience, message, resolvers
+        ));
         event.joinMessage(null);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (!plugin.config().general().overrideQuitMessage()) return;
-        plugin.getServer().getOnlinePlayers().forEach(player -> plugin.bundle().sendMessage(player, "player.disconnected",
-                Placeholder.parsed("player", event.getPlayer().getName())));
+        var resolvers = plugin.serviceResolvers(event.getPlayer()).build();
+        plugin.getServer().forEachAudience(audience -> plugin.bundle().sendMessage(
+                audience, "player.disconnected", resolvers
+        ));
         event.quitMessage(null);
     }
 
