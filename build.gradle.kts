@@ -35,7 +35,7 @@ dependencies {
         exclude("org.jetbrains", "annotations")
     }
 
-    implementation("net.thenextlvl.core:adapters:2.0.0")
+    implementation("net.thenextlvl.core:adapters:2.0.1")
     implementation("net.thenextlvl.core:files:2.0.0")
     implementation("net.thenextlvl.core:i18n:1.0.20")
     implementation("net.thenextlvl.core:nbt:2.2.14")
