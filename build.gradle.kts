@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.36")
-    compileOnly("net.thenextlvl.services:service-io:2.0.0")
+    compileOnly("net.thenextlvl.services:service-io:2.1.0")
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT") {
         exclude("org.jetbrains", "annotations")
     }
