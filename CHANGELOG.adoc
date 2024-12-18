@@ -1,3 +1,7 @@
+== v3.1.2
+
+- **Fix /time set command**: Fixed /time set command syntax
+
 == v3.1.1
 
 - **Welcome message**: Added welcome message for new players
