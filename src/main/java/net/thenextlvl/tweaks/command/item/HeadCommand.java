@@ -50,33 +50,27 @@ public class HeadCommand {
 
     private int playerHead(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        var target = context.getArgument("player", String.class);
-        plugin.getServer().createProfile(null, target).update().thenAccept(profile -> {
-            var head = new ItemBuilder(Material.PLAYER_HEAD).head(profile);
-            player.getInventory().addItem(head.ensureServerConversions());
-            plugin.bundle().sendMessage(player, "command.item.head.received");
-        }).exceptionally(throwable -> {
-            plugin.getComponentLogger().error("Failed to update profile", throwable);
-            plugin.bundle().sendMessage(player, "command.item.head.fail");
-            return null;
-        });
+        var head = ItemBuilder.of(Material.PLAYER_HEAD)
+                .profile(context.getArgument("player", String.class));
+        player.getInventory().addItem(head.item());
+        plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
     }
 
     private int valueHead(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        var value = context.getArgument("value", String.class);
-        var head = new ItemBuilder(Material.PLAYER_HEAD).headValue(value);
-        player.getInventory().addItem(head.ensureServerConversions());
+        var head = ItemBuilder.of(Material.PLAYER_HEAD)
+                .profileValue(context.getArgument("value", String.class));
+        player.getInventory().addItem(head.item());
         plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
     }
 
     private int urlHead(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        var url = context.getArgument("url", String.class);
-        var head = new ItemBuilder(Material.PLAYER_HEAD).headURL(url);
-        player.getInventory().addItem(head.ensureServerConversions());
+        var head = ItemBuilder.of(Material.PLAYER_HEAD)
+                .profileUrl(context.getArgument("url", String.class));
+        player.getInventory().addItem(head.item());
         plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
     }
