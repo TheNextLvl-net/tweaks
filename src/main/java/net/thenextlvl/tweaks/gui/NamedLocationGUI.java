@@ -1,6 +1,6 @@
 package net.thenextlvl.tweaks.gui;
 
-import core.paper.gui.PagedGUI;
+import core.paper.gui.PaginatedGUI;
 import core.paper.item.ActionItem;
 import core.paper.item.ItemBuilder;
 import lombok.Getter;
@@ -19,18 +19,18 @@ import java.util.List;
 
 @Getter
 @NullMarked
-public abstract class NamedLocationGUI extends PagedGUI<TweaksPlugin, NamedLocation> {
+public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedLocation> {
     private static final List<Material> materials = Arrays.stream(Material.values())
             .filter(material -> !material.isLegacy())
             .filter(Material::isItem)
             .toList();
     private final Collection<NamedLocation> elements;
-    private final Options options;
+    private final Pagination pagination;
 
     public NamedLocationGUI(TweaksPlugin plugin, PluginConfig.GUIConfig.GUI config, Player owner, Component title, Collection<NamedLocation> elements) {
         super(plugin, owner, title, config.rows());
         this.elements = elements;
-        this.options = new Options(
+        this.pagination = new Pagination(
                 config.actionSlots(),
                 config.buttonSlotPrevious(),
                 config.buttonSlotNext()
@@ -41,7 +41,7 @@ public abstract class NamedLocationGUI extends PagedGUI<TweaksPlugin, NamedLocat
     @Override
     public ActionItem constructItem(NamedLocation element) {
         var translation = "gui.item.location";
-        return new ItemBuilder(getIcon(element))
+        return ItemBuilder.of(getIcon(element))
                 .itemName(plugin.bundle().component(owner, translation,
                         Placeholder.parsed("name", element.getName())))
                 .withAction(() -> {

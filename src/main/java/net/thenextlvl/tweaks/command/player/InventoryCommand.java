@@ -94,19 +94,25 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
     private void addPlaceholders(Inventory inventory, Player player) {
         var inventoryConfig = plugin.config().guis().inventory();
-        var placeholder = new ItemBuilder(inventoryConfig.placeholder()).hideTooltip(true);
-        inventory.setItem(36, new ItemBuilder(inventoryConfig.helmet())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.helmet")));
-        inventory.setItem(37, new ItemBuilder(inventoryConfig.chestplate())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.chestplate")));
-        inventory.setItem(38, new ItemBuilder(inventoryConfig.leggings())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.leggings")));
-        inventory.setItem(39, new ItemBuilder(inventoryConfig.boots())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.boots")));
-        inventory.setItem(41, new ItemBuilder(inventoryConfig.offHand())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.off-hand")));
-        inventory.setItem(43, new ItemBuilder(inventoryConfig.cursor())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.cursor")));
+        var placeholder = ItemBuilder.of(inventoryConfig.placeholder()).hideTooltip().item();
+        inventory.setItem(36, ItemBuilder.of(inventoryConfig.helmet())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.helmet"))
+                .item());
+        inventory.setItem(37, ItemBuilder.of(inventoryConfig.chestplate())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.chestplate"))
+                .item());
+        inventory.setItem(38, ItemBuilder.of(inventoryConfig.leggings())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.leggings"))
+                .item());
+        inventory.setItem(39, ItemBuilder.of(inventoryConfig.boots())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.boots"))
+                .item());
+        inventory.setItem(41, ItemBuilder.of(inventoryConfig.offHand())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.off-hand"))
+                .item());
+        inventory.setItem(43, ItemBuilder.of(inventoryConfig.cursor())
+                .itemName(plugin.bundle().component(player, "gui.placeholder.cursor"))
+                .item());
         IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
     }
 
