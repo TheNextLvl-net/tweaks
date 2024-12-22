@@ -4,21 +4,22 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @NullMarked
@@ -54,9 +55,10 @@ public class LoreCommand {
     }
 
     private int replace(CommandContext<CommandSourceStack> context) {
-        return modifyLore(context, itemMeta -> {
-            var lore = itemMeta.lore();
-            if (lore == null) return;
+        return modifyLore(context, builder -> {
+            var data = builder.data(DataComponentTypes.LORE);
+            if (data == null || data.lines().isEmpty()) return false;
+            var lore = new ArrayList<>(data.lines());
             var text = context.getArgument("text", String.class);
             var replacement = deserialize(context.getArgument("replacement", String.class));
             var config = TextReplacementConfig.builder()
@@ -64,47 +66,50 @@ public class LoreCommand {
                     .replacement(replacement)
                     .build();
             lore.replaceAll(component -> component.replaceText(config));
-            itemMeta.lore(lore);
+            builder.lore(lore);
+            return !Objects.equals(data, builder.data(DataComponentTypes.LORE));
         });
     }
 
     private int append(CommandContext<CommandSourceStack> context) {
-        return modifyLore(context, itemMeta -> {
-            var currentLore = Objects.requireNonNullElseGet(itemMeta.lore(),
-                    () -> new ArrayList<Component>());
-            currentLore.addAll(getLore(context));
-            itemMeta.lore(currentLore);
+        return modifyLore(context, builder -> {
+            builder.appendLore(getLore(context));
+            return true;
         });
     }
 
     private int prepend(CommandContext<CommandSourceStack> context) {
-        return modifyLore(context, itemMeta -> {
-            var lore = getLore(context);
-            lore.addAll(Objects.requireNonNullElseGet(itemMeta.lore(),
-                    ArrayList::new));
-            itemMeta.lore(lore);
+        return modifyLore(context, builder -> {
+            builder.prependLore(getLore(context));
+            return true;
         });
     }
 
     private int set(CommandContext<CommandSourceStack> context) {
-        return modifyLore(context, itemMeta -> itemMeta.lore(getLore(context)));
+        return modifyLore(context, builder -> {
+            var lore = getLore(context);
+            var data = builder.data(DataComponentTypes.LORE);
+            if (data != null && data.lines().equals(lore)) return false;
+            builder.lore(lore);
+            return true;
+        });
     }
 
     private int clear(CommandContext<CommandSourceStack> context) {
-        return modifyLore(context, itemMeta -> itemMeta.lore(null));
+        return modifyLore(context, builder -> {
+            var lore = builder.data(DataComponentTypes.LORE);
+            if (lore == null || lore.lines().isEmpty()) return false;
+            builder.resetData(DataComponentTypes.LORE);
+            return true;
+        });
     }
 
-    private int modifyLore(CommandContext<CommandSourceStack> context, Consumer<? super ItemMeta> consumer) {
+    private int modifyLore(CommandContext<CommandSourceStack> context, Function<ItemBuilder, Boolean> function) {
         var player = (Player) context.getSource().getSender();
         var item = player.getInventory().getItemInMainHand();
 
-        if (item.getType().isEmpty()) {
-            plugin.bundle().sendMessage(player, "command.hold.item");
-            return 0;
-        }
-
-        var success = item.editMeta(consumer);
-        var message = success ? "command.item.lore.success" : "command.item.lore.fail";
+        var success = !item.isEmpty() && function.apply(ItemBuilder.of(item));
+        var message = item.isEmpty() ? "command.hold.item" : success ? "command.item.lore" : "nothing.changed";
 
         plugin.bundle().sendMessage(player, message);
         return success ? Command.SINGLE_SUCCESS : 0;
