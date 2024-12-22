@@ -4,6 +4,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.Unbreakable;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
@@ -26,11 +28,17 @@ public class UnbreakableCommand {
 
     private int unbreakable(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        if (!player.getInventory().getItemInMainHand().editMeta(itemMeta -> {
-            itemMeta.setUnbreakable(!itemMeta.isUnbreakable());
-            var message = itemMeta.isUnbreakable() ? "command.item.unbreakable.success" : "command.item.unbreakable.removed";
-            plugin.bundle().sendMessage(player, message);
-        })) plugin.bundle().sendMessage(player, "command.item.unbreakable.fail");
+        var item = player.getInventory().getItemInMainHand();
+        if (!item.hasData(DataComponentTypes.DAMAGE)) {
+            plugin.bundle().sendMessage(player, "command.item.unbreakable.fail");
+            return 0;
+        } else if (item.hasData(DataComponentTypes.UNBREAKABLE)) {
+            item.resetData(DataComponentTypes.UNBREAKABLE);
+            plugin.bundle().sendMessage(player, "command.item.unbreakable.removed");
+        } else {
+            item.setData(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable().build());
+            plugin.bundle().sendMessage(player, "command.item.unbreakable.success");
+        }
         return Command.SINGLE_SUCCESS;
     }
 }

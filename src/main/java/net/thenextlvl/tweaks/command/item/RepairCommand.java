@@ -4,13 +4,15 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Arrays;
 
 @NullMarked
 @RequiredArgsConstructor
@@ -42,18 +44,22 @@ public class RepairCommand {
         var message = success ? "command.item.repaired.success" : "command.item.repaired.fail";
 
         plugin.bundle().sendMessage(player, message);
-        return Command.SINGLE_SUCCESS;
+        return success ? Command.SINGLE_SUCCESS : 0;
     }
 
     private int repairAll(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
         var inventory = player.getInventory();
-        for (var item : inventory.getContents()) repair(item);
-        plugin.bundle().sendMessage(player, "command.item.repaired.all");
-        return Command.SINGLE_SUCCESS;
+        var success = Arrays.stream(inventory.getContents()).map(this::repair).reduce(false, Boolean::logicalOr);
+        plugin.bundle().sendMessage(player, success ? "command.item.repaired.all" : "command.item.repaired.none");
+        return success ? Command.SINGLE_SUCCESS : 0;
     }
 
     private boolean repair(@Nullable ItemStack item) {
-        return item != null && item.editMeta(Damageable.class, damageable -> damageable.setDamage(0));
+        if (item == null) return false;
+        var damage = item.getData(DataComponentTypes.DAMAGE);
+        if (damage == null || damage == 0) return false;
+        item.resetData(DataComponentTypes.DAMAGE);
+        return true;
     }
 }

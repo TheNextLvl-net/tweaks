@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -34,12 +35,11 @@ public class RenameCommand {
         var text = context.getArgument("name", String.class);
         var name = MiniMessage.miniMessage().deserialize(text.replace("\\t", "  "));
 
-        if (!item.editMeta(itemMeta -> itemMeta.displayName(name))) {
-            plugin.bundle().sendMessage(player, "command.item.rename.fail");
-            return 0;
-        }
+        var success = !name.equals(item.getData(DataComponentTypes.CUSTOM_NAME));
+        if (success) item.setData(DataComponentTypes.CUSTOM_NAME, name);
+        var message = item.isEmpty() ? "command.hold.item" : success ? "command.item.rename" : "nothing.changed";
+        plugin.bundle().sendMessage(player, message);
 
-        plugin.bundle().sendMessage(player, "command.item.rename.success");
-        return Command.SINGLE_SUCCESS;
+        return success ? Command.SINGLE_SUCCESS : 0;
     }
 }
