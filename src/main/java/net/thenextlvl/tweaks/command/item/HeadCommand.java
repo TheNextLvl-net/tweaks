@@ -8,6 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -15,7 +16,6 @@ import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -105,14 +105,12 @@ public class HeadCommand {
     }
 
     private static @Nullable String getValue(ItemStack item) {
-        if (!(item.getItemMeta() instanceof SkullMeta skull)) return null;
-        var profile = skull.getPlayerProfile();
-        if (profile == null || !profile.hasTextures()) return null;
-        return profile.getProperties().stream()
+        var profile = item.getData(DataComponentTypes.PROFILE);
+        return profile != null ? profile.properties().stream()
                 .filter(property -> property.getName().equalsIgnoreCase("textures"))
                 .findFirst()
                 .map(ProfileProperty::getValue)
-                .orElse(null);
+                .orElse(null) : null;
     }
 
     private @Nullable String getUrl(ItemStack item) {
@@ -129,9 +127,7 @@ public class HeadCommand {
     }
 
     private @Nullable String getOwner(ItemStack item) {
-        return item.getItemMeta() instanceof SkullMeta skull
-                ? skull.getOwningPlayer() != null
-                ? skull.getOwningPlayer().getName()
-                : null : null;
+        var profile = item.getData(DataComponentTypes.PROFILE);
+        return profile != null ? profile.name() : null;
     }
 }
