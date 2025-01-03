@@ -7,7 +7,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -19,8 +18,7 @@ public class BroadcastCommand {
 
     public void register(Commands registrar) {
         var command = Commands.literal(plugin.commands().broadcast().command())
-                .requires(stack -> stack.getSender() instanceof Player player
-                                   && player.hasPermission("tweaks.command.broadcast"))
+                .requires(stack -> stack.getSender().hasPermission("tweaks.command.broadcast"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
                         .executes(this::broadcast))
                 .build();
