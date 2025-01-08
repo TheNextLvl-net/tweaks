@@ -397,6 +397,8 @@ Alternatively, you can use the command:
 | `cooldown-allow-movement` | Allows movement during teleport cooldown.               |
 | `tpa-timeout`             | Timeout duration in milliseconds for teleport requests. |
 
+The permission to bypass the teleportation cooldown is `tweaks.teleport.cooldown.bypass`
+
 ## Animals Configuration
 
 | Option                       | Description                                                               |

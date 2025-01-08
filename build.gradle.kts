@@ -165,6 +165,7 @@ paper {
 
         register("tweaks.chat.delete") { this.children = listOf("tweaks.chat.delete.own") }
 
+        register("tweaks.teleport.cooldown.bypass") { this.default = BukkitPluginDescription.Permission.Default.OP }
 
         register("tweaks.commands.environmental") {
             this.description = "Grants access to all environmental commands"
