@@ -1,3 +1,9 @@
+== 3.1.5
+
+- **Added /trash command**: Added a simple /trash command
+- **Add cooldown bypass permission**: Added permission `tweaks.teleport.cooldown.bypass` to bypass teleport cooldowns
+- **Fixed spawn bug**: Invalid spawn worlds will no longer cause errors and make the server inaccessible
+
 == v3.1.4
 
 - **Fix /broadcast command**: Fixed /broadcast command to be usable by non-player command senders
