@@ -210,6 +210,7 @@ paper {
                 "tweaks.command.seen",
                 "tweaks.command.speed",
                 "tweaks.command.suicide",
+                "tweaks.command.trash",
                 "tweaks.command.vanish"
             )
         }

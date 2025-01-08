@@ -181,6 +181,7 @@ public class TweaksPlugin extends JavaPlugin {
         if (commands().seen().enabled()) new SeenCommand(this).register(registrar);
         if (commands().speed().enabled()) new SpeedCommand(this).register(registrar);
         if (commands().suicide().enabled()) new SuicideCommand(this).register(registrar);
+        if (commands().trash().enabled()) new TrashCommand(this).register(registrar);
         if (commands().vanish().enabled()) new VanishCommand(this).register(registrar);
     }
 
