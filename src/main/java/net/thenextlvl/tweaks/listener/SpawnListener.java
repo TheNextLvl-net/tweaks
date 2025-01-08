@@ -18,7 +18,7 @@ public class SpawnListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
         var config = plugin.config().spawn();
-        if (config.location() == null) return;
+        if (config.location() == null || config.location().getWorld() == null) return;
         if ((!config.teleportOnFirstJoin() || event.getPlayer().hasPlayedBefore())
             && (!config.teleportOnJoin() || !event.getPlayer().hasPlayedBefore())) return;
         event.setSpawnLocation(config.location());
@@ -28,7 +28,7 @@ public class SpawnListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         if (!event.getRespawnReason().equals(PlayerRespawnEvent.RespawnReason.DEATH)) return;
         var config = plugin.config().spawn();
-        if (config.location() == null || !config.teleportOnRespawn()) return;
+        if (config.location() == null || config.location().getWorld() == null || !config.teleportOnRespawn()) return;
         if (!config.ignoreRespawnPosition() && (event.isAnchorSpawn() || event.isBedSpawn())) return;
         event.setRespawnLocation(config.location());
     }
@@ -36,7 +36,7 @@ public class SpawnListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         var config = plugin.config().spawn();
-        if (config.location() == null || !config.teleportOnRespawn()) return;
+        if (config.location() == null || config.location().getWorld() == null || !config.teleportOnRespawn()) return;
         if (config.ignoreRespawnPosition()) event.getPlayer().setRespawnLocation(null);
     }
 }
