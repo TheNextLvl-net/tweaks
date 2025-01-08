@@ -56,6 +56,7 @@ public class CommandConfig {
     private @SerializedName("seen") CommandDefinition seen = new CommandDefinition("seen", "find");
     private @SerializedName("speed") CommandDefinition speed = new CommandDefinition("speed");
     private @SerializedName("suicide") CommandDefinition suicide = new CommandDefinition("suicide");
+    private @SerializedName("trash") CommandDefinition trash = new CommandDefinition("trash", "dispose", "garbage");
     private @SerializedName("vanish") CommandDefinition vanish = new CommandDefinition("vanish", "v", "invisible");
 
     private @SerializedName("broadcast") CommandDefinition broadcast = new CommandDefinition("broadcast", "bc");
