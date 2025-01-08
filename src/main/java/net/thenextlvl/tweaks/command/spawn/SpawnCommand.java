@@ -22,15 +22,16 @@ public class SpawnCommand {
                 .executes(context -> {
                     var player = (Player) context.getSource().getSender();
                     var location = plugin.config().spawn().location();
-                    if (location == null) {
+                    if (location == null || location.getWorld() == null) {
                         plugin.bundle().sendMessage(player, "command.spawn.undefined");
                         if (player.hasPermission("tweaks.command.setspawn"))
                             plugin.bundle().sendMessage(player, "command.spawn.define");
+                        return 0;
                     } else plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
                         var message = success ? "command.spawn" : "command.teleport.cancelled";
                         plugin.bundle().sendMessage(player, message);
                     });
-                    return location != null ? Command.SINGLE_SUCCESS : 0;
+                    return Command.SINGLE_SUCCESS;
                 }).build();
         registrar.register(command, "Teleport you to spawn", plugin.commands().spawn().aliases());
     }
