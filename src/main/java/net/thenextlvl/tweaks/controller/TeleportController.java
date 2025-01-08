@@ -22,7 +22,8 @@ public class TeleportController {
 
     public CompletableFuture<Boolean> teleport(Player player, Location location, PlayerTeleportEvent.TeleportCause cause) {
         var cooldown = plugin.config().teleport().cooldown();
-        if (cooldown <= 0) return player.teleportAsync(location, cause);
+        if (cooldown <= 0 || player.hasPermission("tweaks.teleport.cooldown.bypass"))
+            return player.teleportAsync(location, cause);
         if (location.equals(teleports.put(player, location)))
             return CompletableFuture.failedFuture(new IllegalStateException());
         var formatter = DecimalFormat.getInstance(player.locale());
