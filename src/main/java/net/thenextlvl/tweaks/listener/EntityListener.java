@@ -66,7 +66,7 @@ public class EntityListener implements Listener {
         var item = event.getPlayer().getInventory().getItem(event.getHand());
         if (!item.getType().equals(Material.BOWL)) return;
         if (!(event.getRightClicked() instanceof MushroomCow cow)) return;
-        var cooldown = plugin.config().vanilla.cowMilkingCooldown;
+        var cooldown = plugin.config().vanilla.mushroomStewCooldown;
         if (cooldown > 0) cooldown(event, cow, mushroomCowStewCooldown, cooldown);
     }
 
