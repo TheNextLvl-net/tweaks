@@ -8,7 +8,6 @@ import org.bukkit.entity.Entity;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class GodCommand extends EntitiesCommand {
     public GodCommand(TweaksPlugin plugin) {
         super(plugin);

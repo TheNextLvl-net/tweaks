@@ -17,7 +17,6 @@ import java.util.List;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 abstract class EntitiesCommand {
     protected final TweaksPlugin plugin;
 

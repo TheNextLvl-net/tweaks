@@ -8,7 +8,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class WebsiteCommand {
     private final TweaksPlugin plugin;
 

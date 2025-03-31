@@ -11,7 +11,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class ReplyCommand {
     private final TweaksPlugin plugin;
 

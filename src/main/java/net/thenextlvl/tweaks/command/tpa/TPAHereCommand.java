@@ -15,7 +15,6 @@ import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA_HER
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class TPAHereCommand {
     private final TweaksPlugin plugin;
 

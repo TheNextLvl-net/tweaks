@@ -13,7 +13,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 abstract class PlayerCommand {
     protected final TweaksPlugin plugin;
 

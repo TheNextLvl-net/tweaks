@@ -8,7 +8,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class LoomCommand {
     private final TweaksPlugin plugin;
 

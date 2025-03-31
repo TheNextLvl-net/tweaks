@@ -11,7 +11,6 @@ import org.jspecify.annotations.NullMarked;
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class BackCommand {
     private final TweaksPlugin plugin;
 

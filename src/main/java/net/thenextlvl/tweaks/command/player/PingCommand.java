@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class PingCommand extends PlayerCommand {
     public PingCommand(TweaksPlugin plugin) {
         super(plugin);

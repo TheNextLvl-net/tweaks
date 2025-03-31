@@ -17,7 +17,6 @@ import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class TPADenyCommand {
     private final TweaksPlugin plugin;
 

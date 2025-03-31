@@ -14,7 +14,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class RenameCommand {
     private final TweaksPlugin plugin;
 

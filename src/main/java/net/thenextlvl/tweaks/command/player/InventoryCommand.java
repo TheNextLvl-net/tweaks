@@ -29,7 +29,6 @@ import java.util.WeakHashMap;
 import java.util.stream.IntStream;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class InventoryCommand extends PlayerCommand implements Listener {
     private final Map<HumanEntity, Player> viewers = new WeakHashMap<>();
     private final Map<HumanEntity, Set<HumanEntity>> providers = new WeakHashMap<>();

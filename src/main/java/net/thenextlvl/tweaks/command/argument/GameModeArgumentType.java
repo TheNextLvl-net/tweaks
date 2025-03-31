@@ -11,7 +11,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.Arrays;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class GameModeArgumentType extends WrappedArgumentType<String, GameMode> {
     public GameModeArgumentType() {
         super(StringArgumentType.word(), (reader, type) -> Arrays.stream(GameMode.values())

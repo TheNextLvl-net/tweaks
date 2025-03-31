@@ -16,7 +16,6 @@ import java.util.Arrays;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class RepairCommand {
     private final TweaksPlugin plugin;
 

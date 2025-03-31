@@ -18,7 +18,6 @@ import java.util.Locale;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class SeenCommand {
     private final TweaksPlugin plugin;
 

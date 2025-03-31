@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class NoonCommand extends WorldCommand {
     public NoonCommand(TweaksPlugin plugin) {
         super(plugin);

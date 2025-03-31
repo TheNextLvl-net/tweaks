@@ -9,7 +9,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class LobbyCommand {
     private final TweaksPlugin plugin;
 

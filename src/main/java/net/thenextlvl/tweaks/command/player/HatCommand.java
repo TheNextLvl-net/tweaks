@@ -13,7 +13,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class HatCommand {
     private final TweaksPlugin plugin;
 

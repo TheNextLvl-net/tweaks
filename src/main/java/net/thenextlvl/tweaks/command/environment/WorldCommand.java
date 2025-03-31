@@ -14,7 +14,6 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public abstract class WorldCommand {
     protected final TweaksPlugin plugin;
 

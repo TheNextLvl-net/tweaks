@@ -28,7 +28,6 @@ import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class SpeedCommand {
     private final TweaksPlugin plugin;
     private static final NamespacedKey SPEED_KEY = new NamespacedKey("tweaks", "speed");

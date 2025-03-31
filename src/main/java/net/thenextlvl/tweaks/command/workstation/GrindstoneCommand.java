@@ -8,7 +8,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class GrindstoneCommand {
     private final TweaksPlugin plugin;
 

@@ -8,7 +8,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class TeamSpeakCommand {
     private final TweaksPlugin plugin;
 

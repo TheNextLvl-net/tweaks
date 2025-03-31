@@ -19,7 +19,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class UnenchantCommand {
     private final TweaksPlugin plugin;
 

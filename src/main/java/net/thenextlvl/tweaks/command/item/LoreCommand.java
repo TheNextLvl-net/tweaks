@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class LoreCommand {
     private final TweaksPlugin plugin;
 

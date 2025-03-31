@@ -12,7 +12,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class TrashCommand {
     private final TweaksPlugin plugin;
 

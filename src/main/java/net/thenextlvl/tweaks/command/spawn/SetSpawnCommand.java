@@ -22,7 +22,6 @@ import java.util.Locale;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class SetSpawnCommand {
     private final TweaksPlugin plugin;
 

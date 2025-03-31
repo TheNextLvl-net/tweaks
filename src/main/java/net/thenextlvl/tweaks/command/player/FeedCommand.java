@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class FeedCommand extends PlayersCommand {
     public FeedCommand(TweaksPlugin plugin) {
         super(plugin);

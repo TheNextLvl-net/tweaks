@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class EnderChestCommand extends PlayerCommand implements Listener {
     private final Set<HumanEntity> viewers = Collections.newSetFromMap(new WeakHashMap<>());
 

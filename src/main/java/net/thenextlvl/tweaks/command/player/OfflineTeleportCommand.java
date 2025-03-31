@@ -5,8 +5,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import core.io.IO;
 import core.nbt.file.NBTFile;
-import core.nbt.tag.Tag;
 import core.nbt.tag.*;
+import core.nbt.tag.Tag;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,6 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class OfflineTeleportCommand {
     private final TweaksPlugin plugin;
 

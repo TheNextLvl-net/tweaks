@@ -11,7 +11,6 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class SpawnCommand {
     private final TweaksPlugin plugin;
 

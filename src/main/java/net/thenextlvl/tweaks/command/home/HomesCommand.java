@@ -17,7 +17,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class HomesCommand {
     private final TweaksPlugin plugin;
 

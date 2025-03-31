@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class HealCommand extends EntitiesCommand {
     public HealCommand(TweaksPlugin plugin) {
         super(plugin);

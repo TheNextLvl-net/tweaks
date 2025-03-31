@@ -17,7 +17,6 @@ import java.util.function.Function;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class TimeCommand {
     private final TweaksPlugin plugin;
 

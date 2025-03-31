@@ -16,7 +16,6 @@ import org.jspecify.annotations.Nullable;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class MotdCommand {
     private final TweaksPlugin plugin;
 

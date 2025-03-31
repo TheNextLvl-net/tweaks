@@ -23,7 +23,6 @@ import java.util.Base64;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class HeadCommand {
     private final TweaksPlugin plugin;
 

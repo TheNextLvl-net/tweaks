@@ -16,7 +16,6 @@ import java.util.concurrent.CompletableFuture;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class SetHomeCommand {
     private final TweaksPlugin plugin;
 

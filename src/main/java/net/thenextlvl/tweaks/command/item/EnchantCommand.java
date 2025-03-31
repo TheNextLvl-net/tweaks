@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings({"UnstableApiUsage", "unchecked"})
+@SuppressWarnings("unchecked")
 public class EnchantCommand {
     private final TweaksPlugin plugin;
 

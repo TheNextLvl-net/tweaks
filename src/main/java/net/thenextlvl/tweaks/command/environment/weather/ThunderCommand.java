@@ -7,7 +7,6 @@ import net.thenextlvl.tweaks.command.environment.WorldCommand;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-@SuppressWarnings("UnstableApiUsage")
 public class ThunderCommand extends WorldCommand {
     public ThunderCommand(TweaksPlugin plugin) {
         super(plugin);

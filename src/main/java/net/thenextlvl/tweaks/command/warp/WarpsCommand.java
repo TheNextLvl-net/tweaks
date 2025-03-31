@@ -17,7 +17,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class WarpsCommand {
     private final TweaksPlugin plugin;
 

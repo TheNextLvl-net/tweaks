@@ -16,7 +16,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class ItemCommand {
     private final TweaksPlugin plugin;
 

@@ -68,7 +68,6 @@ import static org.bukkit.ServerLinks.Type.*;
 @Getter
 @NullMarked
 @Accessors(fluent = true)
-@SuppressWarnings("UnstableApiUsage")
 public class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
     private final PluginMessenger messenger = new PluginMessenger(this);

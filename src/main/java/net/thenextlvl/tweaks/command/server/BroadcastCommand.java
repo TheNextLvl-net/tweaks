@@ -12,7 +12,6 @@ import org.jspecify.annotations.Nullable;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class BroadcastCommand {
     private final TweaksPlugin plugin;
 

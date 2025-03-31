@@ -11,7 +11,6 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class MSGToggleCommand {
     private final TweaksPlugin plugin;
 

@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class FlyCommand extends PlayersCommand {
     public FlyCommand(TweaksPlugin plugin) {
         super(plugin);

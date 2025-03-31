@@ -19,7 +19,6 @@ import java.util.List;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class GameModeCommand {
     private final TweaksPlugin plugin;
 

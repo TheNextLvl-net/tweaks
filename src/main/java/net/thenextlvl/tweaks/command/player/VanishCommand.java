@@ -8,7 +8,6 @@ import org.bukkit.entity.Entity;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@SuppressWarnings("UnstableApiUsage")
 public class VanishCommand extends EntitiesCommand {
     public VanishCommand(TweaksPlugin plugin) {
         super(plugin);

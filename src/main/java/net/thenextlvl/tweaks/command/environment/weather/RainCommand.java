@@ -7,7 +7,6 @@ import net.thenextlvl.tweaks.command.environment.WorldCommand;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-@SuppressWarnings("UnstableApiUsage")
 public class RainCommand extends WorldCommand {
     public RainCommand(TweaksPlugin plugin) {
         super(plugin);

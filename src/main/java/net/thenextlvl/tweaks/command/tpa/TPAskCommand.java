@@ -24,7 +24,6 @@ import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 
 @NullMarked
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class TPAskCommand {
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private final TweaksPlugin plugin;

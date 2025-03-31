@@ -12,7 +12,6 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 @RequiredArgsConstructor
-@SuppressWarnings("UnstableApiUsage")
 public class WeatherCommand {
     private final TweaksPlugin plugin;
 
