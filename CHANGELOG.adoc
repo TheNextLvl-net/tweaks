@@ -1,3 +1,9 @@
+== 3.1.6
+
+- **Fixed config bug:** Previously the mushroom stew cooldown config wasn't respected
+- **Fixed invsee flickering**: Fixed invsee GUI flickering
+- **Added TeamSpeak link**: The TeamSpeak link wasn't shown in the server links section
+
 == 3.1.5
 
 - **Added /trash command**: Added a simple /trash command
