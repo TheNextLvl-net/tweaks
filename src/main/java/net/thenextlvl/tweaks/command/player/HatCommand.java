@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -12,17 +11,20 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class HatCommand {
     private final TweaksPlugin plugin;
 
+    public HatCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().hat().command())
+        var command = Commands.literal(plugin.commands().hat.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.hat"))
                 .executes(this::hat)
                 .build();
-        registrar.register(command, "Equip an item as a hat", plugin.commands().hat().aliases());
+        registrar.register(command, "Equip an item as a hat", plugin.commands().hat.aliases);
     }
 
     private int hat(CommandContext<CommandSourceStack> context) {

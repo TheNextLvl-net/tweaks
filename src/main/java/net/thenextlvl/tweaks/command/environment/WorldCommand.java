@@ -6,16 +6,18 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.WorldSuggestionProvider;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-@RequiredArgsConstructor
 public abstract class WorldCommand {
     protected final TweaksPlugin plugin;
+
+    protected WorldCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public LiteralCommandNode<CommandSourceStack> create(String command, String permission) {
         return Commands.literal(command)

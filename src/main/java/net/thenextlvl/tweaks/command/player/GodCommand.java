@@ -14,8 +14,8 @@ public class GodCommand extends EntitiesCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().god().command(), "tweaks.command.god", "tweaks.command.god.others");
-        registrar.register(command, "Make you or someone else invulnerable", plugin.commands().god().aliases());
+        var command = create(plugin.commands().god.command, "tweaks.command.god", "tweaks.command.god.others");
+        registrar.register(command, "Make you or someone else invulnerable", plugin.commands().god.aliases);
     }
 
     @Override

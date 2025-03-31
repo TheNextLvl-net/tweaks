@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.listener;
 
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.event.EventHandler;
@@ -11,15 +10,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class ConnectionListener implements Listener {
     private final TweaksPlugin plugin;
 
+    public ConnectionListener(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event) {
-        var permissionLevel = plugin.config().general().defaultPermissionLevel();
+        var permissionLevel = plugin.config().general.defaultPermissionLevel;
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
-        if (!plugin.config().general().overrideJoinMessage()) return;
+        if (!plugin.config().general.overrideJoinMessage) return;
         var id = event.getPlayer().hasPlayedBefore()
                 ? plugin.getServer().getOnlinePlayers().size()
                 : plugin.getServer().getOfflinePlayers().length;
@@ -35,7 +37,7 @@ public class ConnectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        if (!plugin.config().general().overrideQuitMessage()) return;
+        if (!plugin.config().general.overrideQuitMessage) return;
         var resolvers = plugin.serviceResolvers(event.getPlayer()).build();
         plugin.getServer().forEachAudience(audience -> plugin.bundle().sendMessage(
                 audience, "player.disconnected", resolvers

@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.HomeSuggestionProvider;
@@ -13,20 +12,23 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class DeleteHomeCommand {
     private final TweaksPlugin plugin;
 
+    public DeleteHomeCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().deleteHome().command())
+        var command = Commands.literal(plugin.commands().deleteHome.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.home.delete"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
                         .executes(context -> deleteHome(context, context.getArgument("name", String.class))))
-                .executes(context -> deleteHome(context, plugin.config().homes().unnamedName()))
+                .executes(context -> deleteHome(context, plugin.config().homes.unnamedName))
                 .build();
-        registrar.register(command, "Delete your homes", plugin.commands().deleteHome().aliases());
+        registrar.register(command, "Delete your homes", plugin.commands().deleteHome.aliases);
     }
 
     private int deleteHome(CommandContext<CommandSourceStack> context, String name) {

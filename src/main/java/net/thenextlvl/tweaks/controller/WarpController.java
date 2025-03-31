@@ -1,23 +1,25 @@
 package net.thenextlvl.tweaks.controller;
 
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
 import org.bukkit.Location;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-@RequiredArgsConstructor
 public class WarpController {
     private final TweaksPlugin plugin;
 
-    public CompletableFuture<@Nullable Location> getWarp(String name) {
+    public WarpController(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    public CompletableFuture<Optional<Location>> getWarp(String name) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarp(name))
-                .exceptionally(throwable -> null);
+                .exceptionally(throwable -> Optional.empty());
     }
 
     public CompletableFuture<Set<NamedLocation>> getWarps() {

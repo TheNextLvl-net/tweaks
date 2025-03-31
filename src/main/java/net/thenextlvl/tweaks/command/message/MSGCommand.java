@@ -6,7 +6,6 @@ import com.mojang.brigadier.context.CommandContext;
 import core.paper.command.CustomArgumentTypes;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.MSGSuggestionProvider;
@@ -15,19 +14,22 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class MSGCommand {
     private final TweaksPlugin plugin;
 
+    public MSGCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().msg().command())
+        var command = Commands.literal(plugin.commands().msg.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.msg"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
                         .suggests(new MSGSuggestionProvider(plugin))
                         .then(Commands.argument("message", StringArgumentType.greedyString())
                                 .executes(this::message)))
                 .build();
-        commands.register(command, "Send a private message to a player", plugin.commands().msg().aliases());
+        commands.register(command, "Send a private message to a player", plugin.commands().msg.aliases);
     }
 
     private int message(CommandContext<CommandSourceStack> context) {

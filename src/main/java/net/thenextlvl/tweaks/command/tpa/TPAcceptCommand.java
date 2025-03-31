@@ -3,7 +3,6 @@ package net.thenextlvl.tweaks.command.tpa;
 import com.mojang.brigadier.Command;
 import core.paper.command.CustomArgumentTypes;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.RequestSuggestionProvider;
@@ -17,12 +16,15 @@ import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
-@RequiredArgsConstructor
 public class TPAcceptCommand {
     private final TweaksPlugin plugin;
 
+    public TPAcceptCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportAccept().command())
+        var command = Commands.literal(plugin.commands().teleportAccept.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.tpa.accept"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
@@ -41,7 +43,7 @@ public class TPAcceptCommand {
                             request != null ? request.type() : TPA);
                 })
                 .build();
-        commands.register(command, "Accept a teleport request", plugin.commands().teleportAccept().aliases());
+        commands.register(command, "Accept a teleport request", plugin.commands().teleportAccept.aliases);
     }
 
     static int accept(TweaksPlugin plugin, Player sender, @Nullable Player player, RequestType type) {

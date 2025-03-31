@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.controller;
 
-import lombok.Getter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.service.api.chat.ChatController;
@@ -17,7 +16,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Function;
 
-@Getter
 @NullMarked
 public class ServiceController {
     private final @Nullable BankController banks;
@@ -86,5 +84,25 @@ public class ServiceController {
                         .flatMap(controller::getGroup))
                 .map(group -> group.getWeight().orElse(0))
                 .orElse(0);
+    }
+
+    public @Nullable BankController getBanks() {
+        return banks;
+    }
+
+    public @Nullable ChatController getChat() {
+        return chat;
+    }
+
+    public @Nullable EconomyController getEconomy() {
+        return economy;
+    }
+
+    public @Nullable GroupController getGroups() {
+        return groups;
+    }
+
+    public @Nullable PermissionController getPermissions() {
+        return permissions;
     }
 }

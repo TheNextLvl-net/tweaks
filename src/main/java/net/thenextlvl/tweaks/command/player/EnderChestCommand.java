@@ -28,10 +28,10 @@ public class EnderChestCommand extends PlayerCommand implements Listener {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().enderchest().command(),
+        var command = create(plugin.commands().enderchest.command,
                 "tweaks.command.enderchest", "tweaks.command.enderchest.others");
         registrar.register(command, "Open your own or someone else's enderchest",
-                plugin.commands().enderchest().aliases());
+                plugin.commands().enderchest.aliases);
     }
 
     @Override

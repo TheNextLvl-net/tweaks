@@ -6,7 +6,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -16,9 +15,12 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 @NullMarked
-@RequiredArgsConstructor
 abstract class EntitiesCommand {
     protected final TweaksPlugin plugin;
+
+    EntitiesCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public LiteralCommandNode<CommandSourceStack> create(String name, String permission, String permissionOther) {
         return Commands.literal(name)

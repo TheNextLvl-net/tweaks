@@ -9,7 +9,6 @@ import core.nbt.tag.*;
 import core.nbt.tag.Tag;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
@@ -25,12 +24,15 @@ import java.util.concurrent.CompletableFuture;
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
-@RequiredArgsConstructor
 public class OfflineTeleportCommand {
     private final TweaksPlugin plugin;
 
+    public OfflineTeleportCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().offlineTeleport().command())
+        var command = Commands.literal(plugin.commands().offlineTeleport.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.offline-tp"))
                 .then(Commands.argument("player", StringArgumentType.word())
                         .suggests(new OfflinePlayerSuggestionProvider(plugin))
@@ -48,7 +50,7 @@ public class OfflineTeleportCommand {
                         }))
                 .build();
         registrar.register(command, "Teleport offline-players to others or you to them",
-                plugin.commands().offlineTeleport().aliases());
+                plugin.commands().offlineTeleport.aliases);
     }
 
     private void teleportOther(CommandContext<CommandSourceStack> context) {

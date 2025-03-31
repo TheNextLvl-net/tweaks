@@ -18,13 +18,12 @@ import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.stream.IntStream;
 
@@ -37,7 +36,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     public InventoryCommand(TweaksPlugin plugin) {
         super(plugin);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        var updateTime = Math.max(1, plugin.config().guis().inventory().updateTime());
+        var updateTime = Math.max(1, plugin.config().guis.inventory.updateTime);
         plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, task ->
                 providers.forEach((provider, viewers) -> {
                     var inventory = inventories.get(provider);
@@ -46,10 +45,10 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().inventory().command(),
+        var command = create(plugin.commands().inventory.command,
                 "tweaks.command.inventory", "tweaks.command.inventory");
         registrar.register(command, "Open someone else's inventory",
-                plugin.commands().inventory().aliases());
+                plugin.commands().inventory.aliases);
     }
 
     @Override
@@ -77,42 +76,6 @@ public class InventoryCommand extends PlayerCommand implements Listener {
                 .add(player);
         viewers.put(player, target);
         return Command.SINGLE_SUCCESS;
-    }
-
-    private void updateInventory(Inventory inventory, HumanEntity target) {
-        var targetInventory = target.getInventory();
-        for (var i = 0; i < targetInventory.getStorageContents().length; i++)
-            inventory.setItem(i, targetInventory.getStorageContents()[i]);
-        inventory.setItem(45, targetInventory.getHelmet());
-        inventory.setItem(46, targetInventory.getChestplate());
-        inventory.setItem(47, targetInventory.getLeggings());
-        inventory.setItem(48, targetInventory.getBoots());
-        inventory.setItem(50, targetInventory.getItemInOffHand());
-        inventory.setItem(52, target.getItemOnCursor());
-    }
-
-    private void addPlaceholders(Inventory inventory, Player player) {
-        var inventoryConfig = plugin.config().guis().inventory();
-        var placeholder = ItemBuilder.of(inventoryConfig.placeholder()).hideTooltip().item();
-        inventory.setItem(36, ItemBuilder.of(inventoryConfig.helmet())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.helmet"))
-                .item());
-        inventory.setItem(37, ItemBuilder.of(inventoryConfig.chestplate())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.chestplate"))
-                .item());
-        inventory.setItem(38, ItemBuilder.of(inventoryConfig.leggings())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.leggings"))
-                .item());
-        inventory.setItem(39, ItemBuilder.of(inventoryConfig.boots())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.boots"))
-                .item());
-        inventory.setItem(41, ItemBuilder.of(inventoryConfig.offHand())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.off-hand"))
-                .item());
-        inventory.setItem(43, ItemBuilder.of(inventoryConfig.cursor())
-                .itemName(plugin.bundle().component(player, "gui.placeholder.cursor"))
-                .item());
-        IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

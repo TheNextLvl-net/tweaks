@@ -5,24 +5,26 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-@RequiredArgsConstructor
 public class WeatherCommand {
     private final TweaksPlugin plugin;
 
+    public WeatherCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().weather().command())
+        var command = Commands.literal(plugin.commands().weather.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.weather"))
                 .then(setWeather("clear", "tweaks.command.weather.sun", this::clear))
                 .then(setWeather("rain", "tweaks.command.weather.rain", this::rain))
                 .then(setWeather("thunder", "tweaks.command.weather.thunder", this::thunder))
                 .build();
-        registrar.register(command, "Gives you an item of your choice", plugin.commands().weather().aliases());
+        registrar.register(command, "Gives you an item of your choice", plugin.commands().weather.aliases);
     }
 
     private LiteralArgumentBuilder<CommandSourceStack> setWeather(String literal, String permission, Executor executor) {

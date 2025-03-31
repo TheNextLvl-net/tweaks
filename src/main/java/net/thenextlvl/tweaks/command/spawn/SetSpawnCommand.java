@@ -9,7 +9,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolver;
 import io.papermc.paper.math.FinePosition;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
@@ -21,18 +20,21 @@ import java.text.DecimalFormat;
 import java.util.Locale;
 
 @NullMarked
-@RequiredArgsConstructor
 public class SetSpawnCommand {
     private final TweaksPlugin plugin;
 
+    public SetSpawnCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().setSpawn().command())
+        var command = Commands.literal(plugin.commands().setSpawn.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.setspawn"))
                 .then(position()).executes(context -> {
                     var location = context.getSource().getLocation();
                     return setSpawn(context, location.getWorld(), location, location.getYaw(), location.getPitch());
                 }).build();
-        registrar.register(command, "Set the spawn location", plugin.commands().setSpawn().aliases());
+        registrar.register(command, "Set the spawn location", plugin.commands().setSpawn.aliases);
     }
 
     private RequiredArgumentBuilder<CommandSourceStack, FinePositionResolver> position() {
@@ -76,7 +78,7 @@ public class SetSpawnCommand {
         var locale = context.getSource().getSender() instanceof Player player ? player.locale() : Locale.US;
         var formatter = DecimalFormat.getInstance(locale);
 
-        plugin.config().spawn().location(position.toLocation(world));
+        plugin.config().spawn.location = position.toLocation(world);
         plugin.saveConfig();
 
         plugin.bundle().sendMessage(context.getSource().getSender(), "command.spawn.set",

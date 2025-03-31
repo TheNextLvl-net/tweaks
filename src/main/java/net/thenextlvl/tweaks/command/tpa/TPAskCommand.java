@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import core.paper.command.CustomArgumentTypes;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -23,20 +22,23 @@ import java.util.concurrent.TimeUnit;
 import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 
 @NullMarked
-@RequiredArgsConstructor
 public class TPAskCommand {
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private final TweaksPlugin plugin;
 
+    public TPAskCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportAsk().command())
+        var command = Commands.literal(plugin.commands().teleportAsk.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.tpa"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
                         .suggests(new TPASuggestionProvider(plugin))
                         .executes(this::ask))
                 .build();
-        commands.register(command, "Request to teleport to a player", plugin.commands().teleportAsk().aliases());
+        commands.register(command, "Request to teleport to a player", plugin.commands().teleportAsk.aliases);
     }
 
     private int ask(CommandContext<CommandSourceStack> context) {
@@ -64,7 +66,7 @@ public class TPAskCommand {
         if (!success) return false;
 
         executor.schedule(() -> plugin.tpaController().expireRequest(player, sender, type),
-                plugin.config().teleport().tpaTimeout(), TimeUnit.MILLISECONDS);
+                plugin.config().teleport.tpaTimeout, TimeUnit.MILLISECONDS);
 
         plugin.bundle().sendMessage(player, type.incomingMessage(),
                 Placeholder.parsed("player", sender.getName()),
@@ -73,17 +75,17 @@ public class TPAskCommand {
                                 // player accepts sender's tpa
                                 TPAcceptCommand.accept(plugin, player, sender, type),
                         ClickCallback.Options.builder().lifetime(
-                                Duration.ofMillis(plugin.config().teleport().tpaTimeout())
+                                Duration.ofMillis(plugin.config().teleport.tpaTimeout)
                         ).uses(1).build())),
                 Placeholder.styling("deny", ClickEvent.callback(audience ->
                                 // invert players for execution
                                 // player declines sender's tpa
                                 TPADenyCommand.deny(plugin, player, sender, type),
                         ClickCallback.Options.builder().lifetime(
-                                Duration.ofMillis(plugin.config().teleport().tpaTimeout())
+                                Duration.ofMillis(plugin.config().teleport.tpaTimeout)
                         ).uses(1).build())),
                 Placeholder.parsed("time", String.valueOf(TimeUnit.MILLISECONDS.toSeconds(
-                        plugin.config().teleport().tpaTimeout())
+                        plugin.config().teleport.tpaTimeout)
                 )));
         return true;
     }

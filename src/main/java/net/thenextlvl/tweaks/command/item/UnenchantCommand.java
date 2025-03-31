@@ -8,7 +8,6 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -18,19 +17,22 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class UnenchantCommand {
     private final TweaksPlugin plugin;
 
+    public UnenchantCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().unenchant().command())
+        var command = Commands.literal(plugin.commands().unenchant.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.unenchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
                         .suggests(new UnenchantSuggestionProvider())
                         .executes(this::unenchant))
                 .build();
-        registrar.register(command, "Unenchant your tools", plugin.commands().unenchant().aliases());
+        registrar.register(command, "Unenchant your tools", plugin.commands().unenchant.aliases);
     }
 
     @SuppressWarnings("unchecked")

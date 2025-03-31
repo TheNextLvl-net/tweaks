@@ -7,7 +7,6 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
@@ -16,12 +15,15 @@ import org.jspecify.annotations.NullMarked;
 import java.util.function.Function;
 
 @NullMarked
-@RequiredArgsConstructor
 public class TimeCommand {
     private final TweaksPlugin plugin;
 
+    public TimeCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().time().command())
+        var command = Commands.literal(plugin.commands().time.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.time"))
                 .then(Commands.literal("set")
                         .then(setTime("afternoon", "tweaks.command.time.afternoon", 9000))
@@ -45,7 +47,7 @@ public class TimeCommand {
                         .then(query("daytime", world -> world.getFullTime() % 24000L))
                         .then(query("gametime", world -> world.getGameTime() % 2147483647L)))
                 .build();
-        registrar.register(command, "Manage the time on your server", plugin.commands().time().aliases());
+        registrar.register(command, "Manage the time on your server", plugin.commands().time.aliases);
     }
 
     private LiteralArgumentBuilder<CommandSourceStack> query(String literal, Function<World, Long> function) {

@@ -11,7 +11,6 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -25,17 +24,20 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
 @NullMarked
-@RequiredArgsConstructor
 @SuppressWarnings("unchecked")
 public class EnchantCommand {
     private final TweaksPlugin plugin;
 
+    public EnchantCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var max = plugin.config().general().enchantmentOverflow() ? 255 : RegistryAccess.registryAccess()
+        var max = plugin.config().general.enchantmentOverflow ? 255 : RegistryAccess.registryAccess()
                 .getRegistry(RegistryKey.ENCHANTMENT).stream()
                 .mapToInt(Enchantment::getMaxLevel)
                 .max().orElse(10);
-        var command = Commands.literal(plugin.commands().enchant().command())
+        var command = Commands.literal(plugin.commands().enchant.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
@@ -45,7 +47,7 @@ public class EnchantCommand {
                                 .executes(context -> enchant(context, context.getArgument("level", int.class))))
                         .executes(context -> enchant(context, 1)))
                 .build();
-        registrar.register(command, "Enchant your tools", plugin.commands().enchant().aliases());
+        registrar.register(command, "Enchant your tools", plugin.commands().enchant.aliases);
     }
 
     private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
@@ -82,7 +84,7 @@ public class EnchantCommand {
             return 0;
         }
 
-        if (!plugin.config().general().enchantmentOverflow())
+        if (!plugin.config().general.enchantmentOverflow)
             level = Math.min(level, enchantment.getMaxLevel());
         level = Math.max(level, enchantment.getStartLevel());
 

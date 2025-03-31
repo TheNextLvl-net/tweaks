@@ -1,25 +1,30 @@
 package net.thenextlvl.tweaks.command.workstation;
 
+import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.MenuType;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class GrindstoneCommand {
     private final TweaksPlugin plugin;
 
+    public GrindstoneCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().grindstone().command())
+        var command = Commands.literal(plugin.commands().grindstone.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.grindstone"))
                 .executes(context -> {
-                    ((Player) context.getSource().getSender()).openGrindstone(null, true);
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                    var player = (Player) context.getSource().getSender();
+                    MenuType.GRINDSTONE.create(player).open();
+                    return Command.SINGLE_SUCCESS;
                 })
                 .build();
-        registrar.register(command, "Open a grindstone", plugin.commands().grindstone().aliases());
+        registrar.register(command, "Open a grindstone", plugin.commands().grindstone.aliases);
     }
 }

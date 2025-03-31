@@ -8,8 +8,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.NamespacedKey;
@@ -27,13 +25,16 @@ import static org.bukkit.attribute.Attribute.*;
 import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 
 @NullMarked
-@RequiredArgsConstructor
 public class SpeedCommand {
     private final TweaksPlugin plugin;
     private static final NamespacedKey SPEED_KEY = new NamespacedKey("tweaks", "speed");
 
+    public SpeedCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().speed().command())
+        var command = Commands.literal(plugin.commands().speed.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed"))
                 .then(Commands.argument("speed", IntegerArgumentType.integer(-10, 10))
                         .then(speed("fly", SpeedType.FLY))
@@ -63,7 +64,7 @@ public class SpeedCommand {
                         }))
                 .build();
         registrar.register(command, "Change your own or others fly, sneak or walk speed",
-                plugin.commands().speed().aliases());
+                plugin.commands().speed.aliases);
     }
 
     private LiteralArgumentBuilder<CommandSourceStack> reset(String literal, SpeedType type) {
@@ -148,8 +149,6 @@ public class SpeedCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    @Getter
-    @RequiredArgsConstructor
     private enum SpeedType {
         FLY(FLYING_SPEED, "command.speed.fly.changed.others", "command.speed.fly.changed.self"),
         SNEAK(SNEAKING_SPEED, "command.speed.sneak.changed.others", "command.speed.sneak.changed.self"),
@@ -158,5 +157,23 @@ public class SpeedCommand {
         private final Attribute attribute;
         private final String messageOther;
         private final String messageSelf;
+
+        SpeedType(Attribute attribute, String messageOther, String messageSelf) {
+            this.attribute = attribute;
+            this.messageOther = messageOther;
+            this.messageSelf = messageSelf;
+        }
+
+        public Attribute getAttribute() {
+            return attribute;
+        }
+
+        public String getMessageOther() {
+            return messageOther;
+        }
+
+        public String getMessageSelf() {
+            return messageSelf;
+        }
     }
 }

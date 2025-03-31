@@ -8,7 +8,6 @@ import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -23,12 +22,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @NullMarked
-@RequiredArgsConstructor
 public class LoreCommand {
     private final TweaksPlugin plugin;
 
+    public LoreCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().lore().command())
+        var command = Commands.literal(plugin.commands().lore.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.lore"))
                 .then(Commands.literal("clear").executes(this::clear))
@@ -37,7 +39,7 @@ public class LoreCommand {
                 .then(modify("set", this::set))
                 .then(replace())
                 .build();
-        registrar.register(command, "Change the lore of your items", plugin.commands().lore().aliases());
+        registrar.register(command, "Change the lore of your items", plugin.commands().lore.aliases);
     }
 
     private LiteralArgumentBuilder<CommandSourceStack> replace() {

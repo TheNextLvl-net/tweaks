@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.HomeSuggestionProvider;
@@ -15,21 +14,24 @@ import org.jspecify.annotations.NullMarked;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-@RequiredArgsConstructor
 public class SetHomeCommand {
     private final TweaksPlugin plugin;
 
+    public SetHomeCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().setHome().command())
+        var command = Commands.literal(plugin.commands().setHome.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.home.set"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
                         .requires(stack -> stack.getSender().hasPermission("tweaks.command.home.set.named"))
                         .executes(context -> setHome(context, context.getArgument("name", String.class))))
-                .executes(context -> setHome(context, plugin.config().homes().unnamedName()))
+                .executes(context -> setHome(context, plugin.config().homes.unnamedName))
                 .build();
-        registrar.register(command, "Set a home", plugin.commands().setHome().aliases());
+        registrar.register(command, "Set a home", plugin.commands().setHome.aliases);
     }
 
     private int setHome(CommandContext<CommandSourceStack> context, String name) {

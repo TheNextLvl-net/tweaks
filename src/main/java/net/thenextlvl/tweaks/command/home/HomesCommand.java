@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -16,17 +15,20 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class HomesCommand {
     private final TweaksPlugin plugin;
 
+    public HomesCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().homes().command())
+        var command = Commands.literal(plugin.commands().homes.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.home"))
                 .executes(this::homes)
                 .build();
-        registrar.register(command, "List all of your homes", plugin.commands().homes().aliases());
+        registrar.register(command, "List all of your homes", plugin.commands().homes.aliases);
     }
 
     private int homes(CommandContext<CommandSourceStack> context) {
@@ -34,7 +36,7 @@ public class HomesCommand {
         plugin.homeController().getHomes(sender).thenAccept(homes -> {
             if (homes.isEmpty()) {
                 plugin.bundle().sendMessage(sender, "command.home.undefined");
-            } else if (plugin.config().guis().homes().enabled()) {
+            } else if (plugin.config().guis.homes.enabled) {
                 plugin.getServer().getScheduler().runTask(plugin, () -> new HomeGUI(plugin, sender, homes).open());
             } else {
                 var list = Component.join(JoinConfiguration.commas(true), homes.stream().map(home -> {
