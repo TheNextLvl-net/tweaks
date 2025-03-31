@@ -247,6 +247,7 @@ public class TweaksPlugin extends JavaPlugin {
 
         if (social.discord) registerLink("url.discord", config().links.discord);
         if (social.reddit) registerLink("url.reddit", config().links.reddit);
+        if (social.teamspeak) registerLink("url.teamspeak", config().links.teamspeak);
         if (social.tiktok) registerLink("url.tiktok", config().links.tiktok);
         if (social.twitch) registerLink("url.twitch", config().links.twitch);
         if (social.x) registerLink("url.x", config().links.x);
