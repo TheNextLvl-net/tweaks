@@ -15,8 +15,8 @@ public class PingCommand extends PlayerCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().ping().command(), "tweaks.command.ping", "tweaks.command.ping.others");
-        registrar.register(command, "See your own or someone else's latency", plugin.commands().ping().aliases());
+        var command = create(plugin.commands().ping.command, "tweaks.command.ping", "tweaks.command.ping.others");
+        registrar.register(command, "See your own or someone else's latency", plugin.commands().ping.aliases);
     }
 
     @Override

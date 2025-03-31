@@ -5,25 +5,27 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.WarpSuggestionProvider;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class DeleteWarpCommand {
     private final TweaksPlugin plugin;
 
+    public DeleteWarpCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().deleteWarp().command())
+        var command = Commands.literal(plugin.commands().deleteWarp.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp.delete"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new WarpSuggestionProvider(plugin))
                         .executes(this::deleteWarp))
                 .build();
-        registrar.register(command, "Delete a warp point", plugin.commands().deleteWarp().aliases());
+        registrar.register(command, "Delete a warp point", plugin.commands().deleteWarp.aliases);
     }
 
     private int deleteWarp(CommandContext<CommandSourceStack> context) {

@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,19 +14,22 @@ import org.jspecify.annotations.Nullable;
 import java.util.Arrays;
 
 @NullMarked
-@RequiredArgsConstructor
 public class RepairCommand {
     private final TweaksPlugin plugin;
 
+    public RepairCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().repair().command())
+        var command = Commands.literal(plugin.commands().repair.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.repair"))
                 .then(Commands.literal("all")
                         .executes(this::repairAll))
                 .executes(this::repair)
                 .build();
-        registrar.register(command, "repair your tools", plugin.commands().repair().aliases());
+        registrar.register(command, "repair your tools", plugin.commands().repair.aliases);
     }
 
     private int repair(CommandContext<CommandSourceStack> context) {

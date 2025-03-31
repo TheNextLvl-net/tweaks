@@ -13,8 +13,8 @@ public class RainCommand extends WorldCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().rain().command(), "tweaks.command.weather.rain");
-        registrar.register(command, "Let it rain", plugin.commands().rain().aliases());
+        var command = create(plugin.commands().rain.command, "tweaks.command.weather.rain");
+        registrar.register(command, "Let it rain", plugin.commands().rain.aliases);
     }
 
     @Override

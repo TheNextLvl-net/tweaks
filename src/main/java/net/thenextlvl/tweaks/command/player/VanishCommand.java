@@ -14,10 +14,10 @@ public class VanishCommand extends EntitiesCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().vanish().command(),
+        var command = create(plugin.commands().vanish.command,
                 "tweaks.command.vanish", "tweaks.command.vanish.others");
         registrar.register(command, "Hide yourself or someone else from others",
-                plugin.commands().vanish().aliases());
+                plugin.commands().vanish.aliases);
     }
 
     @Override

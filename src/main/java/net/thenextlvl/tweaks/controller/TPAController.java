@@ -1,8 +1,5 @@
 package net.thenextlvl.tweaks.controller;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
@@ -11,10 +8,13 @@ import org.jspecify.annotations.NullMarked;
 import java.util.*;
 
 @NullMarked
-@RequiredArgsConstructor
 public class TPAController {
     private final Map<Player, Set<Request>> requests = new WeakHashMap<>();
     private final TweaksPlugin plugin;
+
+    public TPAController(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public void removeRequests(Player player) {
         requests.values().forEach(requests -> requests.removeIf(request -> request.player().equals(player)));
@@ -59,14 +59,24 @@ public class TPAController {
     public record Request(Player player, RequestType type) {
     }
 
-    @Getter
-    @RequiredArgsConstructor
-    @Accessors(fluent = true)
     public enum RequestType {
         TPA_HERE("command.tpa.here.incoming", "command.tpa.here.outgoing"),
         TPA("command.tpa.incoming", "command.tpa.outgoing");
 
         private final String incomingMessage;
         private final String outgoingMessage;
+
+        RequestType(String incomingMessage, String outgoingMessage) {
+            this.incomingMessage = incomingMessage;
+            this.outgoingMessage = outgoingMessage;
+        }
+
+        public String incomingMessage() {
+            return incomingMessage;
+        }
+
+        public String outgoingMessage() {
+            return outgoingMessage;
+        }
     }
 }

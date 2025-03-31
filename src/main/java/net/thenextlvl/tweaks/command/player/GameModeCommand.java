@@ -6,7 +6,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -18,12 +17,15 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 @NullMarked
-@RequiredArgsConstructor
 public class GameModeCommand {
     private final TweaksPlugin plugin;
 
+    public GameModeCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().gamemode().command())
+        var command = Commands.literal(plugin.commands().gamemode.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.gamemode"))
                 .then(Commands.argument("gamemode", new GameModeArgumentType())
                         .then(Commands.argument("players", ArgumentTypes.players())
@@ -39,7 +41,7 @@ public class GameModeCommand {
                             return 0;
                         }))
                 .build();
-        registrar.register(command, "Change your own or someone else's game mode", plugin.commands().gamemode().aliases());
+        registrar.register(command, "Change your own or someone else's game mode", plugin.commands().gamemode.aliases);
     }
 
     private int gamemode(CommandContext<CommandSourceStack> context, List<Player> resolve) {

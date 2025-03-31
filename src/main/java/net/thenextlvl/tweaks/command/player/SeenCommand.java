@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
@@ -17,12 +16,15 @@ import java.util.Date;
 import java.util.Locale;
 
 @NullMarked
-@RequiredArgsConstructor
 public class SeenCommand {
     private final TweaksPlugin plugin;
 
+    public SeenCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().seen().command())
+        var command = Commands.literal(plugin.commands().seen.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.seen"))
                 .then(Commands.argument("player", StringArgumentType.word())
                         .suggests(new OfflinePlayerSuggestionProvider(plugin))
@@ -31,7 +33,7 @@ public class SeenCommand {
                             return Command.SINGLE_SUCCESS;
                         }))
                 .build();
-        registrar.register(command, "Gives you information about a player", plugin.commands().seen().aliases());
+        registrar.register(command, "Gives you information about a player", plugin.commands().seen.aliases);
     }
 
     private void seen(CommandContext<CommandSourceStack> context) {

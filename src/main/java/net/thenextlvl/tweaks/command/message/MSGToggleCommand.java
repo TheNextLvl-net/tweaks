@@ -4,23 +4,25 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class MSGToggleCommand {
     private final TweaksPlugin plugin;
 
+    public MSGToggleCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().msgToggle().command())
+        var command = Commands.literal(plugin.commands().msgToggle.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.msg.toggle"))
                 .executes(this::toggle)
                 .build();
-        commands.register(command, "Toggle receiving private messages", plugin.commands().msgToggle().aliases());
+        commands.register(command, "Toggle receiving private messages", plugin.commands().msgToggle.aliases);
     }
 
     private int toggle(CommandContext<CommandSourceStack> context) {

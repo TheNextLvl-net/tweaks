@@ -14,8 +14,8 @@ public class FlyCommand extends PlayersCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().fly().command(), "tweaks.command.fly", "tweaks.command.fly.others");
-        registrar.register(command, "Toggle your own or someone else's fly state", plugin.commands().fly().aliases());
+        var command = create(plugin.commands().fly.command, "tweaks.command.fly", "tweaks.command.fly.others");
+        registrar.register(command, "Toggle your own or someone else's fly state", plugin.commands().fly.aliases);
     }
 
     @Override

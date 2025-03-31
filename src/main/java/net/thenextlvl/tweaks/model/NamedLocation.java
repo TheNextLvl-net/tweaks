@@ -1,13 +1,11 @@
 package net.thenextlvl.tweaks.model;
 
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.Objects;
 
-@Getter
 @NullMarked
 public class NamedLocation extends Location {
     private final String name;
@@ -19,6 +17,10 @@ public class NamedLocation extends Location {
 
     public NamedLocation(String name, Location location) {
         this(name, location.getWorld(), location.x(), location.y(), location.z(), location.getYaw(), location.getPitch());
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

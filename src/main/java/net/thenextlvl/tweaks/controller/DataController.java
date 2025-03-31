@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.controller;
 
-import lombok.SneakyThrows;
 import net.kyori.adventure.key.Key;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
@@ -16,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @NullMarked
@@ -25,68 +25,89 @@ public class DataController {
     private final Connection connection;
     private final TweaksPlugin plugin;
 
-    @SneakyThrows
     public DataController(TweaksPlugin plugin) {
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + new File(plugin.getDataFolder(), "saves.db"));
-        this.plugin = plugin;
-        createHomesTable();
-        createSettingsTable();
-        createWarpsTable();
+        try {
+            this.connection = DriverManager.getConnection("jdbc:sqlite:" + new File(plugin.getDataFolder(), "saves.db"));
+            this.plugin = plugin;
+            createHomesTable();
+            createSettingsTable();
+            createWarpsTable();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to connect to database", e);
+        }
     }
 
-    @SneakyThrows
-    public @Nullable Location getHome(OfflinePlayer player, String name) {
-        return executeQuery("""
-                        SELECT world, x, y, z, yaw, pitch FROM homes
-                        WHERE uuid = ? AND name = ?
-                        """,
-                resultSet -> resultSet.next() ? parseLocation(resultSet) : null,
-                player.getUniqueId(), name);
+    public Optional<Location> getHome(OfflinePlayer player, String name) {
+        try {
+            return Optional.ofNullable(executeQuery("""
+                            SELECT world, x, y, z, yaw, pitch FROM homes
+                            WHERE uuid = ? AND name = ?
+                            """,
+                    resultSet -> resultSet.next() ? parseLocation(resultSet) : null,
+                    player.getUniqueId(), name));
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get home location", e);
+        }
     }
 
-    @SneakyThrows
     public boolean hasHome(OfflinePlayer player, String name) {
-        return Boolean.TRUE.equals(executeQuery(
-                "SELECT COUNT(*) FROM homes WHERE uuid = ? AND name = ?",
-                resultSet -> resultSet.next() && resultSet.getInt(1) > 0,
-                player.getUniqueId(), name
-        ));
+        try {
+            return Boolean.TRUE.equals(executeQuery(
+                    "SELECT COUNT(*) FROM homes WHERE uuid = ? AND name = ?",
+                    resultSet -> resultSet.next() && resultSet.getInt(1) > 0,
+                    player.getUniqueId(), name
+            ));
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to check if home exists", e);
+        }
     }
 
-    @SneakyThrows
     public int getHomeCount(OfflinePlayer player) {
-        return Objects.requireNonNull(executeQuery(
-                "SELECT COUNT(*) FROM homes WHERE uuid = ?",
-                resultSet -> resultSet.next() ? resultSet.getInt(1) : -1,
-                player.getUniqueId()
-        ));
+        try {
+            return Objects.requireNonNull(executeQuery(
+                    "SELECT COUNT(*) FROM homes WHERE uuid = ?",
+                    resultSet -> resultSet.next() ? resultSet.getInt(1) : -1,
+                    player.getUniqueId()
+            ));
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get home count", e);
+        }
     }
 
-    @SneakyThrows
     public Set<NamedLocation> getHomes(OfflinePlayer player) {
-        return Objects.requireNonNullElseGet(executeQuery(
-                "SELECT name, world, x, y, z, yaw, pitch FROM homes WHERE uuid = ?",
-                this::parseNamedLocations, player.getUniqueId()
-        ), Set::of);
+        try {
+            return Objects.requireNonNullElseGet(executeQuery(
+                    "SELECT name, world, x, y, z, yaw, pitch FROM homes WHERE uuid = ?",
+                    this::parseNamedLocations, player.getUniqueId()
+            ), Set::of);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get homes", e);
+        }
     }
 
-    @SneakyThrows
     public boolean deleteHome(OfflinePlayer player, String name) {
-        return executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?", player.getUniqueId(), name) != 0;
+        try {
+            return executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?", player.getUniqueId(), name) != 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete home", e);
+        }
     }
 
-    @SneakyThrows
     public void setHome(OfflinePlayer player, String name, Location location) {
-        executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?",
-                player.getUniqueId(), name);
-        executeUpdate("INSERT INTO homes (uuid, name, world, x, y, z, yaw, pitch) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                player.getUniqueId(), name,
-                location.getWorld().key().asString(),
-                location.getX(),
-                location.getY(),
-                location.getZ(),
-                location.getYaw(),
-                location.getPitch());
+        try {
+            executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?",
+                    player.getUniqueId(), name);
+            executeUpdate("INSERT INTO homes (uuid, name, world, x, y, z, yaw, pitch) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    player.getUniqueId(), name,
+                    location.getWorld().key().asString(),
+                    location.getX(),
+                    location.getY(),
+                    location.getZ(),
+                    location.getYaw(),
+                    location.getPitch());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to set home", e);
+        }
     }
 
     /**
@@ -96,7 +117,6 @@ public class DataController {
      * @param player the player whose TPA toggle status is being checked
      * @return true if TPA requests are blocked, false if TPA requests are accepted
      */
-    @SneakyThrows
     public boolean isTpaToggled(OfflinePlayer player) {
         return isSettingToggled(player, TPA_TOGGLED);
     }
@@ -109,7 +129,6 @@ public class DataController {
      * @param toggled true to block TPA requests, false to accept TPA requests
      * @return true if the operation changed the player's TPA toggle setting, false otherwise
      */
-    @SneakyThrows
     public boolean setTpaToggled(OfflinePlayer player, boolean toggled) {
         return setSettingToggled(player, toggled, TPA_TOGGLED);
     }
@@ -131,7 +150,6 @@ public class DataController {
      * @param player the player whose message toggle status is being checked
      * @return true if the player has the message toggle enabled, false otherwise
      */
-    @SneakyThrows
     public boolean isMsgToggled(OfflinePlayer player) {
         return isSettingToggled(player, MSG_TOGGLED);
     }
@@ -144,7 +162,6 @@ public class DataController {
      * @param toggled true to block private messages, false to accept private messages
      * @return true if the operation changed the player's message toggle setting, false otherwise
      */
-    @SneakyThrows
     public boolean setMsgToggled(OfflinePlayer player, boolean toggled) {
         return setSettingToggled(player, toggled, MSG_TOGGLED);
     }
@@ -160,29 +177,38 @@ public class DataController {
         return toggleSetting(player, MSG_TOGGLED);
     }
 
-    @SneakyThrows
     private boolean isSettingToggled(OfflinePlayer player, String setting) {
-        return Boolean.TRUE.equals(executeQuery(
-                "SELECT COUNT(*) FROM settings WHERE uuid = ? AND setting = ?",
-                resultSet -> resultSet.next() && resultSet.getInt(1) > 0,
-                player.getUniqueId(), setting
-        ));
+        try {
+            return Boolean.TRUE.equals(executeQuery(
+                    "SELECT COUNT(*) FROM settings WHERE uuid = ? AND setting = ?",
+                    resultSet -> resultSet.next() && resultSet.getInt(1) > 0,
+                    player.getUniqueId(), setting
+            ));
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to check if setting is toggled", e);
+        }
     }
 
-    @SneakyThrows
     private boolean setSettingToggled(OfflinePlayer player, boolean toggled, String setting) {
-        return toggled ? executeUpdate(
-                "INSERT OR IGNORE INTO settings (uuid, setting) VALUES (?, ?)",
-                player.getUniqueId(), setting
-        ) != 0 : removeSetting(player, setting);
+        try {
+            return toggled ? executeUpdate(
+                    "INSERT OR IGNORE INTO settings (uuid, setting) VALUES (?, ?)",
+                    player.getUniqueId(), setting
+            ) != 0 : removeSetting(player, setting);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to set setting toggled", e);
+        }
     }
 
-    @SneakyThrows
     private boolean removeSetting(OfflinePlayer player, String setting) {
-        return executeUpdate(
-                "DELETE FROM settings WHERE uuid = ? AND setting = ?",
-                player.getUniqueId(), setting
-        ) != 0;
+        try {
+            return executeUpdate(
+                    "DELETE FROM settings WHERE uuid = ? AND setting = ?",
+                    player.getUniqueId(), setting
+            ) != 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to remove setting", e);
+        }
     }
 
     private boolean toggleSetting(OfflinePlayer player, String setting) {
@@ -190,47 +216,59 @@ public class DataController {
         return setSettingToggled(player, !toggled, setting) != toggled;
     }
 
-    @SneakyThrows
-    public @Nullable Location getWarp(String name) {
-        return executeQuery("SELECT world, x, y, z, yaw, pitch FROM warps WHERE name = ?", resultSet -> {
-            if (!resultSet.next()) return null;
-            return parseLocation(resultSet);
-        }, name);
+    public Optional<Location> getWarp(String name) {
+        try {
+            return Optional.ofNullable(executeQuery("SELECT world, x, y, z, yaw, pitch FROM warps WHERE name = ?", resultSet -> {
+                if (!resultSet.next()) return null;
+                return parseLocation(resultSet);
+            }, name));
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get warp location", e);
+        }
     }
 
-    @SneakyThrows
     public Set<NamedLocation> getWarps() {
-        return Objects.requireNonNullElseGet(executeQuery(
-                "SELECT name, world, x, y, z, yaw, pitch FROM warps",
-                this::parseNamedLocations
-        ), Set::of);
+        try {
+            return Objects.requireNonNullElseGet(executeQuery(
+                    "SELECT name, world, x, y, z, yaw, pitch FROM warps",
+                    this::parseNamedLocations
+            ), Set::of);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get warps", e);
+        }
     }
 
-    @SneakyThrows
     public boolean deleteWarp(String name) {
-        return executeUpdate("DELETE FROM warps WHERE name = ?", name) != 0;
+        try {
+            return executeUpdate("DELETE FROM warps WHERE name = ?", name) != 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete warp", e);
+        }
     }
 
-    @SneakyThrows
     public void setWarp(String name, Location location) {
-        executeUpdate("""
-                        INSERT INTO warps (name, world, x, y, z, yaw, pitch)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                        ON CONFLICT(name) DO UPDATE SET
-                         world = excluded.world,
-                         x = excluded.x,
-                         y = excluded.y,
-                         z = excluded.z,
-                         yaw = excluded.yaw,
-                         pitch = excluded.pitch
-                        """,
-                name,
-                location.getWorld().key().asString(),
-                location.getX(),
-                location.getY(),
-                location.getZ(),
-                location.getYaw(),
-                location.getPitch());
+        try {
+            executeUpdate("""
+                            INSERT INTO warps (name, world, x, y, z, yaw, pitch)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)
+                            ON CONFLICT(name) DO UPDATE SET
+                             world = excluded.world,
+                             x = excluded.x,
+                             y = excluded.y,
+                             z = excluded.z,
+                             yaw = excluded.yaw,
+                             pitch = excluded.pitch
+                            """,
+                    name,
+                    location.getWorld().key().asString(),
+                    location.getX(),
+                    location.getY(),
+                    location.getZ(),
+                    location.getYaw(),
+                    location.getPitch());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to set warp", e);
+        }
     }
 
     private Set<NamedLocation> parseNamedLocations(ResultSet resultSet) throws SQLException {
@@ -315,7 +353,8 @@ public class DataController {
 
     @FunctionalInterface
     protected interface ThrowingFunction<T, R> {
-        @Nullable R apply(T t) throws SQLException;
+        @Nullable
+        R apply(T t) throws SQLException;
 
         static <T, R> ThrowingFunction<T, R> unchecked(ThrowingFunction<T, R> f) {
             return f;

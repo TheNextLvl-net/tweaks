@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.controller;
 
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,11 +12,14 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @NullMarked
-@RequiredArgsConstructor
 public class BackController {
     private final Map<Player, BlockingDeque<Location>> positions = new WeakHashMap<>();
     private final Map<Player, Location> positionLock = new WeakHashMap<>();
     private final TweaksPlugin plugin;
+
+    public BackController(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public @Nullable Location peekFirst(Player player) {
         var deque = positions.get(player);
@@ -28,7 +30,7 @@ public class BackController {
 
     public void offerFirst(Player player, Location location) {
         positions.computeIfAbsent(player, ignored ->
-                new LinkedBlockingDeque<>(plugin.config().general().backBufferStackSize())
+                new LinkedBlockingDeque<>(plugin.config().general.backBufferStackSize)
         ).offerFirst(location);
     }
 

@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.listener;
 
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,9 +11,12 @@ import org.jspecify.annotations.NullMarked;
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
-@RequiredArgsConstructor
 public class BackListener implements Listener {
     private final TweaksPlugin plugin;
+
+    public BackListener(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent event) {

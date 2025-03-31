@@ -9,7 +9,6 @@ import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
@@ -22,12 +21,15 @@ import org.jspecify.annotations.Nullable;
 import java.util.Base64;
 
 @NullMarked
-@RequiredArgsConstructor
 public class HeadCommand {
     private final TweaksPlugin plugin;
 
+    public HeadCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().head().command())
+        var command = Commands.literal(plugin.commands().head.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.head"))
                 .then(Commands.literal("player")
@@ -44,7 +46,7 @@ public class HeadCommand {
                                 .executes(this::valueHead))
                         .executes(this::value))
                 .build();
-        registrar.register(command, "Get heads or information about them", plugin.commands().head().aliases());
+        registrar.register(command, "Get heads or information about them", plugin.commands().head.aliases);
     }
 
     private int playerHead(CommandContext<CommandSourceStack> context) {

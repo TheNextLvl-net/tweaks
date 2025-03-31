@@ -3,7 +3,6 @@ package net.thenextlvl.tweaks.gui;
 import core.paper.gui.PaginatedGUI;
 import core.paper.item.ActionItem;
 import core.paper.item.ItemBuilder;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -17,7 +16,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@Getter
 @NullMarked
 public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedLocation> {
     private static final List<Material> materials = Arrays.stream(Material.values())
@@ -28,14 +26,24 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     private final Pagination pagination;
 
     public NamedLocationGUI(TweaksPlugin plugin, PluginConfig.GUIConfig.GUI config, Player owner, Component title, Collection<NamedLocation> elements) {
-        super(plugin, owner, title, config.rows());
+        super(plugin, owner, title, config.rows);
         this.elements = elements;
         this.pagination = new Pagination(
-                config.actionSlots(),
-                config.buttonSlotPrevious(),
-                config.buttonSlotNext()
+                config.actionSlots,
+                config.buttonSlotPrevious,
+                config.buttonSlotNext
         );
         loadPage(getCurrentPage());
+    }
+
+    @Override
+    public Collection<NamedLocation> getElements() {
+        return elements;
+    }
+
+    @Override
+    public Pagination getPagination() {
+        return pagination;
     }
 
     @Override
@@ -51,7 +59,7 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     }
 
     private Material getIcon(NamedLocation element) {
-        var material = plugin.config().guis().nameIcons().get(element.getName());
+        var material = plugin.config().guis.nameIcons.get(element.getName());
         if (material != null) return material;
         var hash = Math.abs(element.getName().hashCode());
         return materials.get(hash % materials.size());

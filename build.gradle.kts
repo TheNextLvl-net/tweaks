@@ -29,7 +29,6 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.36")
     compileOnly("net.thenextlvl.services:service-io:2.2.0")
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 
@@ -39,8 +38,6 @@ dependencies {
     implementation("net.thenextlvl.core:nbt:2.3.1")
     implementation("net.thenextlvl.core:paper:2.0.4")
     implementation("org.bstats:bstats-bukkit:3.1.0")
-
-    annotationProcessor("org.projectlombok:lombok:1.18.36")
 }
 
 tasks.shadowJar {

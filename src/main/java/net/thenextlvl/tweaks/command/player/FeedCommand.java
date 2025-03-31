@@ -16,8 +16,8 @@ public class FeedCommand extends PlayersCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().feed().command(), "tweaks.command.feed", "tweaks.command.feed.others");
-        registrar.register(command, "Satisfy your own or someone else's hunger", plugin.commands().feed().aliases());
+        var command = create(plugin.commands().feed.command, "tweaks.command.feed", "tweaks.command.feed.others");
+        registrar.register(command, "Satisfy your own or someone else's hunger", plugin.commands().feed.aliases);
     }
 
     @Override

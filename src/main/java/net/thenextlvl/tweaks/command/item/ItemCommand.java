@@ -6,7 +6,6 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -15,12 +14,15 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class ItemCommand {
     private final TweaksPlugin plugin;
 
+    public ItemCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().item().command())
+        var command = Commands.literal(plugin.commands().item.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.item"))
                 .then(Commands.argument("item", ArgumentTypes.itemStack())
@@ -30,7 +32,7 @@ public class ItemCommand {
                                 .executes(context -> item(context, context.getArgument("amount", int.class))))
                         .executes(context -> item(context, 1)))
                 .build();
-        registrar.register(command, "Gives you an item of your choice", plugin.commands().item().aliases());
+        registrar.register(command, "Gives you an item of your choice", plugin.commands().item.aliases);
     }
 
     private int item(CommandContext<CommandSourceStack> context, int amount) {

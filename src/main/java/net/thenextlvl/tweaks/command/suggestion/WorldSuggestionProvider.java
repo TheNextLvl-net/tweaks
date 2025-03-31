@@ -4,7 +4,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.environment.WorldCommand;
 import org.jspecify.annotations.NullMarked;
@@ -12,10 +11,14 @@ import org.jspecify.annotations.NullMarked;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-@RequiredArgsConstructor
 public class WorldSuggestionProvider<S> implements SuggestionProvider<S> {
     private final TweaksPlugin plugin;
     private final WorldCommand command;
+
+    public WorldSuggestionProvider(TweaksPlugin plugin, WorldCommand command) {
+        this.plugin = plugin;
+        this.command = command;
+    }
 
     @Override
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {

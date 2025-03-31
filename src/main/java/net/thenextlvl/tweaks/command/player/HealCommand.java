@@ -17,8 +17,8 @@ public class HealCommand extends EntitiesCommand {
     }
 
     public void register(Commands registrar) {
-        var command = create(plugin.commands().heal().command(), "tweaks.command.heal", "tweaks.command.heal.others");
-        registrar.register(command, "Heal yourself or someone else", plugin.commands().heal().aliases());
+        var command = create(plugin.commands().heal.command, "tweaks.command.heal", "tweaks.command.heal.others");
+        registrar.register(command, "Heal yourself or someone else", plugin.commands().heal.aliases);
     }
 
     @Override

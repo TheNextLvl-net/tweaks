@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -16,16 +15,19 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class WarpsCommand {
     private final TweaksPlugin plugin;
 
+    public WarpsCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().warps().command())
+        var command = Commands.literal(plugin.commands().warps.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp"))
                 .executes(this::warps)
                 .build();
-        registrar.register(command, "List all available warps", plugin.commands().warps().aliases());
+        registrar.register(command, "List all available warps", plugin.commands().warps.aliases);
     }
 
     private int warps(CommandContext<CommandSourceStack> context) {
@@ -33,7 +35,7 @@ public class WarpsCommand {
         plugin.warpController().getWarps().thenAccept(warps -> {
             if (warps.isEmpty()) {
                 plugin.bundle().sendMessage(sender, "command.warp.empty");
-            } else if (plugin.config().guis().warps().enabled() && sender instanceof Player player) {
+            } else if (plugin.config().guis.warps.enabled && sender instanceof Player player) {
                 plugin.getServer().getScheduler().runTask(plugin, () -> new WarpGUI(plugin, player, warps).open());
             } else {
                 var list = Component.join(JoinConfiguration.commas(true), warps.stream().map(warp -> {

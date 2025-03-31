@@ -1,7 +1,6 @@
 package net.thenextlvl.tweaks.listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.chat.SignedMessage;
 import net.kyori.adventure.text.TextComponent;
@@ -21,15 +20,18 @@ import java.time.Duration;
 import java.util.Optional;
 
 @NullMarked
-@RequiredArgsConstructor
 public class ChatListener implements Listener {
     private final TweaksPlugin plugin;
 
+    public ChatListener(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
-        if (!plugin.config().general().logChat())
+        if (!plugin.config().general.logChat)
             event.viewers().remove(plugin.getServer().getConsoleSender());
-        if (!plugin.config().general().overrideChat()) return;
+        if (!plugin.config().general.overrideChat) return;
         var messageContent = event.message() instanceof TextComponent text ? text.content() : "";
         event.renderer((source, displayName, message, viewer) -> plugin.bundle().component(viewer, "chat.format",
                 plugin.serviceResolvers(source).resolvers(
@@ -49,7 +51,7 @@ public class ChatListener implements Listener {
             if (!canDelete(viewer, sender)) return;
             plugin.getServer().getOnlinePlayers().forEach(all -> all.deleteMessage(message));
         }, ClickCallback.Options.builder().uses(1).lifetime(
-                Duration.ofMillis(plugin.config().general().messageDeletionTimeout())
+                Duration.ofMillis(plugin.config().general.messageDeletionTimeout)
         ).build())));
     }
 

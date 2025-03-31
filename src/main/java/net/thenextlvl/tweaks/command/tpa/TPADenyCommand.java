@@ -3,7 +3,6 @@ package net.thenextlvl.tweaks.command.tpa;
 import com.mojang.brigadier.Command;
 import core.paper.command.CustomArgumentTypes;
 import io.papermc.paper.command.brigadier.Commands;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.RequestSuggestionProvider;
@@ -16,12 +15,15 @@ import org.jspecify.annotations.Nullable;
 import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 
 @NullMarked
-@RequiredArgsConstructor
 public class TPADenyCommand {
     private final TweaksPlugin plugin;
 
+    public TPADenyCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportDeny().command())
+        var command = Commands.literal(plugin.commands().teleportDeny.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.tpa.deny"))
                 .then(Commands.argument("player", CustomArgumentTypes.playerExact())
@@ -40,7 +42,7 @@ public class TPADenyCommand {
                             request != null ? request.type() : TPA);
                 })
                 .build();
-        commands.register(command, "Deny a teleport request", plugin.commands().teleportDeny().aliases());
+        commands.register(command, "Deny a teleport request", plugin.commands().teleportDeny.aliases);
     }
 
     static int deny(TweaksPlugin plugin, Player sender, @Nullable Player player, RequestType type) {

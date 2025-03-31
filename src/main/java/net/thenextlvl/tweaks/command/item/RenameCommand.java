@@ -6,25 +6,27 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@RequiredArgsConstructor
 public class RenameCommand {
     private final TweaksPlugin plugin;
 
+    public RenameCommand(TweaksPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().rename().command())
+        var command = Commands.literal(plugin.commands().rename.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.rename"))
                 .then(Commands.argument("name", StringArgumentType.greedyString())
                         .executes(this::rename))
                 .build();
-        registrar.register(command, "Changes the display name of the item in your hand", plugin.commands().rename().aliases());
+        registrar.register(command, "Changes the display name of the item in your hand", plugin.commands().rename.aliases);
     }
 
     private int rename(CommandContext<CommandSourceStack> context) {
