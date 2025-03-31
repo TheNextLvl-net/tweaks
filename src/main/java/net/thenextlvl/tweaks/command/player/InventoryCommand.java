@@ -30,18 +30,13 @@ import java.util.stream.IntStream;
 @NullMarked
 public class InventoryCommand extends PlayerCommand implements Listener {
     private final Map<HumanEntity, Player> viewers = new WeakHashMap<>();
-    private final Map<HumanEntity, Set<HumanEntity>> providers = new WeakHashMap<>();
-    private final Map<HumanEntity, Inventory> inventories = new WeakHashMap<>();
+    private final Map<HumanEntity, ViewableInventory> viewables = new WeakHashMap<>();
 
     public InventoryCommand(TweaksPlugin plugin) {
         super(plugin);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        var updateTime = Math.max(1, plugin.config().guis.inventory.updateTime);
-        plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, task ->
-                providers.forEach((provider, viewers) -> {
-                    var inventory = inventories.get(provider);
-                    if (inventory != null) updateInventory(inventory, provider);
-                }), updateTime, updateTime);
+        //plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, task ->
+        //        viewables.values().forEach(ViewableInventory::updateInventory), 5, 5);
     }
 
     public void register(Commands registrar) {
@@ -64,25 +59,18 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             return 0;
         }
 
-        var inventory = plugin.getServer().createInventory(target, 54, plugin.bundle().component(player,
-                "gui.inventory.title", Placeholder.component("player", target.name())));
-        updateInventory(inventory, target);
-        addPlaceholders(inventory, player);
-        player.openInventory(inventory);
+        // player.openInventory(target.getInventory());
 
-        inventories.put(target, inventory);
-        providers.computeIfAbsent(target, humanEntity ->
-                        Collections.newSetFromMap(new WeakHashMap<>()))
-                .add(player);
+        var viewable = new ViewableInventory(player, target);
+        player.openInventory(viewable.getInventory());
+        viewables.put(target, viewable);
         viewers.put(player, target);
         return Command.SINGLE_SUCCESS;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClose(InventoryCloseEvent event) {
-        var target = viewers.get(event.getPlayer());
-        viewers.remove(event.getPlayer());
-        if (providers.containsKey(target)) providers.get(target).remove(event.getPlayer());
+        viewables.remove(viewers.remove(event.getPlayer()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -156,18 +144,15 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     public void onProviderInventoryAction(HumanEntity provider) {
-        if (!providers.containsKey(provider)) return;
-        if (!inventories.containsKey(provider)) return;
-        var inventory = inventories.get(provider);
-        provider.getScheduler().run(plugin, task -> providers.get(provider)
-                        .forEach(player -> updateInventory(inventory, provider)),
-                inventory::close);
+        var inventory = viewables.get(provider);
+        if (inventory == null) return;
+        provider.getScheduler().run(plugin, task -> inventory.updateInventory(), inventory::close);
     }
 
     public boolean onViewerInventoryAction(@Nullable Inventory clicked, InventoryView view, HumanEntity viewer, int slot) {
-        if (!viewers.containsKey(viewer)) return false;
-        if (!viewer.hasPermission("tweaks.command.inventory.edit")) return true;
         var target = viewers.get(viewer);
+        if (target == null) return false;
+        if (!viewer.hasPermission("tweaks.command.inventory.edit")) return true;
         target.getScheduler().run(plugin, task -> {
             IntStream.range(0, 36).forEach(i -> {
                 var content = view.getTopInventory().getContents()[i];
@@ -179,11 +164,69 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             target.getInventory().setBoots(view.getTopInventory().getItem(48));
             target.getInventory().setItemInOffHand(view.getTopInventory().getItem(50));
             target.setItemOnCursor(view.getTopInventory().getItem(52));
-        }, null);
+        }, viewer::closeInventory);
         return view.getTopInventory().equals(clicked)
                && ((slot >= 36 && slot <= 44)
                    || slot == 49
                    || slot == 51
                    || slot == 53);
+    }
+
+    private class ViewableInventory implements InventoryHolder {
+        private final Player target;
+        private final Inventory inventory;
+
+        private ViewableInventory(Player viewer, Player target) {
+            this.inventory = plugin.getServer().createInventory(this, 54, plugin.bundle().component(viewer,
+                    "gui.inventory.title", Placeholder.component("player", target.name())));
+            this.target = target;
+            addPlaceholders(viewer);
+            updateInventory();
+        }
+
+        @Override
+        public Inventory getInventory() {
+            return inventory;
+        }
+
+        private void updateInventory() {
+            var inventory = target.getInventory();
+            for (var i = 0; i < inventory.getStorageContents().length; i++)
+                this.inventory.setItem(i, inventory.getStorageContents()[i]);
+            this.inventory.setItem(45, inventory.getHelmet());
+            this.inventory.setItem(46, inventory.getChestplate());
+            this.inventory.setItem(47, inventory.getLeggings());
+            this.inventory.setItem(48, inventory.getBoots());
+            this.inventory.setItem(50, inventory.getItemInOffHand());
+            this.inventory.setItem(52, target.getItemOnCursor());
+        }
+
+        private void addPlaceholders(Player viewer) {
+            var inventoryConfig = plugin.config().guis.inventory;
+            var placeholder = ItemBuilder.of(inventoryConfig.placeholder).hideTooltip().item();
+            inventory.setItem(36, ItemBuilder.of(inventoryConfig.helmet)
+                    .itemName(plugin.bundle().component(viewer, "gui.placeholder.helmet"))
+                    .item());
+            inventory.setItem(37, ItemBuilder.of(inventoryConfig.chestplate)
+                    .itemName(plugin.bundle().component(viewer, "gui.placeholder.chestplate"))
+                    .item());
+            inventory.setItem(38, ItemBuilder.of(inventoryConfig.leggings)
+                    .itemName(plugin.bundle().component(viewer, "gui.placeholder.leggings"))
+                    .item());
+            inventory.setItem(39, ItemBuilder.of(inventoryConfig.boots)
+                    .itemName(plugin.bundle().component(viewer, "gui.placeholder.boots"))
+                    .item());
+            inventory.setItem(41, ItemBuilder.of(inventoryConfig.offHand)
+                    .itemName(plugin.bundle().component(viewer, "gui.placeholder.off-hand"))
+                    .item());
+            inventory.setItem(43, ItemBuilder.of(inventoryConfig.cursor)
+                    .itemName(plugin.bundle().component(viewer, "gui.placeholder.cursor"))
+                    .item());
+            IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
+        }
+
+        public void close() {
+            inventory.close();
+        }
     }
 }
