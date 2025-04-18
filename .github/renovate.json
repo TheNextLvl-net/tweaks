@@ -62,5 +62,6 @@
   "reviewers": [
     "NonSwag"
   ],
-  "semanticCommits": "enabled"
+  "semanticCommits": "enabled",
+  "forkProcessing": "enabled"
 }
