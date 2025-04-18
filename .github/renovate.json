@@ -7,7 +7,7 @@
   ],
   "dependencyDashboard": true,
   "schedule": [
-    "every day"
+    "* 0-3 * * *"
   ],
   "timezone": "UTC",
   "automerge": false,
