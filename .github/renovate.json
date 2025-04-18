@@ -13,7 +13,9 @@
   "automerge": false,
   "packageRules": [
     {
-      "matchManagers": ["gradle"],
+      "matchManagers": [
+        "gradle"
+      ],
       "matchDepTypes": [
         "plugin"
       ],
@@ -21,7 +23,9 @@
       "semanticCommitType": "build"
     },
     {
-      "matchManagers": ["gradle"],
+      "matchManagers": [
+        "gradle"
+      ],
       "matchDepTypes": [
         "implementation",
         "compileOnly",
@@ -31,7 +35,9 @@
       "semanticCommitType": "deps"
     },
     {
-      "matchManagers": ["gradle"],
+      "matchManagers": [
+        "gradle"
+      ],
       "matchDepTypes": [
         "testImplementation",
         "testRuntimeOnly",
