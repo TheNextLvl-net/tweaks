@@ -282,9 +282,9 @@ public class TweaksPlugin extends JavaPlugin {
         this.config = new GsonFile<>(
                 IO.of(getDataFolder(), "config.json"),
                 new PluginConfig(), new GsonBuilder()
-                .registerTypeHierarchyAdapter(Location.class, LocationAdapter.simple())
-                .registerTypeHierarchyAdapter(Material.class, MaterialAdapter.instance())
-                .registerTypeHierarchyAdapter(World.class, WorldAdapter.key())
+                .registerTypeHierarchyAdapter(Location.class, new LocationAdapter.Simple())
+                .registerTypeHierarchyAdapter(Material.class, new MaterialAdapter())
+                .registerTypeHierarchyAdapter(World.class, new WorldAdapter.Key())
                 .setPrettyPrinting()
                 .serializeNulls()
                 .create()
