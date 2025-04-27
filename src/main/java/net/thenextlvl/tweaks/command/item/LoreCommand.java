@@ -10,6 +10,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
@@ -61,10 +62,10 @@ public class LoreCommand {
             if (data == null || data.lines().isEmpty()) return false;
             var lore = new ArrayList<>(data.lines());
             var text = context.getArgument("text", String.class);
-            var replacement = deserialize(context.getArgument("replacement", String.class));
+            var replacement = context.getArgument("replacement", String.class);
             var config = TextReplacementConfig.builder()
                     .matchLiteral(text)
-                    .replacement(replacement)
+                    .replacement(MiniMessage.miniMessage().deserialize(replacement))
                     .build();
             lore.replaceAll(component -> component.replaceText(config));
             builder.lore(lore);
@@ -120,11 +121,7 @@ public class LoreCommand {
         var text = context.getArgument("text", String.class)
                 .replace("\\t", "   ");
         return Arrays.stream(text.split("(\\\\n|<br>|<newline>)"))
-                .map(this::deserialize)
+                .map(MiniMessage.miniMessage()::deserialize)
                 .collect(Collectors.toList());
-    }
-
-    private Component deserialize(String text) {
-        return plugin.bundle().deserialize(text);
     }
 }

@@ -4,7 +4,7 @@ import core.paper.gui.PaginatedGUI;
 import core.paper.item.ActionItem;
 import core.paper.item.ItemBuilder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
 import net.thenextlvl.tweaks.model.PluginConfig;
@@ -15,6 +15,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @NullMarked
 public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedLocation> {
@@ -50,8 +51,8 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     public ActionItem constructItem(NamedLocation element) {
         var translation = "gui.item.location";
         return ItemBuilder.of(getIcon(element))
-                .itemName(plugin.bundle().component(owner, translation,
-                        Placeholder.parsed("name", element.getName())))
+                .itemName(Objects.requireNonNull(plugin.bundle().translate(translation, owner,
+                        Argument.numeric("name", element.getName()))))
                 .withAction(() -> {
                     teleport(element);
                     close();
@@ -70,6 +71,6 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     @Override
     public Component getPageFormat(int page) {
         var key = page > getCurrentPage() ? "gui.page.next" : "gui.page.previous";
-        return plugin.bundle().component(owner, key);
+        return Objects.requireNonNull(plugin.bundle().translate(key, owner));
     }
 }

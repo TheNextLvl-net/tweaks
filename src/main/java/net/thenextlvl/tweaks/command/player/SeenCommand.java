@@ -5,15 +5,15 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
-import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @NullMarked
 public class SeenCommand {
@@ -53,12 +53,9 @@ public class SeenCommand {
             return;
         }
 
-        var lastSeen = new Date(player.getLastSeen());
-        var locale = sender instanceof Player p ? p.locale() : Locale.US;
-        var format = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
+        var time = Instant.ofEpochMilli(player.getLastSeen());
         plugin.bundle().sendMessage(sender, "command.last.seen.time",
                 Placeholder.parsed("player", player.getName() != null ? player.getName() : name),
-                Placeholder.parsed("time", format.format(lastSeen)));
+                Formatter.date("date", LocalDateTime.ofInstant(time, ZoneId.systemDefault())));
     }
 }

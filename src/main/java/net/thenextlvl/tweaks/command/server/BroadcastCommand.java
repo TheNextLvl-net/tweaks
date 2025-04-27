@@ -5,9 +5,11 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
+
+import java.util.Arrays;
 
 @NullMarked
 public class BroadcastCommand {
@@ -27,21 +29,15 @@ public class BroadcastCommand {
     }
 
     private int broadcast(CommandContext<CommandSourceStack> context) {
-        var message = context.getArgument("message", String.class)
-                .replace("\\t", "   ");
+        var lines = Arrays.asList(context.getArgument("message", String.class)
+                .replace("\\t", "   ").replace("\\\\n", "\n")
+                .split("(\\\\n|<br>|<newline>)"));
         plugin.getServer().forEachAudience(audience -> {
             plugin.bundle().sendMessage(audience, "command.broadcast.header");
-            var format = format(plugin.bundle().format(audience, "command.broadcast.format"), message);
-            plugin.bundle().sendRawMessage(audience, format);
+            lines.forEach(line -> plugin.bundle().sendMessage(audience, "command.broadcast.format",
+                    Placeholder.parsed("message", line)));
             plugin.bundle().sendMessage(audience, "command.broadcast.footer");
         });
         return Command.SINGLE_SUCCESS;
-    }
-
-    private String format(@Nullable String format, String message) {
-        if (format == null) return message.replace("\\\\n", "\n");
-        var split = message.split("(\\\\n|<br>|<newline>)");
-        for (int i = 0; i < split.length; i++) split[i] = format.replace("<message>", split[i]);
-        return String.join("\n", split);
     }
 }

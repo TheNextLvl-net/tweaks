@@ -5,10 +5,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.gui.HomeGUI;
 import org.bukkit.entity.Player;
@@ -39,15 +38,15 @@ public class HomesCommand {
             } else if (plugin.config().guis.homes.enabled) {
                 plugin.getServer().getScheduler().runTask(plugin, () -> new HomeGUI(plugin, sender, homes).open());
             } else {
-                var list = Component.join(JoinConfiguration.commas(true), homes.stream().map(home -> {
+                var list = homes.stream().map(home -> {
                     var event = ClickEvent.runCommand("/home " + home.getName());
                     return Component.text(home.getName())
-                            .hoverEvent(HoverEvent.showText(plugin.bundle().component(sender, "chat.click.teleport")))
+                            .hoverEvent(HoverEvent.showText(Component.translatable("chat.click.teleport")))
                             .clickEvent(event);
-                }).toList());
+                }).toList();
                 plugin.bundle().sendMessage(sender, "command.home.list",
-                        Placeholder.parsed("amount", String.valueOf(homes.size())),
-                        Placeholder.component("homes", list));
+                        Formatter.number("amount", homes.size()),
+                        Formatter.joining("homes", list));
             }
         }).exceptionally(throwable -> {
             plugin.getComponentLogger().error("Failed to retrieve homes", throwable);

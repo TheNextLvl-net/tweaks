@@ -5,10 +5,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.gui.WarpGUI;
 import org.bukkit.entity.Player;
@@ -38,15 +37,15 @@ public class WarpsCommand {
             } else if (plugin.config().guis.warps.enabled && sender instanceof Player player) {
                 plugin.getServer().getScheduler().runTask(plugin, () -> new WarpGUI(plugin, player, warps).open());
             } else {
-                var list = Component.join(JoinConfiguration.commas(true), warps.stream().map(warp -> {
+                var list = warps.stream().map(warp -> {
                     var event = ClickEvent.runCommand("/warp " + warp.getName());
                     return Component.text(warp.getName())
-                            .hoverEvent(HoverEvent.showText(plugin.bundle().component(sender, "chat.click.teleport")))
+                            .hoverEvent(HoverEvent.showText(Component.translatable("chat.click.teleport")))
                             .clickEvent(event);
-                }).toList());
+                }).toList();
                 plugin.bundle().sendMessage(sender, "command.warp.list",
-                        Placeholder.parsed("amount", String.valueOf(warps.size())),
-                        Placeholder.component("warps", list));
+                        Formatter.number("amount", warps.size()),
+                        Formatter.joining("warps", list));
             }
         }).exceptionally(throwable -> {
             plugin.getComponentLogger().error("Failed to retrieve warps", throwable);

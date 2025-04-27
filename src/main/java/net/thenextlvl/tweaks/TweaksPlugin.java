@@ -11,6 +11,8 @@ import core.paper.adapters.world.WorldAdapter;
 import core.paper.messenger.PluginMessenger;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -43,6 +45,7 @@ import net.thenextlvl.tweaks.command.workstation.*;
 import net.thenextlvl.tweaks.controller.*;
 import net.thenextlvl.tweaks.listener.*;
 import net.thenextlvl.tweaks.model.CommandConfig;
+import net.thenextlvl.tweaks.model.MessageMigrator;
 import net.thenextlvl.tweaks.model.PluginConfig;
 import net.thenextlvl.tweaks.version.PluginVersionChecker;
 import org.bstats.bukkit.Metrics;
@@ -55,7 +58,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.io.File;
 import java.net.URI;
 import java.util.Locale;
 import java.util.Objects;
@@ -269,9 +271,10 @@ public class TweaksPlugin extends JavaPlugin {
         if (!string.isBlank()) getServer().getServerLinks().addLink(type, URI.create(string));
     }
 
-    private void registerLink(String translation, String string) {
-        if (string.isBlank()) return;
-        getServer().getServerLinks().addLink(bundle().component(Locale.US, translation), URI.create(string));
+    private void registerLink(String translationKey, String string) {
+        var translation = bundle().translate(translationKey, Locale.US);
+        if (translation == null || string.isBlank()) return;
+        getServer().getServerLinks().addLink(translation, URI.create(string));
     }
 
     public void saveConfig() {
@@ -292,13 +295,12 @@ public class TweaksPlugin extends JavaPlugin {
     }
 
     private void initTranslations() {
-        this.bundle = new ComponentBundle(new File(getDataFolder(), "translations"),
-                audience -> audience instanceof Player player ? player.locale() : Locale.US)
-                .register("tweaks", Locale.US)
-                .register("tweaks_german", Locale.GERMANY)
-                .miniMessage(bundle -> MiniMessage.builder().tags(TagResolver.resolver(
+        this.bundle = ComponentBundle.builder(
+                        Key.key("tweaks", "translations"),
+                        getDataPath().resolve("translations")
+                ).miniMessage(MiniMessage.builder().tags(TagResolver.resolver(
                         TagResolver.standard(),
-                        Placeholder.component("prefix", bundle.component(Locale.US, "prefix")),
+                        Placeholder.component("prefix", Component.translatable("prefix")),
                         Placeholder.parsed("announcements", config().links.announcements),
                         Placeholder.parsed("community", config().links.community),
                         Placeholder.parsed("discord", config().links.discord),
@@ -316,7 +318,11 @@ public class TweaksPlugin extends JavaPlugin {
                         Placeholder.parsed("website", config().links.website),
                         Placeholder.parsed("x", config().links.x),
                         Placeholder.parsed("youtube", config().links.youtube)
-                )).build());
+                )).build())
+                .resource("tweaks.properties", Locale.US)
+                .resource("tweaks_german.properties", Locale.GERMANY)
+                .migrator(new MessageMigrator())
+                .build().registerTranslations();
     }
 
     private void initControllers() {
