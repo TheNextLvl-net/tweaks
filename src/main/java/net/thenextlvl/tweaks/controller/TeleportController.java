@@ -1,14 +1,13 @@
 package net.thenextlvl.tweaks.controller;
 
 import com.google.common.base.Preconditions;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jspecify.annotations.NullMarked;
 
-import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
@@ -28,11 +27,10 @@ public class TeleportController {
             return player.teleportAsync(location, cause);
         if (location.equals(teleports.put(player, location)))
             return CompletableFuture.failedFuture(new IllegalStateException());
-        var formatter = DecimalFormat.getInstance(player.locale());
         plugin.bundle().sendMessage(player, plugin.config().teleport.allowMovement
                         ? "command.teleport.cooldown"
                         : "command.teleport.cooldown.movement",
-                Placeholder.parsed("time", formatter.format(cooldown / 1000d)));
+                Formatter.number("time", cooldown / 1000d));
         return scheduleTeleport(player, location, cause);
     }
 

@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
@@ -84,7 +85,7 @@ public class TimeCommand {
     private int setTime(CommandContext<CommandSourceStack> context, long ticks, World world) {
         var sender = context.getSource().getSender();
         plugin.bundle().sendMessage(sender, "command.time.set",
-                Placeholder.parsed("time", String.valueOf(ticks)),
+                Formatter.number("time", ticks),
                 Placeholder.parsed("world", world.getName()));
         world.setTime(ticks);
         return Command.SINGLE_SUCCESS;
@@ -98,7 +99,7 @@ public class TimeCommand {
     private int query(CommandContext<CommandSourceStack> context, World world, Function<World, Long> function) {
         var sender = context.getSource().getSender();
         plugin.bundle().sendMessage(sender, "command.time.query",
-                Placeholder.parsed("time", String.valueOf(function.apply(world))),
+                Formatter.number("time", function.apply(world)),
                 Placeholder.parsed("world", world.getName()));
         return Command.SINGLE_SUCCESS;
     }

@@ -6,7 +6,8 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.WorldSuggestionProvider;
 import org.bukkit.World;
@@ -35,8 +36,8 @@ public abstract class WorldCommand {
     private int execute(CommandContext<CommandSourceStack> context, World world) {
         var sender = context.getSource().getSender();
         if (!isWorldAffected(world)) {
-            plugin.bundle().sendMessage(sender, "command.world.excluded",
-                    Placeholder.parsed("world", world.getName()));
+            sender.sendMessage(Component.translatable("command.world.excluded",
+                    Argument.numeric("world", world.getName())));
             return 0;
         }
         plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> execute(sender, world));

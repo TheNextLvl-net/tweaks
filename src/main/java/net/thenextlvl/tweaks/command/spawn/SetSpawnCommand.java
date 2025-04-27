@@ -9,15 +9,13 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.FinePositionResolver;
 import io.papermc.paper.math.FinePosition;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jspecify.annotations.NullMarked;
-
-import java.text.DecimalFormat;
-import java.util.Locale;
 
 @NullMarked
 public class SetSpawnCommand {
@@ -75,19 +73,16 @@ public class SetSpawnCommand {
     }
 
     private int setSpawn(CommandContext<CommandSourceStack> context, World world, FinePosition position, float yaw, float pitch) {
-        var locale = context.getSource().getSender() instanceof Player player ? player.locale() : Locale.US;
-        var formatter = DecimalFormat.getInstance(locale);
-
         plugin.config().spawn.location = position.toLocation(world);
         plugin.saveConfig();
 
         plugin.bundle().sendMessage(context.getSource().getSender(), "command.spawn.set",
                 Placeholder.parsed("world", world.getName()),
-                Placeholder.parsed("x", formatter.format(position.x())),
-                Placeholder.parsed("y", formatter.format(position.y())),
-                Placeholder.parsed("z", formatter.format(position.z())),
-                Placeholder.parsed("yaw", formatter.format(yaw)),
-                Placeholder.parsed("pitch", formatter.format(pitch)));
+                Formatter.number("x", position.x()),
+                Formatter.number("y", position.y()),
+                Formatter.number("z", position.z()),
+                Formatter.number("yaw", yaw),
+                Formatter.number("pitch", pitch));
 
         if (context.getSource().getSender() instanceof Player player)
             player.teleportAsync(position.toLocation(world), PlayerTeleportEvent.TeleportCause.COMMAND);

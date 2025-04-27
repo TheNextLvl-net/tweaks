@@ -7,6 +7,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.TPASuggestionProvider;
@@ -84,9 +85,7 @@ public class TPAskCommand {
                         ClickCallback.Options.builder().lifetime(
                                 Duration.ofMillis(plugin.config().teleport.tpaTimeout)
                         ).uses(1).build())),
-                Placeholder.parsed("time", String.valueOf(TimeUnit.MILLISECONDS.toSeconds(
-                        plugin.config().teleport.tpaTimeout)
-                )));
+                Formatter.number("time", TimeUnit.MILLISECONDS.toSeconds(plugin.config().teleport.tpaTimeout)));
         return true;
     }
 }
