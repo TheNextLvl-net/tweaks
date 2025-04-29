@@ -25,7 +25,6 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.stream.IntStream;
 
@@ -208,22 +207,22 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             var inventoryConfig = plugin.config().guis.inventory;
             var placeholder = ItemBuilder.of(inventoryConfig.placeholder).hideTooltip().item();
             inventory.setItem(36, ItemBuilder.of(inventoryConfig.helmet)
-                    .itemName(Objects.requireNonNull(plugin.bundle().translate("gui.placeholder.helmet", viewer)))
+                    .itemName(plugin.bundle().component("gui.placeholder.helmet", viewer))
                     .item());
             inventory.setItem(37, ItemBuilder.of(inventoryConfig.chestplate)
-                    .itemName(Objects.requireNonNull(plugin.bundle().translate("gui.placeholder.chestplate", viewer)))
+                    .itemName(plugin.bundle().component("gui.placeholder.chestplate", viewer))
                     .item());
             inventory.setItem(38, ItemBuilder.of(inventoryConfig.leggings)
-                    .itemName(Objects.requireNonNull(plugin.bundle().translate("gui.placeholder.leggings", viewer)))
+                    .itemName(plugin.bundle().component("gui.placeholder.leggings", viewer))
                     .item());
             inventory.setItem(39, ItemBuilder.of(inventoryConfig.boots)
-                    .itemName(Objects.requireNonNull(plugin.bundle().translate("gui.placeholder.boots", viewer)))
+                    .itemName(plugin.bundle().component("gui.placeholder.boots", viewer))
                     .item());
             inventory.setItem(41, ItemBuilder.of(inventoryConfig.offHand)
-                    .itemName(Objects.requireNonNull(plugin.bundle().translate("gui.placeholder.off-hand", viewer)))
+                    .itemName(plugin.bundle().component("gui.placeholder.off-hand", viewer))
                     .item());
             inventory.setItem(43, ItemBuilder.of(inventoryConfig.cursor)
-                    .itemName(Objects.requireNonNull(plugin.bundle().translate("gui.placeholder.cursor", viewer)))
+                    .itemName(plugin.bundle().component("gui.placeholder.cursor", viewer))
                     .item());
             IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
         }

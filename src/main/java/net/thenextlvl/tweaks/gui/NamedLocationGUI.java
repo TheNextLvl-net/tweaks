@@ -15,7 +15,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @NullMarked
 public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedLocation> {
@@ -51,8 +50,8 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     public ActionItem constructItem(NamedLocation element) {
         var translation = "gui.item.location";
         return ItemBuilder.of(getIcon(element))
-                .itemName(Objects.requireNonNull(plugin.bundle().translate(translation, owner,
-                        Argument.numeric("name", element.getName()))))
+                .itemName(plugin.bundle().component(translation, owner,
+                        Argument.numeric("name", element.getName())))
                 .withAction(() -> {
                     teleport(element);
                     close();
@@ -71,6 +70,6 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     @Override
     public Component getPageFormat(int page) {
         var key = page > getCurrentPage() ? "gui.page.next" : "gui.page.previous";
-        return Objects.requireNonNull(plugin.bundle().translate(key, owner));
+        return plugin.bundle().component(key, owner);
     }
 }

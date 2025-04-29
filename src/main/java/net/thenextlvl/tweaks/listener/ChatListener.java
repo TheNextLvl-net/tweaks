@@ -17,7 +17,6 @@ import org.bukkit.event.Listener;
 import org.jspecify.annotations.NullMarked;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.Optional;
 
 @NullMarked
@@ -41,15 +40,14 @@ public class ChatListener implements Listener {
                     Placeholder.parsed("message_content", messageContent),
                     createDeleteTag(source, viewer, event.signedMessage())
             ).build());
-            return Objects.requireNonNull(plugin.bundle().translate("chat.format", viewer, arguments));
+            return plugin.bundle().component("chat.format", viewer, arguments);
         });
     }
 
     private TagResolver.Single createDeleteTag(Player sender, Audience audience, SignedMessage message) {
         if (!(audience instanceof Player viewer)) return Placeholder.parsed("delete", "");
         if (!canDelete(viewer, sender)) return Placeholder.parsed("delete", "");
-        var component = plugin.bundle().translate("chat.format.delete", viewer);
-        if (component == null) return Placeholder.parsed("delete", "");
+        var component = plugin.bundle().component("chat.format.delete", viewer);
         return Placeholder.component("delete", component.clickEvent(ClickEvent.callback(ignored -> {
             if (!canDelete(viewer, sender)) return;
             plugin.getServer().getOnlinePlayers().forEach(all -> all.deleteMessage(message));
