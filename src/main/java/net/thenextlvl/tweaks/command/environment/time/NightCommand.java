@@ -25,9 +25,4 @@ public class NightCommand extends WorldCommand {
                 Placeholder.parsed("world", world.getName()));
         world.setTime(13000);
     }
-
-    @Override
-    public boolean isWorldAffected(World world) {
-        return world.hasSkyLight();
-    }
 }
