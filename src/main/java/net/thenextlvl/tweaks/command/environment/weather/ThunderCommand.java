@@ -24,9 +24,4 @@ public class ThunderCommand extends WorldCommand {
         world.setThundering(true);
         world.setStorm(true);
     }
-
-    @Override
-    public boolean isWorldAffected(World world) {
-        return !world.hasCeiling();
-    }
 }

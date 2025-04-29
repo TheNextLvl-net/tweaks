@@ -24,9 +24,4 @@ public class SunCommand extends WorldCommand {
         world.setThundering(false);
         world.setStorm(false);
     }
-
-    @Override
-    public boolean isWorldAffected(World world) {
-        return !world.hasCeiling();
-    }
 }

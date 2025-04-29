@@ -24,9 +24,4 @@ public class DayCommand extends WorldCommand {
         plugin.bundle().sendMessage(sender, "command.time.day", Placeholder.parsed("world", world.getName()));
         world.setTime(1000);
     }
-
-    @Override
-    public boolean isWorldAffected(World world) {
-        return world.hasSkyLight();
-    }
 }
