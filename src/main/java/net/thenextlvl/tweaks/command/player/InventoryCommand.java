@@ -3,7 +3,6 @@ package net.thenextlvl.tweaks.command.player;
 import com.mojang.brigadier.Command;
 import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -180,7 +179,8 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         private final Inventory inventory;
 
         private ViewableInventory(Player viewer, Player target) {
-            var title = Component.translatable("gui.inventory.title", Argument.component("player", target.name()));
+            var title = plugin.bundle().component("gui.inventory.title", viewer,
+                    Argument.component("player", target.name()));
             this.inventory = plugin.getServer().createInventory(this, 54, title);
             this.target = target;
             addPlaceholders(viewer);

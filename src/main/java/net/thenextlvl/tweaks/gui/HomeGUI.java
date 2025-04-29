@@ -1,6 +1,5 @@
 package net.thenextlvl.tweaks.gui;
 
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
@@ -14,7 +13,7 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN;
 @NullMarked
 public class HomeGUI extends NamedLocationGUI {
     public HomeGUI(TweaksPlugin plugin, Player owner, Collection<NamedLocation> elements) {
-        super(plugin, plugin.config().guis.homes, owner, Component.translatable("gui.title.homes"), elements);
+        super(plugin, plugin.config().guis.homes, owner, plugin.bundle().component("gui.title.homes", owner), elements);
     }
 
     @Override

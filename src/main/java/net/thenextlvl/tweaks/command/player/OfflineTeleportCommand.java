@@ -9,6 +9,7 @@ import core.nbt.tag.*;
 import core.nbt.tag.Tag;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
@@ -164,7 +165,9 @@ public class OfflineTeleportCommand {
     }
 
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
-        var data = new File(plugin.getServer().getWorlds().getFirst().getWorldFolder(), "playerdata");
+        var overworld = plugin.getServer().getWorld(Key.key("overworld"));
+        if (overworld == null) return null;
+        var data = new File(overworld.getWorldFolder(), "playerdata");
         var io = IO.of(data, player.getUniqueId() + ".dat");
         var fallback = IO.of(data, player.getUniqueId() + ".dat_old");
         return io.exists() ? new NBTFile<>(io, new CompoundTag())

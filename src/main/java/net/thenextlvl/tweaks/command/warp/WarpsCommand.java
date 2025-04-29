@@ -40,7 +40,7 @@ public class WarpsCommand {
                 var list = warps.stream().map(warp -> {
                     var event = ClickEvent.runCommand("/warp " + warp.getName());
                     return Component.text(warp.getName())
-                            .hoverEvent(HoverEvent.showText(Component.translatable("chat.click.teleport")))
+                            .hoverEvent(HoverEvent.showText(plugin.bundle().component("chat.click.teleport", sender)))
                             .clickEvent(event);
                 }).toList();
                 plugin.bundle().sendMessage(sender, "command.warp.list",

@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.Component;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MenuType;
@@ -29,7 +28,7 @@ public class TrashCommand {
 
     private int trash(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        player.openInventory(MenuType.GENERIC_9X4.create(player, Component.translatable("gui.title.trash")));
+        player.openInventory(MenuType.GENERIC_9X4.create(player, plugin.bundle().component("gui.title.trash", player)));
         return Command.SINGLE_SUCCESS;
     }
 }

@@ -41,7 +41,7 @@ public class HomesCommand {
                 var list = homes.stream().map(home -> {
                     var event = ClickEvent.runCommand("/home " + home.getName());
                     return Component.text(home.getName())
-                            .hoverEvent(HoverEvent.showText(Component.translatable("chat.click.teleport")))
+                            .hoverEvent(HoverEvent.showText(plugin.bundle().component("chat.click.teleport", sender)))
                             .clickEvent(event);
                 }).toList();
                 plugin.bundle().sendMessage(sender, "command.home.list",
