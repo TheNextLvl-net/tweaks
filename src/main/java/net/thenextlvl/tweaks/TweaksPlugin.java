@@ -301,24 +301,26 @@ public class TweaksPlugin extends JavaPlugin {
                 .resource("tweaks.properties", Locale.US)
                 .resource("tweaks_german.properties", Locale.GERMANY)
                 .placeholder("prefix", "prefix")
-                .placeholder("announcements", config().links.announcements)
-                .placeholder("community", config().links.community)
-                .placeholder("discord", config().links.discord)
-                .placeholder("feedback", config().links.feedback)
-                .placeholder("forum", config().links.forum)
-                .placeholder("guidelines", config().links.guidelines)
-                .placeholder("issues", config().links.issues)
-                .placeholder("news", config().links.news)
-                .placeholder("reddit", config().links.reddit)
-                .placeholder("status", config().links.status)
-                .placeholder("support", config().links.support)
-                .placeholder("teamspeak", config().links.teamspeak)
-                .placeholder("tiktok", config().links.tiktok)
-                .placeholder("twitch", config().links.twitch)
-                .placeholder("website", config().links.website)
-                .placeholder("x", config().links.x)
-                .placeholder("youtube", config().links.youtube)
-                .build().registerTranslations();
+                .miniMessage(MiniMessage.builder().tags(TagResolver.resolver(
+                        TagResolver.standard(),
+                        Placeholder.parsed("announcements", config().links.announcements),
+                        Placeholder.parsed("community", config().links.community),
+                        Placeholder.parsed("discord", config().links.discord),
+                        Placeholder.parsed("feedback", config().links.feedback),
+                        Placeholder.parsed("forum", config().links.forum),
+                        Placeholder.parsed("guidelines", config().links.guidelines),
+                        Placeholder.parsed("issues", config().links.issues),
+                        Placeholder.parsed("news", config().links.news),
+                        Placeholder.parsed("reddit", config().links.reddit),
+                        Placeholder.parsed("status", config().links.status),
+                        Placeholder.parsed("support", config().links.support),
+                        Placeholder.parsed("teamspeak", config().links.teamspeak),
+                        Placeholder.parsed("tiktok", config().links.tiktok),
+                        Placeholder.parsed("twitch", config().links.twitch),
+                        Placeholder.parsed("website", config().links.website),
+                        Placeholder.parsed("x", config().links.x),
+                        Placeholder.parsed("youtube", config().links.youtube)
+                )).build()).build().registerTranslations();
     }
 
     private void initControllers() {
