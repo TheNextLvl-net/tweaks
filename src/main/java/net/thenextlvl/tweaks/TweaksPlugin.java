@@ -320,7 +320,7 @@ public class TweaksPlugin extends JavaPlugin {
                         Placeholder.parsed("website", config().links.website),
                         Placeholder.parsed("x", config().links.x),
                         Placeholder.parsed("youtube", config().links.youtube)
-                )).build()).build().registerTranslations();
+                )).build()).build();
     }
 
     private void initControllers() {
