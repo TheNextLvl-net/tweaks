@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "net.thenextlvl.tweaks"
-version = "3.1.7"
+version = "3.1.8"
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -46,14 +46,14 @@ tasks.shadowJar {
 }
 
 tasks.runServer {
-    minecraftVersion("1.21")
+    minecraftVersion("1.21.5")
 }
 
 paper {
     name = "Tweaks"
     main = "net.thenextlvl.tweaks.TweaksPlugin"
     description = "A useful command collection"
-    apiVersion = "1.21"
+    apiVersion = "1.21.5"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
