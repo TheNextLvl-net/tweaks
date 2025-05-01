@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import io.papermc.paper.datacomponent.item.Unbreakable;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
@@ -37,7 +36,7 @@ public class UnbreakableCommand {
             item.resetData(DataComponentTypes.UNBREAKABLE);
             plugin.bundle().sendMessage(player, "command.item.unbreakable.removed");
         } else {
-            item.setData(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable().build());
+            item.setData(DataComponentTypes.UNBREAKABLE);
             plugin.bundle().sendMessage(player, "command.item.unbreakable.success");
         }
         return Command.SINGLE_SUCCESS;
