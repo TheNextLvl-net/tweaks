@@ -1,3 +1,8 @@
+== 3.1.9
+
+- **Fixed URL encode error**
+- **Fixed link placeholders not being resolved**
+
 == 3.1.8
 
 - **1.21.5 support**
