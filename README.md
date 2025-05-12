@@ -17,7 +17,7 @@ A modern alternative to EssentialsX
 > configurations.
 
 > [!NOTE]
-> Tweaks only supports the latest version of Paper (1.21.1)<br>
+> Tweaks only supports the latest version of Paper<br>
 > The latest version of Tweaks requires Java 21
 
 [Latest version supporting 1.19-1.20.4 (Java 19)](https://github.com/TheNextLvl-net/tweaks/releases/tag/v2.0.10)<br>
