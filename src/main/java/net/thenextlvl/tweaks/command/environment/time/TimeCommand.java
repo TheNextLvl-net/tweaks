@@ -84,10 +84,10 @@ public class TimeCommand {
 
     private int setTime(CommandContext<CommandSourceStack> context, long ticks, World world) {
         var sender = context.getSource().getSender();
+        plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> world.setTime(ticks));
         plugin.bundle().sendMessage(sender, "command.time.set",
                 Formatter.number("time", ticks),
                 Placeholder.parsed("world", world.getName()));
-        world.setTime(ticks);
         return Command.SINGLE_SUCCESS;
     }
 
