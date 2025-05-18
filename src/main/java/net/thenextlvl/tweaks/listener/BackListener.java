@@ -22,7 +22,7 @@ public class BackListener implements Listener {
     public void onTeleport(PlayerTeleportEvent event) {
         if (switch (event.getCause()) { // todo: config entry
             case ENDER_PEARL, COMMAND, PLUGIN, END_PORTAL, SPECTATE, UNKNOWN -> false;
-            case NETHER_PORTAL, END_GATEWAY, CHORUS_FRUIT, DISMOUNT, EXIT_BED -> true;
+            case NETHER_PORTAL, END_GATEWAY, CONSUMABLE_EFFECT, DISMOUNT, EXIT_BED -> true;
         }) return;
 
         var player = event.getPlayer();
