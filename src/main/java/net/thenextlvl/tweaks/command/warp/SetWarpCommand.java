@@ -32,11 +32,7 @@ public class SetWarpCommand {
         var name = context.getArgument("name", String.class);
         plugin.warpController().setWarp(name, context.getSource().getLocation())
                 .thenAccept(unused -> plugin.bundle().sendMessage(context.getSource().getSender(),
-                        "command.warp.set", Placeholder.parsed("name", name)))
-                .exceptionally(throwable -> {
-                    plugin.getComponentLogger().error("Failed to set warp", throwable);
-                    return null;
-                });
+                        "command.warp.set", Placeholder.parsed("name", name)));
         return Command.SINGLE_SUCCESS;
     }
 }

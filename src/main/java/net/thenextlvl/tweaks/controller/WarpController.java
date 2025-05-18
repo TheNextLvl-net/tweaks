@@ -33,6 +33,10 @@ public class WarpController {
     }
 
     public CompletableFuture<Void> setWarp(String name, Location location) {
-        return CompletableFuture.runAsync(() -> plugin.dataController().setWarp(name, location));
+        return CompletableFuture.runAsync(() -> plugin.dataController().setWarp(name, location))
+                .exceptionally(throwable -> {
+                    plugin.getComponentLogger().error("Failed to set warp", throwable);
+                    return null;
+                });
     }
 }
