@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.World;
@@ -72,7 +73,7 @@ public class WeatherCommand {
         if (rain || thunder) world.setWeatherDuration(duration);
         else world.setClearWeatherDuration(duration);
         plugin.bundle().sendMessage(sender, message,
-                Placeholder.parsed("duration", String.valueOf(duration)),
+                Formatter.number("duration", duration),
                 Placeholder.parsed("world", world.getName()));
     }
 }

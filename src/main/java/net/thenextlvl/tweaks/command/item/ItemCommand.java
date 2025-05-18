@@ -7,6 +7,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
@@ -62,7 +63,7 @@ public class ItemCommand {
         }
 
         plugin.bundle().sendMessage(player, "command.item.received",
-                Placeholder.parsed("amount", String.valueOf(added)),
+                Formatter.number("amount", added),
                 Placeholder.component("item", Component.translatable(item)
                         .hoverEvent(item.asHoverEvent(showItem -> showItem))));
 

@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.command.player;
 
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.command.CommandSender;
@@ -23,9 +24,9 @@ public class PingCommand extends PlayerCommand {
     protected int execute(CommandSender sender, Player player) {
         if (sender != player) plugin.bundle().sendMessage(sender, "command.ping.others",
                 Placeholder.parsed("player", player.getName()),
-                Placeholder.parsed("ping", String.valueOf(player.getPing())));
+                Formatter.number("ping", player.getPing()));
         else plugin.bundle().sendMessage(player, "command.ping.self",
-                Placeholder.parsed("ping", String.valueOf(player.getPing())));
+                Formatter.number("ping", player.getPing()));
         return Command.SINGLE_SUCCESS;
     }
 }
