@@ -68,10 +68,12 @@ public class WeatherCommand {
     }
 
     private void setWeatherParameters(CommandSender sender, World world, boolean rain, boolean thunder, int duration, String message) {
-        world.setStorm(rain);
-        world.setThundering(thunder);
-        if (rain || thunder) world.setWeatherDuration(duration);
-        else world.setClearWeatherDuration(duration);
+        plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> {
+            world.setStorm(rain);
+            world.setThundering(thunder);
+            if (rain || thunder) world.setWeatherDuration(duration);
+            else world.setClearWeatherDuration(duration);
+        });
         plugin.bundle().sendMessage(sender, message,
                 Formatter.number("duration", duration),
                 Placeholder.parsed("world", world.getName()));

@@ -36,7 +36,7 @@ public class HomesCommand {
             if (homes.isEmpty()) {
                 plugin.bundle().sendMessage(sender, "command.home.undefined");
             } else if (plugin.config().guis.homes.enabled) {
-                plugin.getServer().getScheduler().runTask(plugin, () -> new HomeGUI(plugin, sender, homes).open());
+                sender.getScheduler().run(plugin, task -> new HomeGUI(plugin, sender, homes).open(), null);
             } else {
                 var list = homes.stream().map(home -> {
                     var event = ClickEvent.runCommand("/home " + home.getName());
