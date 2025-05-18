@@ -8,6 +8,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.NamespacedKey;
@@ -141,9 +142,9 @@ public class SpeedCommand {
             }
 
             plugin.bundle().sendMessage(entity, type.getMessageSelf(),
-                    Placeholder.parsed("speed", String.valueOf(speed)));
+                    Formatter.number("speed", speed));
             if (!entity.equals(sender)) plugin.bundle().sendMessage(sender, type.getMessageOther(),
-                    Placeholder.parsed("speed", String.valueOf(speed)),
+                    Formatter.number("speed", speed),
                     Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));
         });
         return Command.SINGLE_SUCCESS;

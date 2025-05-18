@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.HomeSuggestionProvider;
@@ -47,7 +48,7 @@ public class SetHomeCommand {
                 }
                 var count = plugin.dataController().getHomeCount(player);
                 if (count >= limit) plugin.bundle().sendMessage(player, "command.home.limit",
-                        Placeholder.parsed("limit", String.valueOf(limit)));
+                        Formatter.number("limit", limit));
                 else setHome(name, player);
             }
         });

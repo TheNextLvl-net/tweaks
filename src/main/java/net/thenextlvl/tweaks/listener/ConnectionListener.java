@@ -1,6 +1,6 @@
 package net.thenextlvl.tweaks.listener;
 
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,7 +27,7 @@ public class ConnectionListener implements Listener {
                 : plugin.getServer().getOfflinePlayers().length;
         var message = event.getPlayer().hasPlayedBefore() ? "player.connected" : "player.welcome";
         var resolvers = plugin.serviceResolvers(event.getPlayer())
-                .resolver(Placeholder.parsed("id", String.valueOf(id)))
+                .resolver(Formatter.number("id", id))
                 .build();
         plugin.getServer().forEachAudience(audience -> plugin.bundle().sendMessage(
                 audience, message, resolvers
