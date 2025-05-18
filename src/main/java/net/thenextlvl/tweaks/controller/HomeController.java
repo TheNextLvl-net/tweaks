@@ -44,9 +44,7 @@ public class HomeController {
      */
     public int getMaxHomeCount(Player player) {
         return Optional.ofNullable(plugin.serviceController())
-                .map(ServiceController::getPermissions)
-                .flatMap(controller -> controller.getPermissionHolder(player))
-                .flatMap(permissionHolder -> permissionHolder.intInfoNode("max-homes"))
+                .flatMap(controller -> controller.getMaxHomeCount(player))
                 .orElse(plugin.config().homes.limit);
     }
 }

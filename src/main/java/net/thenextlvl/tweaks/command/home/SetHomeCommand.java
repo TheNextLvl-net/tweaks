@@ -51,6 +51,9 @@ public class SetHomeCommand {
                         Formatter.number("limit", limit));
                 else setHome(name, player);
             }
+        }).exceptionally(throwable -> {
+            plugin.getComponentLogger().error("Failed to set home", throwable);
+            return null;
         });
         return Command.SINGLE_SUCCESS;
     }
