@@ -287,6 +287,7 @@ public class TweaksPlugin extends JavaPlugin {
                 .registerTypeHierarchyAdapter(Location.class, new LocationAdapter.Simple())
                 .registerTypeHierarchyAdapter(Material.class, new MaterialAdapter())
                 .registerTypeHierarchyAdapter(World.class, new WorldAdapter.Key())
+                .disableHtmlEscaping()
                 .setPrettyPrinting()
                 .serializeNulls()
                 .create()
