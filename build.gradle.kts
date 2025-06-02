@@ -270,6 +270,6 @@ modrinth {
     loaders.add("paper")
     loaders.add("folia")
     dependencies {
-        optional.project("ServiceIO")
+        optional.project("service-io")
     }
 }
