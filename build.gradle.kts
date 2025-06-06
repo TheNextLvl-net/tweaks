@@ -68,6 +68,19 @@ paper {
     }
 
     permissions {
+        register("tweaks.admin") {
+            this.default = BukkitPluginDescription.Permission.Default.OP
+            this.description = "Allows admin access to everything Tweaks offers"
+            this.children = listOf(
+                "tweaks.commands.environmental",
+                "tweaks.commands.item",
+                "tweaks.commands.player",
+                "tweaks.commands.server",
+                "tweaks.commands.workstation",
+                "tweaks.chat.delete"
+            )
+        }
+        
         register("tweaks.command.spawn") {
             this.default = BukkitPluginDescription.Permission.Default.TRUE
             this.description = "Allows players to use the spawn command"
