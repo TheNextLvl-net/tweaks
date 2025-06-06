@@ -77,7 +77,8 @@ paper {
                 "tweaks.commands.player",
                 "tweaks.commands.server",
                 "tweaks.commands.workstation",
-                "tweaks.chat.delete"
+                "tweaks.chat.delete",
+                "tweaks.teleport.cooldown.bypass"
             )
         }
         
