@@ -23,10 +23,7 @@ A modern alternative to EssentialsX
 [Latest version supporting 1.19-1.20.4 (Java 19)](https://github.com/TheNextLvl-net/tweaks/releases/tag/v2.0.10)<br>
 [Latest version supporting 1.19-1.20.4 (Java 17)](https://github.com/TheNextLvl-net/tweaks/releases/tag/v2.0.5)<br>
 
-## Download
-
-[Modrinth](https://modrinth.com/plugin/tweaks-1)<br>
-[Hangar](https://hangar.papermc.io/TheNextLvl/Tweaks)
+🔗 [Download now](https://modrinth.com/project/HLkJsjy0#download)
 
 ---
 
