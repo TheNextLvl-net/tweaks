@@ -284,6 +284,7 @@ modrinth {
     versionType = if (isRelease) "release" else "beta"
     uploadFile.set(tasks.shadowJar)
     gameVersions.set(versions)
+    syncBodyFrom.set(rootProject.file("README.md").readText())
     loaders.add("paper")
     loaders.add("folia")
     dependencies {
