@@ -82,7 +82,7 @@ paper {
                 "tweaks.command.gamemode.others"
             )
         }
-        
+
         register("tweaks.command.spawn") {
             this.default = BukkitPluginDescription.Permission.Default.TRUE
             this.description = "Allows players to use the spawn command"
