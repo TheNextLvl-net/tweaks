@@ -33,7 +33,7 @@ public class HatCommand {
         var item = inventory.getItemInMainHand();
         var helmet = inventory.getHelmet();
 
-        if (item.getType().isEmpty() && helmet == null) {
+        if (item.getType().isAir() && helmet == null) {
             plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }

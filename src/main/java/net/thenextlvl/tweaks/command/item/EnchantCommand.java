@@ -74,7 +74,7 @@ public class EnchantCommand {
 
         var item = player.getInventory().getItemInMainHand();
 
-        if (item.getType().isEmpty()) {
+        if (item.getType().isAir()) {
             plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }

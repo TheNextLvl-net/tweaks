@@ -51,7 +51,7 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
         var translation = "gui.item.location";
         return ItemBuilder.of(getIcon(element))
                 .itemName(plugin.bundle().component(translation, owner,
-                        Argument.numeric("name", element.getName())))
+                        Argument.string("name", element.getName())))
                 .withAction(() -> {
                     teleport(element);
                     close();
