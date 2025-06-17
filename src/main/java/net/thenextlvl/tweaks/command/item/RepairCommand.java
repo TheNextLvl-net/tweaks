@@ -36,7 +36,7 @@ public class RepairCommand {
         var player = (Player) context.getSource().getSender();
         var inventory = player.getInventory();
 
-        if (inventory.getItemInMainHand().getType().isEmpty()) {
+        if (inventory.getItemInMainHand().getType().isAir()) {
             plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
