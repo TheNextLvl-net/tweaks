@@ -46,7 +46,7 @@ tasks.shadowJar {
 }
 
 tasks.runServer {
-    minecraftVersion("1.21.5")
+    minecraftVersion("1.21.6")
 }
 
 paper {
