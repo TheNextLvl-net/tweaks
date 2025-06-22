@@ -26,6 +26,7 @@ public class PluginConfig {
         public @SerializedName("message-deletion-timeout") long messageDeletionTimeout = TimeUnit.MINUTES.toMillis(10);
         public @SerializedName("back-buffer-stack-size") int backBufferStackSize = 5;
         public @SerializedName("default-permission-level") byte defaultPermissionLevel = -1;
+        public @SerializedName("allow-unsafe-enchantments") boolean unsafeEnchantments = false;
         public @SerializedName("enchantment-overflow") boolean enchantmentOverflow = false;
         public @SerializedName("override-join-message") boolean overrideJoinMessage = true;
         public @SerializedName("override-quit-message") boolean overrideQuitMessage = true;

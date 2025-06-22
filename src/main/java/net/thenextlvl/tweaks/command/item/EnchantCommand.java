@@ -42,7 +42,7 @@ public class EnchantCommand {
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
-                        .suggests(new EnchantSuggestionProvider())
+                        .suggests(new EnchantSuggestionProvider(plugin))
                         .then(Commands.argument("level", IntegerArgumentType.integer(1, max))
                                 .suggests(this::suggestLevels)
                                 .executes(context -> enchant(context, context.getArgument("level", int.class))))
@@ -79,7 +79,7 @@ public class EnchantCommand {
             plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
-        if (!enchantment.canEnchantItem(item)) {
+        if (!plugin.config().general.unsafeEnchantments && !enchantment.canEnchantItem(item)) {
             plugin.bundle().sendMessage(player, "command.enchantment.applicable",
                     Placeholder.component("item", Component.translatable(item)));
             return 0;
