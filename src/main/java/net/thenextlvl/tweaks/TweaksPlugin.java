@@ -12,6 +12,7 @@ import core.paper.messenger.PluginMessenger;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -232,48 +233,62 @@ public class TweaksPlugin extends JavaPlugin {
     }
 
     private void registerLinkCommands(Commands registrar) {
-        if (commands().discord.enabled) new DiscordCommand(this).register(registrar);
-        if (commands().reddit.enabled) new RedditCommand(this).register(registrar);
-        if (commands().teamspeak.enabled) new TeamSpeakCommand(this).register(registrar);
-        if (commands().tiktok.enabled) new TikTokCommand(this).register(registrar);
-        if (commands().twitch.enabled) new TwitchCommand(this).register(registrar);
-        if (commands().website.enabled) new WebsiteCommand(this).register(registrar);
-        if (commands().x.enabled) new XCommand(this).register(registrar);
-        if (commands().youtube.enabled) new YouTubeCommand(this).register(registrar);
+        if (commands().discord.enabled && isLinkEnabled("discord")) new DiscordCommand(this).register(registrar);
+        if (commands().reddit.enabled && isLinkEnabled("reddit")) new RedditCommand(this).register(registrar);
+        if (commands().teamspeak.enabled && isLinkEnabled("teamspeak")) new TeamSpeakCommand(this).register(registrar);
+        if (commands().tiktok.enabled && isLinkEnabled("tiktok")) new TikTokCommand(this).register(registrar);
+        if (commands().twitch.enabled && isLinkEnabled("twitch")) new TwitchCommand(this).register(registrar);
+        if (commands().website.enabled && isLinkEnabled("website")) new WebsiteCommand(this).register(registrar);
+        if (commands().x.enabled && isLinkEnabled("x")) new XCommand(this).register(registrar);
+        if (commands().youtube.enabled && isLinkEnabled("youtube")) new YouTubeCommand(this).register(registrar);
+    }
+
+    private boolean isLinkEnabled(String string) {
+        var url = config().links.get(string);
+        return url != null && !url.isBlank() && !url.equals(PluginConfig.LINK_DEFAULTS.get(string));
     }
 
     private void registerLinks() {
         var social = config().features.social;
         if (!social.serverLinks) return;
 
-        if (social.discord) registerLink("url.discord", config().links.discord);
-        if (social.reddit) registerLink("url.reddit", config().links.reddit);
-        if (social.teamspeak) registerLink("url.teamspeak", config().links.teamspeak);
-        if (social.tiktok) registerLink("url.tiktok", config().links.tiktok);
-        if (social.twitch) registerLink("url.twitch", config().links.twitch);
-        if (social.x) registerLink("url.x", config().links.x);
-        if (social.youtube) registerLink("url.youtube", config().links.youtube);
+        if (social.discord) registerLink("url.discord", "discord");
+        if (social.reddit) registerLink("url.reddit", "reddit");
+        if (social.teamspeak) registerLink("url.teamspeak", "teamspeak");
+        if (social.tiktok) registerLink("url.tiktok", "tiktok");
+        if (social.twitch) registerLink("url.twitch", "twitch");
+        if (social.x) registerLink("url.x", "x");
+        if (social.youtube) registerLink("url.youtube", "youtube");
 
-        if (social.announcements) registerLink(ANNOUNCEMENTS, config().links.announcements);
-        if (social.community) registerLink(COMMUNITY, config().links.community);
-        if (social.feedback) registerLink(FEEDBACK, config().links.feedback);
-        if (social.forum) registerLink(FORUMS, config().links.forum);
-        if (social.guidelines) registerLink(COMMUNITY_GUIDELINES, config().links.guidelines);
-        if (social.issues) registerLink(REPORT_BUG, config().links.issues);
-        if (social.news) registerLink(NEWS, config().links.news);
-        if (social.status) registerLink(STATUS, config().links.status);
-        if (social.support) registerLink(SUPPORT, config().links.support);
-        if (social.website) registerLink(WEBSITE, config().links.website);
+        if (social.announcements) registerLink(ANNOUNCEMENTS, "announcements");
+        if (social.community) registerLink(COMMUNITY, "community");
+        if (social.feedback) registerLink(FEEDBACK, "feedback");
+        if (social.forum) registerLink(FORUMS, "forum");
+        if (social.guidelines) registerLink(COMMUNITY_GUIDELINES, "guidelines");
+        if (social.issues) registerLink(REPORT_BUG, "issues");
+        if (social.news) registerLink(NEWS, "news");
+        if (social.status) registerLink(STATUS, "status");
+        if (social.support) registerLink(SUPPORT, "support");
+        if (social.website) registerLink(WEBSITE, "website");
+
+        config().links.forEach((name, url) -> {
+            if (url.isBlank() || PluginConfig.LINK_DEFAULTS.containsKey(name)) return;
+            getServer().getServerLinks().addLink(Component.text(name), URI.create(url));
+        });
     }
 
     private void registerLink(ServerLinks.Type type, String string) {
-        if (!string.isBlank()) getServer().getServerLinks().addLink(type, URI.create(string));
+        var url = config().links.get(string);
+        if (url == null || url.isBlank() || url.equals(PluginConfig.LINK_DEFAULTS.get(string))) return;
+        getServer().getServerLinks().addLink(type, URI.create(url));
     }
 
     private void registerLink(String translationKey, String string) {
         var translation = bundle().translate(translationKey, Locale.US);
-        if (translation == null || string.isBlank()) return;
-        getServer().getServerLinks().addLink(translation, URI.create(string));
+        if (translation == null) return;
+        var url = config().links.get(string);
+        if (url == null || url.isBlank() || url.equals(PluginConfig.LINK_DEFAULTS.get(string))) return;
+        getServer().getServerLinks().addLink(translation, URI.create(url));
     }
 
     public void saveConfig() {
@@ -304,23 +319,23 @@ public class TweaksPlugin extends JavaPlugin {
                 .placeholder("prefix", "prefix")
                 .miniMessage(MiniMessage.builder().tags(TagResolver.resolver(
                         TagResolver.standard(),
-                        Placeholder.parsed("announcements", config().links.announcements),
-                        Placeholder.parsed("community", config().links.community),
-                        Placeholder.parsed("discord", config().links.discord),
-                        Placeholder.parsed("feedback", config().links.feedback),
-                        Placeholder.parsed("forum", config().links.forum),
-                        Placeholder.parsed("guidelines", config().links.guidelines),
-                        Placeholder.parsed("issues", config().links.issues),
-                        Placeholder.parsed("news", config().links.news),
-                        Placeholder.parsed("reddit", config().links.reddit),
-                        Placeholder.parsed("status", config().links.status),
-                        Placeholder.parsed("support", config().links.support),
-                        Placeholder.parsed("teamspeak", config().links.teamspeak),
-                        Placeholder.parsed("tiktok", config().links.tiktok),
-                        Placeholder.parsed("twitch", config().links.twitch),
-                        Placeholder.parsed("website", config().links.website),
-                        Placeholder.parsed("x", config().links.x),
-                        Placeholder.parsed("youtube", config().links.youtube)
+                        Placeholder.parsed("announcements", String.valueOf(config().links.get("announcements"))),
+                        Placeholder.parsed("community", String.valueOf(config().links.get("community"))),
+                        Placeholder.parsed("discord", String.valueOf(config().links.get("discord"))),
+                        Placeholder.parsed("feedback", String.valueOf(config().links.get("feedback"))),
+                        Placeholder.parsed("forum", String.valueOf(config().links.get("forum"))),
+                        Placeholder.parsed("guidelines", String.valueOf(config().links.get("guidelines"))),
+                        Placeholder.parsed("issues", String.valueOf(config().links.get("issues"))),
+                        Placeholder.parsed("news", String.valueOf(config().links.get("news"))),
+                        Placeholder.parsed("reddit", String.valueOf(config().links.get("reddit"))),
+                        Placeholder.parsed("status", String.valueOf(config().links.get("status"))),
+                        Placeholder.parsed("support", String.valueOf(config().links.get("support"))),
+                        Placeholder.parsed("teamspeak", String.valueOf(config().links.get("teamspeak"))),
+                        Placeholder.parsed("tiktok", String.valueOf(config().links.get("tiktok"))),
+                        Placeholder.parsed("twitch", String.valueOf(config().links.get("twitch"))),
+                        Placeholder.parsed("website", String.valueOf(config().links.get("website"))),
+                        Placeholder.parsed("x", String.valueOf(config().links.get("x"))),
+                        Placeholder.parsed("youtube", String.valueOf(config().links.get("youtube")))
                 )).build()).build();
     }
 
