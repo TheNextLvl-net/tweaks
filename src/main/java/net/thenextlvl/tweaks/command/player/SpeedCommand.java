@@ -11,6 +11,7 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySele
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.GameRule;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attributable;
 import org.bukkit.attribute.Attribute;
@@ -115,6 +116,8 @@ public class SpeedCommand {
                 if (type.equals(SpeedType.WALK)) player.setWalkSpeed(0.2f);
             }
 
+            if (Boolean.FALSE.equals(entity.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
+            
             plugin.bundle().sendMessage(entity, "command.speed.reset.self");
             if (!entity.equals(sender)) plugin.bundle().sendMessage(sender, "command.speed.reset.others",
                     Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));
@@ -140,6 +143,9 @@ public class SpeedCommand {
                     instance.addTransientModifier(modifier);
                 }
             }
+
+
+            if (Boolean.FALSE.equals(entity.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
 
             plugin.bundle().sendMessage(entity, type.getMessageSelf(),
                     Formatter.number("speed", speed));

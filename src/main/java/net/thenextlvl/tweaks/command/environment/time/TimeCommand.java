@@ -10,6 +10,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.jspecify.annotations.NullMarked;
 
@@ -85,9 +86,10 @@ public class TimeCommand {
     private int setTime(CommandContext<CommandSourceStack> context, long ticks, World world) {
         var sender = context.getSource().getSender();
         plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> world.setTime(ticks));
-        plugin.bundle().sendMessage(sender, "command.time.set",
-                Formatter.number("time", ticks),
-                Placeholder.parsed("world", world.getName()));
+        if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+            plugin.bundle().sendMessage(sender, "command.time.set",
+                    Formatter.number("time", ticks),
+                    Placeholder.parsed("world", world.getName()));
         return Command.SINGLE_SUCCESS;
     }
 

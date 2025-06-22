@@ -8,6 +8,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -39,7 +40,8 @@ public class RenameCommand {
         var success = !name.equals(item.getData(DataComponentTypes.CUSTOM_NAME));
         if (success) item.setData(DataComponentTypes.CUSTOM_NAME, name);
         var message = item.isEmpty() ? "command.hold.item" : success ? "command.item.rename" : "nothing.changed";
-        plugin.bundle().sendMessage(player, message);
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || !success)
+            plugin.bundle().sendMessage(player, message);
 
         return success ? Command.SINGLE_SUCCESS : 0;
     }

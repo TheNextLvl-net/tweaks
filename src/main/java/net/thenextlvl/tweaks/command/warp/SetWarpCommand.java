@@ -8,6 +8,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.WarpSuggestionProvider;
+import org.bukkit.GameRule;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -30,9 +31,12 @@ public class SetWarpCommand {
 
     private int setWarp(CommandContext<CommandSourceStack> context) {
         var name = context.getArgument("name", String.class);
-        plugin.warpController().setWarp(name, context.getSource().getLocation())
-                .thenAccept(unused -> plugin.bundle().sendMessage(context.getSource().getSender(),
-                        "command.warp.set", Placeholder.parsed("name", name)));
+        plugin.warpController().setWarp(name, context.getSource().getLocation()).thenAccept(unused -> {
+            var world = context.getSource().getLocation().getWorld();
+            if (Boolean.FALSE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
+            plugin.bundle().sendMessage(context.getSource().getSender(),
+                    "command.warp.set", Placeholder.parsed("name", name));
+        });
         return Command.SINGLE_SUCCESS;
     }
 }

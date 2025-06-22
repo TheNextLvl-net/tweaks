@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.UnenchantSuggestionProvider;
+import org.bukkit.GameRule;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
@@ -52,8 +53,11 @@ public class UnenchantCommand {
         var level = item.removeEnchantment(enchantment);
 
         var message = level != 0 ? "command.enchantment.removed" : "command.enchantment.absent";
-        plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
-                enchantment.displayName(level).style(Style.empty())));
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || level == 0) {
+            var clamped = Math.clamp(level, enchantment.getStartLevel(), enchantment.getMaxLevel());
+            plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
+                    enchantment.displayName(clamped).style(Style.empty())));
+        }
         return level != 0 ? Command.SINGLE_SUCCESS : 0;
     }
 }

@@ -12,6 +12,7 @@ import io.papermc.paper.math.FinePosition;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -76,13 +77,14 @@ public class SetSpawnCommand {
         plugin.config().spawn.location = position.toLocation(world);
         plugin.saveConfig();
 
-        plugin.bundle().sendMessage(context.getSource().getSender(), "command.spawn.set",
-                Placeholder.parsed("world", world.getName()),
-                Formatter.number("x", position.x()),
-                Formatter.number("y", position.y()),
-                Formatter.number("z", position.z()),
-                Formatter.number("yaw", yaw),
-                Formatter.number("pitch", pitch));
+        if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+            plugin.bundle().sendMessage(context.getSource().getSender(), "command.spawn.set",
+                    Placeholder.parsed("world", world.getName()),
+                    Formatter.number("x", position.x()),
+                    Formatter.number("y", position.y()),
+                    Formatter.number("z", position.z()),
+                    Formatter.number("yaw", yaw),
+                    Formatter.number("pitch", pitch));
 
         if (context.getSource().getSender() instanceof Player player)
             player.teleportAsync(position.toLocation(world), PlayerTeleportEvent.TeleportCause.COMMAND);

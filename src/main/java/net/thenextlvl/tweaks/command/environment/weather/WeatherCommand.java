@@ -8,6 +8,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -74,8 +75,9 @@ public class WeatherCommand {
             if (rain || thunder) world.setWeatherDuration(duration);
             else world.setClearWeatherDuration(duration);
         });
-        plugin.bundle().sendMessage(sender, message,
-                Formatter.number("duration", duration),
-                Placeholder.parsed("world", world.getName()));
+        if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+            plugin.bundle().sendMessage(sender, message,
+                    Formatter.number("duration", duration),
+                    Placeholder.parsed("world", world.getName()));
     }
 }
