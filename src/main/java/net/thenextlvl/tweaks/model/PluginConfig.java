@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -14,11 +15,12 @@ public class PluginConfig {
     public @SerializedName("features") FeatureConfig features = new FeatureConfig();
     public @SerializedName("general") GeneralConfig general = new GeneralConfig();
     public @SerializedName("guis") GUIConfig guis = new GUIConfig();
-    public @SerializedName("links") LinkConfig links = new LinkConfig();
     public @SerializedName("spawn") SpawnConfig spawn = new SpawnConfig();
     public @SerializedName("homes") HomeConfig homes = new HomeConfig();
     public @SerializedName("teleportation") TeleportConfig teleport = new TeleportConfig();
     public @SerializedName("animals") AnimalConfig vanilla = new AnimalConfig();
+    
+    public @SerializedName("links") Map<String, String> links = new HashMap<>(LINK_DEFAULTS);
 
     public static class GeneralConfig {
         public @SerializedName("message-deletion-timeout") long messageDeletionTimeout = TimeUnit.MINUTES.toMillis(10);
@@ -142,24 +144,23 @@ public class PluginConfig {
         }
     }
 
-    public static class LinkConfig {
-        public @SerializedName("announcements") String announcements = "https://announcements.example.com";
-        public @SerializedName("community") String community = "https://community.example.com";
-        public @SerializedName("feedback") String feedback = "https://feedback.example.com";
-        public @SerializedName("forum") String forum = "https://forum.example.com";
-        public @SerializedName("guidelines") String guidelines = "https://guidelines.example.com";
-        public @SerializedName("issues") String issues = "https://issues.example.com";
-        public @SerializedName("news") String news = "https://news.example.com";
-        public @SerializedName("status") String status = "https://status.example.com";
-        public @SerializedName("support") String support = "https://support.example.com";
-        public @SerializedName("website") String website = "https://example.com";
-
-        public @SerializedName("discord") String discord = "https://discord.gg/invite/example";
-        public @SerializedName("reddit") String reddit = "https://www.reddit.com/r/example";
-        public @SerializedName("teamspeak") String teamspeak = "teamspeak.example.com";
-        public @SerializedName("tiktok") String tiktok = "https://www.tiktok.com/@example";
-        public @SerializedName("twitch") String twitch = "https://www.twitch.tv/example";
-        public @SerializedName("x") String x = "https://x.com/example";
-        public @SerializedName("youtube") String youtube = "https://www.youtube.com/example";
-    }
+    public static final Map<String, String> LINK_DEFAULTS = Map.ofEntries(
+            Map.entry("announcements", "https://announcements.example.com"),
+            Map.entry("community", "https://community.example.com"),
+            Map.entry("discord", "https://discord.gg/invite/example"),
+            Map.entry("feedback", "https://feedback.example.com"),
+            Map.entry("forum", "https://forum.example.com"),
+            Map.entry("guidelines", "https://guidelines.example.com"),
+            Map.entry("issues", "https://issues.example.com"),
+            Map.entry("news", "https://news.example.com"),
+            Map.entry("reddit", "https://www.reddit.com/r/example"),
+            Map.entry("status", "https://status.example.com"),
+            Map.entry("support", "https://support.example.com"),
+            Map.entry("teamspeak", "teamspeak.example.com"),
+            Map.entry("tiktok", "https://www.tiktok.com/@example"),
+            Map.entry("twitch", "https://www.twitch.tv/example"),
+            Map.entry("website", "https://example.com"),
+            Map.entry("x", "https://x.com/example"),
+            Map.entry("youtube", "https://www.youtube.com/example")
+    );
 }
