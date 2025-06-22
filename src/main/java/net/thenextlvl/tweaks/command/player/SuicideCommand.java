@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.GameRule;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
@@ -30,7 +31,8 @@ public class SuicideCommand {
     private int suicide(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
         player.damage(player.getHealth(), DamageSource.builder(DamageType.GENERIC_KILL).build());
-        plugin.bundle().sendMessage(player, "command.suicide");
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+            plugin.bundle().sendMessage(player, "command.suicide");
         return Command.SINGLE_SUCCESS;
     }
 }

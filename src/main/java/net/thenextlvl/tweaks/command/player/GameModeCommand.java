@@ -11,6 +11,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.argument.GameModeArgumentType;
 import org.bukkit.GameMode;
+import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -50,6 +51,8 @@ public class GameModeCommand {
         resolve.forEach(player -> {
             player.setGameMode(gamemode);
 
+            if (Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
+        
             plugin.bundle().sendMessage(player, "command.gamemode.changed.self", Placeholder.component("gamemode",
                     Component.translatable(gamemode)));
 

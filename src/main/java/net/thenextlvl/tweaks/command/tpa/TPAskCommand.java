@@ -12,6 +12,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.TPASuggestionProvider;
 import net.thenextlvl.tweaks.controller.TPAController.RequestType;
+import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -61,8 +62,9 @@ public class TPAskCommand {
         }
 
         var success = plugin.tpaController().addRequest(player, sender, type);
-        plugin.bundle().sendMessage(sender, success ? type.outgoingMessage() : "command.tpa.sent",
-                Placeholder.parsed("player", player.getName()));
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || !success)
+            plugin.bundle().sendMessage(sender, success ? type.outgoingMessage() : "command.tpa.sent",
+                    Placeholder.parsed("player", player.getName()));
 
         if (!success) return false;
 

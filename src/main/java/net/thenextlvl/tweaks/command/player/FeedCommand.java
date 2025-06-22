@@ -3,6 +3,7 @@ package net.thenextlvl.tweaks.command.player;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.GameRule;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
@@ -27,6 +28,9 @@ public class FeedCommand extends PlayersCommand {
         player.setSaturation(20f);
 
         player.playSound(player, Sound.ENTITY_PLAYER_BURP, SoundCategory.VOICE, 1f, 1f);
+
+        if (Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
+
         plugin.bundle().sendMessage(player, "command.hunger.satisfied.self");
         if (player != sender) plugin.bundle().sendMessage(sender, "command.hunger.satisfied.others",
                 Placeholder.parsed("player", player.getName()));

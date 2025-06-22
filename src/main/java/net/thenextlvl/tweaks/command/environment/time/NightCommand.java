@@ -4,6 +4,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.environment.WorldCommand;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jspecify.annotations.NullMarked;
@@ -21,8 +22,8 @@ public class NightCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        plugin.bundle().sendMessage(sender, "command.time.night",
-                Placeholder.parsed("world", world.getName()));
+        if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+            plugin.bundle().sendMessage(sender, "command.time.night", Placeholder.parsed("world", world.getName()));
         world.setTime(13000);
     }
 }
