@@ -316,7 +316,7 @@ public class TweaksPlugin extends JavaPlugin {
                 ).migrator(new MessageMigrator())
                 .resource("tweaks.properties", Locale.US)
                 .resource("tweaks_german.properties", Locale.GERMANY)
-                .resource("tweaks_russian.properties", new Locale("ru"))
+                .resource("tweaks_russian.properties", Locale.forLanguageTag("ru"))
                 .placeholder("prefix", "prefix")
                 .miniMessage(MiniMessage.builder().tags(TagResolver.resolver(
                         TagResolver.standard(),
