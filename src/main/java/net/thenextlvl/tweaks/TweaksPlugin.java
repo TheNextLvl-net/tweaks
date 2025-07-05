@@ -95,7 +95,7 @@ public class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        initConfigs();
+        initConfig();
         initTranslations();
         initControllers();
         initMotd();
@@ -295,7 +295,7 @@ public class TweaksPlugin extends JavaPlugin {
         if (config != null) config.save();
     }
 
-    private void initConfigs() {
+    private void initConfig() {
         this.config = new GsonFile<>(
                 IO.of(getDataFolder(), "config.json"),
                 new PluginConfig(), new GsonBuilder()
