@@ -56,7 +56,7 @@ paper {
     apiVersion = "1.21.5"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
-    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
+    load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
 
     foliaSupported = true
 
