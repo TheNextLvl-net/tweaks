@@ -62,7 +62,7 @@ paper {
 
     serverDependencies {
         register("ServiceIO") {
-            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            load = PaperPluginDescription.RelativeLoadOrder.AFTER
             required = false
         }
     }
