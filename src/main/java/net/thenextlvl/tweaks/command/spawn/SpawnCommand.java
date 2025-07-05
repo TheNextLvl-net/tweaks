@@ -30,7 +30,7 @@ public class SpawnCommand {
     private int spawn(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
         var location = plugin.config().spawn.location;
-        if (location == null || location.getWorld() == null) {
+        if (location == null || !location.isWorldLoaded()) {
             plugin.bundle().sendMessage(player, "command.spawn.undefined");
             if (player.hasPermission("tweaks.command.setspawn"))
                 plugin.bundle().sendMessage(player, "command.spawn.define");
