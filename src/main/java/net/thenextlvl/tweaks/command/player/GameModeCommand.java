@@ -52,7 +52,7 @@ public class GameModeCommand {
             player.setGameMode(gamemode);
 
             if (Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
-        
+
             plugin.bundle().sendMessage(player, "command.gamemode.changed.self", Placeholder.component("gamemode",
                     Component.translatable(gamemode)));
 

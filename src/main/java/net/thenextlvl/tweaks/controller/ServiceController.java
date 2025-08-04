@@ -85,7 +85,7 @@ public class ServiceController {
                 .map(group -> group.getWeight().orElse(0))
                 .orElse(0);
     }
-    
+
     public Optional<Integer> getMaxHomeCount(Player player) {
         return Optional.ofNullable(getPermissions())
                 .flatMap(controller -> controller.getPermissionHolder(player))

@@ -5,12 +5,17 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 @NullMarked
 public class TPAController {
-    private final Map<UUID, Set<Request>> requests = new ConcurrentHashMap<>();
+    private final Map<Player, Set<Request>> requests = new WeakHashMap<>();
     private final TweaksPlugin plugin;
 
     public TPAController(TweaksPlugin plugin) {
@@ -20,7 +25,7 @@ public class TPAController {
     public void removeRequests(Player player) {
         requests.values().forEach(requests -> requests.removeIf(request -> request.player().equals(player)));
         requests.values().removeIf(Collection::isEmpty);
-        requests.remove(player.getUniqueId());
+        requests.remove(player);
     }
 
     public Optional<Request> getRequest(Player player, Player target) {
@@ -30,13 +35,13 @@ public class TPAController {
     }
 
     public List<Request> getRequests(Player player) {
-        var requests = this.requests.get(player.getUniqueId());
+        var requests = this.requests.get(player);
         if (requests == null) return List.of();
         return List.copyOf(requests);
     }
 
     public boolean addRequest(Player player, Player sender, RequestType type) {
-        var players = requests.computeIfAbsent(player.getUniqueId(), ignored -> new HashSet<>());
+        var players = requests.computeIfAbsent(player, ignored -> new HashSet<>());
         return players.stream().noneMatch(request -> request.player().equals(sender))
                && players.add(new Request(sender, type));
     }
@@ -50,10 +55,10 @@ public class TPAController {
     }
 
     public boolean removeRequest(Player sender, Player player, RequestType type) {
-        var players = requests.get(sender.getUniqueId());
+        var players = requests.get(sender);
         var result = players != null && players.removeIf(request ->
                 request.player().equals(player) && request.type() == type);
-        if (players != null && players.isEmpty()) requests.remove(sender.getUniqueId());
+        if (players != null && players.isEmpty()) requests.remove(sender);
         return result;
     }
 
