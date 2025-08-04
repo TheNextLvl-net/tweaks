@@ -23,7 +23,9 @@ import org.jspecify.annotations.NullMarked;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.bukkit.attribute.Attribute.*;
+import static org.bukkit.attribute.Attribute.FLYING_SPEED;
+import static org.bukkit.attribute.Attribute.MOVEMENT_SPEED;
+import static org.bukkit.attribute.Attribute.SNEAKING_SPEED;
 import static org.bukkit.attribute.AttributeModifier.Operation.ADD_NUMBER;
 
 @NullMarked
@@ -117,7 +119,7 @@ public class SpeedCommand {
             }
 
             if (Boolean.FALSE.equals(entity.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
-            
+
             plugin.bundle().sendMessage(entity, "command.speed.reset.self");
             if (!entity.equals(sender)) plugin.bundle().sendMessage(sender, "command.speed.reset.others",
                     Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));
