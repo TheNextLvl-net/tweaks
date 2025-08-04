@@ -25,8 +25,8 @@ public class MSGSuggestionProvider implements SuggestionProvider<CommandSourceSt
         plugin.getServer().getOnlinePlayers().stream()
                 .filter(player -> !player.equals(context.getSource().getSender()))
                 .filter(player -> context.getSource().getSender() instanceof Player sender
-                              && plugin.msgController().isConversing(sender, player)
-                              || !plugin.dataController().isMsgToggled(player))
+                                  && plugin.msgController().isConversing(sender, player)
+                                  || !plugin.dataController().isMsgToggled(player))
                 .map(Player::getName)
                 .filter(s -> s.contains(builder.getRemaining()))
                 .map(StringArgumentType::escapeIfRequired)

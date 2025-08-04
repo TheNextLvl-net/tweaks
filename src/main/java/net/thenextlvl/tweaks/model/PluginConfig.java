@@ -19,7 +19,7 @@ public class PluginConfig {
     public @SerializedName("homes") HomeConfig homes = new HomeConfig();
     public @SerializedName("teleportation") TeleportConfig teleport = new TeleportConfig();
     public @SerializedName("animals") AnimalConfig vanilla = new AnimalConfig();
-    
+
     public @SerializedName("links") Map<String, String> links = new HashMap<>(LINK_DEFAULTS);
 
     public static class GeneralConfig {
