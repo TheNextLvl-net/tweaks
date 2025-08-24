@@ -35,7 +35,7 @@ dependencies {
     implementation("net.thenextlvl.core:adapters:2.0.2")
     implementation("net.thenextlvl.core:files:3.0.0")
     implementation("net.thenextlvl.core:i18n:3.2.0")
-    implementation("net.thenextlvl.core:nbt:2.3.2")
+    implementation("net.thenextlvl.core:nbt:2.3.3")
     implementation("net.thenextlvl.core:paper:2.2.1")
     implementation("org.bstats:bstats-bukkit:3.1.1-SNAPSHOT")
 }
