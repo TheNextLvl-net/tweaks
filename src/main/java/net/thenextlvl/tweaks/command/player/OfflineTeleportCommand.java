@@ -4,16 +4,16 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import core.io.IO;
-import core.nbt.file.NBTFile;
-import core.nbt.tag.CompoundTag;
-import core.nbt.tag.DoubleTag;
-import core.nbt.tag.FloatTag;
-import core.nbt.tag.ListTag;
-import core.nbt.tag.Tag;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.thenextlvl.nbt.file.NBTFile;
+import net.thenextlvl.nbt.tag.CompoundTag;
+import net.thenextlvl.nbt.tag.DoubleTag;
+import net.thenextlvl.nbt.tag.FloatTag;
+import net.thenextlvl.nbt.tag.ListTag;
+import net.thenextlvl.nbt.tag.Tag;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
 import org.bukkit.Bukkit;
@@ -148,16 +148,16 @@ public class OfflineTeleportCommand {
     }
 
     private CompoundTag toTag(Location location) {
-        var pos = new ListTag<>(DoubleTag.ID);
-        pos.add(new DoubleTag(location.getX()));
-        pos.add(new DoubleTag(location.getY()));
-        pos.add(new DoubleTag(location.getZ()));
+        var pos = ListTag.of(DoubleTag.ID);
+        pos.add(DoubleTag.of(location.getX()));
+        pos.add(DoubleTag.of(location.getY()));
+        pos.add(DoubleTag.of(location.getZ()));
 
-        var rotation = new ListTag<>(FloatTag.ID);
-        rotation.add(new FloatTag(location.getYaw()));
-        rotation.add(new FloatTag(location.getPitch()));
+        var rotation = ListTag.of(FloatTag.ID);
+        rotation.add(FloatTag.of(location.getYaw()));
+        rotation.add(FloatTag.of(location.getPitch()));
 
-        var tag = new CompoundTag();
+        var tag = CompoundTag.empty();
         tag.add("WorldUUIDLeast", location.getWorld().getUID().getLeastSignificantBits());
         tag.add("WorldUUIDMost", location.getWorld().getUID().getMostSignificantBits());
         tag.add("Dimension", location.getWorld().key().asString());
@@ -179,8 +179,8 @@ public class OfflineTeleportCommand {
         var data = new File(overworld.getWorldFolder(), "playerdata");
         var io = IO.of(data, player.getUniqueId() + ".dat");
         var fallback = IO.of(data, player.getUniqueId() + ".dat_old");
-        return io.exists() ? new NBTFile<>(io, new CompoundTag())
-                : fallback.exists() ? new NBTFile<>(fallback, new CompoundTag())
+        return io.exists() ? new NBTFile<>(io, CompoundTag.empty())
+                : fallback.exists() ? new NBTFile<>(fallback, CompoundTag.empty())
                 : null;
     }
 }
