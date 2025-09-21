@@ -10,7 +10,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.TypedKey;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -25,7 +24,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
 @NullMarked
-@SuppressWarnings("unchecked")
 public class EnchantCommand {
     private final TweaksPlugin plugin;
 
@@ -41,7 +39,7 @@ public class EnchantCommand {
         var command = Commands.literal(plugin.commands().enchant.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.enchant"))
-                .then(Commands.argument("enchantment", ArgumentTypes.resourceKey(RegistryKey.ENCHANTMENT))
+                .then(Commands.argument("enchantment", ArgumentTypes.resource(RegistryKey.ENCHANTMENT))
                         .suggests(new EnchantSuggestionProvider(plugin))
                         .then(Commands.argument("level", IntegerArgumentType.integer(1, max))
                                 .suggests(this::suggestLevels)
@@ -52,9 +50,7 @@ public class EnchantCommand {
     }
 
     private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        var key = (TypedKey<Enchantment>) context.getLastChild().getArgument("enchantment", TypedKey.class);
-        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).get(key);
-        if (enchantment == null) return builder.buildFuture();
+        var enchantment = context.getLastChild().getArgument("enchantment", Enchantment.class);
         IntStream.rangeClosed(enchantment.getStartLevel(), enchantment.getMaxLevel())
                 .mapToObj(String::valueOf)
                 .filter(s -> s.contains(builder.getRemaining()))
@@ -64,15 +60,7 @@ public class EnchantCommand {
 
     private int enchant(CommandContext<CommandSourceStack> context, int level) {
         var player = (Player) context.getSource().getSender();
-        var key = (TypedKey<Enchantment>) context.getArgument("enchantment", TypedKey.class);
-        var enchantment = RegistryAccess.registryAccess().getRegistry(key.registryKey()).get(key);
-
-        if (enchantment == null) {
-            plugin.bundle().sendMessage(player, "command.enchantment.invalid",
-                    Placeholder.parsed("enchantment", key.key().asString()));
-            return 0;
-        }
-
+        var enchantment = context.getArgument("enchantment", Enchantment.class);
         var item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isAir()) {
