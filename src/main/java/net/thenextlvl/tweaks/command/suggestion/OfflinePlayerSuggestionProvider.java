@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class OfflinePlayerSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
+public final class OfflinePlayerSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
     public OfflinePlayerSuggestionProvider(TweaksPlugin plugin) {

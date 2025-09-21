@@ -13,7 +13,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class MSGSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
+public final class MSGSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
     public MSGSuggestionProvider(TweaksPlugin plugin) {

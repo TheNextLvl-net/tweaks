@@ -14,7 +14,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class EnchantSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
+public final class EnchantSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
     public EnchantSuggestionProvider(TweaksPlugin plugin) {

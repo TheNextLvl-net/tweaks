@@ -14,7 +14,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class RequestSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
+public final class RequestSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
     public RequestSuggestionProvider(TweaksPlugin plugin) {
