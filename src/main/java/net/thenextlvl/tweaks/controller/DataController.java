@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @NullMarked
-public class DataController {
+public final class DataController {
     private static final String TPA_TOGGLED = "tpa_toggled";
     private static final String MSG_TOGGLED = "msg_toggled";
     private final Connection connection;
@@ -294,7 +294,7 @@ public class DataController {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    protected void createHomesTable() throws SQLException {
+    private void createHomesTable() throws SQLException {
         executeUpdate("""
                 CREATE TABLE IF NOT EXISTS homes (
                   uuid TEXT NOT NULL,
@@ -332,7 +332,7 @@ public class DataController {
     }
 
     @SuppressWarnings("SqlSourceToSinkFlow")
-    protected <T> @Nullable T executeQuery(String query, ThrowingFunction<ResultSet, T> mapper, @Nullable Object... parameters) throws SQLException {
+    private <T> @Nullable T executeQuery(String query, ThrowingFunction<ResultSet, T> mapper, @Nullable Object... parameters) throws SQLException {
         try (var preparedStatement = connection.prepareStatement(query)) {
             for (var i = 0; i < parameters.length; i++)
                 preparedStatement.setObject(i + 1, parameters[i]);
@@ -343,7 +343,7 @@ public class DataController {
     }
 
     @SuppressWarnings("SqlSourceToSinkFlow")
-    protected int executeUpdate(String query, @Nullable Object... parameters) throws SQLException {
+    private int executeUpdate(String query, @Nullable Object... parameters) throws SQLException {
         try (var preparedStatement = connection.prepareStatement(query)) {
             for (var i = 0; i < parameters.length; i++)
                 preparedStatement.setObject(i + 1, parameters[i]);

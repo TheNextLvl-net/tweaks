@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @NullMarked
-public class TeleportController {
+public final class TeleportController {
     private final Map<UUID, Location> teleports = new ConcurrentHashMap<>();
     private final TweaksPlugin plugin;
 

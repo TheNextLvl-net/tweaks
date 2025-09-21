@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 @NullMarked
-public class TPAController {
+public final class TPAController {
     private final Map<Player, Set<Request>> requests = new WeakHashMap<>();
     private final TweaksPlugin plugin;
 

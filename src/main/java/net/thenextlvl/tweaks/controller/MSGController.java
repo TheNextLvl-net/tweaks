@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 @NullMarked
-public class MSGController {
+public final class MSGController {
     private final Map<CommandSender, CommandSender> conversations = new WeakHashMap<>();
 
     public @Nullable CommandSender getConversation(CommandSender sender) {

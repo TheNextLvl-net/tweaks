@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class WarpController {
+public final class WarpController {
     private final TweaksPlugin plugin;
 
     public WarpController(TweaksPlugin plugin) {

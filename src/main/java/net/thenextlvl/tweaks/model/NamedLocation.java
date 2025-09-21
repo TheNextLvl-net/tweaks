@@ -7,7 +7,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.Objects;
 
 @NullMarked
-public class NamedLocation extends Location {
+public final class NamedLocation extends Location {
     private final String name;
 
     public NamedLocation(String name, World world, double x, double y, double z, float yaw, float pitch) {

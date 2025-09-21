@@ -20,7 +20,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 @NullMarked
-public class ChatListener implements Listener {
+public final class ChatListener implements Listener {
     private final TweaksPlugin plugin;
 
     public ChatListener(TweaksPlugin plugin) {

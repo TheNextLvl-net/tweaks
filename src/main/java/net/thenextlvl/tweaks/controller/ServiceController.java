@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @NullMarked
-public class ServiceController {
+public final class ServiceController {
     private final @Nullable BankController banks;
     private final @Nullable ChatController chat;
     private final @Nullable EconomyController economy;

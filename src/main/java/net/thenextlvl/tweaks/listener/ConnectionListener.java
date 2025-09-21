@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class ConnectionListener implements Listener {
+public final class ConnectionListener implements Listener {
     private final TweaksPlugin plugin;
 
     public ConnectionListener(TweaksPlugin plugin) {

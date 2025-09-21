@@ -10,7 +10,7 @@ import org.jspecify.annotations.NullMarked;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 @NullMarked
-public class SpawnListener implements Listener {
+public final class SpawnListener implements Listener {
     private final TweaksPlugin plugin;
 
     public SpawnListener(TweaksPlugin plugin) {

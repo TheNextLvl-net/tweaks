@@ -8,7 +8,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.Set;
 
 @NullMarked
-public class CommandConfig {
+public final class CommandConfig {
     public @SerializedName("day") CommandDefinition day = new CommandDefinition("day");
     public @SerializedName("midnight") CommandDefinition midnight = new CommandDefinition("midnight");
     public @SerializedName("night") CommandDefinition night = new CommandDefinition("night");

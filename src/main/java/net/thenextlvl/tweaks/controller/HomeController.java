@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class HomeController {
+public final class HomeController {
     private final TweaksPlugin plugin;
 
     public HomeController(TweaksPlugin plugin) {

@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Locale;
 import java.util.Set;
 
-public class MessageMigrator implements ResourceMigrator {
+public final class MessageMigrator implements ResourceMigrator {
     private final Set<MigrationRule> rules = Set.of(
             new MigrationRule(Locale.US, "command.last.seen.time", "<time>", "<date:'d MMM uuuu hh:mm:ss a'>"),
             new MigrationRule(Locale.GERMANY, "command.last.seen.time", "<time>", "<date:'MMM d uuuu HH:mm:ss'>")

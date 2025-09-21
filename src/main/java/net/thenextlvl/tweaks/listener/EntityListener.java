@@ -21,7 +21,7 @@ import static org.bukkit.GameMode.ADVENTURE;
 import static org.bukkit.GameMode.SURVIVAL;
 
 @NullMarked
-public class EntityListener implements Listener {
+public final class EntityListener implements Listener {
     private final TweaksPlugin plugin;
 
     private final NamespacedKey mushroomCowStewCooldown = new NamespacedKey("tweaks", "mushroom_cow_stew_cooldown");

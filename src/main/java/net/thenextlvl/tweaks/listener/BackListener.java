@@ -11,7 +11,7 @@ import org.jspecify.annotations.NullMarked;
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
-public class BackListener implements Listener {
+public final class BackListener implements Listener {
     private final TweaksPlugin plugin;
 
     public BackListener(TweaksPlugin plugin) {

@@ -11,7 +11,7 @@ import java.util.Collection;
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN;
 
 @NullMarked
-public class WarpGUI extends NamedLocationGUI {
+public final class WarpGUI extends NamedLocationGUI {
     public WarpGUI(TweaksPlugin plugin, Player owner, Collection<NamedLocation> elements) {
         super(plugin, plugin.config().guis.warps, owner, plugin.bundle().component("gui.title.warps", owner), elements);
     }

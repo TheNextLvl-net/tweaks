@@ -131,7 +131,7 @@ import static org.bukkit.ServerLinks.Type.SUPPORT;
 import static org.bukkit.ServerLinks.Type.WEBSITE;
 
 @NullMarked
-public class TweaksPlugin extends JavaPlugin {
+public final class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
     private final PluginMessenger messenger = new PluginMessenger(this);
     private final PluginVersionChecker versionChecker = new PluginVersionChecker(this);

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @NullMarked
-public class BackController {
+public final class BackController {
     private final Map<UUID, BlockingDeque<Location>> positions = new ConcurrentHashMap<>();
     private final Map<UUID, Location> positionLock = new ConcurrentHashMap<>();
     private final TweaksPlugin plugin;

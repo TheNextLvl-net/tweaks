@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @NullMarked
-public class PluginConfig {
+public final class PluginConfig {
     public @SerializedName("features") FeatureConfig features = new FeatureConfig();
     public @SerializedName("general") GeneralConfig general = new GeneralConfig();
     public @SerializedName("guis") GUIConfig guis = new GUIConfig();

@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class WorldListener implements Listener {
+public final class WorldListener implements Listener {
     private final TweaksPlugin plugin;
 
     public WorldListener(TweaksPlugin plugin) {
