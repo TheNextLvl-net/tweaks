@@ -93,8 +93,7 @@ public final class CommandConfig {
 
     private boolean isProxyEnabled() {
         var plugin = JavaPlugin.getPlugin(TweaksPlugin.class);
-        return plugin.getServer().spigot().getPaperConfig().getBoolean("proxies.velocity.enabled")
-               || plugin.getServer().spigot().getSpigotConfig().getBoolean("settings.bungeecord");
+        return plugin.getServer().getServerConfig().isProxyEnabled();
     }
 
     public static class CommandDefinition {
