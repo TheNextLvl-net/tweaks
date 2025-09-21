@@ -1,8 +1,9 @@
 package net.thenextlvl.tweaks.command.tpa;
 
 import com.mojang.brigadier.Command;
-import core.paper.command.CustomArgumentTypes;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.RequestSuggestionProvider;
@@ -28,11 +29,12 @@ public class TPAcceptCommand {
         var command = Commands.literal(plugin.commands().teleportAccept.command)
                 .requires(stack -> stack.getSender() instanceof Player player
                                    && player.hasPermission("tweaks.command.tpa.accept"))
-                .then(Commands.argument("player", CustomArgumentTypes.playerExact())
+                .then(Commands.argument("player", ArgumentTypes.player())
                         .suggests(new RequestSuggestionProvider(plugin))
                         .executes(context -> {
                             var sender = (Player) context.getSource().getSender();
-                            var target = context.getArgument("player", Player.class);
+                            var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
+                            var target = resolver.resolve(context.getSource()).getFirst();
                             var type = plugin.tpaController().getRequest(sender, target);
                             return accept(plugin, sender, target, type.map(Request::type).orElse(TPA));
                         }))
