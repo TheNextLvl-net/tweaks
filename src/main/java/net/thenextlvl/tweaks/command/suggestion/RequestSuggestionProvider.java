@@ -27,8 +27,8 @@ public class RequestSuggestionProvider implements SuggestionProvider<CommandSour
         plugin.tpaController().getRequests(player).stream()
                 .map(TPAController.Request::player)
                 .map(Player::getName)
-                .filter(s -> s.contains(builder.getRemaining()))
                 .map(StringArgumentType::escapeIfRequired)
+                .filter(s -> s.contains(builder.getRemaining()))
                 .forEach(builder::suggest);
         return builder.buildFuture();
     }

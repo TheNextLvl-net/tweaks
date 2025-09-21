@@ -26,8 +26,8 @@ public class TPASuggestionProvider implements SuggestionProvider<CommandSourceSt
                 .filter(player -> !player.equals(context.getSource().getSender()))
                 .filter(player -> !plugin.dataController().isTpaToggled(player))
                 .map(Player::getName)
-                .filter(s -> s.contains(builder.getRemaining()))
                 .map(StringArgumentType::escapeIfRequired)
+                .filter(s -> s.contains(builder.getRemaining()))
                 .forEach(builder::suggest);
         return builder.buildFuture();
     }

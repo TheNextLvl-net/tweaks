@@ -27,8 +27,8 @@ public class HomeSuggestionProvider implements SuggestionProvider<CommandSourceS
         return plugin.homeController().getHomes(player).thenApply(homes -> {
             homes.stream()
                     .map(NamedLocation::getName)
-                    .filter(name -> name.contains(builder.getRemaining()))
                     .map(StringArgumentType::escapeIfRequired)
+                    .filter(name -> name.contains(builder.getRemaining()))
                     .forEach(builder::suggest);
             return builder.build();
         });

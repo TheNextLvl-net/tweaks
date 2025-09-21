@@ -25,8 +25,8 @@ public class WarpSuggestionProvider implements SuggestionProvider<CommandSourceS
         return plugin.warpController().getWarps().thenApply(warps -> {
             warps.stream()
                     .map(NamedLocation::getName)
-                    .filter(name -> name.contains(builder.getRemaining()))
                     .map(StringArgumentType::escapeIfRequired)
+                    .filter(name -> name.contains(builder.getRemaining()))
                     .forEach(builder::suggest);
             return builder.build();
         });
