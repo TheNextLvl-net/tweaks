@@ -31,11 +31,15 @@ repositories {
 
 dependencies {
     compileOnly("net.thenextlvl.services:service-io:2.3.1")
-    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.9-pre2-R0.1-SNAPSHOT")
 
     implementation("net.thenextlvl.core:adapters:2.0.3")
     implementation("net.thenextlvl.core:files:3.0.1")
-    implementation("net.thenextlvl.core:i18n:3.2.2")
+    implementation("net.thenextlvl.core:i18n:3.2.2") {
+        // todo: remove – temp solution until adventure is stable
+        exclude("net.kyori", "adventure-text-logger-slf4j")
+        exclude("net.kyori", "adventure-text-minimessage")
+    }
     implementation("net.thenextlvl.core:paper:2.3.1")
     implementation("net.thenextlvl:nbt:3.0.1")
     implementation("org.bstats:bstats-bukkit:3.1.1-SNAPSHOT")
@@ -47,14 +51,14 @@ tasks.shadowJar {
 }
 
 tasks.runServer {
-    minecraftVersion("1.21.7")
+    minecraftVersion("1.21.9")
 }
 
 paper {
     name = "Tweaks"
     main = "net.thenextlvl.tweaks.TweaksPlugin"
     description = "A useful command collection"
-    apiVersion = "1.21.5"
+    apiVersion = "1.21.9"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
