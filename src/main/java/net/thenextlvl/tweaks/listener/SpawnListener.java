@@ -17,6 +17,7 @@ public final class SpawnListener implements Listener {
         this.plugin = plugin;
     }
 
+    // todo: port to AsyncPlayerSpawnLocationEvent
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
         var config = plugin.config().spawn;
