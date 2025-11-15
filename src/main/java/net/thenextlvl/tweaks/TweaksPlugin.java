@@ -6,8 +6,6 @@ import core.file.format.GsonFile;
 import core.i18n.file.ComponentBundle;
 import core.io.IO;
 import core.paper.adapters.inventory.MaterialAdapter;
-import core.paper.adapters.world.LocationAdapter;
-import core.paper.adapters.world.WorldAdapter;
 import core.paper.messenger.PluginMessenger;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -16,6 +14,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.thenextlvl.tweaks.adapter.LazyLocationAdapter;
 import net.thenextlvl.tweaks.command.environment.time.DayCommand;
 import net.thenextlvl.tweaks.command.environment.time.MidnightCommand;
 import net.thenextlvl.tweaks.command.environment.time.NightCommand;
@@ -101,14 +100,13 @@ import net.thenextlvl.tweaks.listener.EntityListener;
 import net.thenextlvl.tweaks.listener.SpawnListener;
 import net.thenextlvl.tweaks.listener.WorldListener;
 import net.thenextlvl.tweaks.model.CommandConfig;
+import net.thenextlvl.tweaks.model.LazyLocation;
 import net.thenextlvl.tweaks.model.MessageMigrator;
 import net.thenextlvl.tweaks.model.PluginConfig;
 import net.thenextlvl.tweaks.version.PluginVersionChecker;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.ServerLinks;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
@@ -364,9 +362,8 @@ public final class TweaksPlugin extends JavaPlugin {
         this.config = new GsonFile<>(
                 IO.of(getDataFolder(), "config.json"),
                 new PluginConfig(), new GsonBuilder()
-                .registerTypeHierarchyAdapter(Location.class, new LocationAdapter.Simple())
+                .registerTypeHierarchyAdapter(LazyLocation.class, new LazyLocationAdapter())
                 .registerTypeHierarchyAdapter(Material.class, new MaterialAdapter())
-                .registerTypeHierarchyAdapter(World.class, new WorldAdapter.Key())
                 .disableHtmlEscaping()
                 .setPrettyPrinting()
                 .serializeNulls()

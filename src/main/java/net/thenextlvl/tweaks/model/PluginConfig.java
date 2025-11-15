@@ -1,7 +1,6 @@
 package net.thenextlvl.tweaks.model;
 
 import com.google.gson.annotations.SerializedName;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -62,7 +61,7 @@ public final class PluginConfig {
         public @SerializedName("ignore-respawn-position") boolean ignoreRespawnPosition = false;
 
         @Nullable
-        public @SerializedName("location") Location location = null;
+        public @SerializedName("location") LazyLocation location = null;
     }
 
     public static class GUIConfig {
