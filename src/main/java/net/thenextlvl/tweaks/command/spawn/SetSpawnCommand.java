@@ -13,6 +13,7 @@ import io.papermc.paper.math.Rotation;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import net.thenextlvl.tweaks.model.LazyLocation;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -71,7 +72,7 @@ public class SetSpawnCommand {
 
     private int setSpawn(CommandContext<CommandSourceStack> context, World world, FinePosition position, Rotation rotation) {
         var spawn = position.toLocation(world).setRotation(rotation);
-        plugin.config().spawn.location = spawn;
+        plugin.config().spawn.location = new LazyLocation(spawn);
         plugin.saveConfig();
 
         if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
