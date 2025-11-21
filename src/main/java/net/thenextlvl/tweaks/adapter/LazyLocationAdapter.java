@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 import java.lang.reflect.Type;
 
 @NullMarked
-public class LazyLocationAdapter implements JsonSerializer<LazyLocation>, JsonDeserializer<LazyLocation> {
+public final class LazyLocationAdapter implements JsonSerializer<LazyLocation>, JsonDeserializer<LazyLocation> {
     @Override
     @SuppressWarnings("PatternValidation")
     public @Nullable LazyLocation deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
