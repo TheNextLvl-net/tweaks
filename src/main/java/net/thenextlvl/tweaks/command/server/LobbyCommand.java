@@ -1,5 +1,6 @@
 package net.thenextlvl.tweaks.command.server;
 
+import com.google.common.io.ByteStreams;
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -20,10 +21,17 @@ public class LobbyCommand {
                                    && player.hasPermission("tweaks.command.lobby"))
                 .executes(context -> {
                     var sender = (Player) context.getSource().getSender();
-                    plugin.messenger().connect(sender, plugin.config().general.lobbyServerName);
+                    connect(sender, plugin.config().general.lobbyServerName);
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();
         registrar.register(command, "Connect to the lobby server", plugin.commands().lobby.aliases);
+    }
+    
+    public void connect(Player player, String server) {
+        var dataOutput = ByteStreams.newDataOutput();
+        dataOutput.writeUTF("Connect");
+        dataOutput.writeUTF(server);
+        player.sendPluginMessage(plugin, "BungeeCord", dataOutput.toByteArray());
     }
 }

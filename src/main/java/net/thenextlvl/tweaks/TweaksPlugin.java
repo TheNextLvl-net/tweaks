@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder;
 import core.file.FileIO;
 import core.file.format.GsonFile;
 import core.io.IO;
-import core.paper.messenger.PluginMessenger;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.key.Key;
@@ -131,7 +130,6 @@ import static org.bukkit.ServerLinks.Type.WEBSITE;
 @NullMarked
 public final class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
-    private final PluginMessenger messenger = new PluginMessenger(this);
     private final PluginVersionChecker versionChecker = new PluginVersionChecker(this);
 
     private final CommandConfig commands = new GsonFile<>(
@@ -165,11 +163,16 @@ public final class TweaksPlugin extends JavaPlugin {
         registerCommands();
         registerLinks();
         registerListeners();
+        registerChannels();
     }
 
     @Override
     public void onDisable() {
         metrics.shutdown();
+    }
+
+    private void registerChannels() {
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     private void registerListeners() {
@@ -410,10 +413,6 @@ public final class TweaksPlugin extends JavaPlugin {
     private void initMotd() {
         var motd = config().general.motd;
         if (motd != null) getServer().motd(MiniMessage.miniMessage().deserialize(motd));
-    }
-
-    public PluginMessenger messenger() {
-        return messenger;
     }
 
     public BackController backController() {
