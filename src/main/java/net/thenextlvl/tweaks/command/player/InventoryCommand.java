@@ -3,6 +3,8 @@ package net.thenextlvl.tweaks.command.player;
 import com.mojang.brigadier.Command;
 import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.thenextlvl.tweaks.TweaksPlugin;
@@ -27,6 +29,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
@@ -211,7 +214,8 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
         private void addPlaceholders(Player viewer) {
             var inventoryConfig = plugin.config().guis.inventory;
-            var placeholder = ItemBuilder.of(inventoryConfig.placeholder).hideTooltip().item();
+            var placeholder = ItemStack.of(inventoryConfig.placeholder);
+            placeholder.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().hideTooltip(true).build());
             inventory.setItem(36, ItemBuilder.of(inventoryConfig.helmet)
                     .itemName(plugin.bundle().component("gui.placeholder.helmet", viewer))
                     .item());
