@@ -5,10 +5,10 @@ import com.google.gson.JsonParser;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
@@ -50,11 +50,14 @@ public class HeadCommand {
         registrar.register(command, "Get heads or information about them", plugin.commands().head.aliases);
     }
 
+    @SuppressWarnings("PatternValidation")
     private int playerHead(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        var head = ItemBuilder.of(Material.PLAYER_HEAD)
-                .profile(context.getArgument("player", String.class));
-        player.getInventory().addItem(head.item());
+        var head = ItemStack.of(Material.PLAYER_HEAD);
+        head.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile()
+                .name(context.getArgument("player", String.class))
+                .build());
+        player.getInventory().addItem(head);
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
@@ -62,9 +65,11 @@ public class HeadCommand {
 
     private int valueHead(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        var head = ItemBuilder.of(Material.PLAYER_HEAD)
-                .profileValue(context.getArgument("value", String.class));
-        player.getInventory().addItem(head.item());
+        var head = ItemStack.of(Material.PLAYER_HEAD);
+        head.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile()
+                .addProperty(new ProfileProperty("textures", context.getArgument("value", String.class)))
+                .build());
+        player.getInventory().addItem(head);
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
@@ -72,9 +77,13 @@ public class HeadCommand {
 
     private int urlHead(CommandContext<CommandSourceStack> context) {
         var player = (Player) context.getSource().getSender();
-        var head = ItemBuilder.of(Material.PLAYER_HEAD)
-                .profileUrl(context.getArgument("url", String.class));
-        player.getInventory().addItem(head.item());
+        var head = ItemStack.of(Material.PLAYER_HEAD);
+        var texture = "{\"textures\":{\"SKIN\":{\"url\":\"" + context.getArgument("url", String.class) + "\"}}}";
+        var base64 = Base64.getEncoder().encodeToString(texture.getBytes());
+        head.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile()
+                .addProperty(new ProfileProperty("textures", base64))
+                .build());
+        player.getInventory().addItem(head);
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
