@@ -1,13 +1,14 @@
 package net.thenextlvl.tweaks.command.player;
 
 import com.mojang.brigadier.Command;
-import core.paper.item.ItemBuilder;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.thenextlvl.tweaks.TweaksPlugin;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -216,29 +217,23 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             var inventoryConfig = plugin.config().guis.inventory;
             var placeholder = ItemStack.of(inventoryConfig.placeholder);
             placeholder.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().hideTooltip(true).build());
-            inventory.setItem(36, ItemBuilder.of(inventoryConfig.helmet)
-                    .itemName(plugin.bundle().component("gui.placeholder.helmet", viewer))
-                    .item());
-            inventory.setItem(37, ItemBuilder.of(inventoryConfig.chestplate)
-                    .itemName(plugin.bundle().component("gui.placeholder.chestplate", viewer))
-                    .item());
-            inventory.setItem(38, ItemBuilder.of(inventoryConfig.leggings)
-                    .itemName(plugin.bundle().component("gui.placeholder.leggings", viewer))
-                    .item());
-            inventory.setItem(39, ItemBuilder.of(inventoryConfig.boots)
-                    .itemName(plugin.bundle().component("gui.placeholder.boots", viewer))
-                    .item());
-            inventory.setItem(41, ItemBuilder.of(inventoryConfig.offHand)
-                    .itemName(plugin.bundle().component("gui.placeholder.off-hand", viewer))
-                    .item());
-            inventory.setItem(43, ItemBuilder.of(inventoryConfig.cursor)
-                    .itemName(plugin.bundle().component("gui.placeholder.cursor", viewer))
-                    .item());
+            inventory.setItem(36, withName(inventoryConfig.helmet, "gui.placeholder.helmet", viewer));
+            inventory.setItem(37, withName(inventoryConfig.chestplate, "gui.placeholder.chestplate", viewer));
+            inventory.setItem(38, withName(inventoryConfig.leggings, "gui.placeholder.leggings", viewer));
+            inventory.setItem(39, withName(inventoryConfig.boots, "gui.placeholder.boots", viewer));
+            inventory.setItem(41, withName(inventoryConfig.offHand, "gui.placeholder.off-hand", viewer));
+            inventory.setItem(43, withName(inventoryConfig.cursor, "gui.placeholder.cursor", viewer));
             IntStream.of(40, 42, 44, 49, 51, 53).forEach(i -> inventory.setItem(i, placeholder));
         }
 
         public void close() {
             inventory.close();
         }
+    }
+
+    private ItemStack withName(Material material, String name, Audience viewer) {
+        var itemStack = ItemStack.of(material);
+        itemStack.setData(DataComponentTypes.ITEM_NAME, plugin.bundle().component(name, viewer));
+        return itemStack;
     }
 }
