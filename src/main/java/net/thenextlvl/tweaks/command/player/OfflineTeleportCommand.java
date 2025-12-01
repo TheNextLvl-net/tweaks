@@ -3,7 +3,6 @@ package net.thenextlvl.tweaks.command.player;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import core.io.IO;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.key.Key;
@@ -26,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.io.File;
+import java.nio.file.Files;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -176,11 +175,11 @@ public class OfflineTeleportCommand {
     private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
         var overworld = plugin.getServer().getWorld(Key.key("overworld"));
         if (overworld == null) return null;
-        var data = new File(overworld.getWorldFolder(), "playerdata");
-        var io = IO.of(data, player.getUniqueId() + ".dat");
-        var fallback = IO.of(data, player.getUniqueId() + ".dat_old");
-        return io.exists() ? new NBTFile<>(io, CompoundTag.empty())
-                : fallback.exists() ? new NBTFile<>(fallback, CompoundTag.empty())
+        var data = overworld.getWorldFolder().toPath().resolve("playerdata");
+        var file = data.resolve(player.getUniqueId() + ".dat");
+        var backup = data.resolve(player.getUniqueId() + ".dat_old");
+        return Files.isRegularFile(file) ? new NBTFile<>(file, CompoundTag.empty())
+                : Files.isRegularFile(backup) ? new NBTFile<>(backup, CompoundTag.empty())
                 : null;
     }
 }

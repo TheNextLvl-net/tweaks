@@ -2,8 +2,7 @@ package net.thenextlvl.tweaks;
 
 import com.google.gson.GsonBuilder;
 import core.file.FileIO;
-import core.file.format.GsonFile;
-import core.io.IO;
+import core.file.formats.GsonFile;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.key.Key;
@@ -133,7 +132,7 @@ public final class TweaksPlugin extends JavaPlugin {
     private final PluginVersionChecker versionChecker = new PluginVersionChecker(this);
 
     private final CommandConfig commands = new GsonFile<>(
-            IO.of(getDataFolder(), "commands.json"),
+            getDataPath().resolve("commands.json"),
             new CommandConfig()
     ).validate().save().getRoot();
 
@@ -363,7 +362,7 @@ public final class TweaksPlugin extends JavaPlugin {
 
     private void initConfig() {
         this.config = new GsonFile<>(
-                IO.of(getDataFolder(), "config.json"),
+                getDataPath().resolve("config.json"),
                 new PluginConfig(), new GsonBuilder()
                 .registerTypeHierarchyAdapter(LazyLocation.class, new LazyLocationAdapter())
                 .registerTypeHierarchyAdapter(Material.class, new MaterialAdapter())

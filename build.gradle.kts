@@ -33,10 +33,11 @@ dependencies {
     compileOnly("net.thenextlvl.services:service-io:2.3.1")
     compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
 
+    implementation("net.thenextlvl.core:files:4.0.0-pre1")
+    implementation("net.thenextlvl.core:paper:3.0.0-pre1")
     implementation("net.thenextlvl.version-checker:modrinth-paper:1.0.0")
-    implementation("net.thenextlvl.core:paper:2.3.1")
     implementation("net.thenextlvl:i18n:1.0.0")
-    implementation("net.thenextlvl:nbt:3.0.1")
+    implementation("net.thenextlvl:nbt:4.0.0-pre1")
     implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 
