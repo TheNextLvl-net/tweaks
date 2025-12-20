@@ -7,7 +7,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import net.thenextlvl.nbt.file.NBTFile;
+import net.thenextlvl.nbt.NBTInputStream;
+import net.thenextlvl.nbt.NBTOutputStream;
 import net.thenextlvl.nbt.tag.CompoundTag;
 import net.thenextlvl.nbt.tag.DoubleTag;
 import net.thenextlvl.nbt.tag.FloatTag;
@@ -25,7 +26,10 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -110,11 +114,19 @@ public class OfflineTeleportCommand {
     }
 
     private boolean setLocation(OfflinePlayer player, Location location) {
-        var file = getNBTFile(player);
+        var file = getPlayerDataFile(player).orElse(null);
         if (file == null) return false;
-        file.getRoot().addAll(toTag(location));
-        file.save();
-        return true;
+        try (var input = NBTInputStream.create(file);
+             var output = NBTOutputStream.create(file)) {
+            var tag = input.readNamedTag();
+            output.writeTag(tag.getKey(), tag.getValue().toBuilder()
+                    .putAll(toTag(location))
+                    .build());
+            return true;
+        } catch (IOException e) {
+            plugin.getComponentLogger().warn("Failed to set location of offline player", e);
+            return false;
+        }
     }
 
     private @Nullable Location fromTag(CompoundTag tag) {
@@ -147,39 +159,53 @@ public class OfflineTeleportCommand {
     }
 
     private CompoundTag toTag(Location location) {
-        var pos = ListTag.of(DoubleTag.ID);
-        pos.add(DoubleTag.of(location.getX()));
-        pos.add(DoubleTag.of(location.getY()));
-        pos.add(DoubleTag.of(location.getZ()));
+        var pos = ListTag.builder()
+                .add(DoubleTag.of(location.getX()))
+                .add(DoubleTag.of(location.getY()))
+                .add(DoubleTag.of(location.getZ()))
+                .build();
 
-        var rotation = ListTag.of(FloatTag.ID);
-        rotation.add(FloatTag.of(location.getYaw()));
-        rotation.add(FloatTag.of(location.getPitch()));
+        var rotation = ListTag.builder()
+                .add(FloatTag.of(location.getYaw()))
+                .add(FloatTag.of(location.getPitch()))
+                .build();
 
-        var tag = CompoundTag.empty();
-        tag.add("WorldUUIDLeast", location.getWorld().getUID().getLeastSignificantBits());
-        tag.add("WorldUUIDMost", location.getWorld().getUID().getMostSignificantBits());
-        tag.add("Dimension", location.getWorld().key().asString());
-        tag.add("Pos", pos);
-        tag.add("Rotation", rotation);
-        return tag;
+        return CompoundTag.builder()
+                .put("WorldUUIDLeast", location.getWorld().getUID().getLeastSignificantBits())
+                .put("WorldUUIDMost", location.getWorld().getUID().getMostSignificantBits())
+                .put("Dimension", location.getWorld().key().asString())
+                .put("Pos", pos)
+                .put("Rotation", rotation)
+                .build();
     }
 
     private @Nullable Location getLocation(OfflinePlayer player) {
         var online = player.getPlayer();
         if (online != null) return online.getLocation();
-        var file = getNBTFile(player);
-        return file != null ? fromTag(file.getRoot()) : null;
+        try (var file = readPlayerData(player)) {
+            return file != null ? fromTag(file.readTag()) : null;
+        } catch (IOException e) {
+            plugin.getComponentLogger().warn("Failed to get location of offline player", e);
+            return null;
+        }
     }
 
-    private @Nullable NBTFile<CompoundTag> getNBTFile(OfflinePlayer player) {
-        var overworld = plugin.getServer().getWorld(Key.key("overworld"));
-        if (overworld == null) return null;
-        var data = overworld.getWorldFolder().toPath().resolve("playerdata");
-        var file = data.resolve(player.getUniqueId() + ".dat");
-        var backup = data.resolve(player.getUniqueId() + ".dat_old");
-        return Files.isRegularFile(file) ? new NBTFile<>(file, CompoundTag.empty())
-                : Files.isRegularFile(backup) ? new NBTFile<>(backup, CompoundTag.empty())
-                : null;
+    private Optional<Path> getPlayerDataFolder() {
+        var overworld = Key.key(Key.MINECRAFT_NAMESPACE, "overworld");
+        return Optional.ofNullable(plugin.getServer().getWorld(overworld))
+                .map(world -> world.getWorldFolder().toPath().resolve("playerdata"));
+    }
+
+    private Optional<Path> getPlayerDataFile(OfflinePlayer player) {
+        return getPlayerDataFolder().map(path -> {
+            return path.resolve(player.getUniqueId() + ".dat");
+        }).filter(Files::isRegularFile).or(() -> getPlayerDataFolder().map(path -> {
+            return path.resolve(player.getUniqueId() + ".dat_old");
+        }).filter(Files::isRegularFile));
+    }
+
+    private @Nullable NBTInputStream readPlayerData(OfflinePlayer player) throws IOException {
+        var file = getPlayerDataFile(player).orElse(null);
+        return file != null ? NBTInputStream.create(file) : null;
     }
 }
