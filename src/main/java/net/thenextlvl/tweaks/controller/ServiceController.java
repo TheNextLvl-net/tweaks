@@ -33,7 +33,7 @@ public final class ServiceController {
     }
 
     private <C> @Nullable C loadController(TweaksPlugin plugin, Class<C> clazz, Function<C, String> name, String description) {
-        var controller = plugin.getServer().getServicesManager().load(clazz);
+        C controller = plugin.getServer().getServicesManager().load(clazz);
         if (controller != null) plugin.getComponentLogger().info(
                 "Using {} as {} provider",
                 name.apply(controller), description
