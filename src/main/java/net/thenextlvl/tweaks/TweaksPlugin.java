@@ -3,6 +3,7 @@ package net.thenextlvl.tweaks;
 import com.google.gson.GsonBuilder;
 import core.file.FileIO;
 import core.file.formats.GsonFile;
+import dev.faststats.bukkit.BukkitMetrics;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.key.Key;
@@ -110,6 +111,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
 import java.util.Objects;
@@ -129,6 +131,9 @@ import static org.bukkit.ServerLinks.Type.WEBSITE;
 @NullMarked
 public final class TweaksPlugin extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, 19651);
+    private final dev.faststats.core.Metrics fastStats = BukkitMetrics.factory()
+            .token("49d8e8036457cf422c4b684d7ab81dbd")
+            .create(this);
     private final PluginVersionChecker versionChecker = new PluginVersionChecker(this);
 
     private final CommandConfig commands = new GsonFile<>(
@@ -147,6 +152,9 @@ public final class TweaksPlugin extends JavaPlugin {
     private final TPAController tpaController = new TPAController(this);
     private final TeleportController teleportController = new TeleportController(this);
     private final WarpController warpController = new WarpController(this);
+
+    public TweaksPlugin() throws IOException {
+    }
 
     @Override
     public void onLoad() {
@@ -167,6 +175,7 @@ public final class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        fastStats.shutdown();
         metrics.shutdown();
     }
 
