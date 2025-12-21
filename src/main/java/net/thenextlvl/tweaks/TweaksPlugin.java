@@ -111,7 +111,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
 import java.util.Objects;
@@ -152,9 +151,6 @@ public final class TweaksPlugin extends JavaPlugin {
     private final TPAController tpaController = new TPAController(this);
     private final TeleportController teleportController = new TeleportController(this);
     private final WarpController warpController = new WarpController(this);
-
-    public TweaksPlugin() throws IOException {
-    }
 
     @Override
     public void onLoad() {
