@@ -31,7 +31,7 @@ repositories {
 
 dependencies {
     compileOnly("net.thenextlvl.services:service-io:2.3.1")
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
 
     implementation("dev.faststats.metrics:bukkit:0.7.3")
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
@@ -48,7 +48,7 @@ tasks.shadowJar {
 }
 
 tasks.runServer {
-    minecraftVersion("1.21.10")
+    minecraftVersion("1.21.8")
 }
 
 paper {
