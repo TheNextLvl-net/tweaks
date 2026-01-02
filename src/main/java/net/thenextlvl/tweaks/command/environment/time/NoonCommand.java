@@ -4,7 +4,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.environment.WorldCommand;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jspecify.annotations.NullMarked;
@@ -22,7 +22,7 @@ public class NoonCommand extends WorldCommand {
 
     @Override
     protected void execute(CommandSender sender, World world) {
-        if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+        if (Boolean.TRUE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(sender, "command.time.noon", Placeholder.parsed("world", world.getName()));
         world.setTime(6000);
     }

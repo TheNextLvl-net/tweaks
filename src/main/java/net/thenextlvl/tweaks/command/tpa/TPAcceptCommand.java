@@ -9,7 +9,7 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.RequestSuggestionProvider;
 import net.thenextlvl.tweaks.controller.TPAController.Request;
 import net.thenextlvl.tweaks.controller.TPAController.RequestType;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -57,7 +57,7 @@ public class TPAcceptCommand {
             return 0;
         }
 
-        if (Boolean.TRUE.equals(sender.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) {
+        if (Boolean.TRUE.equals(sender.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK))) {
             plugin.bundle().sendMessage(sender, "command.tpa.accepted.self",
                     Placeholder.parsed("player", player.getName()));
             plugin.bundle().sendMessage(player, "command.tpa.accepted",
@@ -73,7 +73,7 @@ public class TPAcceptCommand {
     private static void teleport(TweaksPlugin plugin, Player player, Player target) {
         plugin.teleportController().teleport(player, target.getLocation(), COMMAND).thenAccept(success -> {
             var message = success ? "command.tpa.teleported" : "command.teleport.cancelled";
-            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || !success)
+            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
                 plugin.bundle().sendMessage(player, message, Placeholder.parsed("player", target.getName()));
         });
     }

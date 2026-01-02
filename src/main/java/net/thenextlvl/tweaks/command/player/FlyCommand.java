@@ -3,7 +3,7 @@ package net.thenextlvl.tweaks.command.player;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
@@ -24,7 +24,7 @@ public class FlyCommand extends PlayersCommand {
         player.setAllowFlight(!player.getAllowFlight());
         player.setFlying(player.getAllowFlight());
 
-        if (Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
+        if (Boolean.FALSE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK))) return;
 
         var messageSelf = player.getAllowFlight() ? "command.flight.enabled.self" : "command.flight.disabled.self";
         var messageOthers = player.getAllowFlight() ? "command.flight.enabled.others" : "command.flight.disabled.others";
