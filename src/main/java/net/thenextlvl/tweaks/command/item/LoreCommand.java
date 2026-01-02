@@ -12,7 +12,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
@@ -125,7 +125,7 @@ public class LoreCommand {
         var success = !item.isEmpty() && function.apply(item);
         var message = item.isEmpty() ? "command.hold.item" : success ? "command.item.lore" : "nothing.changed";
 
-        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || !success)
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
             plugin.bundle().sendMessage(player, message);
         return success ? Command.SINGLE_SUCCESS : 0;
     }

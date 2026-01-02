@@ -15,7 +15,7 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.EnchantSuggestionProvider;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
@@ -78,7 +78,7 @@ public class EnchantCommand {
         level = Math.max(level, enchantment.getStartLevel());
 
         item.addUnsafeEnchantment(enchantment, level);
-        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.enchantment.applied",
                     Placeholder.component("enchantment", enchantment.displayName(level).style(Style.empty())));
 

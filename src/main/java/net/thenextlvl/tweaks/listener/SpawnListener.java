@@ -1,5 +1,6 @@
 package net.thenextlvl.tweaks.listener;
 
+import io.papermc.paper.event.player.AsyncPlayerSpawnLocationEvent;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -7,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jspecify.annotations.NullMarked;
-import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 @NullMarked
 public final class SpawnListener implements Listener {
@@ -17,13 +17,12 @@ public final class SpawnListener implements Listener {
         this.plugin = plugin;
     }
 
-    // todo: port to AsyncPlayerSpawnLocationEvent
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
+    public void onPlayerSpawnLocation(AsyncPlayerSpawnLocationEvent event) {
         var config = plugin.config().spawn;
         if (config.location == null || !config.location.isWorldLoaded()) return;
-        if ((!config.teleportOnFirstJoin || event.getPlayer().hasPlayedBefore())
-            && (!config.teleportOnJoin || !event.getPlayer().hasPlayedBefore())) return;
+        if ((!config.teleportOnFirstJoin || !event.isNewPlayer()) 
+            && (!config.teleportOnJoin || event.isNewPlayer())) return;
         event.setSpawnLocation(config.location);
     }
 

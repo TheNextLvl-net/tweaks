@@ -5,7 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -43,7 +43,7 @@ public class BackCommand {
         plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
             var message = success ? "command.back" : "command.teleport.cancelled";
             if (success) plugin.backController().remove(player, location);
-            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || !success)
+            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
                 plugin.bundle().sendMessage(player, message);
         });
         return Command.SINGLE_SUCCESS;

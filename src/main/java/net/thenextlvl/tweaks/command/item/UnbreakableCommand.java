@@ -6,7 +6,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -35,11 +35,11 @@ public class UnbreakableCommand {
             return 0;
         } else if (item.hasData(DataComponentTypes.UNBREAKABLE)) {
             item.resetData(DataComponentTypes.UNBREAKABLE);
-            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
                 plugin.bundle().sendMessage(player, "command.item.unbreakable.removed");
         } else {
             item.setData(DataComponentTypes.UNBREAKABLE);
-            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+            if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
                 plugin.bundle().sendMessage(player, "command.item.unbreakable.success");
         }
         return Command.SINGLE_SUCCESS;

@@ -12,7 +12,7 @@ import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -58,7 +58,7 @@ public class HeadCommand {
                 .name(context.getArgument("player", String.class))
                 .build());
         player.getInventory().addItem(head);
-        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
     }
@@ -70,7 +70,7 @@ public class HeadCommand {
                 .addProperty(new ProfileProperty("textures", context.getArgument("value", String.class)))
                 .build());
         player.getInventory().addItem(head);
-        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
     }
@@ -84,7 +84,7 @@ public class HeadCommand {
                 .addProperty(new ProfileProperty("textures", base64))
                 .build());
         player.getInventory().addItem(head);
-        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)))
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.item.head.received");
         return Command.SINGLE_SUCCESS;
     }

@@ -17,7 +17,7 @@ import net.thenextlvl.nbt.tag.Tag;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.OfflinePlayerSuggestionProvider;
 import org.bukkit.Bukkit;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -91,7 +91,7 @@ public class OfflineTeleportCommand {
                     if (location != null) return sender.teleportAsync(location, COMMAND);
                     return CompletableFuture.completedFuture(false);
                 }).thenAccept(success -> {
-                    if (Boolean.FALSE.equals(sender.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
+                    if (Boolean.FALSE.equals(sender.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK))) return;
                     var message = success ? "command.offline.teleport.success.to" : "command.offline.teleport.fail.to";
                     plugin.bundle().sendMessage(sender, message, placeholder);
                 }).exceptionally(throwable -> {

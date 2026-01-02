@@ -3,7 +3,7 @@ package net.thenextlvl.tweaks.command.player;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -42,7 +42,7 @@ public class HealCommand extends EntitiesCommand {
         entity.setFireTicks(0);
         entity.setFreezeTicks(0);
 
-        if (Boolean.FALSE.equals(entity.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK))) return;
+        if (Boolean.FALSE.equals(entity.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK))) return;
 
         plugin.bundle().sendMessage(entity, "command.health.restored.self");
         if (entity != sender) plugin.bundle().sendMessage(sender, "command.health.restored.others",

@@ -6,7 +6,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.thenextlvl.tweaks.TweaksPlugin;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NullMarked;
@@ -45,7 +45,7 @@ public class RepairCommand {
         var success = repair(inventory.getItemInMainHand());
         var message = success ? "command.item.repaired.success" : "command.item.repaired.fail";
 
-        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || !success)
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
             plugin.bundle().sendMessage(player, message);
         return success ? Command.SINGLE_SUCCESS : 0;
     }
@@ -54,7 +54,7 @@ public class RepairCommand {
         var player = (Player) context.getSource().getSender();
         var inventory = player.getInventory();
         var success = Arrays.stream(inventory.getContents()).map(this::repair).reduce(false, Boolean::logicalOr);
-        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) || !success)
+        if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
             plugin.bundle().sendMessage(player, success ? "command.item.repaired.all" : "command.item.repaired.none");
         return success ? Command.SINGLE_SUCCESS : 0;
     }

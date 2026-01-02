@@ -8,7 +8,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.command.suggestion.WarpSuggestionProvider;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
@@ -33,7 +33,7 @@ public class DeleteWarpCommand {
         var name = context.getArgument("name", String.class);
         plugin.warpController().deleteWarp(name).thenAccept(success -> {
             var world = context.getSource().getLocation().getWorld();
-            if (Boolean.FALSE.equals(world.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK)) && success) return;
+            if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) && success) return;
             var message = success ? "command.warp.delete" : "command.warp.unknown";
             plugin.bundle().sendMessage(context.getSource().getSender(), message,
                     Placeholder.parsed("name", name));
