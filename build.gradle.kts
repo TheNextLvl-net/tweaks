@@ -12,7 +12,6 @@ plugins {
 }
 
 group = "net.thenextlvl.tweaks"
-version = "3.3.3"
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
