@@ -16,6 +16,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public final class BackController {
     private final Map<UUID, BlockingDeque<Location>> positions = new ConcurrentHashMap<>();
     private final Map<UUID, Location> positionLock = new ConcurrentHashMap<>();
+    private final Map<UUID, Location> lastSafeLocation = new ConcurrentHashMap<>();
     private final TweaksPlugin plugin;
 
     public BackController(TweaksPlugin plugin) {
@@ -27,6 +28,14 @@ public final class BackController {
         if (deque == null) return null;
         deque.removeIf(location -> !location.isWorldLoaded());
         return deque.peekFirst();
+    }
+    
+    public void setLastSafeLocation(Player player, Location location) {
+        lastSafeLocation.put(player.getUniqueId(), location);
+    }
+    
+    public @Nullable Location getLastSafeLocation(Player player) {
+        return lastSafeLocation.get(player.getUniqueId());
     }
 
     public void offerFirst(Player player, Location location) {
