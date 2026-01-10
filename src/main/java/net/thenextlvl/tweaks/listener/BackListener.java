@@ -26,8 +26,8 @@ public final class BackListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event) {
         if (!event.hasChangedBlock()) return;
-        if (!event.getPlayer().hasPermission("tweaks.command.back")) return;
         if (!event.getPlayer().isOnGround()) return;
+        if (!event.getPlayer().hasPermission("tweaks.command.back")) return;
         if (!isSafe(event.getFrom().getBlock())) return;
         plugin.backController().setLastSafeLocation(event.getPlayer(), event.getFrom());
     }
