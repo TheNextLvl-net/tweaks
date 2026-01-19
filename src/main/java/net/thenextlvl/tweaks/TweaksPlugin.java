@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import core.file.FileIO;
 import core.file.formats.GsonFile;
 import dev.faststats.bukkit.BukkitMetrics;
+import dev.faststats.core.ErrorTracker;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.key.Key;
@@ -129,9 +130,13 @@ import static org.bukkit.ServerLinks.Type.WEBSITE;
 
 @NullMarked
 public final class TweaksPlugin extends JavaPlugin {
+    public static final String ISSUES = "https://github.com/TheNextLvl-net/tweaks/issues/new?template=bug_report.yml";
+    public static final ErrorTracker ERROR_TRACKER = ErrorTracker.contextAware();
+
     private final Metrics metrics = new Metrics(this, 19651);
     private final dev.faststats.core.Metrics fastStats = BukkitMetrics.factory()
             .token("49d8e8036457cf422c4b684d7ab81dbd")
+            .errorTracker(ERROR_TRACKER)
             .create(this);
     private final PluginVersionChecker versionChecker = new PluginVersionChecker(this);
 

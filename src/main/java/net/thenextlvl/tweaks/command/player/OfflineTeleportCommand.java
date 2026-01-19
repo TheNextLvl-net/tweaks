@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import static net.thenextlvl.tweaks.TweaksPlugin.ISSUES;
 import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 
 @NullMarked
@@ -125,6 +126,8 @@ public class OfflineTeleportCommand {
             return true;
         } catch (IOException e) {
             plugin.getComponentLogger().warn("Failed to set location of offline player", e);
+            plugin.getComponentLogger().warn("Please look for similar issues or report this on GitHub: {}", ISSUES);
+            TweaksPlugin.ERROR_TRACKER.trackError(e);
             return false;
         }
     }
@@ -186,6 +189,8 @@ public class OfflineTeleportCommand {
             return file != null ? fromTag(file.readTag()) : null;
         } catch (IOException e) {
             plugin.getComponentLogger().warn("Failed to get location of offline player", e);
+            plugin.getComponentLogger().warn("Please look for similar issues or report this on GitHub: {}", ISSUES);
+            TweaksPlugin.ERROR_TRACKER.trackError(e);
             return null;
         }
     }
