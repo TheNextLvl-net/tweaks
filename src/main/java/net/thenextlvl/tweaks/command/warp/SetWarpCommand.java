@@ -31,11 +31,12 @@ public class SetWarpCommand {
 
     private int setWarp(CommandContext<CommandSourceStack> context) {
         var name = context.getArgument("name", String.class);
-        plugin.warpController().setWarp(name, context.getSource().getLocation()).thenAccept(unused -> {
+        plugin.warpController().setWarp(name, context.getSource().getLocation()).thenAccept(success -> {
             var world = context.getSource().getLocation().getWorld();
-            if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK))) return;
-            plugin.bundle().sendMessage(context.getSource().getSender(),
-                    "command.warp.set", Placeholder.parsed("name", name));
+            if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) && success) return;
+            var message = success ? "command.warp.set" : "nothing.changed";
+            plugin.bundle().sendMessage(context.getSource().getSender(), message,
+                    Placeholder.parsed("name", name));
         });
         return Command.SINGLE_SUCCESS;
     }

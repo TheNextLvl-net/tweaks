@@ -18,6 +18,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import static net.thenextlvl.tweaks.TweaksPlugin.ISSUES;
+
 @NullMarked
 public final class DataController {
     private static final String TPA_TOGGLED = "tpa_toggled";
@@ -33,6 +35,9 @@ public final class DataController {
             createSettingsTable();
             createWarpsTable();
         } catch (SQLException e) {
+            plugin.getComponentLogger().error("Failed to connect to database", e);
+            plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
+            TweaksPlugin.ERROR_TRACKER.trackError(e);
             throw new RuntimeException("Failed to connect to database", e);
         }
     }
@@ -46,11 +51,11 @@ public final class DataController {
                     resultSet -> resultSet.next() ? parseLocation(resultSet) : null,
                     player.getUniqueId(), name));
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get home location", e);
+            return Optional.empty();
         }
     }
 
-    public boolean hasHome(OfflinePlayer player, String name) {
+    public boolean hasHome(OfflinePlayer player, String name) throws RuntimeException {
         try {
             return Boolean.TRUE.equals(executeQuery(
                     "SELECT COUNT(*) FROM homes WHERE uuid = ? AND name = ?",
@@ -62,7 +67,7 @@ public final class DataController {
         }
     }
 
-    public int getHomeCount(OfflinePlayer player) {
+    public int getHomeCount(OfflinePlayer player) throws RuntimeException {
         try {
             return Objects.requireNonNull(executeQuery(
                     "SELECT COUNT(*) FROM homes WHERE uuid = ?",
@@ -81,7 +86,7 @@ public final class DataController {
                     this::parseNamedLocations, player.getUniqueId()
             ), Set::of);
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get homes", e);
+            return Set.of();
         }
     }
 
@@ -89,11 +94,11 @@ public final class DataController {
         try {
             return executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?", player.getUniqueId(), name) != 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to delete home", e);
+            return false;
         }
     }
 
-    public void setHome(OfflinePlayer player, String name, Location location) {
+    public void setHome(OfflinePlayer player, String name, Location location) throws RuntimeException {
         try {
             executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?",
                     player.getUniqueId(), name);
@@ -185,7 +190,10 @@ public final class DataController {
                     player.getUniqueId(), setting
             ));
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to check if setting is toggled", e);
+            plugin.getComponentLogger().error("Failed to check if setting is toggled", e);
+            plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
+            TweaksPlugin.ERROR_TRACKER.trackError(e);
+            return true;
         }
     }
 
@@ -196,19 +204,18 @@ public final class DataController {
                     player.getUniqueId(), setting
             ) != 0 : removeSetting(player, setting);
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to set setting toggled", e);
+            plugin.getComponentLogger().error("Failed to set setting toggled", e);
+            plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
+            TweaksPlugin.ERROR_TRACKER.trackError(e);
+            return false;
         }
     }
 
-    private boolean removeSetting(OfflinePlayer player, String setting) {
-        try {
-            return executeUpdate(
-                    "DELETE FROM settings WHERE uuid = ? AND setting = ?",
-                    player.getUniqueId(), setting
-            ) != 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to remove setting", e);
-        }
+    private boolean removeSetting(OfflinePlayer player, String setting) throws SQLException {
+        return executeUpdate(
+                "DELETE FROM settings WHERE uuid = ? AND setting = ?",
+                player.getUniqueId(), setting
+        ) != 0;
     }
 
     private boolean toggleSetting(OfflinePlayer player, String setting) {
@@ -223,7 +230,7 @@ public final class DataController {
                 return parseLocation(resultSet);
             }, name));
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get warp location", e);
+            return Optional.empty();
         }
     }
 
@@ -234,7 +241,7 @@ public final class DataController {
                     this::parseNamedLocations
             ), Set::of);
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get warps", e);
+            return Set.of();
         }
     }
 
@@ -242,11 +249,11 @@ public final class DataController {
         try {
             return executeUpdate("DELETE FROM warps WHERE name = ?", name) != 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to delete warp", e);
+            return false;
         }
     }
 
-    public void setWarp(String name, Location location) {
+    public boolean setWarp(String name, Location location) {
         try {
             executeUpdate("""
                             INSERT INTO warps (name, world, x, y, z, yaw, pitch)
@@ -266,8 +273,12 @@ public final class DataController {
                     location.getZ(),
                     location.getYaw(),
                     location.getPitch());
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to set warp", e);
+            plugin.getComponentLogger().error("Failed to set warp", e);
+            plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
+            TweaksPlugin.ERROR_TRACKER.trackError(e);
+            return false;
         }
     }
 

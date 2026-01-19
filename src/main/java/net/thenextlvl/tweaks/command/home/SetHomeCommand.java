@@ -14,6 +14,8 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
+import static net.thenextlvl.tweaks.TweaksPlugin.ISSUES;
+
 @NullMarked
 public class SetHomeCommand {
     private final TweaksPlugin plugin;
@@ -53,12 +55,14 @@ public class SetHomeCommand {
             }
         }).exceptionally(throwable -> {
             plugin.getComponentLogger().error("Failed to set home", throwable);
+            plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
+            TweaksPlugin.ERROR_TRACKER.trackError(throwable);
             return null;
         });
         return Command.SINGLE_SUCCESS;
     }
 
-    private void setHome(String name, Player player) {
+    private void setHome(String name, Player player) throws RuntimeException {
         plugin.dataController().setHome(player, name, player.getLocation());
         plugin.bundle().sendMessage(player, "command.home.set.name", Placeholder.parsed("name", name));
     }
