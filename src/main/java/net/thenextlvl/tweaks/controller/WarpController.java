@@ -18,25 +18,18 @@ public final class WarpController {
     }
 
     public CompletableFuture<Optional<Location>> getWarp(String name) {
-        return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarp(name))
-                .exceptionally(throwable -> Optional.empty());
+        return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarp(name));
     }
 
     public CompletableFuture<Set<NamedLocation>> getWarps() {
-        return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarps())
-                .exceptionally(throwable -> Set.of());
+        return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarps());
     }
 
     public CompletableFuture<Boolean> deleteWarp(String name) {
-        return CompletableFuture.supplyAsync(() -> plugin.dataController().deleteWarp(name))
-                .exceptionally(throwable -> false);
+        return CompletableFuture.supplyAsync(() -> plugin.dataController().deleteWarp(name));
     }
 
-    public CompletableFuture<Void> setWarp(String name, Location location) {
-        return CompletableFuture.runAsync(() -> plugin.dataController().setWarp(name, location))
-                .exceptionally(throwable -> {
-                    plugin.getComponentLogger().error("Failed to set warp", throwable);
-                    return null;
-                });
+    public CompletableFuture<Boolean> setWarp(String name, Location location) {
+        return CompletableFuture.supplyAsync(() -> plugin.dataController().setWarp(name, location));
     }
 }

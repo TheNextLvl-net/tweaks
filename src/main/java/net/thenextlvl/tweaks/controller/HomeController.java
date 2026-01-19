@@ -20,18 +20,15 @@ public final class HomeController {
     }
 
     public CompletableFuture<Optional<Location>> getHome(OfflinePlayer player, String name) {
-        return CompletableFuture.supplyAsync(() -> plugin.dataController().getHome(player, name))
-                .exceptionally(throwable -> Optional.empty());
+        return CompletableFuture.supplyAsync(() -> plugin.dataController().getHome(player, name));
     }
 
     public CompletableFuture<Set<NamedLocation>> getHomes(OfflinePlayer player) {
-        return CompletableFuture.supplyAsync(() -> plugin.dataController().getHomes(player))
-                .exceptionally(throwable -> Set.of());
+        return CompletableFuture.supplyAsync(() -> plugin.dataController().getHomes(player));
     }
 
     public CompletableFuture<Boolean> deleteHome(OfflinePlayer player, String name) {
-        return CompletableFuture.supplyAsync(() -> plugin.dataController().deleteHome(player, name))
-                .exceptionally(throwable -> false);
+        return CompletableFuture.supplyAsync(() -> plugin.dataController().deleteHome(player, name));
     }
 
     /**
