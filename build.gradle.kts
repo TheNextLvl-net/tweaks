@@ -32,7 +32,7 @@ dependencies {
     compileOnly("net.thenextlvl.services:service-io:2.3.1")
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
-    implementation("dev.faststats.metrics:bukkit:0.11.1")
+    implementation("dev.faststats.metrics:bukkit:0.12.0")
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
     implementation("net.thenextlvl.core:paper:3.0.0-pre1")
     implementation("net.thenextlvl.version-checker:modrinth-paper:1.0.1")
