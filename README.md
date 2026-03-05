@@ -1,8 +1,8 @@
 # Tweaks
 
-A modern alternative to EssentialsX
+An EssentialsX-like plugin
 
-[<img src="https://bstats.org/signatures/bukkit/TheNextLvl%20Tweaks.svg">](https://bstats.org/plugin/bukkit/TheNextLvl%20Tweaks)
+[![Usage](https://faststats.dev/embed/default:cc247a5b-19f0-40ce-927a-5726298f8641:servers-and-players?w=1012)](https://faststats.dev/project/tweaks)
 
 ## Versions
 
