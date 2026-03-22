@@ -164,6 +164,8 @@ public final class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        ERROR_TRACKER.trackError("Hello");
+        fastStats.ready();
         initConfig();
         initTranslations();
         initControllers();
