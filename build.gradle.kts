@@ -1,6 +1,7 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import net.minecrell.pluginyml.paper.PaperPluginDescription
+import proguard.gradle.ProGuardTask
 
 plugins {
     id("java")
@@ -9,9 +10,45 @@ plugins {
     id("de.eldoria.plugin-yml.paper") version "0.8.0"
     id("io.papermc.hangar-publish-plugin") version "0.1.4"
     id("com.modrinth.minotaur") version "2.+"
+    id("dev.faststats.proguard-mappings-upload") version "0.1.0"
+}
+
+tasks.register<ProGuardTask>("proguard") {
+    dependsOn(tasks.shadowJar)
+    group = "faststats"
+
+    configuration(file("proguard.pro"))
+
+    injars(tasks.shadowJar.flatMap { it.archiveFile })
+
+    val javaHome = System.getProperty("java.home")
+    libraryjars(
+        mapOf("jarfilter" to "!**.jar", "filter" to "!module-info.class"),
+        "$javaHome/jmods/java.base.jmod"
+    )
+
+    outjars(layout.buildDirectory.file("libs/${project.name}-${project.version}-obfuscated.jar"))
+
+    verbose()
+}
+
+mappingsUpload {
+    authToken.set("fsm_7a7c1fd3a46649dd5fba64d769dd0184168362f2abf7e080df2ea8214b55944f")
+    proguardTask.set(tasks.getByName("proguard"))
+    mappingFiles.from(layout.buildDirectory.file("obfuscation-mappings.txt"))
 }
 
 group = "net.thenextlvl.tweaks"
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.guardsquare:proguard-gradle:7.9.0")
+    }
+}
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -22,6 +59,7 @@ tasks.compileJava {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://repo.thenextlvl.net/releases")
     maven("https://repo.thenextlvl.net/snapshots")
@@ -32,7 +70,7 @@ dependencies {
     compileOnly("net.thenextlvl.services:service-io:2.3.1")
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
-    implementation("dev.faststats.metrics:bukkit:0.18.1")
+    implementation("dev.faststats.metrics:bukkit:0.19.0")
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
     implementation("net.thenextlvl.core:paper:3.0.0-pre1")
     implementation("net.thenextlvl.version-checker:modrinth-paper:1.0.1")
