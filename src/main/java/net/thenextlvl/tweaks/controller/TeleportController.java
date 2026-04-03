@@ -18,12 +18,12 @@ public final class TeleportController {
     private final Map<UUID, Location> teleports = new ConcurrentHashMap<>();
     private final TweaksPlugin plugin;
 
-    public TeleportController(TweaksPlugin plugin) {
+    public TeleportController(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public CompletableFuture<Boolean> teleport(Player player, Location location, PlayerTeleportEvent.TeleportCause cause) {
-        var cooldown = plugin.config().teleport.cooldown;
+    public CompletableFuture<Boolean> teleport(final Player player, final Location location, final PlayerTeleportEvent.TeleportCause cause) {
+        final var cooldown = plugin.config().teleport.cooldown;
         if (cooldown <= 0 || player.hasPermission("tweaks.teleport.cooldown.bypass"))
             return player.teleportAsync(location, cause);
         if (location.equals(teleports.put(player.getUniqueId(), location)))
@@ -36,13 +36,13 @@ public final class TeleportController {
     }
 
     @SuppressWarnings("BusyWait")
-    private CompletableFuture<Boolean> scheduleTeleport(Player player, Location location, PlayerTeleportEvent.TeleportCause cause) {
+    private CompletableFuture<Boolean> scheduleTeleport(final Player player, final Location location, final PlayerTeleportEvent.TeleportCause cause) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                var previous = player.getLocation();
-                var cooldown = plugin.config().teleport.cooldown;
-                var teleportTime = System.currentTimeMillis() + cooldown;
-                var blockMovements = !plugin.config().teleport.allowMovement;
+                final var previous = player.getLocation();
+                final var cooldown = plugin.config().teleport.cooldown;
+                final var teleportTime = System.currentTimeMillis() + cooldown;
+                final var blockMovements = !plugin.config().teleport.allowMovement;
 
                 while (System.currentTimeMillis() < teleportTime) {
                     if (blockMovements && !player.getWorld().equals(previous.getWorld())) return false;
@@ -53,7 +53,7 @@ public final class TeleportController {
                 }
 
                 return true;
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {
                 teleports.remove(player.getUniqueId());
@@ -64,7 +64,7 @@ public final class TeleportController {
         });
     }
 
-    public void remove(Player player) {
+    public void remove(final Player player) {
         teleports.remove(player.getUniqueId());
     }
 }

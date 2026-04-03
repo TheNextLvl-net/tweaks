@@ -17,14 +17,14 @@ import java.util.concurrent.CompletableFuture;
 public final class EnchantSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
-    public EnchantSuggestionProvider(TweaksPlugin plugin) {
+    public EnchantSuggestionProvider(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        if (!(context.getSource().getSender() instanceof Player player)) return builder.buildFuture();
-        var item = player.getInventory().getItemInMainHand();
+    public CompletableFuture<Suggestions> getSuggestions(final CommandContext<CommandSourceStack> context, final SuggestionsBuilder builder) {
+        if (!(context.getSource().getSender() instanceof final Player player)) return builder.buildFuture();
+        final var item = player.getInventory().getItemInMainHand();
         RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).stream()
                 .filter(enchantment -> plugin.config().general.unsafeEnchantments || enchantment.canEnchantItem(item))
                 .filter(enchantment -> plugin.config().general.unsafeEnchantments

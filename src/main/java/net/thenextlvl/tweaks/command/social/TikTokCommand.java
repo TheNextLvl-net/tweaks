@@ -9,12 +9,12 @@ import org.jspecify.annotations.NullMarked;
 public class TikTokCommand {
     private final TweaksPlugin plugin;
 
-    public TikTokCommand(TweaksPlugin plugin) {
+    public TikTokCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().tiktok.command).executes(context -> {
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().tiktok.command).executes(context -> {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.tiktok");
             return Command.SINGLE_SUCCESS;
         }).build();

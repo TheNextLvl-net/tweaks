@@ -25,7 +25,7 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     private final Collection<NamedLocation> elements;
     private final Pagination pagination;
 
-    public NamedLocationGUI(TweaksPlugin plugin, PluginConfig.GUIConfig.GUI config, Player owner, Component title, Collection<NamedLocation> elements) {
+    public NamedLocationGUI(final TweaksPlugin plugin, final PluginConfig.GUIConfig.GUI config, final Player owner, final Component title, final Collection<NamedLocation> elements) {
         super(plugin, owner, title, config.rows);
         this.elements = elements;
         this.pagination = new Pagination(
@@ -47,8 +47,8 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
     }
 
     @Override
-    public ActionItem constructItem(NamedLocation element) {
-        var translation = "gui.item.location";
+    public ActionItem constructItem(final NamedLocation element) {
+        final var translation = "gui.item.location";
         return ItemBuilder.of(getIcon(element))
                 .itemName(plugin.bundle().component(translation, owner,
                         Argument.string("name", element.getName())))
@@ -58,18 +58,18 @@ public abstract class NamedLocationGUI extends PaginatedGUI<TweaksPlugin, NamedL
                 });
     }
 
-    private Material getIcon(NamedLocation element) {
-        var material = plugin.config().guis.nameIcons.get(element.getName());
+    private Material getIcon(final NamedLocation element) {
+        final var material = plugin.config().guis.nameIcons.get(element.getName());
         if (material != null) return material;
-        var hash = Math.abs(element.getName().hashCode());
+        final var hash = Math.abs(element.getName().hashCode());
         return materials.get(hash % materials.size());
     }
 
     protected abstract void teleport(NamedLocation element);
 
     @Override
-    public Component getPageFormat(int page) {
-        var key = page > getCurrentPage() ? "gui.page.next" : "gui.page.previous";
+    public Component getPageFormat(final int page) {
+        final var key = page > getCurrentPage() ? "gui.page.next" : "gui.page.previous";
         return plugin.bundle().component(key, owner);
     }
 }

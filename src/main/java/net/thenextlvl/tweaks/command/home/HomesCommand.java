@@ -17,29 +17,29 @@ import org.jspecify.annotations.NullMarked;
 public class HomesCommand {
     private final TweaksPlugin plugin;
 
-    public HomesCommand(TweaksPlugin plugin) {
+    public HomesCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().homes.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().homes.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.home"))
                 .executes(this::homes)
                 .build();
         registrar.register(command, "List all of your homes", plugin.commands().homes.aliases);
     }
 
-    private int homes(CommandContext<CommandSourceStack> context) {
-        var sender = (Player) context.getSource().getSender();
+    private int homes(final CommandContext<CommandSourceStack> context) {
+        final var sender = (Player) context.getSource().getSender();
         plugin.homeController().getHomes(sender).thenAccept(homes -> {
             if (homes.isEmpty()) {
                 plugin.bundle().sendMessage(sender, "command.home.undefined");
             } else if (plugin.config().guis.homes.enabled) {
                 sender.getScheduler().run(plugin, task -> new HomeGUI(plugin, sender, homes).open(), null);
             } else {
-                var list = homes.stream().map(home -> {
-                    var event = ClickEvent.runCommand("/home " + home.getName());
+                final var list = homes.stream().map(home -> {
+                    final var event = ClickEvent.runCommand("/home " + home.getName());
                     return Component.text(home.getName())
                             .hoverEvent(HoverEvent.showText(plugin.bundle().component("chat.click.teleport", sender)))
                             .clickEvent(event);

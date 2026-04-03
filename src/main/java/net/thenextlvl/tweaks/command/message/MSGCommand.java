@@ -18,12 +18,12 @@ import org.jspecify.annotations.NullMarked;
 public class MSGCommand {
     private final TweaksPlugin plugin;
 
-    public MSGCommand(TweaksPlugin plugin) {
+    public MSGCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().msg.command)
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().msg.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.msg"))
                 .then(Commands.argument("player", ArgumentTypes.player())
                         .suggests(new MSGSuggestionProvider(plugin))
@@ -33,10 +33,10 @@ public class MSGCommand {
         commands.register(command, "Send a private message to a player", plugin.commands().msg.aliases);
     }
 
-    private int message(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        var sender = context.getSource().getSender();
-        var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
-        var target = resolver.resolve(context.getSource()).getFirst();
+    private int message(final CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        final var sender = context.getSource().getSender();
+        final var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
+        final var target = resolver.resolve(context.getSource()).getFirst();
 
         if (sender.equals(target)) {
             plugin.bundle().sendMessage(sender, "command.msg.self");
@@ -54,8 +54,8 @@ public class MSGCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    static void message(TweaksPlugin plugin, CommandContext<CommandSourceStack> context, CommandSender sender, CommandSender target) {
-        var message = context.getArgument("message", String.class);
+    static void message(final TweaksPlugin plugin, final CommandContext<CommandSourceStack> context, final CommandSender sender, final CommandSender target) {
+        final var message = context.getArgument("message", String.class);
 
         plugin.bundle().sendMessage(sender, "command.msg.outgoing",
                 Placeholder.parsed("receiver", target.getName()),

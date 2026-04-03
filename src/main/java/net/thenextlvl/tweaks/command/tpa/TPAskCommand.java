@@ -30,13 +30,13 @@ public class TPAskCommand {
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private final TweaksPlugin plugin;
 
-    public TPAskCommand(TweaksPlugin plugin) {
+    public TPAskCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportAsk.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().teleportAsk.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.tpa"))
                 .then(Commands.argument("player", ArgumentTypes.player())
                         .suggests(new TPASuggestionProvider(plugin))
@@ -45,14 +45,14 @@ public class TPAskCommand {
         commands.register(command, "Request to teleport to a player", plugin.commands().teleportAsk.aliases);
     }
 
-    private int ask(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        var sender = (Player) context.getSource().getSender();
-        var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
-        var player = resolver.resolve(context.getSource()).getFirst();
+    private int ask(final CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        final var sender = (Player) context.getSource().getSender();
+        final var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
+        final var player = resolver.resolve(context.getSource()).getFirst();
         return ask(plugin, sender, player, TPA) ? Command.SINGLE_SUCCESS : 0;
     }
 
-    static boolean ask(TweaksPlugin plugin, Player sender, Player player, RequestType type) {
+    static boolean ask(final TweaksPlugin plugin, final Player sender, final Player player, final RequestType type) {
         if (sender.equals(player)) {
             plugin.bundle().sendMessage(sender, "command.tpa.self");
             return false;
@@ -64,7 +64,7 @@ public class TPAskCommand {
             return false;
         }
 
-        var success = plugin.tpaController().addRequest(player, sender, type);
+        final var success = plugin.tpaController().addRequest(player, sender, type);
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
             plugin.bundle().sendMessage(sender, success ? type.outgoingMessage() : "command.tpa.sent",
                     Placeholder.parsed("player", player.getName()));

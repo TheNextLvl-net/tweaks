@@ -15,19 +15,19 @@ import java.util.concurrent.CompletableFuture;
 public final class HomeController {
     private final TweaksPlugin plugin;
 
-    public HomeController(TweaksPlugin plugin) {
+    public HomeController(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public CompletableFuture<Optional<Location>> getHome(OfflinePlayer player, String name) {
+    public CompletableFuture<Optional<Location>> getHome(final OfflinePlayer player, final String name) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().getHome(player, name));
     }
 
-    public CompletableFuture<Set<NamedLocation>> getHomes(OfflinePlayer player) {
+    public CompletableFuture<Set<NamedLocation>> getHomes(final OfflinePlayer player) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().getHomes(player));
     }
 
-    public CompletableFuture<Boolean> deleteHome(OfflinePlayer player, String name) {
+    public CompletableFuture<Boolean> deleteHome(final OfflinePlayer player, final String name) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().deleteHome(player, name));
     }
 
@@ -39,7 +39,7 @@ public final class HomeController {
      * if not explicitly defined in permissions, the default limit
      * from the plugin configuration is returned;
      */
-    public int getMaxHomeCount(Player player) {
+    public int getMaxHomeCount(final Player player) {
         return Optional.ofNullable(plugin.serviceController())
                 .flatMap(controller -> controller.getMaxHomeCount(player))
                 .orElse(plugin.config().homes.limit);

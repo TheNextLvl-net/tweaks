@@ -17,12 +17,12 @@ import org.jspecify.annotations.Nullable;
 public class MotdCommand {
     private final TweaksPlugin plugin;
 
-    public MotdCommand(TweaksPlugin plugin) {
+    public MotdCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().motd.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().motd.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.motd"))
                 .then(Commands.literal("replace")
                         .then(Commands.argument("text", StringArgumentType.string())
@@ -39,40 +39,40 @@ public class MotdCommand {
         registrar.register(command, "Change the motd of the server", plugin.commands().motd.aliases);
     }
 
-    private int replace(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
-        var motd = plugin.config().general.motd;
+    private int replace(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
+        final var motd = plugin.config().general.motd;
         if (motd == null) {
             plugin.bundle().sendMessage(sender, "command.motd.none");
             return 0;
         }
-        var message = context.getArgument("text", String.class);
-        var replacement = context.getArgument("replacement", String.class);
-        var newMotd = motd.replace(message, replacement);
+        final var message = context.getArgument("text", String.class);
+        final var replacement = context.getArgument("replacement", String.class);
+        final var newMotd = motd.replace(message, replacement);
         return updateMotd(sender, newMotd);
     }
 
-    private int clear(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
+    private int clear(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
         return updateMotd(sender, null);
     }
 
-    private int get(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
-        var motd = plugin.config().general.motd;
-        var message = motd != null ? "command.motd" : "command.motd.none";
+    private int get(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
+        final var motd = plugin.config().general.motd;
+        final var message = motd != null ? "command.motd" : "command.motd.none";
         plugin.bundle().sendMessage(sender, message, Placeholder.parsed("motd", String.valueOf(motd)));
         return Command.SINGLE_SUCCESS;
     }
 
-    private int set(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
-        var motd = context.getArgument("motd", String.class);
+    private int set(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
+        final var motd = context.getArgument("motd", String.class);
         return updateMotd(sender, motd);
     }
 
-    private int updateMotd(CommandSender sender, @Nullable String motd) {
-        var message = motd == null ? Component.text("A Minecraft Server")
+    private int updateMotd(final CommandSender sender, @Nullable final String motd) {
+        final var message = motd == null ? Component.text("A Minecraft Server")
                 : MiniMessage.miniMessage().deserialize(motd);
         plugin.bundle().sendMessage(sender, "command.motd.changed",
                 Placeholder.component("motd", message));

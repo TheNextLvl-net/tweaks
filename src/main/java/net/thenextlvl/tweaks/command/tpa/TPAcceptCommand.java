@@ -21,27 +21,27 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 public class TPAcceptCommand {
     private final TweaksPlugin plugin;
 
-    public TPAcceptCommand(TweaksPlugin plugin) {
+    public TPAcceptCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportAccept.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().teleportAccept.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.tpa.accept"))
                 .then(Commands.argument("player", ArgumentTypes.player())
                         .suggests(new RequestSuggestionProvider(plugin))
                         .executes(context -> {
-                            var sender = (Player) context.getSource().getSender();
-                            var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
-                            var target = resolver.resolve(context.getSource()).getFirst();
-                            var type = plugin.tpaController().getRequest(sender, target);
+                            final var sender = (Player) context.getSource().getSender();
+                            final var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
+                            final var target = resolver.resolve(context.getSource()).getFirst();
+                            final var type = plugin.tpaController().getRequest(sender, target);
                             return accept(plugin, sender, target, type.map(Request::type).orElse(TPA));
                         }))
                 .executes(context -> {
-                    var sender = (Player) context.getSource().getSender();
-                    var requests = plugin.tpaController().getRequests(sender);
-                    var request = requests.isEmpty() ? null : requests.getFirst();
+                    final var sender = (Player) context.getSource().getSender();
+                    final var requests = plugin.tpaController().getRequests(sender);
+                    final var request = requests.isEmpty() ? null : requests.getFirst();
                     return accept(plugin, sender, request != null ? request.player() : null,
                             request != null ? request.type() : TPA);
                 })
@@ -49,9 +49,9 @@ public class TPAcceptCommand {
         commands.register(command, "Accept a teleport request", plugin.commands().teleportAccept.aliases);
     }
 
-    static int accept(TweaksPlugin plugin, Player sender, @Nullable Player player, RequestType type) {
+    static int accept(final TweaksPlugin plugin, final Player sender, @Nullable final Player player, final RequestType type) {
         if (player == null || !plugin.tpaController().removeRequest(sender, player, type)) {
-            var message = player != null ? "command.tpa.no-request" : "command.tpa.no-requests";
+            final var message = player != null ? "command.tpa.no-request" : "command.tpa.no-requests";
             plugin.bundle().sendMessage(sender, message,
                     Placeholder.parsed("player", player != null ? player.getName() : "null"));
             return 0;
@@ -70,9 +70,9 @@ public class TPAcceptCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static void teleport(TweaksPlugin plugin, Player player, Player target) {
+    private static void teleport(final TweaksPlugin plugin, final Player player, final Player target) {
         plugin.teleportController().teleport(player, target.getLocation(), COMMAND).thenAccept(success -> {
-            var message = success ? "command.tpa.teleported" : "command.teleport.cancelled";
+            final var message = success ? "command.tpa.teleported" : "command.teleport.cancelled";
             if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
                 plugin.bundle().sendMessage(player, message, Placeholder.parsed("player", target.getName()));
         });

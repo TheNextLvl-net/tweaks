@@ -13,20 +13,20 @@ import org.jspecify.annotations.NullMarked;
 public final class ConnectionListener implements Listener {
     private final TweaksPlugin plugin;
 
-    public ConnectionListener(TweaksPlugin plugin) {
+    public ConnectionListener(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onJoin(PlayerJoinEvent event) {
-        var permissionLevel = plugin.config().general.defaultPermissionLevel;
+    public void onJoin(final PlayerJoinEvent event) {
+        final var permissionLevel = plugin.config().general.defaultPermissionLevel;
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
         if (!plugin.config().general.overrideJoinMessage) return;
-        var id = event.getPlayer().hasPlayedBefore()
+        final var id = event.getPlayer().hasPlayedBefore()
                 ? plugin.getServer().getOnlinePlayers().size()
                 : plugin.getServer().getOfflinePlayers().length;
-        var message = event.getPlayer().hasPlayedBefore() ? "player.connected" : "player.welcome";
-        var resolvers = plugin.serviceResolvers(event.getPlayer())
+        final var message = event.getPlayer().hasPlayedBefore() ? "player.connected" : "player.welcome";
+        final var resolvers = plugin.serviceResolvers(event.getPlayer())
                 .resolver(Formatter.number("id", id))
                 .build();
         plugin.getServer().forEachAudience(audience -> plugin.bundle().sendMessage(
@@ -36,9 +36,9 @@ public final class ConnectionListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    public void onPlayerQuit(final PlayerQuitEvent event) {
         if (!plugin.config().general.overrideQuitMessage) return;
-        var resolvers = plugin.serviceResolvers(event.getPlayer()).build();
+        final var resolvers = plugin.serviceResolvers(event.getPlayer()).build();
         plugin.getServer().forEachAudience(audience -> plugin.bundle().sendMessage(
                 audience, "player.disconnected", resolvers
         ));
@@ -46,7 +46,7 @@ public final class ConnectionListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void cleanup(PlayerQuitEvent event) {
+    public void cleanup(final PlayerQuitEvent event) {
         plugin.msgController().removeConversations(event.getPlayer());
         plugin.tpaController().removeRequests(event.getPlayer());
         plugin.teleportController().remove(event.getPlayer());

@@ -9,12 +9,12 @@ import org.jspecify.annotations.NullMarked;
 public class WebsiteCommand {
     private final TweaksPlugin plugin;
 
-    public WebsiteCommand(TweaksPlugin plugin) {
+    public WebsiteCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().website.command).executes(context -> {
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().website.command).executes(context -> {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.website");
             return Command.SINGLE_SUCCESS;
         }).build();

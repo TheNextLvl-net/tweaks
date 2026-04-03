@@ -9,12 +9,12 @@ import org.jspecify.annotations.NullMarked;
 public class TeamSpeakCommand {
     private final TweaksPlugin plugin;
 
-    public TeamSpeakCommand(TweaksPlugin plugin) {
+    public TeamSpeakCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().teamspeak.command).executes(context -> {
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().teamspeak.command).executes(context -> {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.teamspeak");
             return Command.SINGLE_SUCCESS;
         }).build();

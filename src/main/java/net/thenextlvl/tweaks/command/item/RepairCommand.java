@@ -18,13 +18,13 @@ import java.util.Arrays;
 public class RepairCommand {
     private final TweaksPlugin plugin;
 
-    public RepairCommand(TweaksPlugin plugin) {
+    public RepairCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().repair.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().repair.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.repair"))
                 .then(Commands.literal("all")
                         .executes(this::repairAll))
@@ -33,35 +33,35 @@ public class RepairCommand {
         registrar.register(command, "repair your tools", plugin.commands().repair.aliases);
     }
 
-    private int repair(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var inventory = player.getInventory();
+    private int repair(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var inventory = player.getInventory();
 
         if (inventory.getItemInMainHand().getType().isAir()) {
             plugin.bundle().sendMessage(player, "command.hold.item");
             return 0;
         }
 
-        var success = repair(inventory.getItemInMainHand());
-        var message = success ? "command.item.repaired.success" : "command.item.repaired.fail";
+        final var success = repair(inventory.getItemInMainHand());
+        final var message = success ? "command.item.repaired.success" : "command.item.repaired.fail";
 
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
             plugin.bundle().sendMessage(player, message);
         return success ? Command.SINGLE_SUCCESS : 0;
     }
 
-    private int repairAll(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var inventory = player.getInventory();
-        var success = Arrays.stream(inventory.getContents()).map(this::repair).reduce(false, Boolean::logicalOr);
+    private int repairAll(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var inventory = player.getInventory();
+        final var success = Arrays.stream(inventory.getContents()).map(this::repair).reduce(false, Boolean::logicalOr);
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
             plugin.bundle().sendMessage(player, success ? "command.item.repaired.all" : "command.item.repaired.none");
         return success ? Command.SINGLE_SUCCESS : 0;
     }
 
-    private boolean repair(@Nullable ItemStack item) {
+    private boolean repair(@Nullable final ItemStack item) {
         if (item == null) return false;
-        var damage = item.getData(DataComponentTypes.DAMAGE);
+        final var damage = item.getData(DataComponentTypes.DAMAGE);
         if (damage == null || damage == 0) return false;
         item.resetData(DataComponentTypes.DAMAGE);
         return true;

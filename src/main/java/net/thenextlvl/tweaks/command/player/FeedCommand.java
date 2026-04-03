@@ -12,17 +12,17 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class FeedCommand extends PlayersCommand {
-    public FeedCommand(TweaksPlugin plugin) {
+    public FeedCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().feed.command, "tweaks.command.feed", "tweaks.command.feed.others");
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().feed.command, "tweaks.command.feed", "tweaks.command.feed.others");
         registrar.register(command, "Satisfy your own or someone else's hunger", plugin.commands().feed.aliases);
     }
 
     @Override
-    protected void execute(CommandSender sender, Player player) {
+    protected void execute(final CommandSender sender, final Player player) {
         player.setExhaustion(0f);
         player.setFoodLevel(20);
         player.setSaturation(20f);

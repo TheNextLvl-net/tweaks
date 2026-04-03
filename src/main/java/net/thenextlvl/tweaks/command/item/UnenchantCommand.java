@@ -19,13 +19,13 @@ import org.jspecify.annotations.NullMarked;
 public class UnenchantCommand {
     private final TweaksPlugin plugin;
 
-    public UnenchantCommand(TweaksPlugin plugin) {
+    public UnenchantCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().unenchant.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().unenchant.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.unenchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resource(RegistryKey.ENCHANTMENT))
                         .suggests(new UnenchantSuggestionProvider())
@@ -34,16 +34,16 @@ public class UnenchantCommand {
         registrar.register(command, "Unenchant your tools", plugin.commands().unenchant.aliases);
     }
 
-    private int unenchant(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var item = player.getInventory().getItemInMainHand();
+    private int unenchant(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var item = player.getInventory().getItemInMainHand();
 
-        var enchantment = context.getArgument("enchantment", Enchantment.class);
-        var level = item.removeEnchantment(enchantment);
+        final var enchantment = context.getArgument("enchantment", Enchantment.class);
+        final var level = item.removeEnchantment(enchantment);
 
-        var message = level != 0 ? "command.enchantment.removed" : "command.enchantment.absent";
+        final var message = level != 0 ? "command.enchantment.removed" : "command.enchantment.absent";
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || level == 0) {
-            var clamped = Math.clamp(level, enchantment.getStartLevel(), enchantment.getMaxLevel());
+            final var clamped = Math.clamp(level, enchantment.getStartLevel(), enchantment.getMaxLevel());
             plugin.bundle().sendMessage(player, message, Placeholder.component("enchantment",
                     enchantment.displayName(clamped).style(Style.empty())));
         }

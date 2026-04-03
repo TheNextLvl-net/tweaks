@@ -27,14 +27,14 @@ public final class DataController {
     private final Connection connection;
     private final TweaksPlugin plugin;
 
-    public DataController(TweaksPlugin plugin) {
+    public DataController(final TweaksPlugin plugin) {
         try {
             this.connection = DriverManager.getConnection("jdbc:sqlite:" + new File(plugin.getDataFolder(), "saves.db"));
             this.plugin = plugin;
             createHomesTable();
             createSettingsTable();
             createWarpsTable();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             plugin.getComponentLogger().error("Failed to connect to database", e);
             plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
             TweaksPlugin.ERROR_TRACKER.trackError(e);
@@ -42,7 +42,7 @@ public final class DataController {
         }
     }
 
-    public Optional<Location> getHome(OfflinePlayer player, String name) {
+    public Optional<Location> getHome(final OfflinePlayer player, final String name) {
         try {
             return Optional.ofNullable(executeQuery("""
                             SELECT world, x, y, z, yaw, pitch FROM homes
@@ -50,55 +50,55 @@ public final class DataController {
                             """,
                     resultSet -> resultSet.next() ? parseLocation(resultSet) : null,
                     player.getUniqueId(), name));
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             return Optional.empty();
         }
     }
 
-    public boolean hasHome(OfflinePlayer player, String name) throws RuntimeException {
+    public boolean hasHome(final OfflinePlayer player, final String name) throws RuntimeException {
         try {
             return Boolean.TRUE.equals(executeQuery(
                     "SELECT COUNT(*) FROM homes WHERE uuid = ? AND name = ?",
                     resultSet -> resultSet.next() && resultSet.getInt(1) > 0,
                     player.getUniqueId(), name
             ));
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new RuntimeException("Failed to check if home exists", e);
         }
     }
 
-    public int getHomeCount(OfflinePlayer player) throws RuntimeException {
+    public int getHomeCount(final OfflinePlayer player) throws RuntimeException {
         try {
             return Objects.requireNonNull(executeQuery(
                     "SELECT COUNT(*) FROM homes WHERE uuid = ?",
                     resultSet -> resultSet.next() ? resultSet.getInt(1) : -1,
                     player.getUniqueId()
             ));
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new RuntimeException("Failed to get home count", e);
         }
     }
 
-    public Set<NamedLocation> getHomes(OfflinePlayer player) {
+    public Set<NamedLocation> getHomes(final OfflinePlayer player) {
         try {
             return Objects.requireNonNullElseGet(executeQuery(
                     "SELECT name, world, x, y, z, yaw, pitch FROM homes WHERE uuid = ?",
                     this::parseNamedLocations, player.getUniqueId()
             ), Set::of);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             return Set.of();
         }
     }
 
-    public boolean deleteHome(OfflinePlayer player, String name) {
+    public boolean deleteHome(final OfflinePlayer player, final String name) {
         try {
             return executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?", player.getUniqueId(), name) != 0;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             return false;
         }
     }
 
-    public void setHome(OfflinePlayer player, String name, Location location) throws RuntimeException {
+    public void setHome(final OfflinePlayer player, final String name, final Location location) throws RuntimeException {
         try {
             executeUpdate("DELETE FROM homes WHERE uuid = ? AND name = ?",
                     player.getUniqueId(), name);
@@ -110,7 +110,7 @@ public final class DataController {
                     location.getZ(),
                     location.getYaw(),
                     location.getPitch());
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new RuntimeException("Failed to set home", e);
         }
     }
@@ -122,7 +122,7 @@ public final class DataController {
      * @param player the player whose TPA toggle status is being checked
      * @return true if TPA requests are blocked, false if TPA requests are accepted
      */
-    public boolean isTpaToggled(OfflinePlayer player) {
+    public boolean isTpaToggled(final OfflinePlayer player) {
         return isSettingToggled(player, TPA_TOGGLED);
     }
 
@@ -134,7 +134,7 @@ public final class DataController {
      * @param toggled true to block TPA requests, false to accept TPA requests
      * @return true if the operation changed the player's TPA toggle setting, false otherwise
      */
-    public boolean setTpaToggled(OfflinePlayer player, boolean toggled) {
+    public boolean setTpaToggled(final OfflinePlayer player, final boolean toggled) {
         return setSettingToggled(player, toggled, TPA_TOGGLED);
     }
 
@@ -145,7 +145,7 @@ public final class DataController {
      * @param player the player whose TPA setting is to be toggled
      * @return the new TPA setting; false if the player now accepts TPA requests, true if the player blocks them
      */
-    public boolean toggleTpa(OfflinePlayer player) {
+    public boolean toggleTpa(final OfflinePlayer player) {
         return toggleSetting(player, TPA_TOGGLED);
     }
 
@@ -155,7 +155,7 @@ public final class DataController {
      * @param player the player whose message toggle status is being checked
      * @return true if the player has the message toggle enabled, false otherwise
      */
-    public boolean isMsgToggled(OfflinePlayer player) {
+    public boolean isMsgToggled(final OfflinePlayer player) {
         return isSettingToggled(player, MSG_TOGGLED);
     }
 
@@ -167,7 +167,7 @@ public final class DataController {
      * @param toggled true to block private messages, false to accept private messages
      * @return true if the operation changed the player's message toggle setting, false otherwise
      */
-    public boolean setMsgToggled(OfflinePlayer player, boolean toggled) {
+    public boolean setMsgToggled(final OfflinePlayer player, final boolean toggled) {
         return setSettingToggled(player, toggled, MSG_TOGGLED);
     }
 
@@ -178,18 +178,18 @@ public final class DataController {
      * @param player the player whose message setting is to be toggled
      * @return the new message setting; false if the player now accepts private messages, true if the player blocks them
      */
-    public boolean toggleMsg(OfflinePlayer player) {
+    public boolean toggleMsg(final OfflinePlayer player) {
         return toggleSetting(player, MSG_TOGGLED);
     }
 
-    private boolean isSettingToggled(OfflinePlayer player, String setting) {
+    private boolean isSettingToggled(final OfflinePlayer player, final String setting) {
         try {
             return Boolean.TRUE.equals(executeQuery(
                     "SELECT COUNT(*) FROM settings WHERE uuid = ? AND setting = ?",
                     resultSet -> resultSet.next() && resultSet.getInt(1) > 0,
                     player.getUniqueId(), setting
             ));
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             plugin.getComponentLogger().error("Failed to check if setting is toggled", e);
             plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
             TweaksPlugin.ERROR_TRACKER.trackError(e);
@@ -197,13 +197,13 @@ public final class DataController {
         }
     }
 
-    private boolean setSettingToggled(OfflinePlayer player, boolean toggled, String setting) {
+    private boolean setSettingToggled(final OfflinePlayer player, final boolean toggled, final String setting) {
         try {
             return toggled ? executeUpdate(
                     "INSERT OR IGNORE INTO settings (uuid, setting) VALUES (?, ?)",
                     player.getUniqueId(), setting
             ) != 0 : removeSetting(player, setting);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             plugin.getComponentLogger().error("Failed to set setting toggled", e);
             plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
             TweaksPlugin.ERROR_TRACKER.trackError(e);
@@ -211,25 +211,25 @@ public final class DataController {
         }
     }
 
-    private boolean removeSetting(OfflinePlayer player, String setting) throws SQLException {
+    private boolean removeSetting(final OfflinePlayer player, final String setting) throws SQLException {
         return executeUpdate(
                 "DELETE FROM settings WHERE uuid = ? AND setting = ?",
                 player.getUniqueId(), setting
         ) != 0;
     }
 
-    private boolean toggleSetting(OfflinePlayer player, String setting) {
-        var toggled = isSettingToggled(player, setting);
+    private boolean toggleSetting(final OfflinePlayer player, final String setting) {
+        final var toggled = isSettingToggled(player, setting);
         return setSettingToggled(player, !toggled, setting) != toggled;
     }
 
-    public Optional<Location> getWarp(String name) {
+    public Optional<Location> getWarp(final String name) {
         try {
             return Optional.ofNullable(executeQuery("SELECT world, x, y, z, yaw, pitch FROM warps WHERE name = ?", resultSet -> {
                 if (!resultSet.next()) return null;
                 return parseLocation(resultSet);
             }, name));
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             return Optional.empty();
         }
     }
@@ -240,20 +240,20 @@ public final class DataController {
                     "SELECT name, world, x, y, z, yaw, pitch FROM warps",
                     this::parseNamedLocations
             ), Set::of);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             return Set.of();
         }
     }
 
-    public boolean deleteWarp(String name) {
+    public boolean deleteWarp(final String name) {
         try {
             return executeUpdate("DELETE FROM warps WHERE name = ?", name) != 0;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             return false;
         }
     }
 
-    public boolean setWarp(String name, Location location) {
+    public boolean setWarp(final String name, final Location location) {
         try {
             executeUpdate("""
                             INSERT INTO warps (name, world, x, y, z, yaw, pitch)
@@ -274,7 +274,7 @@ public final class DataController {
                     location.getYaw(),
                     location.getPitch());
             return true;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             plugin.getComponentLogger().error("Failed to set warp", e);
             plugin.getComponentLogger().error("Please look for similar issues or report this on GitHub: {}", ISSUES);
             TweaksPlugin.ERROR_TRACKER.trackError(e);
@@ -282,10 +282,10 @@ public final class DataController {
         }
     }
 
-    private Set<NamedLocation> parseNamedLocations(ResultSet resultSet) throws SQLException {
-        var homes = new HashSet<NamedLocation>();
+    private Set<NamedLocation> parseNamedLocations(final ResultSet resultSet) throws SQLException {
+        final var homes = new HashSet<NamedLocation>();
         while (resultSet.next()) {
-            var location = parseLocation(resultSet);
+            final var location = parseLocation(resultSet);
             if (location == null) continue;
             homes.add(new NamedLocation(resultSet.getString("name"), location));
         }
@@ -293,15 +293,15 @@ public final class DataController {
     }
 
     @SuppressWarnings("PatternValidation")
-    private @Nullable Location parseLocation(ResultSet resultSet) throws SQLException {
-        var key = Key.key(resultSet.getString("world"));
-        var world = plugin.getServer().getWorld(key);
+    private @Nullable Location parseLocation(final ResultSet resultSet) throws SQLException {
+        final var key = Key.key(resultSet.getString("world"));
+        final var world = plugin.getServer().getWorld(key);
         if (world == null) return null;
-        var x = resultSet.getDouble("x");
-        var y = resultSet.getDouble("y");
-        var z = resultSet.getDouble("z");
-        var yaw = resultSet.getFloat("yaw");
-        var pitch = resultSet.getFloat("pitch");
+        final var x = resultSet.getDouble("x");
+        final var y = resultSet.getDouble("y");
+        final var z = resultSet.getDouble("z");
+        final var yaw = resultSet.getFloat("yaw");
+        final var pitch = resultSet.getFloat("pitch");
         return new Location(world, x, y, z, yaw, pitch);
     }
 
@@ -343,19 +343,19 @@ public final class DataController {
     }
 
     @SuppressWarnings("SqlSourceToSinkFlow")
-    private <T> @Nullable T executeQuery(String query, ThrowingFunction<ResultSet, T> mapper, @Nullable Object... parameters) throws SQLException {
-        try (var preparedStatement = connection.prepareStatement(query)) {
+    private <T> @Nullable T executeQuery(final String query, final ThrowingFunction<ResultSet, T> mapper, @Nullable final Object... parameters) throws SQLException {
+        try (final var preparedStatement = connection.prepareStatement(query)) {
             for (var i = 0; i < parameters.length; i++)
                 preparedStatement.setObject(i + 1, parameters[i]);
-            try (var resultSet = preparedStatement.executeQuery()) {
+            try (final var resultSet = preparedStatement.executeQuery()) {
                 return ThrowingFunction.unchecked(mapper).apply(resultSet);
             }
         }
     }
 
     @SuppressWarnings("SqlSourceToSinkFlow")
-    private int executeUpdate(String query, @Nullable Object... parameters) throws SQLException {
-        try (var preparedStatement = connection.prepareStatement(query)) {
+    private int executeUpdate(final String query, @Nullable final Object... parameters) throws SQLException {
+        try (final var preparedStatement = connection.prepareStatement(query)) {
             for (var i = 0; i < parameters.length; i++)
                 preparedStatement.setObject(i + 1, parameters[i]);
             return preparedStatement.executeUpdate();
@@ -367,7 +367,7 @@ public final class DataController {
         @Nullable
         R apply(T t) throws SQLException;
 
-        static <T, R> ThrowingFunction<T, R> unchecked(ThrowingFunction<T, R> f) {
+        static <T, R> ThrowingFunction<T, R> unchecked(final ThrowingFunction<T, R> f) {
             return f;
         }
     }

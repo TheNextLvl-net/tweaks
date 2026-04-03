@@ -11,16 +11,16 @@ import org.jspecify.annotations.NullMarked;
 public class LobbyCommand {
     private final TweaksPlugin plugin;
 
-    public LobbyCommand(TweaksPlugin plugin) {
+    public LobbyCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().lobby.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().lobby.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.lobby"))
                 .executes(context -> {
-                    var sender = (Player) context.getSource().getSender();
+                    final var sender = (Player) context.getSource().getSender();
                     connect(sender, plugin.config().general.lobbyServerName);
                     return Command.SINGLE_SUCCESS;
                 })
@@ -28,8 +28,8 @@ public class LobbyCommand {
         registrar.register(command, "Connect to the lobby server", plugin.commands().lobby.aliases);
     }
     
-    public void connect(Player player, String server) {
-        var dataOutput = ByteStreams.newDataOutput();
+    public void connect(final Player player, final String server) {
+        final var dataOutput = ByteStreams.newDataOutput();
         dataOutput.writeUTF("Connect");
         dataOutput.writeUTF(server);
         player.sendPluginMessage(plugin, "BungeeCord", dataOutput.toByteArray());

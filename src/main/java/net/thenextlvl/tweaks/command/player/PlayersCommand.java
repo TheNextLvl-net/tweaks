@@ -17,29 +17,29 @@ import java.util.List;
 abstract class PlayersCommand {
     protected final TweaksPlugin plugin;
 
-    PlayersCommand(TweaksPlugin plugin) {
+    PlayersCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public LiteralCommandNode<CommandSourceStack> create(String name, String permission, String permissionOther) {
+    public LiteralCommandNode<CommandSourceStack> create(final String name, final String permission, final String permissionOther) {
         return Commands.literal(name)
                 .requires(stack -> stack.getSender().hasPermission(permission))
                 .then(Commands.argument("players", ArgumentTypes.players())
                         .requires(stack -> stack.getSender().hasPermission(permissionOther))
                         .executes(context -> {
-                            var players = context.getArgument("players", PlayerSelectorArgumentResolver.class);
+                            final var players = context.getArgument("players", PlayerSelectorArgumentResolver.class);
                             return execute(context.getSource().getSender(), players.resolve(context.getSource()));
                         }))
                 .executes(context -> {
-                    var sender = context.getSource().getSender();
-                    if (sender instanceof Player player) return execute(sender, List.of(player));
+                    final var sender = context.getSource().getSender();
+                    if (sender instanceof final Player player) return execute(sender, List.of(player));
                     plugin.bundle().sendMessage(sender, "command.sender");
                     return 0;
                 })
                 .build();
     }
 
-    protected int execute(CommandSender sender, List<Player> players) {
+    protected int execute(final CommandSender sender, final List<Player> players) {
         players.forEach(player -> execute(sender, player));
         return Command.SINGLE_SUCCESS;
     }

@@ -12,18 +12,18 @@ import org.jspecify.annotations.Nullable;
 public final class LazyLocation extends Location implements Keyed {
     private Key key;
 
-    public LazyLocation(Location location) {
+    public LazyLocation(final Location location) {
         super(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         this.key = location.getWorld().key();
     }
 
-    public LazyLocation(Key key, double x, double y, double z, float yaw, float pitch) {
+    public LazyLocation(final Key key, final double x, final double y, final double z, final float yaw, final float pitch) {
         super(Bukkit.getWorld(key), x, y, z, yaw, pitch);
         this.key = key;
     }
 
     @Override
-    public void setWorld(@Nullable World world) {
+    public void setWorld(@Nullable final World world) {
         super.setWorld(world);
         if (world != null) this.key = world.key();
     }

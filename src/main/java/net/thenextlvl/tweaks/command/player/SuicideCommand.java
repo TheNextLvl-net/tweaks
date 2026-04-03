@@ -15,21 +15,21 @@ import org.jspecify.annotations.NullMarked;
 public class SuicideCommand {
     private final TweaksPlugin plugin;
 
-    public SuicideCommand(TweaksPlugin plugin) {
+    public SuicideCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().suicide.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().suicide.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.suicide"))
                 .executes(this::suicide)
                 .build();
         registrar.register(command, "Take your own life", plugin.commands().suicide.aliases);
     }
 
-    private int suicide(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
+    private int suicide(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
         player.damage(player.getHealth(), DamageSource.builder(DamageType.GENERIC_KILL).build());
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(player, "command.suicide");

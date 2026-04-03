@@ -13,21 +13,21 @@ import org.jspecify.annotations.NullMarked;
 public class TrashCommand {
     private final TweaksPlugin plugin;
 
-    public TrashCommand(TweaksPlugin plugin) {
+    public TrashCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().trash.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().trash.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.trash"))
                 .executes(this::trash)
                 .build();
         registrar.register(command, "Dispose of your unwanted items", plugin.commands().hat.aliases);
     }
 
-    private int trash(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
+    private int trash(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
         player.openInventory(MenuType.GENERIC_9X4.create(player, plugin.bundle().component("gui.title.trash", player)));
         return Command.SINGLE_SUCCESS;
     }

@@ -25,13 +25,13 @@ import java.util.Base64;
 public class HeadCommand {
     private final TweaksPlugin plugin;
 
-    public HeadCommand(TweaksPlugin plugin) {
+    public HeadCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().head.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().head.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.head"))
                 .then(Commands.literal("player")
                         .then(Commands.argument("player", StringArgumentType.word())
@@ -51,9 +51,9 @@ public class HeadCommand {
     }
 
     @SuppressWarnings("PatternValidation")
-    private int playerHead(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var head = ItemStack.of(Material.PLAYER_HEAD);
+    private int playerHead(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var head = ItemStack.of(Material.PLAYER_HEAD);
         head.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile()
                 .name(context.getArgument("player", String.class))
                 .build());
@@ -63,9 +63,9 @@ public class HeadCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int valueHead(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var head = ItemStack.of(Material.PLAYER_HEAD);
+    private int valueHead(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var head = ItemStack.of(Material.PLAYER_HEAD);
         head.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile()
                 .addProperty(new ProfileProperty("textures", context.getArgument("value", String.class)))
                 .build());
@@ -75,11 +75,11 @@ public class HeadCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int urlHead(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var head = ItemStack.of(Material.PLAYER_HEAD);
-        var texture = "{\"textures\":{\"SKIN\":{\"url\":\"" + context.getArgument("url", String.class) + "\"}}}";
-        var base64 = Base64.getEncoder().encodeToString(texture.getBytes());
+    private int urlHead(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var head = ItemStack.of(Material.PLAYER_HEAD);
+        final var texture = "{\"textures\":{\"SKIN\":{\"url\":\"" + context.getArgument("url", String.class) + "\"}}}";
+        final var base64 = Base64.getEncoder().encodeToString(texture.getBytes());
         head.setData(DataComponentTypes.PROFILE, ResolvableProfile.resolvableProfile()
                 .addProperty(new ProfileProperty("textures", base64))
                 .build());
@@ -89,18 +89,18 @@ public class HeadCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int player(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var owner = getOwner(player.getInventory().getItemInMainHand());
+    private int player(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var owner = getOwner(player.getInventory().getItemInMainHand());
         if (owner != null) plugin.bundle().sendMessage(player, "command.item.head.player",
                 Placeholder.parsed("owner", owner));
         else plugin.bundle().sendMessage(player, "command.item.head.none");
         return Command.SINGLE_SUCCESS;
     }
 
-    private int value(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var value = getValue(player.getInventory().getItemInMainHand());
+    private int value(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var value = getValue(player.getInventory().getItemInMainHand());
         if (value != null) plugin.bundle().sendMessage(player, "command.item.head.value",
                 Placeholder.parsed("value", value.substring(0, Math.min(value.length(), 30)) + "…"),
                 Placeholder.parsed("full_value", value));
@@ -108,9 +108,9 @@ public class HeadCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int url(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var url = getUrl(player.getInventory().getItemInMainHand());
+    private int url(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var url = getUrl(player.getInventory().getItemInMainHand());
         if (url != null) plugin.bundle().sendMessage(player, "command.item.head.url",
                 Placeholder.parsed("url", url.substring(0, Math.min(url.length(), 30)) + "…"),
                 Placeholder.parsed("full_url", url));
@@ -118,8 +118,8 @@ public class HeadCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static @Nullable String getValue(ItemStack item) {
-        var profile = item.getData(DataComponentTypes.PROFILE);
+    private static @Nullable String getValue(final ItemStack item) {
+        final var profile = item.getData(DataComponentTypes.PROFILE);
         return profile != null ? profile.properties().stream()
                 .filter(property -> property.getName().equalsIgnoreCase("textures"))
                 .findFirst()
@@ -127,9 +127,9 @@ public class HeadCommand {
                 .orElse(null) : null;
     }
 
-    private @Nullable String getUrl(ItemStack item) {
-        var value = getValue(item);
-        var json = value != null ? JsonParser.parseString(
+    private @Nullable String getUrl(final ItemStack item) {
+        final var value = getValue(item);
+        final var json = value != null ? JsonParser.parseString(
                 new String(Base64.getDecoder().decode(value))
         ) : null;
         return json != null ? json.getAsJsonObject()
@@ -140,8 +140,8 @@ public class HeadCommand {
                 : null;
     }
 
-    private @Nullable String getOwner(ItemStack item) {
-        var profile = item.getData(DataComponentTypes.PROFILE);
+    private @Nullable String getOwner(final ItemStack item) {
+        final var profile = item.getData(DataComponentTypes.PROFILE);
         return profile != null ? profile.name() : null;
     }
 }

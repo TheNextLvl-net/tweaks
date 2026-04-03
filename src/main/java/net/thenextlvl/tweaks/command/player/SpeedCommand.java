@@ -33,21 +33,21 @@ public class SpeedCommand {
     private final TweaksPlugin plugin;
     private static final NamespacedKey SPEED_KEY = new NamespacedKey("tweaks", "speed");
 
-    public SpeedCommand(TweaksPlugin plugin) {
+    public SpeedCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().speed.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().speed.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed"))
                 .then(Commands.argument("speed", IntegerArgumentType.integer(-10, 10))
                         .then(speed("fly", SpeedType.FLY))
                         .then(speed("sneak", SpeedType.SNEAK))
                         .then(speed("walk", SpeedType.WALK))
                         .executes(context -> {
-                            var sender = context.getSource().getSender();
-                            if (sender instanceof Player player) {
-                                var type = player.isFlying() ? SpeedType.FLY : SpeedType.WALK;
+                            final var sender = context.getSource().getSender();
+                            if (sender instanceof final Player player) {
+                                final var type = player.isFlying() ? SpeedType.FLY : SpeedType.WALK;
                                 return speed(context, type, new ArrayList<>(List.of(player)));
                             }
                             plugin.bundle().sendMessage(sender, "command.sender");
@@ -58,9 +58,9 @@ public class SpeedCommand {
                         .then(reset("sneak", SpeedType.SNEAK))
                         .then(reset("walk", SpeedType.WALK))
                         .executes(context -> {
-                            var sender = context.getSource().getSender();
-                            if (sender instanceof Player player) {
-                                var type = player.isFlying() ? SpeedType.FLY : SpeedType.WALK;
+                            final var sender = context.getSource().getSender();
+                            if (sender instanceof final Player player) {
+                                final var type = player.isFlying() ? SpeedType.FLY : SpeedType.WALK;
                                 return reset(context, type, new ArrayList<>(List.of(player)));
                             }
                             plugin.bundle().sendMessage(sender, "command.sender");
@@ -71,49 +71,49 @@ public class SpeedCommand {
                 plugin.commands().speed.aliases);
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> reset(String literal, SpeedType type) {
+    private LiteralArgumentBuilder<CommandSourceStack> reset(final String literal, final SpeedType type) {
         return Commands.literal(literal)
                 .then(Commands.argument("targets", ArgumentTypes.entities())
                         .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed.others"))
                         .executes(context -> {
-                            var resolver = context.getArgument("targets", EntitySelectorArgumentResolver.class);
+                            final var resolver = context.getArgument("targets", EntitySelectorArgumentResolver.class);
                             return reset(context, type, new ArrayList<>(resolver.resolve(context.getSource())));
                         }))
                 .executes(context -> {
-                    var sender = context.getSource().getSender();
-                    if (sender instanceof Player player)
+                    final var sender = context.getSource().getSender();
+                    if (sender instanceof final Player player)
                         return reset(context, type, new ArrayList<>(List.of(player)));
                     plugin.bundle().sendMessage(sender, "command.sender");
                     return 0;
                 });
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> speed(String literal, SpeedType type) {
+    private LiteralArgumentBuilder<CommandSourceStack> speed(final String literal, final SpeedType type) {
         return Commands.literal(literal)
                 .then(Commands.argument("targets", ArgumentTypes.entities())
                         .requires(stack -> stack.getSender().hasPermission("tweaks.command.speed.others"))
                         .executes(context -> {
-                            var resolver = context.getArgument("targets", EntitySelectorArgumentResolver.class);
+                            final var resolver = context.getArgument("targets", EntitySelectorArgumentResolver.class);
                             return speed(context, type, new ArrayList<>(resolver.resolve(context.getSource())));
                         }))
                 .executes(context -> {
-                    var sender = context.getSource().getSender();
-                    if (sender instanceof Player player)
+                    final var sender = context.getSource().getSender();
+                    if (sender instanceof final Player player)
                         return speed(context, type, new ArrayList<>(List.of(player)));
                     plugin.bundle().sendMessage(sender, "command.sender");
                     return 0;
                 });
     }
 
-    private int reset(CommandContext<CommandSourceStack> context, SpeedType type, List<Entity> entities) {
-        var sender = context.getSource().getSender();
+    private int reset(final CommandContext<CommandSourceStack> context, final SpeedType type, final List<Entity> entities) {
+        final var sender = context.getSource().getSender();
 
         entities.removeIf(entity -> !(entity instanceof Attributable));
         entities.forEach(entity -> {
-            var instance = ((Attributable) entity).getAttribute(type.getAttribute());
+            final var instance = ((Attributable) entity).getAttribute(type.getAttribute());
             if (instance != null) instance.removeModifier(SPEED_KEY);
 
-            if (!type.equals(SpeedType.SNEAK) && entity instanceof Player player) {
+            if (!type.equals(SpeedType.SNEAK) && entity instanceof final Player player) {
                 if (type.equals(SpeedType.FLY)) player.setFlySpeed(0.1f);
                 if (type.equals(SpeedType.WALK)) player.setWalkSpeed(0.2f);
             }
@@ -127,21 +127,21 @@ public class SpeedCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int speed(CommandContext<CommandSourceStack> context, SpeedType type, List<Entity> entities) {
-        var sender = context.getSource().getSender();
-        var speed = context.getArgument("speed", int.class) / 10d;
+    private int speed(final CommandContext<CommandSourceStack> context, final SpeedType type, final List<Entity> entities) {
+        final var sender = context.getSource().getSender();
+        final var speed = context.getArgument("speed", int.class) / 10d;
 
         entities.removeIf(entity -> !(entity instanceof Attributable));
         entities.forEach(entity -> {
-            if (!type.equals(SpeedType.SNEAK) && entity instanceof Player player) {
+            if (!type.equals(SpeedType.SNEAK) && entity instanceof final Player player) {
                 if (type.equals(SpeedType.FLY)) player.setFlySpeed((float) speed);
                 if (type.equals(SpeedType.WALK)) player.setWalkSpeed((float) speed);
             } else {
-                var instance = ((Attributable) entity).getAttribute(type.getAttribute());
+                final var instance = ((Attributable) entity).getAttribute(type.getAttribute());
                 if (instance != null) {
                     instance.removeModifier(SPEED_KEY);
-                    var value = speed - instance.getBaseValue();
-                    var modifier = new AttributeModifier(SPEED_KEY, value, ADD_NUMBER);
+                    final var value = speed - instance.getBaseValue();
+                    final var modifier = new AttributeModifier(SPEED_KEY, value, ADD_NUMBER);
                     instance.addTransientModifier(modifier);
                 }
             }
@@ -167,7 +167,7 @@ public class SpeedCommand {
         private final String messageOther;
         private final String messageSelf;
 
-        SpeedType(Attribute attribute, String messageOther, String messageSelf) {
+        SpeedType(final Attribute attribute, final String messageOther, final String messageSelf) {
             this.attribute = attribute;
             this.messageOther = messageOther;
             this.messageSelf = messageSelf;

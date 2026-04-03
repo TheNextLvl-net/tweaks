@@ -24,15 +24,15 @@ import org.jspecify.annotations.NullMarked;
 public class SetSpawnCommand {
     private final TweaksPlugin plugin;
 
-    public SetSpawnCommand(TweaksPlugin plugin) {
+    public SetSpawnCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().setSpawn.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().setSpawn.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.setspawn"))
                 .then(position()).executes(context -> {
-                    var location = context.getSource().getLocation();
+                    final var location = context.getSource().getLocation();
                     return setSpawn(context, location.getWorld(), location, Rotation.rotation(location.getYaw(), location.getPitch()));
                 }).build();
         registrar.register(command, "Set the spawn location", plugin.commands().setSpawn.aliases);
@@ -42,19 +42,19 @@ public class SetSpawnCommand {
         return Commands.argument("position", ArgumentTypes.finePosition())
                 .then(rotation())
                 .executes(context -> {
-                    var resolver = context.getArgument("position", FinePositionResolver.class);
-                    var position = resolver.resolve(context.getSource());
-                    var world = context.getSource().getLocation().getWorld();
+                    final var resolver = context.getArgument("position", FinePositionResolver.class);
+                    final var position = resolver.resolve(context.getSource());
+                    final var world = context.getSource().getLocation().getWorld();
                     return setSpawn(context, world, position, Rotation.rotation(0, 0));
                 });
     }
 
     private RequiredArgumentBuilder<CommandSourceStack, RotationResolver> rotation() {
         return Commands.argument("rotation", ArgumentTypes.rotation()).executes(context -> {
-            var rotation = context.getArgument("rotation", RotationResolver.class);
-            var resolver = context.getArgument("position", FinePositionResolver.class);
-            var position = resolver.resolve(context.getSource());
-            var world = context.getSource().getLocation().getWorld();
+            final var rotation = context.getArgument("rotation", RotationResolver.class);
+            final var resolver = context.getArgument("position", FinePositionResolver.class);
+            final var position = resolver.resolve(context.getSource());
+            final var world = context.getSource().getLocation().getWorld();
             return setSpawn(context, world, position, rotation.resolve(context.getSource()));
         }).then(world());
     }
@@ -62,16 +62,16 @@ public class SetSpawnCommand {
     private RequiredArgumentBuilder<CommandSourceStack, World> world() {
         return Commands.argument("world", ArgumentTypes.world())
                 .executes(context -> {
-                    var rotation = context.getArgument("rotation", RotationResolver.class);
-                    var resolver = context.getArgument("position", FinePositionResolver.class);
-                    var position = resolver.resolve(context.getSource());
-                    var world = context.getArgument("world", World.class);
+                    final var rotation = context.getArgument("rotation", RotationResolver.class);
+                    final var resolver = context.getArgument("position", FinePositionResolver.class);
+                    final var position = resolver.resolve(context.getSource());
+                    final var world = context.getArgument("world", World.class);
                     return setSpawn(context, world, position, rotation.resolve(context.getSource()));
                 });
     }
 
-    private int setSpawn(CommandContext<CommandSourceStack> context, World world, FinePosition position, Rotation rotation) {
-        var spawn = position.toLocation(world).setRotation(rotation);
+    private int setSpawn(final CommandContext<CommandSourceStack> context, final World world, final FinePosition position, final Rotation rotation) {
+        final var spawn = position.toLocation(world).setRotation(rotation);
         plugin.config().spawn.location = new LazyLocation(spawn);
         plugin.saveConfig();
 
@@ -84,7 +84,7 @@ public class SetSpawnCommand {
                     Formatter.number("yaw", rotation.yaw()),
                     Formatter.number("pitch", rotation.pitch()));
 
-        if (context.getSource().getSender() instanceof Player player)
+        if (context.getSource().getSender() instanceof final Player player)
             player.teleportAsync(spawn, PlayerTeleportEvent.TeleportCause.COMMAND);
 
         return Command.SINGLE_SUCCESS;

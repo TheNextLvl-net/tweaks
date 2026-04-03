@@ -21,23 +21,23 @@ import java.util.List;
 public class GameModeCommand {
     private final TweaksPlugin plugin;
 
-    public GameModeCommand(TweaksPlugin plugin) {
+    public GameModeCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().gamemode.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().gamemode.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.gamemode"))
                 .then(Commands.argument("gamemode", new GameModeArgumentType())
                         .then(Commands.argument("players", ArgumentTypes.players())
                                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.gamemode.others"))
                                 .executes(context -> {
-                                    var players = context.getArgument("players", PlayerSelectorArgumentResolver.class);
+                                    final var players = context.getArgument("players", PlayerSelectorArgumentResolver.class);
                                     return gamemode(context, players.resolve(context.getSource()));
                                 }))
                         .executes(context -> {
-                            var sender = context.getSource().getSender();
-                            if (sender instanceof Player player) return gamemode(context, List.of(player));
+                            final var sender = context.getSource().getSender();
+                            if (sender instanceof final Player player) return gamemode(context, List.of(player));
                             plugin.bundle().sendMessage(sender, "command.sender");
                             return 0;
                         }))
@@ -45,9 +45,9 @@ public class GameModeCommand {
         registrar.register(command, "Change your own or someone else's game mode", plugin.commands().gamemode.aliases);
     }
 
-    private int gamemode(CommandContext<CommandSourceStack> context, List<Player> resolve) {
-        var sender = context.getSource().getSender();
-        var gamemode = context.getArgument("gamemode", GameMode.class);
+    private int gamemode(final CommandContext<CommandSourceStack> context, final List<Player> resolve) {
+        final var sender = context.getSource().getSender();
+        final var gamemode = context.getArgument("gamemode", GameMode.class);
         resolve.forEach(player -> {
             player.setGameMode(gamemode);
 

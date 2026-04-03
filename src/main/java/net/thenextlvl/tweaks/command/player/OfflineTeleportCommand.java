@@ -40,12 +40,12 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 public class OfflineTeleportCommand {
     private final TweaksPlugin plugin;
 
-    public OfflineTeleportCommand(TweaksPlugin plugin) {
+    public OfflineTeleportCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().offlineTeleport.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().offlineTeleport.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.offline-tp"))
                 .then(Commands.argument("player", StringArgumentType.word())
                         .suggests(new OfflinePlayerSuggestionProvider(plugin))
@@ -66,26 +66,26 @@ public class OfflineTeleportCommand {
                 plugin.commands().offlineTeleport.aliases);
     }
 
-    private void teleportOther(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
-        var player = plugin.getServer().getOfflinePlayer(context.getArgument("player", String.class));
-        var target = plugin.getServer().getOfflinePlayer(context.getArgument("target", String.class));
+    private void teleportOther(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
+        final var player = plugin.getServer().getOfflinePlayer(context.getArgument("player", String.class));
+        final var target = plugin.getServer().getOfflinePlayer(context.getArgument("target", String.class));
 
-        var message = player.equals(target) ? "command.offline.teleport.location" : teleport(player, target);
+        final var message = player.equals(target) ? "command.offline.teleport.location" : teleport(player, target);
 
         plugin.bundle().sendMessage(sender, message,
                 Placeholder.parsed("source", String.valueOf(player.getName())),
                 Placeholder.parsed("target", String.valueOf(target.getName())));
     }
 
-    private void teleport(CommandContext<CommandSourceStack> context) {
-        if (!(context.getSource().getSender() instanceof Player sender)) {
+    private void teleport(final CommandContext<CommandSourceStack> context) {
+        if (!(context.getSource().getSender() instanceof final Player sender)) {
             plugin.bundle().sendMessage(context.getSource().getSender(), "command.sender");
             return;
         }
 
-        var player = plugin.getServer().getOfflinePlayer(context.getArgument("player", String.class));
-        var placeholder = Placeholder.parsed("player", String.valueOf(player.getName()));
+        final var player = plugin.getServer().getOfflinePlayer(context.getArgument("player", String.class));
+        final var placeholder = Placeholder.parsed("player", String.valueOf(player.getName()));
 
         CompletableFuture.<@Nullable Location>completedFuture(getLocation(player))
                 .thenCompose(location -> {
@@ -93,7 +93,7 @@ public class OfflineTeleportCommand {
                     return CompletableFuture.completedFuture(false);
                 }).thenAccept(success -> {
                     if (Boolean.FALSE.equals(sender.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK))) return;
-                    var message = success ? "command.offline.teleport.success.to" : "command.offline.teleport.fail.to";
+                    final var message = success ? "command.offline.teleport.success.to" : "command.offline.teleport.fail.to";
                     plugin.bundle().sendMessage(sender, message, placeholder);
                 }).exceptionally(throwable -> {
                     plugin.bundle().sendMessage(sender, "command.offline.teleport.fail.to", placeholder);
@@ -102,9 +102,9 @@ public class OfflineTeleportCommand {
                 });
     }
 
-    private String teleport(OfflinePlayer source, OfflinePlayer target) {
-        var online = source.getPlayer();
-        var location = getLocation(target);
+    private String teleport(final OfflinePlayer source, final OfflinePlayer target) {
+        final var online = source.getPlayer();
+        final var location = getLocation(target);
         if (location == null) return "command.offline.teleport.fail";
         if (online == null) return setLocation(source, location)
                 ? "command.offline.teleport.success" : "command.offline.teleport.fail";
@@ -114,17 +114,17 @@ public class OfflineTeleportCommand {
         return "command.offline.teleport.success";
     }
 
-    private boolean setLocation(OfflinePlayer player, Location location) {
-        var file = getPlayerDataFile(player).orElse(null);
+    private boolean setLocation(final OfflinePlayer player, final Location location) {
+        final var file = getPlayerDataFile(player).orElse(null);
         if (file == null) return false;
-        try (var input = NBTInputStream.create(file);
-             var output = NBTOutputStream.create(file)) {
-            var tag = input.readNamedTag();
+        try (final var input = NBTInputStream.create(file);
+             final var output = NBTOutputStream.create(file)) {
+            final var tag = input.readNamedTag();
             output.writeTag(tag.getKey(), tag.getValue().toBuilder()
                     .putAll(toTag(location))
                     .build());
             return true;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             plugin.getComponentLogger().warn("Failed to set location of offline player", e);
             plugin.getComponentLogger().warn("Please look for similar issues or report this on GitHub: {}", ISSUES);
             TweaksPlugin.ERROR_TRACKER.trackError(e);
@@ -132,43 +132,43 @@ public class OfflineTeleportCommand {
         }
     }
 
-    private @Nullable Location fromTag(CompoundTag tag) {
-        var world = getWorld(tag);
+    private @Nullable Location fromTag(final CompoundTag tag) {
+        final var world = getWorld(tag);
         if (world == null) return null;
-        var pos = tag.<DoubleTag>getAsList("Pos");
-        var z = pos.get(2).getAsDouble();
-        var y = pos.get(1).getAsDouble();
-        var x = pos.get(0).getAsDouble();
-        var rotation = tag.<FloatTag>getAsList("Rotation");
-        var yaw = rotation.get(0).getAsFloat();
-        var pitch = rotation.get(1).getAsFloat();
+        final var pos = tag.<DoubleTag>getAsList("Pos");
+        final var z = pos.get(2).getAsDouble();
+        final var y = pos.get(1).getAsDouble();
+        final var x = pos.get(0).getAsDouble();
+        final var rotation = tag.<FloatTag>getAsList("Rotation");
+        final var yaw = rotation.get(0).getAsFloat();
+        final var pitch = rotation.get(1).getAsFloat();
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    private @Nullable World getWorld(CompoundTag tag) {
-        var uuidLeast = tag.optional("WorldUUIDLeast").map(Tag::getAsLong);
+    private @Nullable World getWorld(final CompoundTag tag) {
+        final var uuidLeast = tag.optional("WorldUUIDLeast").map(Tag::getAsLong);
         if (uuidLeast.isEmpty()) return null;
 
-        var uuidMost = tag.optional("WorldUUIDMost").map(Tag::getAsLong);
+        final var uuidMost = tag.optional("WorldUUIDMost").map(Tag::getAsLong);
         if (uuidMost.isEmpty()) return null;
 
-        var world = Bukkit.getWorld(new UUID(uuidLeast.get(), uuidMost.get()));
+        final var world = Bukkit.getWorld(new UUID(uuidLeast.get(), uuidMost.get()));
         if (world != null) return world;
 
-        var dimension = tag.optional("Dimension").map(Tag::getAsString);
+        final var dimension = tag.optional("Dimension").map(Tag::getAsString);
 
-        var key = dimension.map(NamespacedKey::fromString);
+        final var key = dimension.map(NamespacedKey::fromString);
         return key.map(Bukkit::getWorld).orElse(null);
     }
 
-    private CompoundTag toTag(Location location) {
-        var pos = ListTag.builder()
+    private CompoundTag toTag(final Location location) {
+        final var pos = ListTag.builder()
                 .add(DoubleTag.of(location.getX()))
                 .add(DoubleTag.of(location.getY()))
                 .add(DoubleTag.of(location.getZ()))
                 .build();
 
-        var rotation = ListTag.builder()
+        final var rotation = ListTag.builder()
                 .add(FloatTag.of(location.getYaw()))
                 .add(FloatTag.of(location.getPitch()))
                 .build();
@@ -182,12 +182,12 @@ public class OfflineTeleportCommand {
                 .build();
     }
 
-    private @Nullable Location getLocation(OfflinePlayer player) {
-        var online = player.getPlayer();
+    private @Nullable Location getLocation(final OfflinePlayer player) {
+        final var online = player.getPlayer();
         if (online != null) return online.getLocation();
-        try (var file = readPlayerData(player)) {
+        try (final var file = readPlayerData(player)) {
             return file != null ? fromTag(file.readTag()) : null;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             plugin.getComponentLogger().warn("Failed to get location of offline player", e);
             plugin.getComponentLogger().warn("Please look for similar issues or report this on GitHub: {}", ISSUES);
             TweaksPlugin.ERROR_TRACKER.trackError(e);
@@ -196,12 +196,12 @@ public class OfflineTeleportCommand {
     }
 
     private Optional<Path> getPlayerDataFolder() {
-        var overworld = Key.key(Key.MINECRAFT_NAMESPACE, "overworld");
+        final var overworld = Key.key(Key.MINECRAFT_NAMESPACE, "overworld");
         return Optional.ofNullable(plugin.getServer().getWorld(overworld))
                 .map(world -> world.getWorldFolder().toPath().resolve("playerdata"));
     }
 
-    private Optional<Path> getPlayerDataFile(OfflinePlayer player) {
+    private Optional<Path> getPlayerDataFile(final OfflinePlayer player) {
         return getPlayerDataFolder().map(path -> {
             return path.resolve(player.getUniqueId() + ".dat");
         }).filter(Files::isRegularFile).or(() -> getPlayerDataFolder().map(path -> {
@@ -209,8 +209,8 @@ public class OfflineTeleportCommand {
         }).filter(Files::isRegularFile));
     }
 
-    private @Nullable NBTInputStream readPlayerData(OfflinePlayer player) throws IOException {
-        var file = getPlayerDataFile(player).orElse(null);
+    private @Nullable NBTInputStream readPlayerData(final OfflinePlayer player) throws IOException {
+        final var file = getPlayerDataFile(player).orElse(null);
         return file != null ? NBTInputStream.create(file) : null;
     }
 }

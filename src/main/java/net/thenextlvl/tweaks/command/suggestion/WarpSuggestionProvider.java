@@ -16,12 +16,12 @@ import java.util.concurrent.CompletableFuture;
 public final class WarpSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
-    public WarpSuggestionProvider(TweaksPlugin plugin) {
+    public WarpSuggestionProvider(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> getSuggestions(final CommandContext<CommandSourceStack> context, final SuggestionsBuilder builder) {
         return plugin.warpController().getWarps().thenApply(warps -> {
             warps.stream()
                     .map(NamedLocation::getName)

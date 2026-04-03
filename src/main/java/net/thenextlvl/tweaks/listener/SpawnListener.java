@@ -13,13 +13,13 @@ import org.jspecify.annotations.NullMarked;
 public final class SpawnListener implements Listener {
     private final TweaksPlugin plugin;
 
-    public SpawnListener(TweaksPlugin plugin) {
+    public SpawnListener(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerSpawnLocation(AsyncPlayerSpawnLocationEvent event) {
-        var config = plugin.config().spawn;
+    public void onPlayerSpawnLocation(final AsyncPlayerSpawnLocationEvent event) {
+        final var config = plugin.config().spawn;
         if (config.location == null || !config.location.isWorldLoaded()) return;
         if ((!config.teleportOnFirstJoin || !event.isNewPlayer()) 
             && (!config.teleportOnJoin || event.isNewPlayer())) return;
@@ -27,17 +27,17 @@ public final class SpawnListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
+    public void onPlayerRespawn(final PlayerRespawnEvent event) {
         if (!event.getRespawnReason().equals(PlayerRespawnEvent.RespawnReason.DEATH)) return;
-        var config = plugin.config().spawn;
+        final var config = plugin.config().spawn;
         if (config.location == null || !config.location.isWorldLoaded() || !config.teleportOnRespawn) return;
         if (!config.ignoreRespawnPosition && (event.isAnchorSpawn() || event.isBedSpawn())) return;
         event.setRespawnLocation(config.location);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        var config = plugin.config().spawn;
+    public void onPlayerDeath(final PlayerDeathEvent event) {
+        final var config = plugin.config().spawn;
         if (config.location == null || !config.location.isWorldLoaded() || !config.teleportOnRespawn) return;
         if (config.ignoreRespawnPosition) event.getPlayer().setRespawnLocation(null);
     }

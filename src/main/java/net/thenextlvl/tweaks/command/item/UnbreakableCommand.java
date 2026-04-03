@@ -14,22 +14,22 @@ import org.jspecify.annotations.NullMarked;
 public class UnbreakableCommand {
     private final TweaksPlugin plugin;
 
-    public UnbreakableCommand(TweaksPlugin plugin) {
+    public UnbreakableCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().unbreakable.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().unbreakable.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.unbreakable"))
                 .executes(this::unbreakable)
                 .build();
         registrar.register(command, "Makes the item in your hand unbreakable", plugin.commands().unbreakable.aliases);
     }
 
-    private int unbreakable(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var item = player.getInventory().getItemInMainHand();
+    private int unbreakable(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var item = player.getInventory().getItemInMainHand();
         if (!item.hasData(DataComponentTypes.DAMAGE)) {
             plugin.bundle().sendMessage(player, "command.item.unbreakable.fail");
             return 0;

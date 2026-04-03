@@ -9,12 +9,12 @@ import org.jspecify.annotations.NullMarked;
 public class DiscordCommand {
     private final TweaksPlugin plugin;
 
-    public DiscordCommand(TweaksPlugin plugin) {
+    public DiscordCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().discord.command).executes(context -> {
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().discord.command).executes(context -> {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.discord");
             return Command.SINGLE_SUCCESS;
         }).build();

@@ -3,6 +3,7 @@ package net.thenextlvl.tweaks.model;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -10,12 +11,12 @@ import java.util.Objects;
 public final class NamedLocation extends Location {
     private final String name;
 
-    public NamedLocation(String name, World world, double x, double y, double z, float yaw, float pitch) {
+    public NamedLocation(final String name, final World world, final double x, final double y, final double z, final float yaw, final float pitch) {
         super(world, x, y, z, yaw, pitch);
         this.name = name;
     }
 
-    public NamedLocation(String name, Location location) {
+    public NamedLocation(final String name, final Location location) {
         this(name, location.getWorld(), location.x(), location.y(), location.z(), location.getYaw(), location.getPitch());
     }
 
@@ -24,11 +25,11 @@ public final class NamedLocation extends Location {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        NamedLocation that = (NamedLocation) o;
+        final NamedLocation that = (NamedLocation) o;
         return Objects.equals(name, that.name);
     }
 

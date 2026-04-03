@@ -13,11 +13,11 @@ import java.util.concurrent.CompletableFuture;
 public final class WarpController {
     private final TweaksPlugin plugin;
 
-    public WarpController(TweaksPlugin plugin) {
+    public WarpController(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public CompletableFuture<Optional<Location>> getWarp(String name) {
+    public CompletableFuture<Optional<Location>> getWarp(final String name) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarp(name));
     }
 
@@ -25,11 +25,11 @@ public final class WarpController {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().getWarps());
     }
 
-    public CompletableFuture<Boolean> deleteWarp(String name) {
+    public CompletableFuture<Boolean> deleteWarp(final String name) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().deleteWarp(name));
     }
 
-    public CompletableFuture<Boolean> setWarp(String name, Location location) {
+    public CompletableFuture<Boolean> setWarp(final String name, final Location location) {
         return CompletableFuture.supplyAsync(() -> plugin.dataController().setWarp(name, location));
     }
 }

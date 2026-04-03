@@ -20,12 +20,12 @@ import java.util.function.Function;
 public class TimeCommand {
     private final TweaksPlugin plugin;
 
-    public TimeCommand(TweaksPlugin plugin) {
+    public TimeCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().time.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().time.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.time"))
                 .then(Commands.literal("set")
                         .then(setTime("afternoon", "tweaks.command.time.afternoon", 9000))
@@ -52,7 +52,7 @@ public class TimeCommand {
         registrar.register(command, "Manage the time on your server", plugin.commands().time.aliases);
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> query(String literal, Function<World, Long> function) {
+    private LiteralArgumentBuilder<CommandSourceStack> query(final String literal, final Function<World, Long> function) {
         return Commands.literal(literal)
                 .then(Commands.argument("world", ArgumentTypes.world())
                         .executes(context -> query(context, context.getArgument("world", World.class), function)))
@@ -64,18 +64,18 @@ public class TimeCommand {
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.time.set"))
                 .then(Commands.argument("world", ArgumentTypes.world())
                         .executes(context -> {
-                            var time = context.getArgument("time", int.class);
-                            var world = context.getArgument("world", World.class);
+                            final var time = context.getArgument("time", int.class);
+                            final var world = context.getArgument("world", World.class);
                             return setTime(context, time, world);
                         }))
                 .executes(context -> {
-                    var time = context.getArgument("time", int.class);
-                    var world = context.getSource().getLocation().getWorld();
+                    final var time = context.getArgument("time", int.class);
+                    final var world = context.getSource().getLocation().getWorld();
                     return setTime(context, time, world);
                 });
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> setTime(String literal, String permission, int ticks) {
+    private LiteralArgumentBuilder<CommandSourceStack> setTime(final String literal, final String permission, final int ticks) {
         return Commands.literal(literal)
                 .requires(stack -> stack.getSender().hasPermission(permission))
                 .then(Commands.argument("world", ArgumentTypes.world())
@@ -83,8 +83,8 @@ public class TimeCommand {
                 .executes(context -> setTime(context, ticks, context.getSource().getLocation().getWorld()));
     }
 
-    private int setTime(CommandContext<CommandSourceStack> context, long ticks, World world) {
-        var sender = context.getSource().getSender();
+    private int setTime(final CommandContext<CommandSourceStack> context, final long ticks, final World world) {
+        final var sender = context.getSource().getSender();
         plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> world.setTime(ticks));
         if (Boolean.TRUE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(sender, "command.time.set",
@@ -93,13 +93,13 @@ public class TimeCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private int addTime(CommandContext<CommandSourceStack> context, World world) {
-        var time = context.getArgument("time", int.class);
+    private int addTime(final CommandContext<CommandSourceStack> context, final World world) {
+        final var time = context.getArgument("time", int.class);
         return setTime(context, world.getTime() + time, world);
     }
 
-    private int query(CommandContext<CommandSourceStack> context, World world, Function<World, Long> function) {
-        var sender = context.getSource().getSender();
+    private int query(final CommandContext<CommandSourceStack> context, final World world, final Function<World, Long> function) {
+        final var sender = context.getSource().getSender();
         plugin.bundle().sendMessage(sender, "command.time.query",
                 Formatter.number("time", function.apply(world)),
                 Placeholder.parsed("world", world.getName()));

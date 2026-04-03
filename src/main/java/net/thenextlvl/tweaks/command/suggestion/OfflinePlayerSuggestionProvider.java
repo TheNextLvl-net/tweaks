@@ -17,12 +17,12 @@ import java.util.concurrent.CompletableFuture;
 public final class OfflinePlayerSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
-    public OfflinePlayerSuggestionProvider(TweaksPlugin plugin) {
+    public OfflinePlayerSuggestionProvider(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> getSuggestions(final CommandContext<CommandSourceStack> context, final SuggestionsBuilder builder) {
         Arrays.stream(plugin.getServer().getOfflinePlayers())
                 .map(OfflinePlayer::getName)
                 .filter(Objects::nonNull)

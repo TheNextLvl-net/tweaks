@@ -16,15 +16,15 @@ import java.util.concurrent.CompletableFuture;
 public final class MSGSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
-    public MSGSuggestionProvider(TweaksPlugin plugin) {
+    public MSGSuggestionProvider(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> getSuggestions(final CommandContext<CommandSourceStack> context, final SuggestionsBuilder builder) {
         plugin.getServer().getOnlinePlayers().stream()
                 .filter(player -> !player.equals(context.getSource().getSender()))
-                .filter(player -> context.getSource().getSender() instanceof Player sender
+                .filter(player -> context.getSource().getSender() instanceof final Player sender
                                   && plugin.msgController().isConversing(sender, player)
                                   || !plugin.dataController().isMsgToggled(player))
                 .map(Player::getName)

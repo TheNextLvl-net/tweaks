@@ -12,23 +12,23 @@ import org.jspecify.annotations.NullMarked;
 public class TPAToggleCommand {
     private final TweaksPlugin plugin;
 
-    public TPAToggleCommand(TweaksPlugin plugin) {
+    public TPAToggleCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportToggle.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().teleportToggle.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.tpa.toggle"))
                 .executes(this::toggle)
                 .build();
         commands.register(command, "Toggle the ability to receive teleport requests", plugin.commands().teleportToggle.aliases);
     }
 
-    private int toggle(CommandContext<CommandSourceStack> context) {
-        var sender = (Player) context.getSource().getSender();
-        var disabled = plugin.dataController().toggleTpa(sender);
-        var message = disabled ? "command.tpa.disabled" : "command.tpa.enabled";
+    private int toggle(final CommandContext<CommandSourceStack> context) {
+        final var sender = (Player) context.getSource().getSender();
+        final var disabled = plugin.dataController().toggleTpa(sender);
+        final var message = disabled ? "command.tpa.disabled" : "command.tpa.enabled";
         plugin.bundle().sendMessage(sender, message);
         return Command.SINGLE_SUCCESS;
     }

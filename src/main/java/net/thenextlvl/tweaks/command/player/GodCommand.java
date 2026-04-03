@@ -9,21 +9,21 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class GodCommand extends EntitiesCommand {
-    public GodCommand(TweaksPlugin plugin) {
+    public GodCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().god.command, "tweaks.command.god", "tweaks.command.god.others");
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().god.command, "tweaks.command.god", "tweaks.command.god.others");
         registrar.register(command, "Make you or someone else invulnerable", plugin.commands().god.aliases);
     }
 
     @Override
-    protected void execute(CommandSender sender, Entity entity) {
+    protected void execute(final CommandSender sender, final Entity entity) {
         entity.setInvulnerable(!entity.isInvulnerable());
 
-        var messageSelf = entity.isInvulnerable() ? "command.god.active.self" : "command.god.inactive.self";
-        var messageOthers = entity.isInvulnerable() ? "command.god.active.others" : "command.god.inactive.others";
+        final var messageSelf = entity.isInvulnerable() ? "command.god.active.self" : "command.god.inactive.self";
+        final var messageOthers = entity.isInvulnerable() ? "command.god.active.others" : "command.god.inactive.others";
 
         plugin.bundle().sendMessage(entity, messageSelf);
         if (entity != sender) plugin.bundle().sendMessage(sender, messageOthers,

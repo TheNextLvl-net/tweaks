@@ -15,28 +15,28 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 public class SpawnCommand {
     private final TweaksPlugin plugin;
 
-    public SpawnCommand(TweaksPlugin plugin) {
+    public SpawnCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().spawn.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().spawn.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.spawn"))
                 .executes(this::spawn).build();
         registrar.register(command, "Teleport you to spawn", plugin.commands().spawn.aliases);
     }
 
-    private int spawn(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var location = plugin.config().spawn.location;
+    private int spawn(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var location = plugin.config().spawn.location;
         if (location == null || !location.isWorldLoaded()) {
             plugin.bundle().sendMessage(player, "command.spawn.undefined");
             if (player.hasPermission("tweaks.command.setspawn"))
                 plugin.bundle().sendMessage(player, "command.spawn.define");
             return 0;
         } else plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
-            var message = success ? "command.spawn" : "command.teleport.cancelled";
+            final var message = success ? "command.spawn" : "command.teleport.cancelled";
             if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
                 plugin.bundle().sendMessage(player, message);
         });

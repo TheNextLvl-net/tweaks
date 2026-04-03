@@ -17,13 +17,13 @@ import java.util.concurrent.CompletableFuture;
 public final class HomeSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
-    public HomeSuggestionProvider(TweaksPlugin plugin) {
+    public HomeSuggestionProvider(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        if (!(context.getSource().getSender() instanceof Player player)) return builder.buildFuture();
+    public CompletableFuture<Suggestions> getSuggestions(final CommandContext<CommandSourceStack> context, final SuggestionsBuilder builder) {
+        if (!(context.getSource().getSender() instanceof final Player player)) return builder.buildFuture();
         return plugin.homeController().getHomes(player).thenApply(homes -> {
             homes.stream()
                     .map(NamedLocation::getName)

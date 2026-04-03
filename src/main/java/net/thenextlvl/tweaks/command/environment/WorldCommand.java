@@ -13,24 +13,24 @@ import org.bukkit.command.CommandSender;
 public abstract class WorldCommand {
     protected final TweaksPlugin plugin;
 
-    protected WorldCommand(TweaksPlugin plugin) {
+    protected WorldCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public LiteralCommandNode<CommandSourceStack> create(String command, String permission) {
+    public LiteralCommandNode<CommandSourceStack> create(final String command, final String permission) {
         return Commands.literal(command)
                 .requires(stack -> stack.getSender().hasPermission(permission))
                 .then(Commands.argument("world", ArgumentTypes.world())
                         .executes(context -> {
-                            var world = context.getArgument("world", World.class);
+                            final var world = context.getArgument("world", World.class);
                             return execute(context, world);
                         }))
                 .executes(context -> execute(context, context.getSource().getLocation().getWorld()))
                 .build();
     }
 
-    private int execute(CommandContext<CommandSourceStack> context, World world) {
-        var sender = context.getSource().getSender();
+    private int execute(final CommandContext<CommandSourceStack> context, final World world) {
+        final var sender = context.getSource().getSender();
         plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> execute(sender, world));
         return Command.SINGLE_SUCCESS;
     }

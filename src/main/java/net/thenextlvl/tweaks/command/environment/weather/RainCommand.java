@@ -9,17 +9,17 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 public class RainCommand extends WorldCommand {
-    public RainCommand(TweaksPlugin plugin) {
+    public RainCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().rain.command, "tweaks.command.weather.rain");
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().rain.command, "tweaks.command.weather.rain");
         registrar.register(command, "Let it rain", plugin.commands().rain.aliases);
     }
 
     @Override
-    protected void execute(CommandSender sender, World world) {
+    protected void execute(final CommandSender sender, final World world) {
         if (Boolean.TRUE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(sender, "command.weather.rain", Placeholder.parsed("world", world.getName()));
         world.setThundering(false);

@@ -18,29 +18,29 @@ import java.util.List;
 abstract class EntitiesCommand {
     protected final TweaksPlugin plugin;
 
-    EntitiesCommand(TweaksPlugin plugin) {
+    EntitiesCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public LiteralCommandNode<CommandSourceStack> create(String name, String permission, String permissionOther) {
+    public LiteralCommandNode<CommandSourceStack> create(final String name, final String permission, final String permissionOther) {
         return Commands.literal(name)
                 .requires(stack -> stack.getSender().hasPermission(permission))
                 .then(Commands.argument("targets", ArgumentTypes.entities())
                         .requires(stack -> stack.getSender().hasPermission(permissionOther))
                         .executes(context -> {
-                            var targets = context.getArgument("targets", EntitySelectorArgumentResolver.class);
+                            final var targets = context.getArgument("targets", EntitySelectorArgumentResolver.class);
                             return execute(context.getSource().getSender(), targets.resolve(context.getSource()));
                         }))
                 .executes(context -> {
-                    var sender = context.getSource().getSender();
-                    if (sender instanceof Player player) return execute(sender, List.of(player));
+                    final var sender = context.getSource().getSender();
+                    if (sender instanceof final Player player) return execute(sender, List.of(player));
                     plugin.bundle().sendMessage(sender, "command.sender");
                     return 0;
                 })
                 .build();
     }
 
-    protected int execute(CommandSender sender, List<Entity> targets) {
+    protected int execute(final CommandSender sender, final List<Entity> targets) {
         targets.forEach(target -> execute(sender, target));
         return Command.SINGLE_SUCCESS;
     }

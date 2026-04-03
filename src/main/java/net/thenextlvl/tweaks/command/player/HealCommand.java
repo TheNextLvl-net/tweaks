@@ -13,19 +13,19 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class HealCommand extends EntitiesCommand {
-    public HealCommand(TweaksPlugin plugin) {
+    public HealCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().heal.command, "tweaks.command.heal", "tweaks.command.heal.others");
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().heal.command, "tweaks.command.heal", "tweaks.command.heal.others");
         registrar.register(command, "Heal yourself or someone else", plugin.commands().heal.aliases);
     }
 
     @Override
-    protected void execute(CommandSender sender, Entity entity) {
-        if (entity instanceof LivingEntity living) {
-            var attribute = living.getAttribute(Attribute.MAX_HEALTH);
+    protected void execute(final CommandSender sender, final Entity entity) {
+        if (entity instanceof final LivingEntity living) {
+            final var attribute = living.getAttribute(Attribute.MAX_HEALTH);
             living.setHealth(attribute == null ? 20.0 : attribute.getValue());
 
             living.setArrowsInBody(0);
@@ -33,7 +33,7 @@ public class HealCommand extends EntitiesCommand {
             living.setRemainingAir(living.getMaximumAir());
         }
 
-        if (entity instanceof Player player) {
+        if (entity instanceof final Player player) {
             player.setExhaustion(0f);
             player.setFoodLevel(20);
             player.setSaturation(20f);

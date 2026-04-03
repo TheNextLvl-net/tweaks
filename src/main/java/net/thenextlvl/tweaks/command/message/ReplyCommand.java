@@ -12,12 +12,12 @@ import org.jspecify.annotations.NullMarked;
 public class ReplyCommand {
     private final TweaksPlugin plugin;
 
-    public ReplyCommand(TweaksPlugin plugin) {
+    public ReplyCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().reply.command)
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().reply.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.msg.reply"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
                         .executes(this::reply))
@@ -25,9 +25,9 @@ public class ReplyCommand {
         commands.register(command, "Reply to the last received private message", plugin.commands().reply.aliases);
     }
 
-    private int reply(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
-        var target = plugin.msgController().getConversation(sender);
+    private int reply(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
+        final var target = plugin.msgController().getConversation(sender);
 
         if (target == null) {
             plugin.bundle().sendMessage(sender, "command.msg.conversation");

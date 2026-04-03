@@ -12,14 +12,14 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN;
 
 @NullMarked
 public final class WarpGUI extends NamedLocationGUI {
-    public WarpGUI(TweaksPlugin plugin, Player owner, Collection<NamedLocation> elements) {
+    public WarpGUI(final TweaksPlugin plugin, final Player owner, final Collection<NamedLocation> elements) {
         super(plugin, plugin.config().guis.warps, owner, plugin.bundle().component("gui.title.warps", owner), elements);
     }
 
     @Override
-    protected void teleport(NamedLocation element) {
+    protected void teleport(final NamedLocation element) {
         plugin.teleportController().teleport(owner, element, PLUGIN).thenAccept(success -> {
-            var message = success ? "command.warp" : "command.teleport.cancelled";
+            final var message = success ? "command.warp" : "command.teleport.cancelled";
             plugin.bundle().sendMessage(owner, message, Placeholder.parsed("name", element.getName()));
         });
     }

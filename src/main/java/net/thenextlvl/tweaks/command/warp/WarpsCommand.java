@@ -17,28 +17,28 @@ import org.jspecify.annotations.NullMarked;
 public class WarpsCommand {
     private final TweaksPlugin plugin;
 
-    public WarpsCommand(TweaksPlugin plugin) {
+    public WarpsCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().warps.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().warps.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp"))
                 .executes(this::warps)
                 .build();
         registrar.register(command, "List all available warps", plugin.commands().warps.aliases);
     }
 
-    private int warps(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
+    private int warps(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
         plugin.warpController().getWarps().thenAccept(warps -> {
             if (warps.isEmpty()) {
                 plugin.bundle().sendMessage(sender, "command.warp.empty");
-            } else if (plugin.config().guis.warps.enabled && sender instanceof Player player) {
+            } else if (plugin.config().guis.warps.enabled && sender instanceof final Player player) {
                 player.getScheduler().run(plugin, task -> new WarpGUI(plugin, player, warps).open(), null);
             } else {
-                var list = warps.stream().map(warp -> {
-                    var event = ClickEvent.runCommand("/warp " + warp.getName());
+                final var list = warps.stream().map(warp -> {
+                    final var event = ClickEvent.runCommand("/warp " + warp.getName());
                     return Component.text(warp.getName())
                             .hoverEvent(HoverEvent.showText(plugin.bundle().component("chat.click.teleport", sender)))
                             .clickEvent(event);

@@ -11,16 +11,16 @@ import org.jspecify.annotations.NullMarked;
 public class CartographyTableCommand {
     private final TweaksPlugin plugin;
 
-    public CartographyTableCommand(TweaksPlugin plugin) {
+    public CartographyTableCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().cartographyTable.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().cartographyTable.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.cartography-table"))
                 .executes(context -> {
-                    var player = (Player) context.getSource().getSender();
+                    final var player = (Player) context.getSource().getSender();
                     MenuType.CARTOGRAPHY_TABLE.create(player).open();
                     return Command.SINGLE_SUCCESS;
                 })

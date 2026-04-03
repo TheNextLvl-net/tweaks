@@ -18,13 +18,13 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 public class WarpCommand {
     private final TweaksPlugin plugin;
 
-    public WarpCommand(TweaksPlugin plugin) {
+    public WarpCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().warp.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().warp.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.warp"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new WarpSuggestionProvider(plugin))
@@ -33,13 +33,13 @@ public class WarpCommand {
         registrar.register(command, "Warp to a location", plugin.commands().warp.aliases);
     }
 
-    private int warp(CommandContext<CommandSourceStack> context) {
-        var player = (Player) context.getSource().getSender();
-        var name = context.getArgument("name", String.class);
+    private int warp(final CommandContext<CommandSourceStack> context) {
+        final var player = (Player) context.getSource().getSender();
+        final var name = context.getArgument("name", String.class);
         plugin.warpController().getWarp(name).thenAccept(warp -> warp.ifPresentOrElse(location ->
                 plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
-                    var message = success ? "command.warp" : "command.teleport.cancelled";
-                    var world = context.getSource().getLocation().getWorld();
+                    final var message = success ? "command.warp" : "command.teleport.cancelled";
+                    final var world = context.getSource().getLocation().getWorld();
                     if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) && success) return;
                     plugin.bundle().sendMessage(player, message, Placeholder.parsed("name", name));
                 }), () -> plugin.bundle().sendMessage(player, "command.warp.unknown", Placeholder.parsed("name", name))));

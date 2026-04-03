@@ -15,13 +15,13 @@ import org.jspecify.annotations.NullMarked;
 public class DeleteHomeCommand {
     private final TweaksPlugin plugin;
 
-    public DeleteHomeCommand(TweaksPlugin plugin) {
+    public DeleteHomeCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().deleteHome.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().deleteHome.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.home.delete"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
@@ -31,10 +31,10 @@ public class DeleteHomeCommand {
         registrar.register(command, "Delete your homes", plugin.commands().deleteHome.aliases);
     }
 
-    private int deleteHome(CommandContext<CommandSourceStack> context, String name) {
-        var player = (Player) context.getSource().getSender();
+    private int deleteHome(final CommandContext<CommandSourceStack> context, final String name) {
+        final var player = (Player) context.getSource().getSender();
         plugin.homeController().deleteHome(player, name).thenAccept(success -> {
-            var message = success ? "command.home.delete.name" : "command.home.unknown";
+            final var message = success ? "command.home.delete.name" : "command.home.unknown";
             plugin.bundle().sendMessage(player, message, Placeholder.parsed("name", name));
         });
         return Command.SINGLE_SUCCESS;

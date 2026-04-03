@@ -10,13 +10,13 @@ import org.jspecify.annotations.NullMarked;
 public final class WorldListener implements Listener {
     private final TweaksPlugin plugin;
 
-    public WorldListener(TweaksPlugin plugin) {
+    public WorldListener(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onWorldChanged(PlayerChangedWorldEvent event) {
-        var permissionLevel = plugin.config().general.defaultPermissionLevel;
+    public void onWorldChanged(final PlayerChangedWorldEvent event) {
+        final var permissionLevel = plugin.config().general.defaultPermissionLevel;
         if (permissionLevel != -1) event.getPlayer().sendOpLevel(permissionLevel);
     }
 }

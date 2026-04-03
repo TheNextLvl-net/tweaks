@@ -12,23 +12,23 @@ import org.jspecify.annotations.NullMarked;
 public class MSGToggleCommand {
     private final TweaksPlugin plugin;
 
-    public MSGToggleCommand(TweaksPlugin plugin) {
+    public MSGToggleCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().msgToggle.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().msgToggle.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.msg.toggle"))
                 .executes(this::toggle)
                 .build();
         commands.register(command, "Toggle receiving private messages", plugin.commands().msgToggle.aliases);
     }
 
-    private int toggle(CommandContext<CommandSourceStack> context) {
-        var sender = (Player) context.getSource().getSender();
-        var disabled = plugin.dataController().toggleMsg(sender);
-        var message = disabled ? "command.msg.disabled" : "command.msg.enabled";
+    private int toggle(final CommandContext<CommandSourceStack> context) {
+        final var sender = (Player) context.getSource().getSender();
+        final var disabled = plugin.dataController().toggleMsg(sender);
+        final var message = disabled ? "command.msg.disabled" : "command.msg.enabled";
         plugin.bundle().sendMessage(sender, message);
         plugin.msgController().removeExternalConversations(sender);
         return Command.SINGLE_SUCCESS;

@@ -11,17 +11,17 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class PingCommand extends PlayerCommand {
-    public PingCommand(TweaksPlugin plugin) {
+    public PingCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().ping.command, "tweaks.command.ping", "tweaks.command.ping.others");
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().ping.command, "tweaks.command.ping", "tweaks.command.ping.others");
         registrar.register(command, "See your own or someone else's latency", plugin.commands().ping.aliases);
     }
 
     @Override
-    protected int execute(CommandSender sender, Player player) {
+    protected int execute(final CommandSender sender, final Player player) {
         if (sender != player) plugin.bundle().sendMessage(sender, "command.ping.others",
                 Placeholder.parsed("player", player.getName()),
                 Formatter.number("ping", player.getPing()));

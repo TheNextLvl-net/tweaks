@@ -19,13 +19,13 @@ import org.jspecify.annotations.NullMarked;
 public class ItemCommand {
     private final TweaksPlugin plugin;
 
-    public ItemCommand(TweaksPlugin plugin) {
+    public ItemCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().item.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().item.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.item"))
                 .then(Commands.argument("item", ArgumentTypes.itemStack())
                         .then(Commands.argument("amount", IntegerArgumentType.integer(1, 3564))
@@ -37,18 +37,18 @@ public class ItemCommand {
         registrar.register(command, "Gives you an item of your choice", plugin.commands().item.aliases);
     }
 
-    private int item(CommandContext<CommandSourceStack> context, int amount) {
-        var player = (Player) context.getSource().getSender();
-        var item = context.getArgument("item", ItemStack.class);
-        var inventory = player.getInventory();
+    private int item(final CommandContext<CommandSourceStack> context, int amount) {
+        final var player = (Player) context.getSource().getSender();
+        final var item = context.getArgument("item", ItemStack.class);
+        final var inventory = player.getInventory();
 
         var added = 0;
         do {
-            var min = Math.min(amount, item.getMaxStackSize());
+            final var min = Math.min(amount, item.getMaxStackSize());
             item.setAmount(min);
 
-            var leftover = inventory.addItem(item);
-            var leftovers = leftover.values().stream()
+            final var leftover = inventory.addItem(item);
+            final var leftovers = leftover.values().stream()
                     .mapToInt(ItemStack::getAmount)
                     .sum();
 

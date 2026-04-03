@@ -9,12 +9,12 @@ import org.jspecify.annotations.NullMarked;
 public class YouTubeCommand {
     private final TweaksPlugin plugin;
 
-    public YouTubeCommand(TweaksPlugin plugin) {
+    public YouTubeCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().youtube.command).executes(context -> {
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().youtube.command).executes(context -> {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.youtube");
             return Command.SINGLE_SUCCESS;
         }).build();

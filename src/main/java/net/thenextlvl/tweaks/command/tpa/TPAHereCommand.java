@@ -18,13 +18,13 @@ import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA_HER
 public class TPAHereCommand {
     private final TweaksPlugin plugin;
 
-    public TPAHereCommand(TweaksPlugin plugin) {
+    public TPAHereCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportHere.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().teleportHere.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.tpa.here"))
                 .then(Commands.argument("player", ArgumentTypes.player())
                         .suggests(new TPASuggestionProvider(plugin))
@@ -33,10 +33,10 @@ public class TPAHereCommand {
         commands.register(command, "Request a player to teleport to you", plugin.commands().teleportHere.aliases);
     }
 
-    private int ask(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        var sender = (Player) context.getSource().getSender();
-        var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
-        var player = resolver.resolve(context.getSource()).getFirst();
+    private int ask(final CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        final var sender = (Player) context.getSource().getSender();
+        final var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
+        final var player = resolver.resolve(context.getSource()).getFirst();
         return TPAskCommand.ask(plugin, sender, player, TPA_HERE) ? Command.SINGLE_SUCCESS : 0;
     }
 }

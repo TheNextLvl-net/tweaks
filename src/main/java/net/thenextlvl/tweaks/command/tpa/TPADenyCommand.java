@@ -20,27 +20,27 @@ import static net.thenextlvl.tweaks.controller.TPAController.RequestType.TPA;
 public class TPADenyCommand {
     private final TweaksPlugin plugin;
 
-    public TPADenyCommand(TweaksPlugin plugin) {
+    public TPADenyCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands commands) {
-        var command = Commands.literal(plugin.commands().teleportDeny.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands commands) {
+        final var command = Commands.literal(plugin.commands().teleportDeny.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.tpa.deny"))
                 .then(Commands.argument("player", ArgumentTypes.player())
                         .suggests(new RequestSuggestionProvider(plugin))
                         .executes(context -> {
-                            var sender = (Player) context.getSource().getSender();
-                            var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
-                            var target = resolver.resolve(context.getSource()).getFirst();
-                            var type = plugin.tpaController().getRequest(sender, target);
+                            final var sender = (Player) context.getSource().getSender();
+                            final var resolver = context.getArgument("player", PlayerSelectorArgumentResolver.class);
+                            final var target = resolver.resolve(context.getSource()).getFirst();
+                            final var type = plugin.tpaController().getRequest(sender, target);
                             return deny(plugin, sender, target, type.map(TPAController.Request::type).orElse(TPA));
                         }))
                 .executes(context -> {
-                    var sender = (Player) context.getSource().getSender();
-                    var requests = plugin.tpaController().getRequests(sender);
-                    var request = requests.isEmpty() ? null : requests.getFirst();
+                    final var sender = (Player) context.getSource().getSender();
+                    final var requests = plugin.tpaController().getRequests(sender);
+                    final var request = requests.isEmpty() ? null : requests.getFirst();
                     return deny(plugin, sender, request != null ? request.player() : null,
                             request != null ? request.type() : TPA);
                 })
@@ -48,9 +48,9 @@ public class TPADenyCommand {
         commands.register(command, "Deny a teleport request", plugin.commands().teleportDeny.aliases);
     }
 
-    static int deny(TweaksPlugin plugin, Player sender, @Nullable Player player, RequestType type) {
-        var success = player != null && plugin.tpaController().removeRequest(sender, player, type);
-        var message = success ? "command.tpa.denied.self"
+    static int deny(final TweaksPlugin plugin, final Player sender, @Nullable final Player player, final RequestType type) {
+        final var success = player != null && plugin.tpaController().removeRequest(sender, player, type);
+        final var message = success ? "command.tpa.denied.self"
                 : player != null ? "command.tpa.no-request"
                 : "command.tpa.no-requests";
         if (Boolean.TRUE.equals(sender.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)

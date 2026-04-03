@@ -17,12 +17,12 @@ import java.lang.reflect.Type;
 @NullMarked
 public final class MaterialAdapter implements JsonSerializer<Material>, JsonDeserializer<Material> {
     @Override
-    public @Nullable Material deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public @Nullable Material deserialize(final JsonElement element, final Type type, final JsonDeserializationContext context) throws JsonParseException {
         return element.isJsonNull() ? null : Material.matchMaterial(element.getAsString());
     }
 
     @Override
-    public JsonElement serialize(@Nullable Material source, Type type, JsonSerializationContext context) {
+    public JsonElement serialize(@Nullable final Material source, final Type type, final JsonSerializationContext context) {
         return source == null ? JsonNull.INSTANCE : new JsonPrimitive(source.getKey().toString());
     }
 }

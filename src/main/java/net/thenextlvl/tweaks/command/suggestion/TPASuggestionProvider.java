@@ -16,12 +16,12 @@ import java.util.concurrent.CompletableFuture;
 public final class TPASuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     private final TweaksPlugin plugin;
 
-    public TPASuggestionProvider(TweaksPlugin plugin) {
+    public TPASuggestionProvider(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> getSuggestions(final CommandContext<CommandSourceStack> context, final SuggestionsBuilder builder) {
         plugin.getServer().getOnlinePlayers().stream()
                 .filter(player -> !player.equals(context.getSource().getSender()))
                 .filter(player -> !plugin.dataController().isTpaToggled(player))

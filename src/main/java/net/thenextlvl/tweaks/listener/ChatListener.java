@@ -23,18 +23,18 @@ import java.util.Optional;
 public final class ChatListener implements Listener {
     private final TweaksPlugin plugin;
 
-    public ChatListener(TweaksPlugin plugin) {
+    public ChatListener(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onChat(AsyncChatEvent event) {
+    public void onChat(final AsyncChatEvent event) {
         if (!plugin.config().general.logChat)
             event.viewers().remove(plugin.getServer().getConsoleSender());
         if (!plugin.config().general.overrideChat) return;
-        var messageContent = event.signedMessage().message();
+        final var messageContent = event.signedMessage().message();
         event.renderer((source, displayName, message, viewer) -> {
-            var arguments = Argument.tagResolver(plugin.serviceResolvers(source).resolvers(
+            final var arguments = Argument.tagResolver(plugin.serviceResolvers(source).resolvers(
                     Placeholder.component("display_name", displayName),
                     Placeholder.component("message", message),
                     Placeholder.parsed("message_content", messageContent),
@@ -44,10 +44,10 @@ public final class ChatListener implements Listener {
         });
     }
 
-    private TagResolver.Single createDeleteTag(Player sender, Audience audience, SignedMessage message) {
-        if (!(audience instanceof Player viewer)) return Placeholder.parsed("delete", "");
+    private TagResolver.Single createDeleteTag(final Player sender, final Audience audience, final SignedMessage message) {
+        if (!(audience instanceof final Player viewer)) return Placeholder.parsed("delete", "");
         if (!canDelete(viewer, sender)) return Placeholder.parsed("delete", "");
-        var component = plugin.bundle().component("chat.format.delete", viewer);
+        final var component = plugin.bundle().component("chat.format.delete", viewer);
         return Placeholder.component("delete", component.clickEvent(ClickEvent.callback(ignored -> {
             if (!canDelete(viewer, sender)) return;
             plugin.getServer().getOnlinePlayers().forEach(all -> all.deleteMessage(message));
@@ -57,17 +57,17 @@ public final class ChatListener implements Listener {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean canDelete(Player viewer, Player source) {
+    private boolean canDelete(final Player viewer, final Player source) {
         if (source.equals(viewer) && viewer.hasPermission("tweaks.chat.delete.own")) return true;
         if (services().isPresent() && getWeight(source) <= getChatDeleteWeight(viewer)) return true;
         return viewer.hasPermission("tweaks.chat.delete");
     }
 
-    private int getChatDeleteWeight(Player player) {
+    private int getChatDeleteWeight(final Player player) {
         return services().map(services -> services.getChatDeleteWeight(player)).orElse(-1);
     }
 
-    private int getWeight(Player player) {
+    private int getWeight(final Player player) {
         return services().map(services -> services.getWeight(player)).orElse(-1);
     }
 

@@ -15,12 +15,12 @@ import org.jspecify.annotations.NullMarked;
 public class SetWarpCommand {
     private final TweaksPlugin plugin;
 
-    public SetWarpCommand(TweaksPlugin plugin) {
+    public SetWarpCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().setWarp.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().setWarp.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp.set"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new WarpSuggestionProvider(plugin))
@@ -29,12 +29,12 @@ public class SetWarpCommand {
         registrar.register(command, "Set a warp point", plugin.commands().setWarp.aliases);
     }
 
-    private int setWarp(CommandContext<CommandSourceStack> context) {
-        var name = context.getArgument("name", String.class);
+    private int setWarp(final CommandContext<CommandSourceStack> context) {
+        final var name = context.getArgument("name", String.class);
         plugin.warpController().setWarp(name, context.getSource().getLocation()).thenAccept(success -> {
-            var world = context.getSource().getLocation().getWorld();
+            final var world = context.getSource().getLocation().getWorld();
             if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) && success) return;
-            var message = success ? "command.warp.set" : "nothing.changed";
+            final var message = success ? "command.warp.set" : "nothing.changed";
             plugin.bundle().sendMessage(context.getSource().getSender(), message,
                     Placeholder.parsed("name", name));
         });

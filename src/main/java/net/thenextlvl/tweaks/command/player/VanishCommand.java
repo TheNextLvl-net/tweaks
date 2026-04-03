@@ -9,19 +9,19 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class VanishCommand extends EntitiesCommand {
-    public VanishCommand(TweaksPlugin plugin) {
+    public VanishCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().vanish.command,
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().vanish.command,
                 "tweaks.command.vanish", "tweaks.command.vanish.others");
         registrar.register(command, "Hide yourself or someone else from others",
                 plugin.commands().vanish.aliases);
     }
 
     @Override
-    protected void execute(CommandSender sender, Entity entity) {
+    protected void execute(final CommandSender sender, final Entity entity) {
         entity.setVisibleByDefault(!entity.isVisibleByDefault());
         plugin.getServer().getOnlinePlayers().stream()
                 .filter(player -> !entity.equals(player))
@@ -30,8 +30,8 @@ public class VanishCommand extends EntitiesCommand {
                     else player.hideEntity(plugin, entity);
                 });
 
-        var messageSelf = entity.isVisibleByDefault() ? "command.vanish.disabled.self" : "command.vanish.enabled.self";
-        var messageOthers = entity.isVisibleByDefault() ? "command.vanish.disabled.others" : "command.vanish.enabled.others";
+        final var messageSelf = entity.isVisibleByDefault() ? "command.vanish.disabled.self" : "command.vanish.enabled.self";
+        final var messageOthers = entity.isVisibleByDefault() ? "command.vanish.disabled.others" : "command.vanish.enabled.others";
         plugin.bundle().sendMessage(entity, messageSelf);
         if (entity != sender) plugin.bundle().sendMessage(sender, messageOthers,
                 Placeholder.component("entity", entity.name().hoverEvent(entity.asHoverEvent())));

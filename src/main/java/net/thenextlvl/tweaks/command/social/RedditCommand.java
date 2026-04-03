@@ -9,12 +9,12 @@ import org.jspecify.annotations.NullMarked;
 public class RedditCommand {
     private final TweaksPlugin plugin;
 
-    public RedditCommand(TweaksPlugin plugin) {
+    public RedditCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().reddit.command).executes(context -> {
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().reddit.command).executes(context -> {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.reddit");
             return Command.SINGLE_SUCCESS;
         }).build();

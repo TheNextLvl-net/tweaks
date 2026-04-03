@@ -15,12 +15,12 @@ import org.bukkit.command.CommandSender;
 public class WeatherCommand {
     private final TweaksPlugin plugin;
 
-    public WeatherCommand(TweaksPlugin plugin) {
+    public WeatherCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().weather.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().weather.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.weather"))
                 .then(setWeather("clear", "tweaks.command.weather.sun", this::clear))
                 .then(setWeather("rain", "tweaks.command.weather.rain", this::rain))
@@ -29,24 +29,24 @@ public class WeatherCommand {
         registrar.register(command, "Gives you an item of your choice", plugin.commands().weather.aliases);
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> setWeather(String literal, String permission, Executor executor) {
+    private LiteralArgumentBuilder<CommandSourceStack> setWeather(final String literal, final String permission, final Executor executor) {
         return Commands.literal(literal)
                 .requires(stack -> stack.getSender().hasPermission(permission))
                 .then(Commands.argument("world", ArgumentTypes.world())
                         .then(Commands.argument("duration", ArgumentTypes.time(1))
                                 .executes(context -> {
-                                    var world = context.getArgument("world", World.class);
-                                    var duration = context.getArgument("duration", int.class);
+                                    final var world = context.getArgument("world", World.class);
+                                    final var duration = context.getArgument("duration", int.class);
                                     executor.execute(context.getSource().getSender(), world, duration);
                                     return Command.SINGLE_SUCCESS;
                                 }))
                         .executes(context -> {
-                            var world = context.getArgument("world", World.class);
+                            final var world = context.getArgument("world", World.class);
                             executor.execute(context.getSource().getSender(), world, -1);
                             return Command.SINGLE_SUCCESS;
                         }))
                 .executes(context -> {
-                    var world = context.getSource().getLocation().getWorld();
+                    final var world = context.getSource().getLocation().getWorld();
                     executor.execute(context.getSource().getSender(), world, -1);
                     return Command.SINGLE_SUCCESS;
                 });
@@ -56,19 +56,19 @@ public class WeatherCommand {
         void execute(CommandSender sender, World world, int duration);
     }
 
-    private void clear(CommandSender sender, World world, int duration) {
+    private void clear(final CommandSender sender, final World world, final int duration) {
         setWeatherParameters(sender, world, false, false, duration, "command.weather.sun");
     }
 
-    private void rain(CommandSender sender, World world, int duration) {
+    private void rain(final CommandSender sender, final World world, final int duration) {
         setWeatherParameters(sender, world, true, false, duration, "command.weather.rain");
     }
 
-    private void thunder(CommandSender sender, World world, int duration) {
+    private void thunder(final CommandSender sender, final World world, final int duration) {
         setWeatherParameters(sender, world, true, true, duration, "command.weather.thunder");
     }
 
-    private void setWeatherParameters(CommandSender sender, World world, boolean rain, boolean thunder, int duration, String message) {
+    private void setWeatherParameters(final CommandSender sender, final World world, final boolean rain, final boolean thunder, final int duration, final String message) {
         plugin.getServer().getGlobalRegionScheduler().run(plugin, task -> {
             world.setStorm(rain);
             world.setThundering(thunder);

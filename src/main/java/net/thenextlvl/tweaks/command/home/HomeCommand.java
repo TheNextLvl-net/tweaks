@@ -17,13 +17,13 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND;
 public class HomeCommand {
     private final TweaksPlugin plugin;
 
-    public HomeCommand(TweaksPlugin plugin) {
+    public HomeCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().home.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().home.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.home"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
@@ -33,11 +33,11 @@ public class HomeCommand {
         registrar.register(command, "Teleport to your homes", plugin.commands().home.aliases);
     }
 
-    private int home(CommandContext<CommandSourceStack> context, String name) {
-        var player = (Player) context.getSource().getSender();
+    private int home(final CommandContext<CommandSourceStack> context, final String name) {
+        final var player = (Player) context.getSource().getSender();
         plugin.homeController().getHome(player, name).thenAccept(home -> home.ifPresentOrElse(location ->
                 plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
-                    var message = success ? "command.home.name" : "command.teleport.cancelled";
+                    final var message = success ? "command.home.name" : "command.teleport.cancelled";
                     plugin.bundle().sendMessage(player, message, Placeholder.parsed("name", name));
                 }), () -> plugin.bundle().sendMessage(player, "command.home.unknown", Placeholder.parsed("name", name))));
         return Command.SINGLE_SUCCESS;

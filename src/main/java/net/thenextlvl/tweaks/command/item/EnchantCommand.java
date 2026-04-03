@@ -27,17 +27,17 @@ import java.util.stream.IntStream;
 public class EnchantCommand {
     private final TweaksPlugin plugin;
 
-    public EnchantCommand(TweaksPlugin plugin) {
+    public EnchantCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var max = plugin.config().general.enchantmentOverflow ? 255 : RegistryAccess.registryAccess()
+    public void register(final Commands registrar) {
+        final var max = plugin.config().general.enchantmentOverflow ? 255 : RegistryAccess.registryAccess()
                 .getRegistry(RegistryKey.ENCHANTMENT).stream()
                 .mapToInt(Enchantment::getMaxLevel)
                 .max().orElse(10);
-        var command = Commands.literal(plugin.commands().enchant.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+        final var command = Commands.literal(plugin.commands().enchant.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.enchant"))
                 .then(Commands.argument("enchantment", ArgumentTypes.resource(RegistryKey.ENCHANTMENT))
                         .suggests(new EnchantSuggestionProvider(plugin))
@@ -49,8 +49,8 @@ public class EnchantCommand {
         registrar.register(command, "Enchant your tools", plugin.commands().enchant.aliases);
     }
 
-    private CompletableFuture<Suggestions> suggestLevels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-        var enchantment = context.getLastChild().getArgument("enchantment", Enchantment.class);
+    private CompletableFuture<Suggestions> suggestLevels(final CommandContext<CommandSourceStack> context, final SuggestionsBuilder builder) {
+        final var enchantment = context.getLastChild().getArgument("enchantment", Enchantment.class);
         IntStream.rangeClosed(enchantment.getStartLevel(), enchantment.getMaxLevel())
                 .mapToObj(String::valueOf)
                 .filter(s -> s.contains(builder.getRemaining()))
@@ -58,10 +58,10 @@ public class EnchantCommand {
         return builder.buildFuture();
     }
 
-    private int enchant(CommandContext<CommandSourceStack> context, int level) {
-        var player = (Player) context.getSource().getSender();
-        var enchantment = context.getArgument("enchantment", Enchantment.class);
-        var item = player.getInventory().getItemInMainHand();
+    private int enchant(final CommandContext<CommandSourceStack> context, int level) {
+        final var player = (Player) context.getSource().getSender();
+        final var enchantment = context.getArgument("enchantment", Enchantment.class);
+        final var item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isAir()) {
             plugin.bundle().sendMessage(player, "command.hold.item");

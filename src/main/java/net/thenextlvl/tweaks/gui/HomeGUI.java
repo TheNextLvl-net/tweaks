@@ -12,14 +12,14 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN;
 
 @NullMarked
 public final class HomeGUI extends NamedLocationGUI {
-    public HomeGUI(TweaksPlugin plugin, Player owner, Collection<NamedLocation> elements) {
+    public HomeGUI(final TweaksPlugin plugin, final Player owner, final Collection<NamedLocation> elements) {
         super(plugin, plugin.config().guis.homes, owner, plugin.bundle().component("gui.title.homes", owner), elements);
     }
 
     @Override
-    protected void teleport(NamedLocation element) {
+    protected void teleport(final NamedLocation element) {
         plugin.teleportController().teleport(owner, element, PLUGIN).thenAccept(success -> {
-            var message = success ? "command.home.name" : "command.teleport.cancelled";
+            final var message = success ? "command.home.name" : "command.teleport.cancelled";
             plugin.bundle().sendMessage(owner, message, Placeholder.parsed("name", element.getName()));
         });
     }

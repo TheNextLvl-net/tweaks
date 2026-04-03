@@ -15,12 +15,12 @@ import org.jspecify.annotations.NullMarked;
 public class DeleteWarpCommand {
     private final TweaksPlugin plugin;
 
-    public DeleteWarpCommand(TweaksPlugin plugin) {
+    public DeleteWarpCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().deleteWarp.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().deleteWarp.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.warp.delete"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new WarpSuggestionProvider(plugin))
@@ -29,12 +29,12 @@ public class DeleteWarpCommand {
         registrar.register(command, "Delete a warp point", plugin.commands().deleteWarp.aliases);
     }
 
-    private int deleteWarp(CommandContext<CommandSourceStack> context) {
-        var name = context.getArgument("name", String.class);
+    private int deleteWarp(final CommandContext<CommandSourceStack> context) {
+        final var name = context.getArgument("name", String.class);
         plugin.warpController().deleteWarp(name).thenAccept(success -> {
-            var world = context.getSource().getLocation().getWorld();
+            final var world = context.getSource().getLocation().getWorld();
             if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) && success) return;
-            var message = success ? "command.warp.delete" : "command.warp.unknown";
+            final var message = success ? "command.warp.delete" : "command.warp.unknown";
             plugin.bundle().sendMessage(context.getSource().getSender(), message,
                     Placeholder.parsed("name", name));
         });

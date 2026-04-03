@@ -20,13 +20,13 @@ import static net.thenextlvl.tweaks.TweaksPlugin.ISSUES;
 public class SetHomeCommand {
     private final TweaksPlugin plugin;
 
-    public SetHomeCommand(TweaksPlugin plugin) {
+    public SetHomeCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().setHome.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().setHome.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.home.set"))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .suggests(new HomeSuggestionProvider(plugin))
@@ -37,18 +37,18 @@ public class SetHomeCommand {
         registrar.register(command, "Set a home", plugin.commands().setHome.aliases);
     }
 
-    private int setHome(CommandContext<CommandSourceStack> context, String name) {
+    private int setHome(final CommandContext<CommandSourceStack> context, final String name) {
         CompletableFuture.runAsync(() -> {
-            var player = (Player) context.getSource().getSender();
+            final var player = (Player) context.getSource().getSender();
             if (player.hasPermission("tweaks.command.home.limit.bypass")) setHome(name, player);
             else if (plugin.dataController().hasHome(player, name)) setHome(name, player);
             else {
-                var limit = plugin.homeController().getMaxHomeCount(player);
+                final var limit = plugin.homeController().getMaxHomeCount(player);
                 if (limit < 0) {
                     setHome(name, player);
                     return;
                 }
-                var count = plugin.dataController().getHomeCount(player);
+                final var count = plugin.dataController().getHomeCount(player);
                 if (count >= limit) plugin.bundle().sendMessage(player, "command.home.limit",
                         Formatter.number("limit", limit));
                 else setHome(name, player);
@@ -62,7 +62,7 @@ public class SetHomeCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private void setHome(String name, Player player) throws RuntimeException {
+    private void setHome(final String name, final Player player) throws RuntimeException {
         plugin.dataController().setHome(player, name, player.getLocation());
         plugin.bundle().sendMessage(player, "command.home.set.name", Placeholder.parsed("name", name));
     }

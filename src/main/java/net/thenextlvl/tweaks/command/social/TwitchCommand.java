@@ -9,12 +9,12 @@ import org.jspecify.annotations.NullMarked;
 public class TwitchCommand {
     private final TweaksPlugin plugin;
 
-    public TwitchCommand(TweaksPlugin plugin) {
+    public TwitchCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().twitch.command).executes(context -> {
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().twitch.command).executes(context -> {
             plugin.bundle().sendMessage(context.getSource().getSender(), "social.twitch");
             return Command.SINGLE_SUCCESS;
         }).build();

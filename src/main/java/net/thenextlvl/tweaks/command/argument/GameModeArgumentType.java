@@ -21,20 +21,20 @@ import java.util.concurrent.CompletableFuture;
 @NullMarked
 public final class GameModeArgumentType implements CustomArgumentType<GameMode, String> {
     @Override
-    public GameMode parse(StringReader reader) throws CommandSyntaxException {
-        var input = getNativeType().parse(reader);
+    public GameMode parse(final StringReader reader) throws CommandSyntaxException {
+        final var input = getNativeType().parse(reader);
         return Arrays.stream(GameMode.values()).filter(gameMode -> {
             return gameMode.name().toLowerCase(Locale.ROOT).startsWith(input.toLowerCase(Locale.ROOT))
                    || input.equals(String.valueOf(gameMode.getValue()));
         }).findAny().orElseThrow(() -> {
-            var gameMode = Component.translatable("argument.gamemode.invalid", () -> Component.text(input));
+            final var gameMode = Component.translatable("argument.gamemode.invalid", () -> Component.text(input));
             return new SimpleCommandExceptionType(MessageComponentSerializer.message().serialize(gameMode))
                     .createWithContext(reader);
         });
     }
 
     @Override
-    public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
+    public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> context, final SuggestionsBuilder builder) {
         Arrays.stream(GameMode.values())
                 .map(gameMode -> gameMode.name().toLowerCase())
                 .filter(name -> name.contains(builder.getRemaining()))

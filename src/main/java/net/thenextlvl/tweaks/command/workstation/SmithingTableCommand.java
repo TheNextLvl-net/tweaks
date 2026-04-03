@@ -11,16 +11,16 @@ import org.jspecify.annotations.NullMarked;
 public class SmithingTableCommand {
     private final TweaksPlugin plugin;
 
-    public SmithingTableCommand(TweaksPlugin plugin) {
+    public SmithingTableCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().smithingTable.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().smithingTable.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.smithing-table"))
                 .executes(context -> {
-                    var player = (Player) context.getSource().getSender();
+                    final var player = (Player) context.getSource().getSender();
                     MenuType.SMITHING.create(player).open();
                     return Command.SINGLE_SUCCESS;
                 })

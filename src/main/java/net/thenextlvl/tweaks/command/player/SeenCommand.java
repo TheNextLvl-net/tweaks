@@ -19,12 +19,12 @@ import java.time.ZoneId;
 public class SeenCommand {
     private final TweaksPlugin plugin;
 
-    public SeenCommand(TweaksPlugin plugin) {
+    public SeenCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().seen.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().seen.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.seen"))
                 .then(Commands.argument("player", StringArgumentType.word())
                         .suggests(new OfflinePlayerSuggestionProvider(plugin))
@@ -36,10 +36,10 @@ public class SeenCommand {
         registrar.register(command, "Gives you information about a player", plugin.commands().seen.aliases);
     }
 
-    private void seen(CommandContext<CommandSourceStack> context) {
-        var sender = context.getSource().getSender();
-        var name = context.getArgument("player", String.class);
-        var player = plugin.getServer().getOfflinePlayer(name);
+    private void seen(final CommandContext<CommandSourceStack> context) {
+        final var sender = context.getSource().getSender();
+        final var name = context.getArgument("player", String.class);
+        final var player = plugin.getServer().getOfflinePlayer(name);
 
         if (player.getPlayer() != null) {
             plugin.bundle().sendMessage(sender, "command.last.seen.now", Placeholder.parsed("player",
@@ -53,7 +53,7 @@ public class SeenCommand {
             return;
         }
 
-        var time = Instant.ofEpochMilli(player.getLastSeen());
+        final var time = Instant.ofEpochMilli(player.getLastSeen());
         plugin.bundle().sendMessage(sender, "command.last.seen.time",
                 Placeholder.parsed("player", player.getName() != null ? player.getName() : name),
                 Formatter.date("date", LocalDateTime.ofInstant(time, ZoneId.systemDefault())));

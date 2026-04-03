@@ -22,21 +22,21 @@ import java.util.WeakHashMap;
 public class EnderChestCommand extends PlayerCommand implements Listener {
     private final Set<HumanEntity> viewers = Collections.newSetFromMap(new WeakHashMap<>());
 
-    public EnderChestCommand(TweaksPlugin plugin) {
+    public EnderChestCommand(final TweaksPlugin plugin) {
         super(plugin);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().enderchest.command,
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().enderchest.command,
                 "tweaks.command.enderchest", "tweaks.command.enderchest.others");
         registrar.register(command, "Open your own or someone else's enderchest",
                 plugin.commands().enderchest.aliases);
     }
 
     @Override
-    protected int execute(CommandSender sender, Player target) {
-        if (!(sender instanceof Player player)) {
+    protected int execute(final CommandSender sender, final Player target) {
+        if (!(sender instanceof final Player player)) {
             plugin.bundle().sendMessage(sender, "command.sender");
             return 0;
         }
@@ -48,12 +48,12 @@ public class EnderChestCommand extends PlayerCommand implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onInventoryClose(InventoryCloseEvent event) {
+    public void onInventoryClose(final InventoryCloseEvent event) {
         viewers.remove(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(final InventoryClickEvent event) {
         if (event.getWhoClicked().hasPermission("tweaks.command.enderchest.edit")) return;
         if (viewers.contains(event.getWhoClicked())) event.setCancelled(true);
     }

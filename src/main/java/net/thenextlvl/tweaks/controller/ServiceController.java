@@ -24,7 +24,7 @@ public final class ServiceController {
     private final @Nullable GroupController groups;
     private final @Nullable PermissionController permissions;
 
-    public ServiceController(TweaksPlugin plugin) {
+    public ServiceController(final TweaksPlugin plugin) {
         this.banks = loadController(plugin, BankController.class, BankController::getName, "bank");
         this.chat = loadController(plugin, ChatController.class, ChatController::getName, "chat");
         this.economy = loadController(plugin, EconomyController.class, EconomyController::getName, "economy");
@@ -32,8 +32,8 @@ public final class ServiceController {
         this.permissions = loadController(plugin, PermissionController.class, PermissionController::getName, "permission");
     }
 
-    private <C> @Nullable C loadController(TweaksPlugin plugin, Class<C> clazz, Function<C, String> name, String description) {
-        C controller = plugin.getServer().getServicesManager().load(clazz);
+    private <C> @Nullable C loadController(final TweaksPlugin plugin, final Class<C> clazz, final Function<C, String> name, final String description) {
+        final C controller = plugin.getServer().getServicesManager().load(clazz);
         if (controller != null) plugin.getComponentLogger().info(
                 "Using {} as {} provider",
                 name.apply(controller), description
@@ -41,8 +41,8 @@ public final class ServiceController {
         return controller;
     }
 
-    public TagResolver serviceResolvers(Player player) {
-        var builder = TagResolver.builder();
+    public TagResolver serviceResolvers(final Player player) {
+        final var builder = TagResolver.builder();
         Optional.ofNullable(getGroups()).flatMap(groups -> groups.getGroupHolder(player)
                 .map(GroupHolder::getPrimaryGroup).flatMap(groups::getGroup)).ifPresent(group -> {
             builder.resolver(Placeholder.parsed("group", group.getDisplayName().orElse(group.getName())));
@@ -70,14 +70,14 @@ public final class ServiceController {
         return builder.build();
     }
 
-    public int getChatDeleteWeight(Player player) {
+    public int getChatDeleteWeight(final Player player) {
         return Optional.ofNullable(getPermissions())
                 .flatMap(controller -> controller.getPermissionHolder(player))
                 .flatMap(holder -> holder.intInfoNode("chat-delete-weight"))
                 .orElse(-1);
     }
 
-    public int getWeight(Player player) {
+    public int getWeight(final Player player) {
         return Optional.ofNullable(getGroups())
                 .flatMap(controller -> controller.getGroupHolder(player)
                         .map(GroupHolder::getPrimaryGroup)
@@ -86,7 +86,7 @@ public final class ServiceController {
                 .orElse(0);
     }
 
-    public Optional<Integer> getMaxHomeCount(Player player) {
+    public Optional<Integer> getMaxHomeCount(final Player player) {
         return Optional.ofNullable(getPermissions())
                 .flatMap(controller -> controller.getPermissionHolder(player))
                 .flatMap(permissionHolder -> permissionHolder.intInfoNode("max-homes"));

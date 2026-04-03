@@ -43,23 +43,23 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     private final Map<HumanEntity, Player> viewers = new WeakHashMap<>();
     private final Map<HumanEntity, ViewableInventory> viewables = new WeakHashMap<>();
 
-    public InventoryCommand(TweaksPlugin plugin) {
+    public InventoryCommand(final TweaksPlugin plugin) {
         super(plugin);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         //plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, task ->
         //        viewables.values().forEach(ViewableInventory::updateInventory), 5, 5);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().inventory.command,
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().inventory.command,
                 "tweaks.command.inventory", "tweaks.command.inventory");
         registrar.register(command, "Open someone else's inventory",
                 plugin.commands().inventory.aliases);
     }
 
     @Override
-    protected int execute(CommandSender sender, Player target) {
-        if (!(sender instanceof Player player)) {
+    protected int execute(final CommandSender sender, final Player target) {
+        if (!(sender instanceof final Player player)) {
             plugin.bundle().sendMessage(sender, "command.sender");
             return 0;
         }
@@ -72,7 +72,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
 
         // player.openInventory(target.getInventory());
 
-        var viewable = new ViewableInventory(player, target);
+        final var viewable = new ViewableInventory(player, target);
         player.openInventory(viewable.getInventory());
         viewables.put(target, viewable);
         viewers.put(player, target);
@@ -80,67 +80,67 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onInventoryClose(InventoryCloseEvent event) {
+    public void onInventoryClose(final InventoryCloseEvent event) {
         viewables.remove(viewers.remove(event.getPlayer()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderInventoryClick(InventoryClickEvent event) {
+    public void onProviderInventoryClick(final InventoryClickEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderInventoryCreative(InventoryCreativeEvent event) {
+    public void onProviderInventoryCreative(final InventoryCreativeEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderInventoryDrag(InventoryDragEvent event) {
+    public void onProviderInventoryDrag(final InventoryDragEvent event) {
         onProviderInventoryAction(event.getWhoClicked());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderItemDrop(PlayerDropItemEvent event) {
+    public void onProviderItemDrop(final PlayerDropItemEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderItemPickup(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof HumanEntity player) onProviderInventoryAction(player);
+    public void onProviderItemPickup(final EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof final HumanEntity player) onProviderInventoryAction(player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderArrowPickup(PlayerPickupArrowEvent event) {
+    public void onProviderArrowPickup(final PlayerPickupArrowEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderSwapHandItems(PlayerSwapHandItemsEvent event) {
+    public void onProviderSwapHandItems(final PlayerSwapHandItemsEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderItemBreak(PlayerItemBreakEvent event) {
+    public void onProviderItemBreak(final PlayerItemBreakEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderItemConsume(PlayerItemConsumeEvent event) {
+    public void onProviderItemConsume(final PlayerItemConsumeEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderItemDamage(PlayerItemDamageEvent event) {
+    public void onProviderItemDamage(final PlayerItemDamageEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onProviderItemMend(PlayerItemMendEvent event) {
+    public void onProviderItemMend(final PlayerItemMendEvent event) {
         onProviderInventoryAction(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onViewerInventoryClick(InventoryClickEvent event) {
+    public void onViewerInventoryClick(final InventoryClickEvent event) {
         event.setCancelled(onViewerInventoryAction(
                 event.getClickedInventory(),
                 event.getView(),
@@ -150,23 +150,23 @@ public class InventoryCommand extends PlayerCommand implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onViewerInventoryDrag(InventoryDragEvent event) {
+    public void onViewerInventoryDrag(final InventoryDragEvent event) {
         onViewerInventoryAction(event.getInventory(), event.getView(), event.getWhoClicked(), -1);
     }
 
-    public void onProviderInventoryAction(HumanEntity provider) {
-        var inventory = viewables.get(provider);
+    public void onProviderInventoryAction(final HumanEntity provider) {
+        final var inventory = viewables.get(provider);
         if (inventory == null) return;
         provider.getScheduler().run(plugin, task -> inventory.updateInventory(), inventory::close);
     }
 
-    public boolean onViewerInventoryAction(@Nullable Inventory clicked, InventoryView view, HumanEntity viewer, int slot) {
-        var target = viewers.get(viewer);
+    public boolean onViewerInventoryAction(@Nullable final Inventory clicked, final InventoryView view, final HumanEntity viewer, final int slot) {
+        final var target = viewers.get(viewer);
         if (target == null) return false;
         if (!viewer.hasPermission("tweaks.command.inventory.edit")) return true;
         target.getScheduler().run(plugin, task -> {
             IntStream.range(0, 36).forEach(i -> {
-                var content = view.getTopInventory().getContents()[i];
+                final var content = view.getTopInventory().getContents()[i];
                 target.getInventory().setItem(i, content);
             });
             target.getInventory().setHelmet(view.getTopInventory().getItem(45));
@@ -187,8 +187,8 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         private final Player target;
         private final Inventory inventory;
 
-        private ViewableInventory(Player viewer, Player target) {
-            var title = plugin.bundle().component("gui.inventory.title", viewer,
+        private ViewableInventory(final Player viewer, final Player target) {
+            final var title = plugin.bundle().component("gui.inventory.title", viewer,
                     Argument.component("player", target.name()));
             this.inventory = plugin.getServer().createInventory(this, 54, title);
             this.target = target;
@@ -202,7 +202,7 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         }
 
         private void updateInventory() {
-            var inventory = target.getInventory();
+            final var inventory = target.getInventory();
             for (var i = 0; i < inventory.getStorageContents().length; i++)
                 this.inventory.setItem(i, inventory.getStorageContents()[i]);
             this.inventory.setItem(45, inventory.getHelmet());
@@ -213,9 +213,9 @@ public class InventoryCommand extends PlayerCommand implements Listener {
             this.inventory.setItem(52, target.getItemOnCursor());
         }
 
-        private void addPlaceholders(Player viewer) {
-            var inventoryConfig = plugin.config().guis.inventory;
-            var placeholder = ItemStack.of(inventoryConfig.placeholder);
+        private void addPlaceholders(final Player viewer) {
+            final var inventoryConfig = plugin.config().guis.inventory;
+            final var placeholder = ItemStack.of(inventoryConfig.placeholder);
             placeholder.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().hideTooltip(true).build());
             inventory.setItem(36, withName(inventoryConfig.helmet, "gui.placeholder.helmet", viewer));
             inventory.setItem(37, withName(inventoryConfig.chestplate, "gui.placeholder.chestplate", viewer));
@@ -231,8 +231,8 @@ public class InventoryCommand extends PlayerCommand implements Listener {
         }
     }
 
-    private ItemStack withName(Material material, String name, Audience viewer) {
-        var itemStack = ItemStack.of(material);
+    private ItemStack withName(final Material material, final String name, final Audience viewer) {
+        final var itemStack = ItemStack.of(material);
         itemStack.setData(DataComponentTypes.ITEM_NAME, plugin.bundle().component(name, viewer));
         return itemStack;
     }

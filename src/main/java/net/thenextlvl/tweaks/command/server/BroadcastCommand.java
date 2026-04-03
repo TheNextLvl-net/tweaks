@@ -15,12 +15,12 @@ import java.util.Arrays;
 public class BroadcastCommand {
     private final TweaksPlugin plugin;
 
-    public BroadcastCommand(TweaksPlugin plugin) {
+    public BroadcastCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().broadcast.command)
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().broadcast.command)
                 .requires(stack -> stack.getSender().hasPermission("tweaks.command.broadcast"))
                 .then(Commands.argument("message", StringArgumentType.greedyString())
                         .executes(this::broadcast))
@@ -28,8 +28,8 @@ public class BroadcastCommand {
         registrar.register(command, "Broadcast a message", plugin.commands().broadcast.aliases);
     }
 
-    private int broadcast(CommandContext<CommandSourceStack> context) {
-        var lines = Arrays.asList(context.getArgument("message", String.class)
+    private int broadcast(final CommandContext<CommandSourceStack> context) {
+        final var lines = Arrays.asList(context.getArgument("message", String.class)
                 .replace("\\t", "   ").replace("\\\\n", "\n")
                 .split("(\\\\n|<br>|<newline>)"));
         plugin.getServer().forEachAudience(audience -> {

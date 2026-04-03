@@ -29,13 +29,13 @@ import java.util.stream.Collectors;
 public class LoreCommand {
     private final TweaksPlugin plugin;
 
-    public LoreCommand(TweaksPlugin plugin) {
+    public LoreCommand(final TweaksPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void register(Commands registrar) {
-        var command = Commands.literal(plugin.commands().lore.command)
-                .requires(stack -> stack.getSender() instanceof Player player
+    public void register(final Commands registrar) {
+        final var command = Commands.literal(plugin.commands().lore.command)
+                .requires(stack -> stack.getSender() instanceof final Player player
                                    && player.hasPermission("tweaks.command.lore"))
                 .then(Commands.literal("clear").executes(this::clear))
                 .then(modify("append", this::append))
@@ -53,20 +53,20 @@ public class LoreCommand {
                                 .executes(this::replace)));
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> modify(String literal, Command<CommandSourceStack> command) {
+    private LiteralArgumentBuilder<CommandSourceStack> modify(final String literal, final Command<CommandSourceStack> command) {
         return Commands.literal(literal)
                 .then(Commands.argument("text", StringArgumentType.greedyString())
                         .executes(command));
     }
 
-    private int replace(CommandContext<CommandSourceStack> context) {
+    private int replace(final CommandContext<CommandSourceStack> context) {
         return modifyLore(context, item -> {
-            var data = item.getData(DataComponentTypes.LORE);
+            final var data = item.getData(DataComponentTypes.LORE);
             if (data == null || data.lines().isEmpty()) return false;
-            var lore = new ArrayList<>(data.lines());
-            var text = context.getArgument("text", String.class);
-            var replacement = context.getArgument("replacement", String.class);
-            var config = TextReplacementConfig.builder()
+            final var lore = new ArrayList<>(data.lines());
+            final var text = context.getArgument("text", String.class);
+            final var replacement = context.getArgument("replacement", String.class);
+            final var config = TextReplacementConfig.builder()
                     .matchLiteral(text)
                     .replacement(MiniMessage.miniMessage().deserialize(replacement))
                     .build();
@@ -76,9 +76,9 @@ public class LoreCommand {
         });
     }
 
-    private int append(CommandContext<CommandSourceStack> context) {
+    private int append(final CommandContext<CommandSourceStack> context) {
         return modifyLore(context, item -> {
-            var lore = new ArrayList<Component>();
+            final var lore = new ArrayList<Component>();
             Optional.ofNullable(item.getData(DataComponentTypes.LORE))
                     .map(ItemLore::lines)
                     .ifPresent(lore::addAll);
@@ -88,9 +88,9 @@ public class LoreCommand {
         });
     }
 
-    private int prepend(CommandContext<CommandSourceStack> context) {
+    private int prepend(final CommandContext<CommandSourceStack> context) {
         return modifyLore(context, item -> {
-            var lore = new ArrayList<>(getLore(context));
+            final var lore = new ArrayList<>(getLore(context));
             Optional.ofNullable(item.getData(DataComponentTypes.LORE))
                     .map(ItemLore::lines)
                     .ifPresent(lore::addAll);
@@ -99,39 +99,39 @@ public class LoreCommand {
         });
     }
 
-    private int set(CommandContext<CommandSourceStack> context) {
+    private int set(final CommandContext<CommandSourceStack> context) {
         return modifyLore(context, item -> {
-            var lore = getLore(context);
-            var data = item.getData(DataComponentTypes.LORE);
+            final var lore = getLore(context);
+            final var data = item.getData(DataComponentTypes.LORE);
             if (data != null && data.lines().equals(lore)) return false;
             item.lore(lore);
             return true;
         });
     }
 
-    private int clear(CommandContext<CommandSourceStack> context) {
+    private int clear(final CommandContext<CommandSourceStack> context) {
         return modifyLore(context, item -> {
-            var lore = item.getData(DataComponentTypes.LORE);
+            final var lore = item.getData(DataComponentTypes.LORE);
             if (lore == null || lore.lines().isEmpty()) return false;
             item.resetData(DataComponentTypes.LORE);
             return true;
         });
     }
 
-    private int modifyLore(CommandContext<CommandSourceStack> context, Function<ItemStack, Boolean> function) {
-        var player = (Player) context.getSource().getSender();
-        var item = player.getInventory().getItemInMainHand();
+    private int modifyLore(final CommandContext<CommandSourceStack> context, final Function<ItemStack, Boolean> function) {
+        final var player = (Player) context.getSource().getSender();
+        final var item = player.getInventory().getItemInMainHand();
 
-        var success = !item.isEmpty() && function.apply(item);
-        var message = item.isEmpty() ? "command.hold.item" : success ? "command.item.lore" : "nothing.changed";
+        final var success = !item.isEmpty() && function.apply(item);
+        final var message = item.isEmpty() ? "command.hold.item" : success ? "command.item.lore" : "nothing.changed";
 
         if (Boolean.TRUE.equals(player.getWorld().getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) || !success)
             plugin.bundle().sendMessage(player, message);
         return success ? Command.SINGLE_SUCCESS : 0;
     }
 
-    private List<Component> getLore(CommandContext<CommandSourceStack> context) {
-        var text = context.getArgument("text", String.class)
+    private List<Component> getLore(final CommandContext<CommandSourceStack> context) {
+        final var text = context.getArgument("text", String.class)
                 .replace("\\t", "   ");
         return Arrays.stream(text.split("(\\\\n|<br>|<newline>)"))
                 .map(MiniMessage.miniMessage()::deserialize)

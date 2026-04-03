@@ -92,7 +92,7 @@ public final class CommandConfig {
     public @SerializedName("workbench") CommandDefinition workbench = new CommandDefinition("workbench", "wb");
 
     private boolean isProxyEnabled() {
-        var plugin = JavaPlugin.getPlugin(TweaksPlugin.class);
+        final var plugin = JavaPlugin.getPlugin(TweaksPlugin.class);
         return plugin.getServer().getServerConfig().isProxyEnabled();
     }
 
@@ -101,13 +101,13 @@ public final class CommandConfig {
         public @SerializedName("aliases") Set<String> aliases;
         public @SerializedName("enabled") boolean enabled;
 
-        public CommandDefinition(String command, boolean enabled, String... aliases) {
+        public CommandDefinition(final String command, final boolean enabled, final String... aliases) {
             this.aliases = Set.of(aliases);
             this.command = command;
             this.enabled = enabled;
         }
 
-        public CommandDefinition(String command, String... aliases) {
+        public CommandDefinition(final String command, final String... aliases) {
             this(command, true, aliases);
         }
     }

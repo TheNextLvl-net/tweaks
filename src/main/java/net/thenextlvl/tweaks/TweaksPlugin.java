@@ -195,8 +195,8 @@ public final class TweaksPlugin extends JavaPlugin {
 
     private void registerCommands() {
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS.newHandler(event -> {
-            var registrar = event.registrar();
-            var features = config().features;
+            final var registrar = event.registrar();
+            final var features = config().features;
             registerItemCommands(registrar);
             registerPlayerCommands(registrar);
             registerServerCommands(registrar);
@@ -212,7 +212,7 @@ public final class TweaksPlugin extends JavaPlugin {
         }));
     }
 
-    private void registerTimeCommands(Commands registrar) {
+    private void registerTimeCommands(final Commands registrar) {
         if (commands().day.enabled) new DayCommand(this).register(registrar);
         if (commands().midnight.enabled) new MidnightCommand(this).register(registrar);
         if (commands().night.enabled) new NightCommand(this).register(registrar);
@@ -220,14 +220,14 @@ public final class TweaksPlugin extends JavaPlugin {
         if (commands().time.enabled) new TimeCommand(this).register(registrar);
     }
 
-    private void registerWeatherCommands(Commands registrar) {
+    private void registerWeatherCommands(final Commands registrar) {
         if (commands().rain.enabled) new RainCommand(this).register(registrar);
         if (commands().sun.enabled) new SunCommand(this).register(registrar);
         if (commands().thunder.enabled) new ThunderCommand(this).register(registrar);
         if (commands().weather.enabled) new WeatherCommand(this).register(registrar);
     }
 
-    private void registerItemCommands(Commands registrar) {
+    private void registerItemCommands(final Commands registrar) {
         if (commands().enchant.enabled) new EnchantCommand(this).register(registrar);
         if (commands().head.enabled) new HeadCommand(this).register(registrar);
         if (commands().item.enabled) new ItemCommand(this).register(registrar);
@@ -238,7 +238,7 @@ public final class TweaksPlugin extends JavaPlugin {
         if (commands().unenchant.enabled) new UnenchantCommand(this).register(registrar);
     }
 
-    private void registerPlayerCommands(Commands registrar) {
+    private void registerPlayerCommands(final Commands registrar) {
         if (commands().back.enabled) new BackCommand(this).register(registrar);
         if (commands().enderchest.enabled) new EnderChestCommand(this).register(registrar);
         if (commands().feed.enabled) new FeedCommand(this).register(registrar);
@@ -257,13 +257,13 @@ public final class TweaksPlugin extends JavaPlugin {
         if (commands().vanish.enabled) new VanishCommand(this).register(registrar);
     }
 
-    private void registerServerCommands(Commands registrar) {
+    private void registerServerCommands(final Commands registrar) {
         if (commands().back.enabled) new BroadcastCommand(this).register(registrar);
         if (commands().lobby.enabled) new LobbyCommand(this).register(registrar);
         if (commands().motd.enabled) new MotdCommand(this).register(registrar);
     }
 
-    private void registerWorkstationCommands(Commands registrar) {
+    private void registerWorkstationCommands(final Commands registrar) {
         if (commands().anvil.enabled) new AnvilCommand(this).register(registrar);
         if (commands().cartographyTable.enabled) new CartographyTableCommand(this).register(registrar);
         if (commands().enchantingTable.enabled) new EnchantingTableCommand(this).register(registrar);
@@ -274,25 +274,25 @@ public final class TweaksPlugin extends JavaPlugin {
         if (commands().workbench.enabled) new WorkbenchCommand(this).register(registrar);
     }
 
-    private void registerHomeCommands(Commands registrar) {
+    private void registerHomeCommands(final Commands registrar) {
         if (commands().deleteHome.enabled) new DeleteHomeCommand(this).register(registrar);
         if (commands().home.enabled) new HomeCommand(this).register(registrar);
         if (commands().homes.enabled) new HomesCommand(this).register(registrar);
         if (commands().setHome.enabled) new SetHomeCommand(this).register(registrar);
     }
 
-    private void registerMSGCommands(Commands registrar) {
+    private void registerMSGCommands(final Commands registrar) {
         if (commands().msg.enabled) new MSGCommand(this).register(registrar);
         if (commands().msgToggle.enabled) new MSGToggleCommand(this).register(registrar);
         if (commands().reply.enabled) new ReplyCommand(this).register(registrar);
     }
 
-    private void registerSpawnCommands(Commands registrar) {
+    private void registerSpawnCommands(final Commands registrar) {
         if (commands().setSpawn.enabled) new SetSpawnCommand(this).register(registrar);
         if (commands().spawn.enabled) new SpawnCommand(this).register(registrar);
     }
 
-    private void registerTpaCommands(Commands registrar) {
+    private void registerTpaCommands(final Commands registrar) {
         if (commands().teleportAccept.enabled) new TPAcceptCommand(this).register(registrar);
         if (commands().teleportAsk.enabled) new TPAskCommand(this).register(registrar);
         if (commands().teleportDeny.enabled) new TPADenyCommand(this).register(registrar);
@@ -300,14 +300,14 @@ public final class TweaksPlugin extends JavaPlugin {
         if (commands().teleportToggle.enabled) new TPAToggleCommand(this).register(registrar);
     }
 
-    private void registerWarpCommands(Commands registrar) {
+    private void registerWarpCommands(final Commands registrar) {
         if (commands().deleteWarp.enabled) new DeleteWarpCommand(this).register(registrar);
         if (commands().setWarp.enabled) new SetWarpCommand(this).register(registrar);
         if (commands().warp.enabled) new WarpCommand(this).register(registrar);
         if (commands().warps.enabled) new WarpsCommand(this).register(registrar);
     }
 
-    private void registerLinkCommands(Commands registrar) {
+    private void registerLinkCommands(final Commands registrar) {
         if (commands().discord.enabled && isLinkEnabled("discord")) new DiscordCommand(this).register(registrar);
         if (commands().reddit.enabled && isLinkEnabled("reddit")) new RedditCommand(this).register(registrar);
         if (commands().teamspeak.enabled && isLinkEnabled("teamspeak")) new TeamSpeakCommand(this).register(registrar);
@@ -318,13 +318,13 @@ public final class TweaksPlugin extends JavaPlugin {
         if (commands().youtube.enabled && isLinkEnabled("youtube")) new YouTubeCommand(this).register(registrar);
     }
 
-    private boolean isLinkEnabled(String string) {
-        var url = config().links.get(string);
+    private boolean isLinkEnabled(final String string) {
+        final var url = config().links.get(string);
         return url != null && !url.isBlank() && !url.equals(PluginConfig.LINK_DEFAULTS.get(string));
     }
 
     private void registerLinks() {
-        var social = config().features.social;
+        final var social = config().features.social;
         if (!social.serverLinks) return;
 
         if (social.discord) registerLink("url.discord", "discord");
@@ -352,16 +352,16 @@ public final class TweaksPlugin extends JavaPlugin {
         });
     }
 
-    private void registerLink(ServerLinks.Type type, String string) {
-        var url = config().links.get(string);
+    private void registerLink(final ServerLinks.Type type, final String string) {
+        final var url = config().links.get(string);
         if (url == null || url.isBlank() || url.equals(PluginConfig.LINK_DEFAULTS.get(string))) return;
         getServer().getServerLinks().addLink(type, URI.create(url));
     }
 
-    private void registerLink(String translationKey, String string) {
-        var translation = bundle().translate(translationKey, Locale.US);
+    private void registerLink(final String translationKey, final String string) {
+        final var translation = bundle().translate(translationKey, Locale.US);
         if (translation == null) return;
-        var url = config().links.get(string);
+        final var url = config().links.get(string);
         if (url == null || url.isBlank() || url.equals(PluginConfig.LINK_DEFAULTS.get(string))) return;
         getServer().getServerLinks().addLink(translation, URI.create(url));
     }
@@ -420,7 +420,7 @@ public final class TweaksPlugin extends JavaPlugin {
     }
 
     private void initMotd() {
-        var motd = config().general.motd;
+        final var motd = config().general.motd;
         if (motd != null) getServer().motd(MiniMessage.miniMessage().deserialize(motd));
     }
 
@@ -468,8 +468,8 @@ public final class TweaksPlugin extends JavaPlugin {
         return serviceController;
     }
 
-    public TagResolver.Builder serviceResolvers(Player player) {
-        var resolver = TagResolver.builder().resolvers(
+    public TagResolver.Builder serviceResolvers(final Player player) {
+        final var resolver = TagResolver.builder().resolvers(
                 Placeholder.component("custom_name", Optional.ofNullable(player.customName())
                         .orElseGet(player::name)),
                 Placeholder.component("display_name", player.displayName()),

@@ -11,17 +11,17 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class NightCommand extends WorldCommand {
-    public NightCommand(TweaksPlugin plugin) {
+    public NightCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().night.command, "tweaks.command.time.night");
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().night.command, "tweaks.command.time.night");
         registrar.register(command, "Set the time to night", plugin.commands().night.aliases);
     }
 
     @Override
-    protected void execute(CommandSender sender, World world) {
+    protected void execute(final CommandSender sender, final World world) {
         if (Boolean.TRUE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(sender, "command.time.night", Placeholder.parsed("world", world.getName()));
         world.setTime(13000);

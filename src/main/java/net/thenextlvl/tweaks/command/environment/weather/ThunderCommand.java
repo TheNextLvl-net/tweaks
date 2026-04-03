@@ -9,17 +9,17 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 public class ThunderCommand extends WorldCommand {
-    public ThunderCommand(TweaksPlugin plugin) {
+    public ThunderCommand(final TweaksPlugin plugin) {
         super(plugin);
     }
 
-    public void register(Commands registrar) {
-        var command = create(plugin.commands().thunder.command, "tweaks.command.weather.thunder");
+    public void register(final Commands registrar) {
+        final var command = create(plugin.commands().thunder.command, "tweaks.command.weather.thunder");
         registrar.register(command, "Let it thunder", plugin.commands().thunder.aliases);
     }
 
     @Override
-    protected void execute(CommandSender sender, World world) {
+    protected void execute(final CommandSender sender, final World world) {
         if (Boolean.TRUE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)))
             plugin.bundle().sendMessage(sender, "command.weather.thunder", Placeholder.parsed("world", world.getName()));
         world.setThundering(true);
