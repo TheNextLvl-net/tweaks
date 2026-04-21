@@ -32,7 +32,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
-    implementation("net.thenextlvl.core:paper:3.0.0-pre1")
+    implementation("net.thenextlvl.core:paper:3.0.0-pre4")
     implementation("net.thenextlvl.version-checker:modrinth-paper:1.0.1")
     implementation("net.thenextlvl:i18n:1.2.0")
     implementation("net.thenextlvl:nbt:4.3.4")
