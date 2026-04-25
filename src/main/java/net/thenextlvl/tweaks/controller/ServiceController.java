@@ -45,19 +45,19 @@ public final class ServiceController {
 
     public TagResolver serviceResolvers(final Player player) {
         final var builder = TagResolver.builder();
-        Optional.ofNullable(getGroups()).flatMap(groups -> groups.getGroupHolder(player)
+        Optional.ofNullable(groups).flatMap(groups -> groups.getGroupHolder(player)
                 .map(GroupHolder::getPrimaryGroup).flatMap(groups::getGroup)).ifPresent(group -> {
             builder.resolver(Placeholder.parsed("group", group.getDisplayName().orElse(group.getName())));
             group.getPrefix().ifPresent(prefix -> builder.resolver(Placeholder.parsed("group_prefix", prefix)));
             group.getSuffix().ifPresent(suffix -> builder.resolver(Placeholder.parsed("group_suffix", suffix)));
         });
-        Optional.ofNullable(getChat()).flatMap(chat -> chat.getProfile(player)).ifPresent(profile -> {
+        Optional.ofNullable(chat).flatMap(chat -> chat.getProfile(player)).ifPresent(profile -> {
             builder.resolver(Placeholder.parsed("chat_display_name", profile.getDisplayName().orElse(player.getName())));
             profile.getPrefix().ifPresent(prefix -> builder.resolver(Placeholder.parsed("chat_prefix", prefix)));
             profile.getSuffix().ifPresent(suffix -> builder.resolver(Placeholder.parsed("chat_suffix", suffix)));
         });
         // todo: add proper placeholder support
-        Optional.ofNullable(getEconomy()).ifPresent(economy -> {
+        Optional.ofNullable(economy).ifPresent(economy -> {
             final var currency = economy.getCurrencyController().getDefaultCurrency();
             economy.getAccount(player).ifPresent(account -> {
                 builder.resolver(Placeholder.component("balance", currency.format(account.getBalance(currency), player)));
@@ -65,7 +65,7 @@ public final class ServiceController {
             });
             registerCurrencyTags(player, currency, builder);
         });
-        Optional.ofNullable(getBanks()).ifPresent(banks -> {
+        Optional.ofNullable(banks).ifPresent(banks -> {
             final var currency = banks.getCurrencyController().getDefaultCurrency();
             banks.getBank(player).ifPresent(account -> {
                 builder.resolver(Placeholder.component("bank_balance", currency.format(account.getBalance(currency), player)));
@@ -83,7 +83,7 @@ public final class ServiceController {
     }
 
     public int getChatDeleteWeight(final Player player) {
-        return Optional.ofNullable(getPermissions())
+        return Optional.ofNullable(permissions)
                 .flatMap(controller -> controller.getPermissionHolder(player))
                 .filter(holder -> holder instanceof MetadataHolder)
                 .map(holder -> (MetadataHolder) holder)
@@ -92,7 +92,7 @@ public final class ServiceController {
     }
 
     public int getWeight(final Player player) {
-        return Optional.ofNullable(getGroups())
+        return Optional.ofNullable(groups)
                 .flatMap(controller -> controller.getGroupHolder(player)
                         .map(GroupHolder::getPrimaryGroup)
                         .flatMap(controller::getGroup))
@@ -101,30 +101,10 @@ public final class ServiceController {
     }
 
     public Optional<Integer> getMaxHomeCount(final Player player) {
-        return Optional.ofNullable(getPermissions())
+        return Optional.ofNullable(permissions)
                 .flatMap(controller -> controller.getPermissionHolder(player))
                 .filter(holder -> holder instanceof MetadataHolder)
                 .map(holder -> (MetadataHolder) holder)
                 .flatMap(permissionHolder -> permissionHolder.intInfoNode("max-homes"));
-    }
-
-    public @Nullable BankController getBanks() {
-        return banks;
-    }
-
-    public @Nullable ChatController getChat() {
-        return chat;
-    }
-
-    public @Nullable EconomyController getEconomy() {
-        return economy;
-    }
-
-    public @Nullable GroupController getGroups() {
-        return groups;
-    }
-
-    public @Nullable PermissionController getPermissions() {
-        return permissions;
     }
 }
