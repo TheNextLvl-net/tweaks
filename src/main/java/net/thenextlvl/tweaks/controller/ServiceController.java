@@ -7,6 +7,7 @@ import net.thenextlvl.service.economy.EconomyController;
 import net.thenextlvl.service.economy.bank.BankController;
 import net.thenextlvl.service.group.GroupController;
 import net.thenextlvl.service.group.GroupHolder;
+import net.thenextlvl.service.model.MetadataHolder;
 import net.thenextlvl.service.permission.PermissionController;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
@@ -74,6 +75,8 @@ public final class ServiceController {
     public int getChatDeleteWeight(final Player player) {
         return Optional.ofNullable(getPermissions())
                 .flatMap(controller -> controller.getPermissionHolder(player))
+                .filter(holder -> holder instanceof MetadataHolder)
+                .map(holder -> (MetadataHolder) holder)
                 .flatMap(holder -> holder.intInfoNode("chat-delete-weight"))
                 .orElse(-1);
     }
@@ -90,6 +93,8 @@ public final class ServiceController {
     public Optional<Integer> getMaxHomeCount(final Player player) {
         return Optional.ofNullable(getPermissions())
                 .flatMap(controller -> controller.getPermissionHolder(player))
+                .filter(holder -> holder instanceof MetadataHolder)
+                .map(holder -> (MetadataHolder) holder)
                 .flatMap(permissionHolder -> permissionHolder.intInfoNode("max-homes"));
     }
 
