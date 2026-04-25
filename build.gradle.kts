@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.thenextlvl:service-io:3.0.0-pre10")
+    compileOnly("net.thenextlvl:service-io:3.0.0-pre11")
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
