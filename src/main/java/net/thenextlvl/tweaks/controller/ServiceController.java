@@ -2,12 +2,13 @@ package net.thenextlvl.tweaks.controller;
 
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.thenextlvl.service.api.chat.ChatController;
-import net.thenextlvl.service.api.economy.EconomyController;
-import net.thenextlvl.service.api.economy.bank.BankController;
-import net.thenextlvl.service.api.group.GroupController;
-import net.thenextlvl.service.api.group.GroupHolder;
-import net.thenextlvl.service.api.permission.PermissionController;
+import net.thenextlvl.service.chat.ChatController;
+import net.thenextlvl.service.economy.EconomyController;
+import net.thenextlvl.service.economy.bank.BankController;
+import net.thenextlvl.service.group.GroupController;
+import net.thenextlvl.service.group.GroupHolder;
+import net.thenextlvl.service.model.MetadataHolder;
+import net.thenextlvl.service.permission.PermissionController;
 import net.thenextlvl.tweaks.TweaksPlugin;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
@@ -54,25 +55,28 @@ public final class ServiceController {
             profile.getPrefix().ifPresent(prefix -> builder.resolver(Placeholder.parsed("chat_prefix", prefix)));
             profile.getSuffix().ifPresent(suffix -> builder.resolver(Placeholder.parsed("chat_suffix", suffix)));
         });
-        Optional.ofNullable(getEconomy()).ifPresent(economy -> {
-            economy.getAccount(player).ifPresent(account -> {
-                builder.resolver(Placeholder.parsed("balance", economy.format(account.getBalance())));
-                builder.resolver(Placeholder.parsed("balance_unformatted", account.getBalance().toString()));
-            });
-            Optional.ofNullable(banks).flatMap(controller -> controller.getBank(player)).ifPresent(bank -> {
-                builder.resolver(Placeholder.parsed("bank_balance", bank.getBalance().toString()));
-                builder.resolver(Placeholder.parsed("bank_balance_unformatted", bank.getBalance().toString()));
-            });
-            builder.resolver(Placeholder.parsed("currency_name", economy.getCurrencyNameSingular(player.locale())));
-            builder.resolver(Placeholder.parsed("currency_name_plural", economy.getCurrencyNamePlural(player.locale())));
-            builder.resolver(Placeholder.parsed("currency_symbol", economy.getCurrencySymbol()));
-        });
+        // todo: replace with proper placeholder support
+        // Optional.ofNullable(getEconomy()).ifPresent(economy -> {
+        //     economy.getAccount(player).ifPresent(account -> {
+        //         builder.resolver(Placeholder.parsed("balance", economy.format(account.getBalance())));
+        //         builder.resolver(Placeholder.parsed("balance_unformatted", account.getBalance().toString()));
+        //     });
+        //     Optional.ofNullable(banks).flatMap(controller -> controller.getBank(player)).ifPresent(bank -> {
+        //         builder.resolver(Placeholder.parsed("bank_balance", bank.getBalance().toString()));
+        //         builder.resolver(Placeholder.parsed("bank_balance_unformatted", bank.getBalance().toString()));
+        //     });
+        //     builder.resolver(Placeholder.parsed("currency_name", economy.getCurrencyNameSingular(player.locale())));
+        //     builder.resolver(Placeholder.parsed("currency_name_plural", economy.getCurrencyNamePlural(player.locale())));
+        //     builder.resolver(Placeholder.parsed("currency_symbol", economy.getCurrencySymbol()));
+        // });
         return builder.build();
     }
 
     public int getChatDeleteWeight(final Player player) {
         return Optional.ofNullable(getPermissions())
                 .flatMap(controller -> controller.getPermissionHolder(player))
+                .filter(holder -> holder instanceof MetadataHolder)
+                .map(holder -> (MetadataHolder) holder)
                 .flatMap(holder -> holder.intInfoNode("chat-delete-weight"))
                 .orElse(-1);
     }
@@ -89,6 +93,8 @@ public final class ServiceController {
     public Optional<Integer> getMaxHomeCount(final Player player) {
         return Optional.ofNullable(getPermissions())
                 .flatMap(controller -> controller.getPermissionHolder(player))
+                .filter(holder -> holder instanceof MetadataHolder)
+                .map(holder -> (MetadataHolder) holder)
                 .flatMap(permissionHolder -> permissionHolder.intInfoNode("max-homes"));
     }
 

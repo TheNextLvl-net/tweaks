@@ -17,10 +17,15 @@ java {
 }
 
 tasks.compileJava {
-    options.release.set(25)
+    options.release.set(21)
+}
+
+configurations.compileClasspath {
+    attributes.attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 25)
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://repo.thenextlvl.net/releases")
     maven("https://repo.thenextlvl.net/snapshots")
@@ -28,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.thenextlvl.services:service-io:2.3.1")
+    compileOnly("net.thenextlvl:service-io:3.0.0-pre8")
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
