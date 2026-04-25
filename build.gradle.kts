@@ -55,7 +55,7 @@ paper {
     name = "Tweaks"
     main = "net.thenextlvl.tweaks.TweaksPlugin"
     description = "A useful command collection"
-    apiVersion = "26.1.1"
+    apiVersion = "1.21.11"
     website = "https://thenextlvl.net"
     authors = listOf("CyntrixAlgorithm", "NonSwag")
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
