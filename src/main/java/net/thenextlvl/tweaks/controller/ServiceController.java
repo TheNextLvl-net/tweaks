@@ -5,6 +5,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.service.chat.ChatController;
 import net.thenextlvl.service.economy.EconomyController;
 import net.thenextlvl.service.economy.bank.BankController;
+import net.thenextlvl.service.economy.currency.Currency;
 import net.thenextlvl.service.group.GroupController;
 import net.thenextlvl.service.group.GroupHolder;
 import net.thenextlvl.service.model.MetadataHolder;
@@ -55,21 +56,30 @@ public final class ServiceController {
             profile.getPrefix().ifPresent(prefix -> builder.resolver(Placeholder.parsed("chat_prefix", prefix)));
             profile.getSuffix().ifPresent(suffix -> builder.resolver(Placeholder.parsed("chat_suffix", suffix)));
         });
-        // todo: replace with proper placeholder support
-        // Optional.ofNullable(getEconomy()).ifPresent(economy -> {
-        //     economy.getAccount(player).ifPresent(account -> {
-        //         builder.resolver(Placeholder.parsed("balance", economy.format(account.getBalance())));
-        //         builder.resolver(Placeholder.parsed("balance_unformatted", account.getBalance().toString()));
-        //     });
-        //     Optional.ofNullable(banks).flatMap(controller -> controller.getBank(player)).ifPresent(bank -> {
-        //         builder.resolver(Placeholder.parsed("bank_balance", bank.getBalance().toString()));
-        //         builder.resolver(Placeholder.parsed("bank_balance_unformatted", bank.getBalance().toString()));
-        //     });
-        //     builder.resolver(Placeholder.parsed("currency_name", economy.getCurrencyNameSingular(player.locale())));
-        //     builder.resolver(Placeholder.parsed("currency_name_plural", economy.getCurrencyNamePlural(player.locale())));
-        //     builder.resolver(Placeholder.parsed("currency_symbol", economy.getCurrencySymbol()));
-        // });
+        // todo: add proper placeholder support
+        Optional.ofNullable(getEconomy()).ifPresent(economy -> {
+            final var currency = economy.getCurrencyController().getDefaultCurrency();
+            economy.getAccount(player).ifPresent(account -> {
+                builder.resolver(Placeholder.component("balance", currency.format(account.getBalance(currency), player)));
+                builder.resolver(Placeholder.parsed("balance_unformatted", account.getBalance(currency).toString()));
+            });
+            registerCurrencyTags(player, currency, builder);
+        });
+        Optional.ofNullable(getBanks()).ifPresent(banks -> {
+            final var currency = banks.getCurrencyController().getDefaultCurrency();
+            banks.getBank(player).ifPresent(account -> {
+                builder.resolver(Placeholder.component("bank_balance", currency.format(account.getBalance(currency), player)));
+                builder.resolver(Placeholder.parsed("bank_balance_unformatted", account.getBalance(currency).toString()));
+            });
+            if (economy == null) registerCurrencyTags(player, currency, builder);
+        });
         return builder.build();
+    }
+
+    private static void registerCurrencyTags(final Player player, final Currency currency, final TagResolver.Builder builder) {
+        currency.getDisplayNameSingular(player).ifPresent(name -> builder.resolver(Placeholder.component("currency_name", name)));
+        currency.getDisplayNamePlural(player).ifPresent(name -> builder.resolver(Placeholder.component("currency_name_plural", name)));
+        builder.resolver(Placeholder.component("currency_symbol", currency.getSymbol()));
     }
 
     public int getChatDeleteWeight(final Player player) {
