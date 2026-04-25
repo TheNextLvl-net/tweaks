@@ -415,8 +415,13 @@ public final class TweaksPlugin extends JavaPlugin {
     }
 
     private void initControllers() {
-        if (getServer().getPluginManager().isPluginEnabled("ServiceIO"))
+        final var serviceIO = getServer().getPluginManager().getPlugin("ServiceIO");
+        final var version = serviceIO != null ? serviceIO.getPluginMeta().getVersion() : null;
+        if (serviceIO != null && version.startsWith("3.")) {
             this.serviceController = new ServiceController(this);
+        } else if (serviceIO != null) {
+            getComponentLogger().warn("ServiceIO version {} is not supported (requires v3)", version);
+        }
     }
 
     private void initMotd() {
