@@ -9,7 +9,7 @@ plugins {
     id("de.eldoria.plugin-yml.paper") version "0.9.0"
     id("io.papermc.hangar-publish-plugin") version "0.1.4"
     id("com.modrinth.minotaur") version "2.+"
-    id("dev.faststats.proguard-mappings-upload") version "0.1.0"
+    id("dev.faststats.proguard-mappings-upload") version "0.1.1"
 }
 
 tasks.register<ProGuardTask>("proguard") {
