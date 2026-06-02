@@ -1,6 +1,6 @@
 pluginManagement {
     repositories {
-        mavenLocal()
+        maven("https://repo.faststats.dev/releases")
         gradlePluginPortal()
     }
 }
