@@ -3,8 +3,8 @@ package net.thenextlvl.tweaks;
 import com.google.gson.GsonBuilder;
 import core.file.FileIO;
 import core.file.formats.GsonFile;
-import dev.faststats.bukkit.BukkitMetrics;
-import dev.faststats.core.ErrorTracker;
+import dev.faststats.ErrorTracker;
+import dev.faststats.bukkit.BukkitContext;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.key.Key;
@@ -134,10 +134,10 @@ public final class TweaksPlugin extends JavaPlugin {
     public static final ErrorTracker ERROR_TRACKER = ErrorTracker.contextAware();
 
     private final Metrics metrics = new Metrics(this, 19651);
-    private final dev.faststats.core.Metrics fastStats = BukkitMetrics.factory()
-            .token("49d8e8036457cf422c4b684d7ab81dbd")
-            .errorTracker(ERROR_TRACKER)
-            .create(this);
+    private final BukkitContext context = new BukkitContext.Factory(this, "49d8e8036457cf422c4b684d7ab81dbd")
+            .metrics(dev.faststats.Metrics.Factory::create)
+            .errorTrackerService(ERROR_TRACKER)
+            .create();
     private final PluginVersionChecker versionChecker = new PluginVersionChecker(this);
 
     private final CommandConfig commands = new GsonFile<>(
@@ -164,6 +164,7 @@ public final class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        context.ready();
         initConfig();
         initTranslations();
         initControllers();
@@ -176,7 +177,7 @@ public final class TweaksPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        fastStats.shutdown();
+        context.shutdown();
         metrics.shutdown();
     }
 
