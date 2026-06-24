@@ -35,7 +35,8 @@ public class WarpsCommand {
             if (warps.isEmpty()) {
                 plugin.bundle().sendMessage(sender, "command.warp.empty");
             } else if (plugin.config().guis.warps.enabled && sender instanceof final Player player) {
-                player.getScheduler().run(plugin, task -> new WarpGUI(plugin, player, warps).open(), null);
+                final var interface_ = WarpGUI.create(warps);
+                player.getScheduler().run(plugin, task -> interface_.open(player), null);
             } else {
                 final var list = warps.stream().map(warp -> {
                     final var event = ClickEvent.runCommand("/warp " + warp.getName());
