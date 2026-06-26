@@ -2,6 +2,7 @@ package net.thenextlvl.tweaks.gui;
 
 import core.paper.item.ItemBuilder;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.translation.Argument;
@@ -13,7 +14,6 @@ import net.thenextlvl.tweaks.TweaksPlugin;
 import net.thenextlvl.tweaks.model.NamedLocation;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 
@@ -24,47 +24,63 @@ import static org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN;
 
 @NullMarked
 public final class WarpGUI {
+    private static final String NEXT = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQ4NjVhYWUyNzQ2YTliOGU5YTRmZTYyOWZiMDhkMThkMGE5MjUxZTVjY2JlNWZhNzA1MWY1M2VhYjliOTQifX19";
+    private static final String PLUS = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjliODYxYWFiYjMxNmM0ZWQ3M2I0ZTU0MjgzMDU3ODJlNzM1NTY1YmEyYTA1MzkxMmUxZWZkODM0ZmE1YTZmIn19fQ==";
+    private static final String PREVIOUS = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTJmMDQyNWQ2NGZkYzg5OTI5MjhkNjA4MTA5ODEwYzEyNTFmZTI0M2Q2MGQxNzViZWQ0MjdjNjUxY2JlIn19fQ==";
+
     private static final TweaksPlugin plugin = JavaPlugin.getPlugin(TweaksPlugin.class);
     private static final Material[] MATERIALS = Arrays.stream(Material.values())
-            .filter(material -> !material.isLegacy() && material.isItem()).toArray(Material[]::new);
+            .filter(material -> !material.isLegacy() && material.isItem())
+            .toArray(Material[]::new);
 
     private WarpGUI() {
     }
 
     public static PaginatedInterface<NamedLocation> create(final Collection<NamedLocation> elements) {
         final var base = Interface.builder()
-                .title(player -> plugin.bundle().component("gui.title.warps", player))
+                .title(player -> plugin.bundle().component("gui.title.warps", player,
+                        Formatter.number("warps", elements.size())))
                 .layout(Layout.builder(
                                 "         ",
                                 " XXXXXXX ",
                                 " XXXXXXX ",
                                 " XXXXXXX ",
-                                "  < x >  ")
+                                "  < + >  ")
                         .mask(' ', ItemBuilder.of(Material.GRAY_STAINED_GLASS_PANE).hideTooltip().build())
                         .build())
-                .slot('x', context -> {
-                    return ItemBuilder.of(Material.BARRIER)
-                            .itemName(plugin.bundle().component("gui.close", context.player()))
-                            .build();
-                }, context -> context.player().closeInventory())
                 .slot('<', context -> {
-                    return ItemBuilder.of(Material.ARROW)
+                    return ItemBuilder.of(Material.PLAYER_HEAD)
+                            .profileValue(PREVIOUS)
                             .itemName(plugin.bundle().component("gui.page.previous", context.player()))
                             .build();
                 }, context -> context.paginatedSession().ifPresent(session -> {
                     session.setPage(session.getCurrentPage() - 1);
                 }))
+                .slot('+', context -> {
+                    return ItemBuilder.of(Material.PLAYER_HEAD)
+                            .profileValue(PLUS)
+                            .itemName(plugin.bundle().component("gui.item.warp.set", context.player()))
+                            .build();
+                }, context -> context.paginatedSession().ifPresent(session -> {
+                }))
                 .slot('>', context -> {
-                    return ItemBuilder.of(Material.ARROW)
+                    return ItemBuilder.of(Material.PLAYER_HEAD)
+                            .profileValue(NEXT)
                             .itemName(plugin.bundle().component("gui.page.next", context.player()))
                             .build();
                 }, context -> context.paginatedSession().ifPresent(session -> {
                     session.setPage(session.getCurrentPage() + 1);
                 }));
-        return PaginatedInterface.<NamedLocation>builder(base).mask('X').content(elements)
+        return PaginatedInterface.<NamedLocation>builder(base)
                 .transformer(element -> new ActionItem(context -> {
-                    // todo: do not show "right click to delete" for unprivileged players
-                    return display(element, context.player());
+                    final var player = context.player();
+                    final var builder = buildDisplay(element, player);
+                    builder.appendLore(Component.empty());
+                    builder.appendLore(plugin.bundle().components("gui.item.location.lore.teleport", player));
+                    if (player.hasPermission("tweaks.command.warp.delete")) {
+                        builder.appendLore(plugin.bundle().components("gui.item.location.lore.delete", player));
+                    }
+                    return builder.build();
                 }, context -> {
                     final var player = context.player();
                     if (context.clickType().isLeftClick()) {
@@ -78,7 +94,10 @@ public final class WarpGUI {
                             delete(element).open(context.player());
                         }
                     }
-                })).build(plugin);
+                }))
+                .mask('X')
+                .content(elements)
+                .build(plugin);
     }
 
     private static Interface delete(final NamedLocation element) {
@@ -91,11 +110,11 @@ public final class WarpGUI {
                                 " nnn yyy ",
                                 " nnn yyy ",
                                 "         ")
-                        .mask('i', context -> display(element, context.player())) // todo: only show icon
+                        .mask('i', context -> buildDisplay(element, context.player()).build())
                         .mask(' ', ItemBuilder.of(Material.GRAY_STAINED_GLASS_PANE).hideTooltip().build())
                         .build())
                 .slot('y', context -> {
-                    return ItemBuilder.of(Material.LIME_STAINED_GLASS_PANE) // todo: green instead of lime?
+                    return ItemBuilder.of(Material.LIME_STAINED_GLASS_PANE)
                             .itemName(plugin.bundle().component("gui.item.warp.delete", context.player(),
                                     Placeholder.parsed("warp", element.getName())))
                             .build();
@@ -124,9 +143,10 @@ public final class WarpGUI {
                 .build();
     }
 
-    private static ItemStack display(final NamedLocation element, final Player player) {
+    private static ItemBuilder buildDisplay(final NamedLocation element, final Player player) {
         return ItemBuilder.of(icon(element))
                 .unsetData(DataComponentTypes.BUNDLE_CONTENTS)
+                .unsetData(DataComponentTypes.ATTRIBUTE_MODIFIERS)
                 .itemName(plugin.bundle().component("gui.item.location", player,
                         Argument.string("name", element.getName())))
                 .lore(plugin.bundle().components("gui.item.location.lore", player,
@@ -135,8 +155,7 @@ public final class WarpGUI {
                         Formatter.number("y", element.y()),
                         Formatter.number("z", element.z()),
                         Formatter.number("yaw", element.getYaw()),
-                        Formatter.number("pitch", element.getPitch())))
-                .build();
+                        Formatter.number("pitch", element.getPitch())));
     }
 
     private static Material icon(final NamedLocation element) {
