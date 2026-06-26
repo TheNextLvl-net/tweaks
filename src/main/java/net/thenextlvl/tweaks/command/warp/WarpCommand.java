@@ -40,7 +40,7 @@ public class WarpCommand {
                 plugin.teleportController().teleport(player, location, COMMAND).thenAccept(success -> {
                     final var message = success ? "command.warp" : "command.teleport.cancelled";
                     final var world = context.getSource().getLocation().getWorld();
-                    if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) && success) return;
+                    if (!world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK) && success) return;
                     plugin.bundle().sendMessage(player, message, Placeholder.parsed("name", name));
                 }), () -> plugin.bundle().sendMessage(player, "command.warp.unknown", Placeholder.parsed("name", name))));
         return Command.SINGLE_SUCCESS;

@@ -33,7 +33,7 @@ public class SetWarpCommand {
         final var name = context.getArgument("name", String.class);
         plugin.warpController().setWarp(name, context.getSource().getLocation()).thenAccept(success -> {
             final var world = context.getSource().getLocation().getWorld();
-            if (Boolean.FALSE.equals(world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK)) && success) return;
+            if (!world.getGameRuleValue(GameRules.SEND_COMMAND_FEEDBACK) && success) return;
             final var message = success ? "command.warp.set" : "nothing.changed";
             plugin.bundle().sendMessage(context.getSource().getSender(), message,
                     Placeholder.parsed("name", name));
