@@ -23,7 +23,7 @@ public class TrashCommand {
                                    && player.hasPermission("tweaks.command.trash"))
                 .executes(this::trash)
                 .build();
-        registrar.register(command, "Dispose of your unwanted items", plugin.commands().hat.aliases);
+        registrar.register(command, "Dispose of your unwanted items", plugin.commands().trash.aliases);
     }
 
     private int trash(final CommandContext<CommandSourceStack> context) {
