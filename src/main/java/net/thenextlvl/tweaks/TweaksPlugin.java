@@ -259,7 +259,7 @@ public final class TweaksPlugin extends JavaPlugin {
     }
 
     private void registerServerCommands(final Commands registrar) {
-        if (commands().back.enabled) new BroadcastCommand(this).register(registrar);
+        if (commands().broadcast.enabled) new BroadcastCommand(this).register(registrar);
         if (commands().lobby.enabled) new LobbyCommand(this).register(registrar);
         if (commands().motd.enabled) new MotdCommand(this).register(registrar);
     }
